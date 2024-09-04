@@ -18,24 +18,25 @@ module.exports = {
 		return;
 	},
 	// ControlVista: loginGuardar
-	contadorDePersonas: async ({usuario, visita, hoy}) => {
+	contadorDePersonas: async (usuario_id, visita_id, hoy) => {
 		// Actualiza el usuario
 		const fechaUltimoLogin = hoy;
-		if (usuario) baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaUltimoLogin});
+		if (usuario_id) baseDeDatos.actualizaPorId("usuarios", usuario_id, {fechaUltimoLogin});
 
-		// Valida que no exista ya un registro del usuario en esta fecha
-		const condicion = {fecha: hoy, visita_id: visita.id};
+		// Valida que no exista ya un registro de la 'visita_id' en esta fecha
+		const condicion = {fecha: hoy, visita_id};
 		const existe = await baseDeDatos.obtienePorCondicion("loginsDelDia", condicion);
+		if (usuario_id) condicion.usuario_id = usuario_id;
 
-		// Si es usuario y existe sin usuario
-		if (usuario && existe && !existe.usuario_id) baseDeDatos.eliminaPorId("loginsDelDia", existe.id);
+		// Si no existe, lo agrega
+		if (!existe) baseDeDatos.agregaRegistro("loginsDelDia", condicion);
 
-		// Si no existe o es usuario y no existe con usuario
-		if (!existe || (usuario && !existe.usuario_id)) {
-			if (usuario) condicion.usuario_id = usuario.id;
-			baseDeDatos.agregaRegistro("loginsDelDia", condicion);
-			baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario.id, "diasLogin");
-		}
+		// Si es 'usuario_id' y existe sin ese campo, lo actualiza
+		if (existe && usuario_id && !existe.usuario_id) baseDeDatos.actualizaPorId("loginsDelDia", existe.id, {usuario_id});
+
+		// Si no existe o existe sin 'usuario_id', aumenta el valor del campo 'diasLogin' en el usuario
+		if (!existe || (usuario_id && !existe.usuario_id))
+			baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario_id, "diasLogin");
 
 		// Fin
 		return;
