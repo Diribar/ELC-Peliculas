@@ -3,7 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		fecha: {type: dt.STRING(10)},
 		usuario_id: {type: dt.INTEGER},
-		visita_id: {type: dt.INTEGER},
+		visita_id: {type: dt.STRING(11)},
 	};
 	const config = {
 		tableName: "aux_logins_del_dia",
