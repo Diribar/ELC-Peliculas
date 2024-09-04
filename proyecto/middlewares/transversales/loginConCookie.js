@@ -8,16 +8,16 @@ module.exports = async (req, res, next) => {
 
 	// Variables
 	const hoy = new Date().toISOString().slice(0, 10);
-	let {usuario} = req.session;
-	let visita = req.session.visita ? req.session.visita : req.cookies.visita ? req.cookies.visita : null;
 
 	// Acciones si no está logueado como usuario y hay cookie de mail
+	let {usuario} = req.session;
 	if (!usuario && req.cookies && req.cookies.email) {
 		usuario = await comp.obtieneUsuarioPorMail(req.cookies.email); // obtiene el usuario
 		if (!usuario) res.clearCookie("email"); // borra el mail de cookie
 	}
 
 	// Si no existe visita, la genera
+	let visita = req.session.visita ? req.session.visita : req.cookies.visita ? req.cookies.visita : null;
 	if (!visita || !visita.id)
 		visita = {
 			id: "V" + String(parseInt(Math.random() * Math.pow(10, 10))).padStart(10, "0"),
