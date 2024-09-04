@@ -95,10 +95,10 @@ module.exports = {
 				mensajes: [
 					"Estimad" + usuario.genero.letraFinal + " " + usuario.apodo + ", completaste el alta satisfactoriamente.",
 					"Bienvenid" + usuario.genero.letraFinal + " a nuestro sitio como usuario.",
-					"Con tu alta de usuario, ya podés guardar tus consultas personalizadas.",
+					"Ya podés guardar tus consultas personalizadas.",
 				],
 				iconos: [variables.vistaEntendido(req.session.urlFueraDeUsuarios)],
-				titulo: "Bienvenido/a a la familia ELC",
+				titulo: "Bienvenid" + usuario.genero.letraFinal + " a la familia ELC",
 				check: true,
 			};
 
