@@ -29,7 +29,7 @@ main .cartelCentro {
 
 	/* Partes internas */
 	.inicio {font-size: 4rem; color: var(--amarillo-oscuro);}
-	#titulo {margin-bottom: 15px; font-size: 1.5rem;}
+	#titulo {margin-bottom: 0; font-size: 1.5rem;}
 	#titulo:empty {margin: 0;}
 
 	/* Mensajes */
