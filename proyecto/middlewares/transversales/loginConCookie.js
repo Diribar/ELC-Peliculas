@@ -31,7 +31,7 @@ module.exports = async (req, res, next) => {
 
 	// Acciones si (la fecha del usuario es distinta a hoy) o (la fecha de visita es distinta a hoy o está recién creada)
 	if ((usuario && usuario.fechaUltimoLogin != hoy) || (visita && (visita.fecha != hoy || visita.recienCreado))) {
-		await procesos.actualizaElContadorDeLogins({usuario, visita, hoy}); // actualiza el contador de logins
+		await procesos.contadorDePersonas({usuario, visita, hoy}); // actualiza el contador de logins
 		if (usuario) {
 			usuario.fechaUltimoLogin = hoy;
 			res.cookie("email", usuario.email, {maxAge: unDia * 30}); // una vez por día, actualiza el mail en la cookie
