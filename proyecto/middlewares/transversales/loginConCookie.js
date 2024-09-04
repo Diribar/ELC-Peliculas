@@ -15,6 +15,7 @@ module.exports = async (req, res, next) => {
 		usuario = await comp.obtieneUsuarioPorMail(req.cookies.email); // obtiene el usuario
 		if (!usuario) res.clearCookie("email"); // borra el mail de cookie
 	}
+
 	// Acciones si no se encuentra el usuario a partir del mail
 	if (!usuario && !visita) {
 		// Obtiene la visita
@@ -78,6 +79,9 @@ module.exports = async (req, res, next) => {
 		req.session.usuario = usuario;
 		res.locals.usuario = usuario;
 	}
+
+	// Actualiza visita
+	if (visita) req.session.visita = visita;
 
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
