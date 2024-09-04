@@ -9,36 +9,46 @@ module.exports = async (req, res, next) => {
 	// Variables
 	const hoy = new Date().toISOString().slice(0, 10);
 
-	// Acciones si no está logueado como usuario y hay cookie de mail
+	// Obtiene visita
+	let {visita} = req.session.visita ? req.session : req.cookies.visita ? req.cookies : {visita: null};
+	if (!visita || !visita.id)
+		visita = {
+			id: "V" + String(parseInt(Math.random() * Math.pow(10, 10))).padStart(10, "0"),
+			fecha: hoy,
+			recienCreada: true,
+		};
+
+	// Hace lo posible por conseguir el usuario
 	let {usuario} = req.session;
 	if (!usuario && req.cookies && req.cookies.email) {
 		usuario = await comp.obtieneUsuarioPorMail(req.cookies.email); // obtiene el usuario
 		if (!usuario) res.clearCookie("email"); // borra el mail de cookie
 	}
 
-	// Si no existe visita, la genera
-	let visita = req.session.visita ? req.session.visita : req.cookies.visita ? req.cookies.visita : null;
-	if (!visita || !visita.id)
-		visita = {
-			id: "V" + String(parseInt(Math.random() * Math.pow(10, 10))).padStart(10, "0"),
-			fecha: hoy,
-			recienCreado: true,
-		};
+	// Acciones si alguna de las fechas es distinta a hoy o la visita está recién creada
+	if (visita.fecha != hoy || visita.recienCreada || (usuario && usuario.fechaUltimoLogin != hoy)) {
+		// Temas de visita
+		if (usuario && visita.id != usuario.visita_id) {
+			// Variables
+			const condicion = {fecha: hoy, visita_id: visita.id};
+			const {visita_id} = usuario;
 
-	// Acciones si (la fecha del usuario es distinta a hoy) o (la fecha de visita es distinta a hoy o está recién creada)
-	if ((usuario && usuario.fechaUltimoLogin != hoy) || visita.fecha != hoy || visita.recienCreado) {
-		// Actualiza el contador de logins
-		await procesos.contadorDePersonas({usuario, visita, hoy});
-
-		// Actualizaciones diarias
-		if (usuario) {
-			usuario.fechaUltimoLogin = hoy; // usuario
-			res.cookie("email", usuario.email, {maxAge: unDia * 30}); // el cookie de mail
-			visita.id = usuario.visita_id; // el id de la visita
+			// Actualizaciones
+			await baseDeDatos.actualizaTodosPorCondicion("loginsDelDia", condicion, {visita_id}); // 'loginDelDia'
+			visita.id = visita_id; // id de visita
 		}
 		visita.fecha = hoy;
-		delete visita.recienCreado;
-		res.cookie("visita", visita, {maxAge: unDia * 30});
+		delete visita.recienCreada;
+		res.cookie("visita", visita, {maxAge: unDia * 30}); // actualiza el cookie de la visita una vez al día
+
+		// Temas de usuario
+		if (usuario) {
+			usuario.fechaUltimoLogin = hoy; // usuario
+			res.cookie("email", usuario.email, {maxAge: unDia * 30}); // actualiza el cookie de mail una vez al día
+		}
+
+		// Actualiza el contador de logins
+		await procesos.contadorDePersonas(usuario.id, visita.id, hoy);
 	}
 
 	// Acciones si el usuario tiene una versión distinta de la actual
