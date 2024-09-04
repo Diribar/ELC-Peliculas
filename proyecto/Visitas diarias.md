@@ -26,6 +26,4 @@ Visitas diarias
 	- Se busca por fecha y visita_id
 	- Las personas se cuentan una sola vez por día, con 'usuario_id' si fuera posible
 
-- En loginsAcum,
-	- Se cuenta en usuario o visita, en forma excluyente
-	- Si es visita, se cuentan los que tiene usuario (comienzan con "U")
+- En loginsAcum, se cuenta en 'usLogueado', 'usSinLogin' o 'visitaSinUs', en forma excluyente

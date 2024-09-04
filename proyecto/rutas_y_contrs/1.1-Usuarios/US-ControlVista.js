@@ -95,10 +95,10 @@ module.exports = {
 				mensajes: [
 					"Estimad" + usuario.genero.letraFinal + " " + usuario.apodo + ", completaste el alta satisfactoriamente.",
 					"Bienvenid" + usuario.genero.letraFinal + " a nuestro sitio como usuario.",
-					"Con tu alta de usuario, ya podés guardar tus consultas personalizadas.",
+					"Ya podés guardar tus consultas personalizadas.",
 				],
 				iconos: [variables.vistaEntendido(req.session.urlFueraDeUsuarios)],
-				titulo: "Bienvenido/a a la familia ELC",
+				titulo: "Bienvenid" + usuario.genero.letraFinal + " a la familia ELC",
 				check: true,
 			};
 
@@ -250,39 +250,34 @@ module.exports = {
 		accesosSuspendidos: (req, res) => {
 			// Variables
 			const codigo = req.params.id;
-			const mensajeCola = "Con el ícono de entendido salís a la vista de inicio.";
+			const mensajeCola = "Con el ícono de entendido salís del circuito de usuario.";
+			let mensajes, titulo, iconos;
 
-			// Feedback
-			const mensajes = false
-				? false
-				: codigo == "alta-mail"
-				? [procesos.comentarios.accesoSuspendido("para dar de alta tu mail"), mensajeCola]
-				: codigo == "login"
-				? [procesos.comentarios.accesoSuspendido("para realizar el login"), mensajeCola]
-				: codigo == "olvido-contrasena"
-				? [procesos.comentarios.accesoSuspendido("para validar tus datos"), mensajeCola]
-				: [];
-			const titulo = false
-				? false
-				: codigo == "alta-mail"
-				? "Alta de Mail suspendida por 24hs"
-				: codigo == "login"
-				? "Login suspendido por 24hs"
-				: codigo == "olvido-contrasena"
-				? "Olvido de Contraseña suspendido por 24hs"
-				: "";
-			const iconos = false
-				? false
-				: codigo == "alta-mail"
-				? [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}]
-				: codigo == "login"
-				? [{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"}]
-				: codigo == "olvido-contrasena"
-				? [
-						{...variables.vistaAnterior("/usuarios/login"), titulo: "Ir a la vista de Login"},
-						{...variables.vistaEntendido(), titulo: "Ir a la vista de inicio"},
-				  ]
-				: "";
+			// Vista fuera de usuario
+			const urlFueraDeUsuarios = req.session.urlFueraDeUsuarios ? req.session.urlFueraDeUsuarios : "";
+			const vistaEntendido = [{...variables.vistaEntendido(urlFueraDeUsuarios), titulo: "Entendido"}];
+
+			// Feedback Alta de Mail suspendida
+			if (codigo == "alta-mail") {
+				mensajes = [procesos.comentarios.accesoSuspendido("para dar de alta tu mail"), mensajeCola];
+				titulo = "Alta de Mail suspendida por 24hs";
+				iconos = vistaEntendido;
+			}
+
+			// Feedback Login suspendido
+			if (codigo == "login") {
+				mensajes = [procesos.comentarios.accesoSuspendido("para realizar el login"), mensajeCola];
+				titulo = "Login suspendido por 24hs";
+				iconos = vistaEntendido;
+			}
+
+			// Feedback Olvido de Contraseña suspendido
+			if (codigo == "olvido-contrasena") {
+				mensajes = [procesos.comentarios.accesoSuspendido("para validar tus datos"), mensajeCola];
+				titulo = "Olvido de Contraseña suspendido por 24hs";
+				iconos = [{...variables.vistaAnterior("/usuarios/login"), titulo: "Ir a la vista de Login"}, vistaEntendido];
+			}
+
 			const informacion = {mensajes, iconos, titulo};
 
 			// Logout

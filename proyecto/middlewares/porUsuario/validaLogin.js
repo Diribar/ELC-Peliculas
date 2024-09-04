@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
 	// Acciones si hay errores de credenciales
 	if (errores.hay) {
 		// intentosLogin - cookie
-		const intentosLogin = req.cookies && req.cookies.intentosLogin ? req.cookies.intentosLogin + 1 : 1;
+		let intentosLogin = req.cookies && req.cookies.intentosLogin ? Number(req.cookies.intentosLogin) + 1 : 1;
 		if (intentosLogin <= maxIntentosCookies) res.cookie("intentosLogin", intentosLogin, {maxAge: unDia});
 		const intentosPendsCookie = Math.max(0, maxIntentosCookies - intentosLogin);
 
