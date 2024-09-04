@@ -337,10 +337,18 @@ module.exports = {
 				// Variables
 				const diaSem = diasSemana[new Date(proximaFecha).getUTCDay()];
 				const anoMes = proximaFecha.slice(0, 7);
-				const cantUsuarios = loginsDiarios.filter((n) => n.fecha == proximaFecha).length;
+				const personas = loginsDiarios.filter((n) => n.fecha == proximaFecha);
 
-				// Agrega la cantidad de logins
-				await baseDeDatos.agregaRegistro("loginsAcums", {fecha: proximaFecha, diaSem, anoMes, cantUsuarios});
+				// Tipos de navegación
+				const usLogueado = personas.filter((n) => n.usuario_id).length;
+				const usSinLogin = personas.filter((n) => !n.usuario_id && visita_id[0] == "U").length;
+				const visitaSinUs = personas.filter((n) => !n.usuario_id && visita_id[0] == "V").length;
+
+				// Agrega la cantidad de personas
+				await baseDeDatos.agregaRegistro("loginsAcums", {
+					...{fecha: proximaFecha, diaSem, anoMes},
+					...{usLogueado, usSinLogin, visitaSinUs}, // las personas logueadas alguna vez en el día, figuran como 'usLogueado'
+				});
 
 				// Obtiene la fecha siguiente
 				proximaFecha = procesos.sumaUnDia(proximaFecha);
