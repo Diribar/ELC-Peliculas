@@ -25,18 +25,22 @@ module.exports = async (req, res, next) => {
 		if (!usuario) res.clearCookie("email"); // borra el mail de cookie
 	}
 
-	// Acciones si alguna de las fechas es distinta a hoy o la visita está recién creada
-	if (visita.fecha != hoy || visita.recienCreada || (usuario && usuario.fechaUltimoLogin != hoy)) {
-		// Temas de visita
-		if (usuario && visita.id != usuario.visita_id) {
-			// Variables
-			const condicion = {fecha: hoy, visita_id: visita.id};
-			const {visita_id} = usuario;
+	// Actualización del 'id' de la visita
+	const actualizarContPers = visita.fecha != hoy || visita.recienCreada || (usuario && usuario.fechaUltimoLogin != hoy);
+	if (usuario && visita.id != usuario.visita_id) {
+		// Variables
+		const condicion = {fecha: hoy, visita_id: visita.id};
+		const {visita_id} = usuario;
 
-			// Actualizaciones
-			await baseDeDatos.actualizaTodosPorCondicion("loginsDelDia", condicion, {visita_id}); // 'loginDelDia'
-			visita.id = visita_id; // id de visita
-		}
+		// Actualizaciones
+		visita.id = visita_id; // variable 'visita'
+		await baseDeDatos.actualizaTodosPorCondicion("loginsDelDia", condicion, {visita_id}); // tabla 'loginDelDia'
+		if (!actualizarContPers) res.cookie("visita", visita, {maxAge: unDia * 30}); // cookie 'visita'
+	}
+
+	// Acciones si alguna de las fechas es distinta a hoy o la visita está recién creada
+	if (actualizarContPers) {
+		// Temas de visita
 		visita.fecha = hoy;
 		delete visita.recienCreada;
 		res.cookie("visita", visita, {maxAge: unDia * 30}); // actualiza el cookie de la visita una vez al día
