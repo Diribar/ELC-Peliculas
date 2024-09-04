@@ -10,18 +10,22 @@ Visitas diarias
 	- si no existe, crea una, con el campo 'recienCreado'
 
 - En el middleware,
+	- Si la visita.id difiere de visita_id,
+		- En 'loginsDelDia' se actualiza el registro con los valores 'hoy' y 'visita.id', con 'visita_id' (await)
+		- En visita, actualiza visita.id con visita_id
+		- Actualiza el cookie
 	- Se procesa cuando alguna de estas:
 		- la fecha de alguno es anterior a hoy
 		- la visita tiene el campo 'recienCreado'
-	- Si la visita.id difiere de visita_id,
-		- En 'loginDelDia'  con fecha: hoy, actualiza 'visita_id' con 'visita.id' (await)
-		- En visita, actualiza visita.id con visita_id
+	- Actualizaciones:
+		- fecha
+		- cookies
+		- el contador de logins
 
-- En procesos, se busca por fecha y visita_id
-
-- En 'loginsDelDia', las personas se cuentan una sola vez por día,
-	- Lo más completa posible: con usuario_id
-	- Lo más actualizada posible: con visita_id
+- En el contador de logins,
+	- Se busca por fecha y visita_id
+	- Las personas se cuentan una sola vez por día, con 'usuario_id' si fuera posible
 
 - En loginsAcum,
 	- Se cuenta en usuario o visita, en forma excluyente
+	- Si es visita, se cuentan los que tiene usuario (comienzan con "U")
