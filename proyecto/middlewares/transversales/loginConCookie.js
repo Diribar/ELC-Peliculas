@@ -32,16 +32,24 @@ module.exports = async (req, res, next) => {
 
 	// Acciones si (la fecha del usuario es distinta a hoy) o (la fecha de visita es distinta a hoy o está recién creada)
 	if ((usuario && usuario.fechaUltimoLogin != hoy) || (visita && (visita.fecha != hoy || visita.recienCreado))) {
-		await procesos.contadorDePersonas({usuario, visita, hoy}); // actualiza el contador de logins
+		// actualiza el contador de logins
+		await procesos.contadorDePersonas({usuario, visita, hoy});
+
+		// Actualizaciones diarias
 		if (usuario) {
+			// Usuario
 			usuario.fechaUltimoLogin = hoy;
-			res.cookie("email", usuario.email, {maxAge: unDia * 30}); // una vez por día, actualiza el mail en la cookie
-			res.cookie("visita", {id: usuario.visita_id, fecha: hoy}, {maxAge: unDia * 30}); // una vez por día, actualiza la visita en la cookie
+
+			// Cookies
+			res.cookie("email", usuario.email, {maxAge: unDia * 30}); // el mail
+			res.cookie("visita", {id: usuario.visita_id}, {maxAge: unDia * 30}); // la visita, sin la fecha para que deje marca en el historial si se usa
 		}
+
+		// Actualizaciones diarias
 		if (visita) {
 			visita.fecha = hoy;
 			delete visita.recienCreado;
-			res.cookie("visita", visita, {maxAge: unDia * 30}); // una vez por día, actualiza la visita en la cookie
+			res.cookie("visita", visita, {maxAge: unDia * 30});
 		}
 	}
 
