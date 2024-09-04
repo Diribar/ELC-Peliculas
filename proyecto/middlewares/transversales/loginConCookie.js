@@ -26,7 +26,7 @@ module.exports = async (req, res, next) => {
 	}
 
 	// Acciones si alguna de las fechas es distinta a hoy o la visita está recién creada
-	if ((usuario && usuario.fechaUltimoLogin != hoy) || visita.fecha != hoy || visita.recienCreada) {
+	if (visita.fecha != hoy || visita.recienCreada || (usuario && usuario.fechaUltimoLogin != hoy)) {
 		// Temas de visita
 		if (usuario && visita.id != usuario.visita_id) {
 			// Variables
