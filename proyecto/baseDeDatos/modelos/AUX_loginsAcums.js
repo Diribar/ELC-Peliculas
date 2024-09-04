@@ -4,8 +4,9 @@ module.exports = (sequelize, dt) => {
 		fecha: {type: dt.STRING(10)},
 		diaSem: {type: dt.STRING(3)},
 		anoMes: {type: dt.STRING(3)},
-		cantUsuarios: {type: dt.INTEGER},
-		cantVisitas: {type: dt.INTEGER},
+		usLogueado: {type: dt.INTEGER},
+		usSinLogin: {type: dt.INTEGER},
+		visitaSinUs: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "aux_logins_acums",
