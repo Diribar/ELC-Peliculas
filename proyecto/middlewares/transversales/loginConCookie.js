@@ -8,52 +8,40 @@ module.exports = async (req, res, next) => {
 
 	// Variables
 	const hoy = new Date().toISOString().slice(0, 10);
-	let {usuario, visita} = req.session;
 
 	// Acciones si no está logueado como usuario y hay cookie de mail
+	let {usuario} = req.session;
 	if (!usuario && req.cookies && req.cookies.email) {
 		usuario = await comp.obtieneUsuarioPorMail(req.cookies.email); // obtiene el usuario
 		if (!usuario) res.clearCookie("email"); // borra el mail de cookie
 	}
 
-	// Acciones si no se encuentra el usuario a partir del mail
-	if (!usuario && !visita) {
-		// Obtiene la visita
-		visita = req.cookies.visita;
-
-		// Si no la obtiene, la genera
-		if (!visita)
-			visita = {
-				id: "v" + parseInt(Math.random() * Math.pow(10, 10)).padStart(10, "0"),
-				fecha: hoy,
-				recienCreado: true,
-			};
-	}
+	// Si no existe visita, la genera
+	let visita = req.session.visita ? req.session.visita : req.cookies.visita ? req.cookies.visita : null;
+	if (!visita || !visita.id)
+		visita = {
+			id: "V" + String(parseInt(Math.random() * Math.pow(10, 10))).padStart(10, "0"),
+			fecha: hoy,
+			recienCreado: true,
+		};
 
 	// Acciones si (la fecha del usuario es distinta a hoy) o (la fecha de visita es distinta a hoy o está recién creada)
-	if ((usuario && usuario.fechaUltimoLogin != hoy) || (visita && (visita.fecha != hoy || visita.recienCreado))) {
-		// actualiza el contador de logins
+	if ((usuario && usuario.fechaUltimoLogin != hoy) || visita.fecha != hoy || visita.recienCreado) {
+		// Actualiza el contador de logins
 		await procesos.contadorDePersonas({usuario, visita, hoy});
 
 		// Actualizaciones diarias
 		if (usuario) {
-			// Usuario
-			usuario.fechaUltimoLogin = hoy;
-
-			// Cookies
-			res.cookie("email", usuario.email, {maxAge: unDia * 30}); // el mail
-			res.cookie("visita", {id: usuario.visita_id}, {maxAge: unDia * 30}); // la visita, sin la fecha para que deje marca en el historial si se usa
+			usuario.fechaUltimoLogin = hoy; // usuario
+			res.cookie("email", usuario.email, {maxAge: unDia * 30}); // el cookie de mail
+			visita.id = usuario.visita_id; // el id de la visita
 		}
-
-		// Actualizaciones diarias
-		if (visita) {
-			visita.fecha = hoy;
-			delete visita.recienCreado;
-			res.cookie("visita", visita, {maxAge: unDia * 30});
-		}
+		visita.fecha = hoy;
+		delete visita.recienCreado;
+		res.cookie("visita", visita, {maxAge: unDia * 30});
 	}
 
-	// Acciones si cambió la versión
+	// Acciones si el usuario tiene una versión distinta de la actual
 	let informacion;
 	if (usuario && usuario.versionElcUltimoLogin != versionELC) {
 		// Variables
@@ -89,7 +77,7 @@ module.exports = async (req, res, next) => {
 	}
 
 	// Actualiza visita
-	if (visita) req.session.visita = visita;
+	req.session.visita = visita;
 
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
