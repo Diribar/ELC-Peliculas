@@ -6,27 +6,47 @@ module.exports = async (req, res, next) => {
 	// Si corresponde, interrumpe la función
 	if (req.originalUrl.includes("/api/")) return next();
 
-	// Si no hay cookies, interrumpe la rutina
-	let usuario = req.session.usuario;
-	if (!usuario && (!req.cookies || !req.cookies.email)) return next();
+	// Variables
+	let {usuario, visita} = req.session;
+	const hoy = new Date().toISOString().slice(0, 10);
 
-	// Si no existe el mail, borra el cookie e interrumpe la rutina
-	if (!usuario) usuario = await comp.obtieneUsuarioPorMail(req.cookies.email);
-	if (!usuario) {
-		res.clearCookie("email"); // borra el mail de cookie
-		return next(); // interrumpe la rutina
+	// Acciones si no está logueado como usuario y hay cookie de mail
+	if (!usuario && req.cookies && req.cookies.email) {
+		// Obtiene el usuario
+		usuario = await comp.obtieneUsuarioPorMail(req.cookies.email);
+
+		// Acciones si no se encuentra el usuario a partir del mail
+		if (!usuario) {
+			res.clearCookie("email"); // borra el mail de cookie
+			if (!visita) visita = req.cookies.visita;
+			if (!visita) {
+				visita = {
+					id: "v" + parseInt(Math.random() * Math.pow(10, 10)).padStart(10, "0"),
+					fecha: hoy,
+					recienCreado: true,
+				};
+			}
+		}
 	}
 
-	// Acciones si la fecha del último login != hoy
-	const hoy = new Date().toISOString().slice(0, 10);
-	if (usuario.fechaUltimoLogin != hoy) {
-		usuario = await procesos.actualizaElContadorDeLogins(usuario, hoy); // actualiza el contador de logins
-		res.cookie("email", usuario.email, {maxAge: unDia * 30}); // una vez por día, actualiza el mail en la cookie
+	// Acciones si (la fecha del usuario es distinta a hoy) o (la fecha de visita es distinta a hoy o está recién creada)
+	if ((usuario && usuario.fechaUltimoLogin != hoy) || (visita && (visita.fecha != hoy || visita.recienCreado))) {
+		await procesos.actualizaElContadorDeLogins({usuario, visita, hoy}); // actualiza el contador de logins
+		if (usuario) {
+			usuario.fechaUltimoLogin = hoy;
+			res.cookie("email", usuario.email, {maxAge: unDia * 30}); // una vez por día, actualiza el mail en la cookie
+			res.cookie("visita", {id: usuario.visita_id, fecha: hoy}, {maxAge: unDia * 30}); // una vez por día, actualiza la visita en la cookie
+		}
+		if (visita) {
+			visita.fecha = hoy;
+			delete visita.recienCreado;
+			res.cookie("visita", visita, {maxAge: unDia * 30}); // una vez por día, actualiza la visita en la cookie
+		}
 	}
 
 	// Acciones si cambió la versión
 	let informacion;
-	if (usuario.versionElcUltimoLogin != versionELC) {
+	if (usuario && usuario.versionElcUltimoLogin != versionELC) {
 		// Variables
 		const permisos = ["permInputs", "autTablEnts", "revisorPERL", "revisorLinks", "revisorEnts", "revisorUs"];
 		let novedades = novedadesELC.filter((n) => n.versionELC > usuario.versionElcUltimoLogin && n.versionELC <= versionELC);
@@ -54,10 +74,12 @@ module.exports = async (req, res, next) => {
 	}
 
 	// Actualiza session y locals
-	req.session.usuario = usuario;
-	res.locals.usuario = usuario;
+	if (usuario) {
+		req.session.usuario = usuario;
+		res.locals.usuario = usuario;
+	}
 
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
-	else return next();
+	return next();
 };
