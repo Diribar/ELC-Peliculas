@@ -1,5 +1,6 @@
 /* Laptop */
 @media (orientation: landscape) and (height > 600px) {
+	#vistaDeResults:has(#scroll #botones li) {--altMargen: 30px;}
 	#cuerpoFooterImgDer {
 		#cuerpo {
 			#layoutAyuda .ayuda.consulta i.ayudaIconoForm {font-size: 1.2rem;}
@@ -58,12 +59,12 @@
 
 /* Parado */
 @media (orientation: portrait) {
-	/* Alturas y anchos */
 	#cuerpoFooterImgDer {
 		#cuerpo {
 			& :is(#encabMasPelis, #encabMasPelis #zonaDisponible) {position: absolute; height: 100%; width: 100%;}
 			#encabMasPelis #zonaDisponible #vistaDeResults {
 				height: 80%; z-index: 1;
+				&:has(#scroll #botones li) {--altMargen: calc((var(--altoMain) * .8 - var(--altoBoton) * 2) / 3);}
 				&:not(:has(#scroll :is(li, table))) {background: transparent; box-shadow: none;}
 				#actualizar {display: none;} /* oculta el botón de actualizar prods */
 				img#telonFondo {display: none;} /* oculta el telón de fondo */
@@ -81,6 +82,7 @@
 
 /* Acostado */
 @media (orientation: landscape) and (height <= 600px)  {
+	#vistaDeResults:has(#scroll #botones li) {--altMargen: calc((var(--altoCuerpo) - var(--altoBoton)) / 2);}
 	/* Vista de resultados */
 	#zonaDisponible #vistaDeResults {
 		min-width: min(330px, 100%) !important;
