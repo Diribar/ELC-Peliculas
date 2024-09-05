@@ -61,9 +61,10 @@
 @media (orientation: portrait) {
 	#cuerpoFooterImgDer {
 		#cuerpo {
-			& :is(#encabMasPelis, #encabMasPelis #zonaDisponible) {position: absolute; height: 100%; width: 100%;}
+			:is(#encabMasPelis, #encabMasPelis #zonaDisponible) {position: absolute; height: 100%; width: 100%;}
+			@media (width < 600px) {#vistaDeResults:has(#scroll #botones li) {max-width: 350px;}}
 			#encabMasPelis #zonaDisponible #vistaDeResults {
-				height: 80%; z-index: 1;
+				max-height: 80%; z-index: 1;
 				&:has(#scroll #botones li) {--altMargen: calc((var(--altoMain) * .8 - var(--altoBoton) * 2) / 3);}
 				&:not(:has(#scroll :is(li, table))) {background: transparent; box-shadow: none;}
 				#actualizar {display: none;} /* oculta el botón de actualizar prods */
