@@ -2,7 +2,6 @@
 @media (orientation: landscape) and (height > 600px) {
 	#cuerpoFooterImgDer {
 		#cuerpo {
-			#vistaDeResults:has(#scroll #botones li) {padding-block: var(--altMargen);}
 			#layoutAyuda .ayuda.consulta i.ayudaIconoForm {font-size: 1.2rem;}
 		}
 		@media (width > 1350px) {
@@ -86,7 +85,6 @@
 	#zonaDisponible #vistaDeResults {
 		min-width: min(330px, 100%) !important;
 		max-height: 100% !important;
-		&:has(#scroll #botones li) {padding-block: 0;}
 	}
 
 	/* Ocultar */
