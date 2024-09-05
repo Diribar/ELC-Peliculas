@@ -1,28 +1,3 @@
-/* Laptop */
-@media (orientation: landscape) and (height > 600px) {
-	body {
-		--alturaViewPort: 100vh;
-		--altoFooter: 23.6px;
-	}
-}
-
-/* Parado */
-@media (orientation: portrait) {
-	body {
-		--alturaViewPort: 100svh;
-		--altoFooter: 23.6px;
-	}
-}
-
-/* Acostado */
-@media (orientation: landscape) and (height <= 600px) {
-	body {
-		--alturaViewPort: 100vh;
-		--altoFooter: 0px;
-	}
-	#cuerpoFooterImgDer footer {display: none;}
-}
-
 /* Variables */
 body {
 	/* Ancho */
@@ -52,3 +27,28 @@ body {
 
 body, * {margin: 0px; padding: 0; box-sizing: border-box;}
 body *:focus {outline-color: black;}
+
+/* Laptop */
+@media (orientation: landscape) and (height > 600px) {
+	body {
+		--alturaViewPort: 100vh;
+		--altoFooter: 23.6px;
+	}
+}
+
+/* Parado */
+@media (orientation: portrait) {
+	body {
+		--alturaViewPort: 100svh;
+		--altoFooter: 23.6px;
+	}
+}
+
+/* Acostado */
+@media (orientation: landscape) and (height <= 600px) {
+	body {
+		--alturaViewPort: 100vh;
+		--altoFooter: 0px;
+	}
+	#cuerpoFooterImgDer footer {display: none;}
+}
