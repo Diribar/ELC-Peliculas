@@ -1,6 +1,7 @@
 /* Laptop */
 @media (orientation: landscape) and (height > 600px) {
-	#vistaDeResults:has(#scroll #botones li) {--altMargen: 30px;}
+	body {--altoTituloPrincipal: 68px;}
+	#vistaDeResults:has(#scroll #botones li) {--altMargen: min(30px, calc((var(--altoCuerpoMenosTitulo) * .95 - var(--altoBoton) * 2) / 3));}
 	#cuerpoFooterImgDer {
 		#cuerpo {
 			#layoutAyuda .ayuda.consulta i.ayudaIconoForm {font-size: 1.2rem;}
@@ -59,17 +60,20 @@
 
 /* Parado */
 @media (orientation: portrait) {
+	body {--altoTituloPrincipal: 68px;}
 	#cuerpoFooterImgDer {
 		#cuerpo {
-			:is(#encabMasPelis, #encabMasPelis #zonaDisponible) {position: absolute; height: 100%; width: 100%;}
 			@media (width < 600px) {#vistaDeResults:has(#scroll #botones li) {max-width: 350px;}}
-			#encabMasPelis #zonaDisponible #vistaDeResults {
-				max-height: 80%; z-index: 1;
-				&:has(#scroll #botones li) {--altMargen: calc((var(--altoMain) * .8 - var(--altoBoton) * 2) / 3);}
-				&:not(:has(#scroll :is(li, table))) {background: transparent; box-shadow: none;}
-				#actualizar {display: none;} /* oculta el botón de actualizar prods */
-				img#telonFondo {display: none;} /* oculta el telón de fondo */
-				&.toggle {display: none;} /* oculta los resultados y el cartelRCLV */
+			#encabMasPelis {
+				position: absolute; width: 100%; height: 100%;
+				#zonaDisponible #vistaDeResults {
+					max-height: 95%; z-index: 1;
+					&:has(#scroll #botones li) {--altMargen: min(30px, calc((var(--altoCuerpoMenosTitulo) * .95 - var(--altoBoton) * 2) / 3));}
+					&:not(:has(#scroll :is(li, table))) {background: transparent; box-shadow: none;}
+					#actualizar {display: none;} /* oculta el botón de actualizar prods */
+					img#telonFondo {display: none;} /* oculta el telón de fondo */
+					&.toggle {display: none;} /* oculta los resultados y el cartelRCLV */
+				}
 			}
 		}
 		#imgDerecha {
