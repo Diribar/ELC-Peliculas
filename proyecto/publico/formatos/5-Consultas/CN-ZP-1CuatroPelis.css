@@ -1,6 +1,5 @@
 #vistaDeResults:has(#scroll #botones li) {
 	--anchoPaddEst: 20px;
-	--altMargen: min(30px, calc((var(--altoCuerpo) - var(--altoBoton)) / 2));
 	padding-block: var(--altMargen);
 
 	#scroll #botones {
