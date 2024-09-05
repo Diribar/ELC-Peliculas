@@ -2,7 +2,7 @@
 @media (orientation: landscape) and (height > 600px) {
 	#cuerpoFooterImgDer {
 		#cuerpo {
-			#vistaDeResults {#scroll #botones:has(li) {flex-wrap: wrap;}}
+			#vistaDeResults:has(#scroll #botones li) {padding-block: 15px;}
 			#layoutAyuda .ayuda.consulta i.ayudaIconoForm {font-size: 1.2rem;}
 		}
 		@media (width > 1350px) {
@@ -54,12 +54,7 @@
 }
 @media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
 	#cuerpoFooterImgDer #cuerpoFooter {width: 100vw;}
-	#vistaDeResults:has(#scroll #botones li) {--anchoPaddDin: min(var(--anchoPaddEst), calc((100vw - var(--anchoBoton))/2))}
-
-	/* Sector resultados */
-	#vistaDeResults #scroll:has(#botones li) {overflow-x: auto;}
-	#botones li:first-child {margin-left: 0 !important;}
-	#botones li:last-child {margin-right: 0 !important;}
+	#vistaDeResults:has(#scroll #botones li) {#scroll:has(#botones li) {overflow: auto;}}
 }
 
 /* Parado */
@@ -69,7 +64,7 @@
 		#cuerpo {
 			& :is(#encabMasPelis, #encabMasPelis #zonaDisponible) {position: absolute; height: 100%; width: 100%;}
 			#encabMasPelis #zonaDisponible #vistaDeResults {
-				max-height: 80%; z-index: 1;
+				height: 80%; z-index: 1;
 				&:not(:has(#scroll :is(li, table))) {background: transparent; box-shadow: none;}
 				#actualizar {display: none;} /* oculta el botón de actualizar prods */
 				img#telonFondo {display: none;} /* oculta el telón de fondo */
@@ -91,7 +86,7 @@
 	#zonaDisponible #vistaDeResults {
 		min-width: min(330px, 100%) !important;
 		max-height: 100% !important;
-		&:has(#scroll #botones li) {padding-top: 0; padding-bottom: 0;}
+		&:has(#scroll #botones li) {padding-block: 0;}
 	}
 
 	/* Ocultar */
