@@ -2,7 +2,7 @@
 @media (orientation: landscape) and (height > 600px) {
 	#cuerpoFooterImgDer {
 		#cuerpo {
-			#vistaDeResults:has(#scroll #botones li) {padding-block: 15px;}
+			#vistaDeResults:has(#scroll #botones li) {padding-block: var(--altMargen);}
 			#layoutAyuda .ayuda.consulta i.ayudaIconoForm {font-size: 1.2rem;}
 		}
 		@media (width > 1350px) {
