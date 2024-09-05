@@ -2,7 +2,7 @@
 	#tituloPrincipal {
 		/* Ayuda y Actualizar */
 		:is(#layoutAyuda, #iconosDelTitulo) .ayuda.consulta {
-			margin-left: 10px; align-self: flex-end; margin-bottom: 3px;
+			margin-left: 10px; align-self: flex-end;
 			ul li span {color: var(--amarillo-claro); font-variant: small-caps;}
 		}
 
