@@ -1,14 +1,13 @@
-/* Resultados */
 #vistaDeResults:has(#scroll #botones li) {
 	--anchoPaddEst: 20px;
-	--altMargen: min(15px, calc((var(--altoCuerpo) - var(--altoBoton)) / 2));
+	--altMargen: min(30px, calc((var(--altoCuerpo) - var(--altoBoton)) / 2));
+	padding-block: var(--altMargen);
 
-	/* Botones para productos */
 	#scroll #botones {
 		display: flex; flex-direction: row; justify-content: space-evenly; flex-wrap: wrap;
+		row-gap: var(--altMargen);
 		li {
 			list-style-type: none;
-			margin-block: var(--altMargen);
 			button {
 				padding: 0; border-radius: 15px; overflow: hidden; height: var(--altoBoton); width: var(--anchoBoton);
 				border-width: 1px; text-align: left; background: var(--celeste-oscuro);
