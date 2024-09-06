@@ -28,8 +28,8 @@ window.addEventListener("load", async () => {
 
 	// Horario Inicial
 	const datos = await fetch("/api/horario-inicial/?entidad=" + v.entidad + "&id=" + v.entId).then((n) => n.json());
-	const {capturadoEn, creadoEn, capturadoPor_id, userId} = datos;
-	let horarioInicial = !capturadoEn ? creadoEn : capturadoPor_id == userId ? capturadoEn : new Date();
+	const {capturadoEn, creadoEn, capturadoPor_id, usuario_id} = datos;
+	let horarioInicial = !capturadoEn ? creadoEn : capturadoPor_id == usuario_id ? capturadoEn : new Date();
 	horarioInicial = new Date(horarioInicial)
 	horarioInicial.setSeconds(0);
 

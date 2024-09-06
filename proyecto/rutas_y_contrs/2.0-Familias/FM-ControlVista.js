@@ -118,11 +118,11 @@ module.exports = {
 	inacRecupGuardar: async (req, res) => {
 		//  Variables
 		let datos = await procesos.obtieneDatosGuardar(req);
-		const {entidad, id, familia, motivo_id, codigo, userId, ahora, campo_id, original, statusFinal_id, comentario} = datos;
+		const {entidad, id, familia, motivo_id, codigo, usuario_id, ahora, campo_id, original, statusFinal_id, comentario} = datos;
 
 		// CONSECUENCIAS - Actualiza el status en el registro original
 		datos = {
-			statusSugeridoPor_id: userId,
+			statusSugeridoPor_id: usuario_id,
 			statusSugeridoEn: ahora,
 			statusRegistro_id: statusFinal_id,
 		};
@@ -131,7 +131,7 @@ module.exports = {
 		// CONSECUENCIAS - Agrega un registro en el statusHistorial
 		let datosHist = {
 			...{entidad, entidad_id: id}, // entidad
-			...{statusOriginalPor_id: original.statusSugeridoPor_id, statusFinalPor_id: userId}, // personas
+			...{statusOriginalPor_id: original.statusSugeridoPor_id, statusFinalPor_id: usuario_id}, // personas
 			...{statusOriginal_id: original.statusRegistro_id, statusFinal_id}, // status
 			...{statusOriginalEn: original.statusSugeridoEn}, // fecha
 			comentario,

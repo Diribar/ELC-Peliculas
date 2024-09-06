@@ -208,9 +208,9 @@ module.exports = {
 	// Productos
 	camposDD: [...camposDD],
 	camposDA: [...camposDA],
-	camposDA_conValores: async (userId) => {
+	camposDA_conValores: async (usuario_id) => {
 		// Variables
-		const registrosRCLV = await regsRCLV(userId);
+		const registrosRCLV = await regsRCLV(usuario_id);
 		const mensajes = {
 			publico: [
 				"Mayores solamente: escenas que pueden dañar la sensibilidad de un menor de hasta 12-14 años.",
@@ -470,8 +470,8 @@ module.exports = {
 	tablasSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
 };
 
-let regsRCLV = async (userId) => {
-	const condicion = {[Op.or]: {statusRegistro_id: aprobado_id, [Op.and]: {statusRegistro_id: creado_id, creadoPor_id: userId}}};
+let regsRCLV = async (usuario_id) => {
+	const condicion = {[Op.or]: {statusRegistro_id: aprobado_id, [Op.and]: {statusRegistro_id: creado_id, creadoPor_id: usuario_id}}};
 	let valores = [];
 	let registrosRCLV = {};
 

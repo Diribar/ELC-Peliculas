@@ -956,13 +956,13 @@ module.exports = {
 	},
 
 	// Usuarios
-	penalizacAcum: (userId, motivo, petitFamilias) => {
+	penalizacAcum: (usuario_id, motivo, petitFamilias) => {
 		// Variables
 		let penalizac = motivo.penalizac;
 		let objeto = {};
 
 		// Aumenta la penalización acumulada
-		baseDeDatos.aumentaElValorDeUnCampo("usuarios", userId, "penalizacAcum", penalizac);
+		baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario_id, "penalizacAcum", penalizac);
 
 		// Si corresponde, que se muestre el cartel de responsabilidad
 		if (penalizac > 1 && petitFamilias) {
@@ -973,7 +973,7 @@ module.exports = {
 		if (motivo.codigo == "bloqueoInput") objeto.rolUsuario_id = rolConsultas_id;
 
 		// Si corresponde, actualiza el usuario
-		if (Object.keys(objeto).length) baseDeDatos.actualizaPorId("usuarios", userId, objeto);
+		if (Object.keys(objeto).length) baseDeDatos.actualizaPorId("usuarios", usuario_id, objeto);
 
 		// Fin
 		return;

@@ -108,7 +108,7 @@ let actualizaConfigCons = {
 	},
 	pppOpciones: () => {
 		// Si el usuario no está logueado o quiere ver sus calificaciones, interrumpe la función
-		if (!v.userId || v.layoutBD.codigo == "misCalificadas") return;
+		if (!v.usuario_id || v.layoutBD.codigo == "misCalificadas") return;
 
 		// Acciones si la opción elegida es "Mis preferencias"
 		if (v.layoutBD.codigo == "misPrefs") {

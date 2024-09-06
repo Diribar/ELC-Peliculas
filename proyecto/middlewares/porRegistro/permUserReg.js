@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
 		haceUnaHora: comp.fechaHora.nuevoHorario(-1),
 		haceDosHoras: comp.fechaHora.nuevoHorario(-2),
 		usuario: req.session.usuario,
-		userId: req.session.usuario.id,
+		usuario_id: req.session.usuario.id,
 		tipoUsuario: req.originalUrl.startsWith("/revision/") ? "revisores" : "usuarios",
 		include: ["statusRegistro"],
 		baseUrl: comp.reqBasePathUrl(req).baseUrl,
@@ -57,8 +57,8 @@ module.exports = async (req, res, next) => {
 				: "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + entidad_id;
 
 	// CRITERIO: registro en status 'creado' y otro usuario quiere acceder
-	const creadoPorElUsuario1 = v.registro.creadoPor_id == v.userId;
-	const creadoPorElUsuario2 = entidad == "capitulos" && v.registro.coleccion.creadoPor_id == v.userId;
+	const creadoPorElUsuario1 = v.registro.creadoPor_id == v.usuario_id;
+	const creadoPorElUsuario2 = entidad == "capitulos" && v.registro.coleccion.creadoPor_id == v.usuario_id;
 	const creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
 	if (v.registro.statusRegistro_id == creado_id && !creadoPorElUsuario)
 		if (v.creadoEn > v.haceUnaHora) {
@@ -88,7 +88,7 @@ module.exports = async (req, res, next) => {
 	const condicion = {
 		[Op.or]: [
 			{entidad, entidad_id},
-			{familia, capturadoPor_id: v.userId, capturadoEn: {[Op.gte]: v.haceUnaHora}, activa: true},
+			{familia, capturadoPor_id: v.usuario_id, capturadoEn: {[Op.gte]: v.haceUnaHora}, activa: true},
 		],
 	};
 	const capturas = await baseDeDatos.obtieneTodosPorCondicion("capturas", condicion, "capturadoPor");
@@ -97,7 +97,7 @@ module.exports = async (req, res, next) => {
 	let captura;
 
 	// CRITERIO: el registro está capturado en forma 'activa' por otro usuario
-	captura = captsEsteProdRclv.find((n) => n.capturadoEn > v.haceUnaHora && n.capturadoPor_id != v.userId && n.activa);
+	captura = captsEsteProdRclv.find((n) => n.capturadoEn > v.haceUnaHora && n.capturadoPor_id != v.usuario_id && n.activa);
 	if (captura) {
 		const horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, captura.capturadoEn));
 		informacion = {
@@ -112,7 +112,7 @@ module.exports = async (req, res, next) => {
 
 	// CRITERIO: el usuario quiere acceder al registro que capturó hace más de una hora y menos de dos horas
 	captura = captsEsteProdRclv.find(
-		(n) => n.capturadoEn < v.haceUnaHora && n.capturadoEn > v.haceDosHoras && n.capturadoPor_id == v.userId
+		(n) => n.capturadoEn < v.haceUnaHora && n.capturadoEn > v.haceDosHoras && n.capturadoPor_id == v.usuario_id
 	);
 	if (captura) {
 		const horarioFinalCaptura = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, captura.capturadoEn));

@@ -24,7 +24,7 @@ window.addEventListener("load", async () => {
 			DOM.configNuevaNombre.value = nombre;
 
 			// Averigua si el nombre está OK
-			const nombres = v.cabeceras.filter((n) => n.usuario_id == v.userId).map((n) => n.nombre);
+			const nombres = v.cabeceras.filter((n) => n.usuario_id == v.usuario_id).map((n) => n.nombre);
 			v.nombreOK =
 				nombre.length && // que tenga algún caracter
 				!basico.validaCaracteres(nombre) && // que sean caracteres aceptables

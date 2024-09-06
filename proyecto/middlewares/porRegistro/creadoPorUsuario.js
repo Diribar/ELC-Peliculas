@@ -4,14 +4,14 @@ module.exports = async (req, res, next) => {
 	// Variables
 	const entidad = req.query.entidad;
 	const entId = req.query.id;
-	const userId = req.session.usuario.id;
+	const usuario_id = req.session.usuario.id;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 	let informacion;
 
 	// Revisa si fue creado por el usuario
 	const registro = await baseDeDatos.obtienePorId(entidad, entId);
-	if (registro.creadoPor_id != userId)
+	if (registro.creadoPor_id != usuario_id)
 		informacion = {
 			mensajes: ["El registro no fue creado por vos."],
 			iconos: [vistaAnterior],
@@ -21,7 +21,7 @@ module.exports = async (req, res, next) => {
 		// Variables
 		const condicion = {
 			capturadoEn: {[Op.gt]: haceUnaHora},
-			capturadoPor_id: {[Op.ne]: userId},
+			capturadoPor_id: {[Op.ne]: usuario_id},
 			activa: {[Op.ne]: 1},
 		};
 
