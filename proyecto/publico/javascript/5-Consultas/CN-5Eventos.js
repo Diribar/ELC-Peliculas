@@ -231,7 +231,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Mostrar resultados - Preferencia por producto
-		else if (nombre == "ppp" && (padre.id == "infoSup" || padre.tagName == "TD")) {
+		else if (nombre == "ppp" && (padre.id == "iconos" || padre.tagName == "TD")) {
 			e.preventDefault(); // Previene el efecto del anchor
 			await cambiosEnBD.ppp(elemento); // Actualiza la 'ppp'
 			return;
