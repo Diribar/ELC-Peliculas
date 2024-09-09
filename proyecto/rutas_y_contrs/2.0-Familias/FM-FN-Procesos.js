@@ -201,7 +201,7 @@ module.exports = {
 	comentario: async function (datos) {
 		// Stoppers
 		if (datos.codigo == "recuperar") return comentario;
-		if (datos.codigo == "inactivar" && !datos.motivo_id) return null;
+		if (!datos.motivo_id) return null;
 
 		// Variables
 		let comentario = null;
