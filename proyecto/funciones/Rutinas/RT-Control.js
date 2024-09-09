@@ -67,7 +67,7 @@ module.exports = {
 		// Verifica si se deben correr las rutinas horarias
 		if (minutos) await this.RutinasHorarias();
 
-		// Verifica si se deben correr las rutinas semanales
+		// Rutinas semanales
 		await this.SemanaUTC();
 
 		// Fin
@@ -341,8 +341,8 @@ module.exports = {
 
 				// Tipos de navegación
 				const usLogueado = personas.filter((n) => n.usuario_id).length;
-				const usSinLogin = personas.filter((n) => !n.usuario_id && visita_id[0] == "U").length;
-				const visitaSinUs = personas.filter((n) => !n.usuario_id && visita_id[0] == "V").length;
+				const usSinLogin = personas.filter((n) => !n.usuario_id && n.visita_id == "U").length;
+				const visitaSinUs = personas.filter((n) => !n.usuario_id && n.visita_id == "V").length;
 
 				// Agrega la cantidad de personas
 				await baseDeDatos.agregaRegistro("loginsAcums", {
@@ -789,7 +789,7 @@ const stoppersFeedbackParaUsers = (usuario) => {
 	// Fin
 	return false;
 };
-let obsoletas = {
+const obsoletas = {
 	actualizaCapEnCons: async () => {
 		// Colecciones
 		await baseDeDatos.actualizaTodosPorCondicion("colecciones", {TMDB_entidad: "collection"}, {capEnCons: true});
