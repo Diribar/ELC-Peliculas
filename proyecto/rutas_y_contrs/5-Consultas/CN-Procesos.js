@@ -5,7 +5,7 @@ module.exports = {
 	varios: {
 		cabeceras: async (usuario_id) => {
 			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
-			const usuario_id = usuario_id ? [1, usuario_id] : 1;
+			usuario_id = usuario_id ? [1, usuario_id] : 1;
 			const regsCabecera = await baseDeDatos.obtieneTodosPorCondicion("consRegsCabecera", {usuario_id});
 			regsCabecera.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)); // los ordena alfabéticamente
 
