@@ -529,7 +529,7 @@ module.exports = {
 			const regEntHist = await this.prodRclvVsHistorial(ultsHist, histRegEnt); // Registro de la entidad vs historial
 
 			// Consolida
-			statusErrores = [histRegEnt, regEntHist].flat()
+			statusErrores = [histRegEnt, regEntHist].flat();
 
 			// Fin
 			return;
@@ -1061,13 +1061,12 @@ module.exports = {
 				.replace(/[“”«»]/g, '"')
 				.replace(/[‘’`]/g, "'")
 				.replace(/[º]/g, "°")
-				.replace(/[  ®​​#]/g, "")
+				.replace(/[®​​#]/g, "")
 				.replace(/–/g, "-")
 				.replace("[", "(")
 				.replace("]", ")")
-				.replace(/\t/g, " ") // previene el uso de 'tab'
-				.replace(/\n/g, " ") // previene el uso de 'return'
-				.replace(/\r/g, " ") // previene el uso de 'return'
+				.replace(/\t\n\r/g, " ") // previene el uso de 'tab' y 'return'
+				.replace(/[  ]/g, " ") // previene el uso de espacios 'raros'
 				.replace(/ +/g, " "); // previene el uso de varios espacios
 		},
 		inicialMayus: (texto) => texto.slice(0, 1).toUpperCase() + texto.slice(1),
