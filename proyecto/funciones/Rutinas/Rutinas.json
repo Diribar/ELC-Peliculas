@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 6/sep",
-	"HoraUTC": "8:20",
+	"FechaUTC": "Lun. 9/sep",
+	"HoraUTC": "0:28",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 2/sep",
-	"HoraSemUTC": "12:07",
-	"semanaUTC": 36,
+	"FechaSemUTC": "Lun. 9/sep",
+	"HoraSemUTC": "0:28",
+	"semanaUTC": 37,
 	"SemanaUTC": "NO",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"04-sep-24": {"leyenda": "Hoy recordamos a Moisés, santo", "entidad": "personajes", "id": 61},
-		"05-sep-24": {"leyenda": "Hoy recordamos a Madre Teresa, santa", "entidad": "personajes", "id": 21},
-		"06-sep-24": {},
 		"07-sep-24": {},
-		"08-sep-24": {"leyenda": "Hoy recordamos las Apariciones de María en Venezuela", "entidad": "hechos", "id": 53}
+		"08-sep-24": {"leyenda": "Hoy recordamos las Apariciones de María en Venezuela", "entidad": "hechos", "id": 53},
+		"09-sep-24": {},
+		"10-sep-24": {},
+		"11-sep-24": {}
 	}
 }
