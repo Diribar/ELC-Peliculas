@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 9/sep",
-	"HoraUTC": "0:28",
+	"FechaUTC": "Mar. 10/sep",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 9/sep",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"07-sep-24": {},
 		"08-sep-24": {"leyenda": "Hoy recordamos las Apariciones de María en Venezuela", "entidad": "hechos", "id": 53},
 		"09-sep-24": {},
 		"10-sep-24": {},
-		"11-sep-24": {}
+		"11-sep-24": {},
+		"12-sep-24": {}
 	}
 }
