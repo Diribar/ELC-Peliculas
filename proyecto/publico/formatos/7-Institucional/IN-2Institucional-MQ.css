@@ -12,7 +12,7 @@
 	section #cuadroDeTexto {padding-top: 25px; padding-bottom: 25px;}
 	#contenido .iconos {display: flex;}
 }
-@media (height > 450px) {section #cuadroDeTexto > .iconos {display: flex;}}
+@media (height > 450px) {section #cuadroDeTexto > .iconos {display: flex !important;}}
 
 /* Ancho y Alto */
 @media (width > 700px) and (height > 540px) {#cuerpo #cuadroDeTexto {scale: 1.1;}}
