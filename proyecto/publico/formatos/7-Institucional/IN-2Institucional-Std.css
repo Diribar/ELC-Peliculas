@@ -1,28 +1,38 @@
 /* Cuerpo */
-#cuerpoFooter #cuerpo {flex-direction: column;}
+#cuerpoFooter #cuerpo {
+	flex-direction: column;
+	#cuadroDeTexto {
+		border: 2px solid var(--azul-frances); border-radius: 20px; box-shadow: 0px 0px 20px var(--azul-oscuro);
+		display: flex; flex-direction: column; background: var(--gris-claro);
+		margin: auto; padding: 30px;
+		width: max-content; max-width: 90%; max-height: 90%;
+		&:not(:has(form)) {padding-right: 15px;}
+		#contenido {
+			overflow-y: auto; padding-right: 15px; padding-bottom: 1px;
+			.iconos {margin: 20px 0 0; display: none;}
+		}
 
-/* CUADRO DE TEXTO - CUADRO */
-#cuerpo #cuadroDeTexto {margin: auto;}
-#cuerpo #cuadroDeTexto {display: flex; flex-direction: column; max-width: 90%}
-#cuerpo #cuadroDeTexto {padding: 30px; border-radius: 20px; width: max-content;}
-#cuerpo #cuadroDeTexto:not(:has(form)) {padding-right: 15px;}
-#cuerpo #cuadroDeTexto {border: 2px solid var(--azul-frances); background: var(--gris-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);}
-#cuadroDeTexto #contenido {overflow-y: auto; padding-right: 15px; padding-bottom: 1px;}
+		/* CUADRO DE TEXTO - TEXTO */
+		.bloque:nth-child(n+2) {margin-top: 15px;}
+		.bloque :where(p, ul li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
+		.bloque ul ul li {margin-top: 2px;}
 
-/* CUADRO DE TEXTO - TEXTO */
-#cuadroDeTexto .bloque:nth-child(n+2) {margin-top: 15px;}
-#cuadroDeTexto .bloque :where(p, ul li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
-#cuadroDeTexto .bloque ul ul li {margin-top: 2px;}
+		/* Iconos */
+		& > .iconos {margin: 30px 0 10px; padding-right: 15px;} /* Iconos en 'cuadro de texto' */
+		.iconos {
+			display: none; flex-direction: row; justify-content: space-evenly; align-items: baseline;
+			i {font-size: 2rem;}
+		}
 
-/* Iconos */
-#cuadroDeTexto > .iconos {margin: 30px 0 10px; padding-right: 15px;} /* Iconos en 'cuadro de texto' */
-#contenido .iconos {margin: 20px 0 0; display: none;} /* Iconos dentro de 'contenido' */
-#cuadroDeTexto .iconos {display: none; flex-direction: row; justify-content: space-evenly; align-items: baseline;} /* Todos los iconos */
-#cuadroDeTexto .iconos i {font-size: 2rem;}
+		/* Miscelaneas */
+		& > div {
+			&::-webkit-scrollbar {outline: transparent;}
+			&::-webkit-scrollbar-track {background: var(--gris-intermedio); border-radius: 10px; border-left: 5px;}
+			&::-webkit-scrollbar-thumb {background: var(--gris-oscuro); border-radius: 10px;}
+		}
+
+	}
+}
 
 /* Miscelaneas */
 mark {background: var(--marron); color: snow; border-radius: 5px; padding: 0 5px; font-weight: bold;}
-#cuerpo #cuadroDeTexto {max-height: 90%;}
-#cuadroDeTexto > div::-webkit-scrollbar {outline: transparent;}
-#cuadroDeTexto > div::-webkit-scrollbar-track {background: var(--gris-intermedio); border-radius: 10px; border-left: 5px;}
-#cuadroDeTexto > div::-webkit-scrollbar-thumb {background: var(--gris-oscuro); border-radius: 10px;}
