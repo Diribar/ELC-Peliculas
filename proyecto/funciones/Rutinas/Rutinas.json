@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 10/sep",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Mié. 11/sep",
+	"HoraUTC": "8:47",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 9/sep",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"08-sep-24": {"leyenda": "Hoy recordamos las Apariciones de María en Venezuela", "entidad": "hechos", "id": 53},
 		"09-sep-24": {},
 		"10-sep-24": {},
 		"11-sep-24": {},
-		"12-sep-24": {}
+		"12-sep-24": {},
+		"13-sep-24": {"leyenda": "Hoy recordamos a san Juan Crisóstomo", "entidad": "personajes", "id": 215}
 	}
 }
