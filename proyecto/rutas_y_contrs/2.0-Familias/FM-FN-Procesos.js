@@ -199,7 +199,8 @@ module.exports = {
 		return {entidad, id, familia, motivo_id, codigo, usuario_id, ahora, campo_id, original, statusFinal_id, comentario};
 	},
 	comentario: async function (datos) {
-		// Stopper
+		// Stoppers
+		if (datos.codigo == "recuperar") return comentario;
 		if (!datos.motivo_id) return null;
 
 		// Variables

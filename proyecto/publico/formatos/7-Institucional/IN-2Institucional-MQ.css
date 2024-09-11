@@ -1,7 +1,9 @@
 /* Ancho */
 @media (width <= 1267px) {
-	#cuerpoFooterImgDer #imgDerecha img {display: none;}
-	#cuerpoFooterImgDer #cuerpoFooter {width: 100vw;}
+	#cuerpoFooterImgDer {
+		#imgDerecha img {display: none;}
+		#cuerpoFooter {width: 100vw;}
+	}
 }
 
 /* Alto */
@@ -10,8 +12,8 @@
 	section #cuadroDeTexto {padding-top: 25px; padding-bottom: 25px;}
 	#contenido .iconos {display: flex;}
 }
-@media (height > 450px) {section #cuadroDeTexto > .iconos {display: flex;}}
+@media (height > 450px) {section #cuadroDeTexto > .iconos {display: flex !important;}}
 
 /* Ancho y Alto */
-@media (width > 700px) and (height > 540px) {#cuerpo #cuadroDeTexto {scale: 1.1;}}
-@media (width > 750px) and (height > 580px) {#cuerpo #cuadroDeTexto {scale: 1.2;}}
+@media (width > 700px) and (height > 540px) {#cuerpo #cuadroDeTexto {--escala: 1.1 !important;}}
+@media (width > 750px) and (height > 580px) {#cuerpo #cuadroDeTexto {--escala: 1.2 !important;}}
