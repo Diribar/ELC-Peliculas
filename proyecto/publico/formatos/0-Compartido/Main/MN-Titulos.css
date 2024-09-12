@@ -18,9 +18,14 @@
 		background: var(--gris-intermedio); color: var(--gris-oscuro);
 		padding: 4px 10px; margin: 0;
 	}
+	.ayuda.absolute i {font-size: 1.2rem;}
 	#iconosDelTitulo {
 		position: absolute; bottom: -15px; translate: 0 100%;
 		:is(.ayuda.static, #compartirCons) {margin-left: 15px;}
+		.ayuda.static {
+			i {font-size: 1.6rem;}
+			.ayudaMensForm {top: -2px; right: -5px; max-width: min(350px, 82vw);}
+		}
 		#compartirCons {
 			display: flex; flex-direction: row; position: relative;
 			width: 25px; height: 25px; border-radius: 50%;
