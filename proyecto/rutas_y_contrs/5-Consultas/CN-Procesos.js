@@ -12,6 +12,35 @@ module.exports = {
 			// Fin
 			return regsCabecera;
 		},
+		cabeceraActual: async (req) => {
+			// Obtiene la cabecera_id
+			const cabecera_id =
+				req.query && req.query.id
+					? req.query.id
+					: req.session.configCons
+					? req.session.configCons.id
+					: req.session.usuario
+					? req.session.usuario.configCons_id
+					: null;
+
+			// Obtiene la cabecera
+			let cabecera =
+				cabecera_id && ["string", "number"].includes(typeof cabecera_id)
+					? await baseDeDatos.obtienePorId("consRegsCabecera", cabecera_id)
+					: {};
+
+			// Motivos para rechazar la cabecera
+			const usuario_id = req.session.usuario ? req.session.usuario.id : null;
+			if (
+				!cabecera || // no se encontró una cabecera
+				(!usuario_id && cabecera.usuario_id != 1) || // el usuario no está logueado y la cabecera no es predeterminada
+				(usuario_id && ![usuario_id, 1].includes(cabecera.usuario_id)) // el usuario está logueado y la cabecera no es suya ni predeterminada
+			)
+				cabecera = {};
+
+			// Fin
+			return cabecera;
+		},
 		filtros: async () => {
 			// Variable 'filtros'
 			let filtros = {...variables.filtrosCons};
