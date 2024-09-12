@@ -1,5 +1,7 @@
 #encabezado {
 	#tituloPrincipal {
+		&:has(#layoutAyuda select:not(:valid)) {visibility: hidden;}
+
 		/* Ayuda y Actualizar */
 		:is(#layoutAyuda, #iconosDelTitulo) .ayuda.consulta {
 			margin-left: 10px; align-self: flex-end;
@@ -8,10 +10,9 @@
 
 		/* Layout */
 		#layoutAyuda select {
-			font-size: 1.1rem; font-weight: bold; padding: 3px; border-bottom-right-radius: 7px; max-width: 180px;
-			color: var(--amarillo-claro); border: 0.25px solid var(--gris-oscuro); cursor: pointer;
-			&:not(:valid) {background: var(--rojo-oscuro);}
-			&:valid {background: var(--verde-oscuro);}
+			background: var(--verde-oscuro); border: 0.25px solid var(--gris-oscuro); border-bottom-right-radius: 7px;
+			color: var(--amarillo-claro); padding: 3px; max-width: 180px; cursor: pointer;
+			font-size: 1.1rem; font-weight: bold;
 			optgroup {
 				background: var(--gris-claro); color: var(--azul-oscuro); font-style: italic;
 				option {cursor: pointer; font-style: normal;}
