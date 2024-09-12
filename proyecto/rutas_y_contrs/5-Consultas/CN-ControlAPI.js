@@ -6,29 +6,7 @@ const layoutDefault_id = 2; // El 'default' es "Al azar"
 module.exports = {
 	obtiene: {
 		cabecera: async (req, res) => {
-			// Variables
-			const id = req.query.id
-				? req.query.id
-				: req.session.configCons
-				? req.session.configCons.id
-				: req.session.usuario
-				? req.session.usuario.configCons_id
-				: null;
-			const usuario_id = req.session.usuario ? req.session.usuario.id : null;
-			let cabecera;
-
-			// Obtiene la cabecera
-			if (id && ["string", "number"].includes(typeof id)) {
-				cabecera = await baseDeDatos.obtienePorId("consRegsCabecera", id);
-				if (
-					!cabecera || // no se encontró una cabecera
-					(!usuario_id && cabecera.usuario_id != 1) || // el usuario no está logueado y el id no es el predeterminado
-					(usuario_id && ![usuario_id, 1].includes(cabecera.usuario_id)) // el usuario está logueado y el id no es suyo ni el predeterminado
-				)
-					cabecera = {};
-			} else cabecera = {};
-
-			// Fin
+			const cabecera = await procesos.varios.cabeceraActual(req);
 			return res.json(cabecera);
 		},
 		prefsDeCabecera: async (req, res) => {
