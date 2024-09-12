@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mié. 11/sep",
-	"HoraUTC": "8:47",
+	"FechaUTC": "Jue. 12/sep",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 9/sep",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"09-sep-24": {},
 		"10-sep-24": {},
 		"11-sep-24": {},
 		"12-sep-24": {},
-		"13-sep-24": {"leyenda": "Hoy recordamos a san Juan Crisóstomo", "entidad": "personajes", "id": 215}
+		"13-sep-24": {"leyenda": "Hoy recordamos a san Juan Crisóstomo", "entidad": "personajes", "id": 215},
+		"14-sep-24": {}
 	}
 }
