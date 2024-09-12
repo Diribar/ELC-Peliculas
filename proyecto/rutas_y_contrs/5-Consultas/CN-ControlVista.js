@@ -13,14 +13,12 @@ module.exports = {
 
 		// Configuraciones de consulta
 		let configsConsCabs = procesos.varios.cabeceras(usuario_id); // Se necesita esa función también para la API
-		let cabeceraActual = procesos.varios.cabeceraActual(req);
 		let filtros = procesos.varios.filtros();
-		[configsConsCabs, cabeceraActual, filtros] = await Promise.all([configsConsCabs, cabeceraActual, filtros]);
+		[configsConsCabs, filtros] = await Promise.all([configsConsCabs, filtros]);
 		const configsCons = {
 			cabeceras: {
 				propios: configsConsCabs.filter((n) => usuario_id && n.usuario_id == usuario_id),
 				predeterms: configsConsCabs.filter((n) => n.usuario_id == 1),
-				layout_id: cabeceraActual.id,
 			},
 			filtros,
 		};
