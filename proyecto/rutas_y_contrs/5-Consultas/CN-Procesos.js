@@ -794,10 +794,16 @@ module.exports = {
 				prods = prods.map((prod) => {
 					// Obtiene campos mandatorios
 					const {entidad, id, nombreCastellano, ppp, avatar, cfc} = prod;
+					let datosNeces = {entidad, id, nombreCastellano, ppp, avatar, cfc};
+
+					// Campos a pulir
 					let {direccion, anoEstreno} = prod;
-					if (!direccion) direccion = "desconocido";
-					if (!anoEstreno) anoEstreno = "0 (desconocido)";
-					let datosNeces = {entidad, id, nombreCastellano, ppp, direccion, anoEstreno, avatar, cfc};
+					datosNeces.direccion = !direccion
+						? "desconocido"
+						: direccion.indexOf(",") > 0
+						? direccion.slice(0, direccion.indexOf(",")) // Achica el campo dirección
+						: direccion;
+					datosNeces.anoEstreno = !anoEstreno ? "0 (desconocido)" : anoEstreno;
 
 					// Obtiene campos opcionales
 					const {epocaEstreno, coleccion_id, crueldad, calificacion} = prod;
@@ -805,10 +811,6 @@ module.exports = {
 					if (coleccion_id) datosNeces.coleccion_id = coleccion_id;
 					if (crueldad) datosNeces.crueldad = true;
 					if (calificacion) datosNeces.calificacion = prod.calificacion;
-
-					// Achica el campo dirección
-					if (direccion && direccion.indexOf(",") > 0)
-						datosNeces.direccion = direccion.slice(0, direccion.indexOf(","));
 
 					// Obtiene el nombre de la entidad
 					datosNeces.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
