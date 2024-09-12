@@ -1,5 +1,5 @@
 <% if (locals.cartelGenerico || locals.cartelRechazo) { %><%- include('MN-TimerContador') %><% } %>
-<div id="tituloPrincipal">
+<div id="tituloPrincipal" class="flexCol">
 	<h1 id="titulo"><%= locals.tituloDetalle ? tituloDetalle : titulo %></h1>
 	<% if (codigo == "visualizacion") { %>
 		<h2 id="secundario">
@@ -9,5 +9,18 @@
 	<% } %>
 	<% if (locals.ayudasTitulo) { %>
 		<%- include("MN-Ayuda", {[typeof ayudasTitulo == "string" ? "mensaje" : "mensajes"]: ayudasTitulo}) %>
+	<% } %>
+	<% if (codigo == "detalle") { %>
+		<div id="iconosDelTitulo" class="flexRowAlign">
+			<% if (locals.ayudasTitulo) { %>
+				<%- include("MN-Ayuda", {[typeof ayudasTitulo == "string" ? "mensaje" : "mensajes"]: ayudasTitulo, ayudaClass: "static"}) %>
+			<% } %>
+
+			<!-- Compartir la consulta -->
+			<div id="compartirCons" class="scale pointer">
+				<i class="fa-solid fa-share-nodes" title="Compartir las preferencias"></i>
+			</div>
+			<p id="consCopiada" class="oculta">Consulta copiada</p>
+		</div>
 	<% } %>
 </div>

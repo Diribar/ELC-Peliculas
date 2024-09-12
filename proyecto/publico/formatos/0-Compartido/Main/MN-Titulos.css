@@ -3,7 +3,7 @@
 
 /* Formato del título */
 #tituloPrincipal {
-	&:has(#secundario) {display: flex; flex-direction: column;}
+	/* &:has(#secundario) {display: flex; flex-direction: column;} */
 	#titulo, #secundario {
 		font-family: var(--Arial); line-height: 1;
 		border-bottom-right-radius: 10px;
@@ -17,5 +17,20 @@
 	#secundario {
 		background: var(--gris-intermedio); color: var(--gris-oscuro);
 		padding: 4px 10px; margin: 0;
+	}
+	#iconosDelTitulo {
+		position: absolute; bottom: -15px; translate: 0 100%;
+		:is(.ayuda.static, #compartirCons) {margin-left: 15px;}
+		#compartirCons {
+			display: flex; flex-direction: row; position: relative;
+			width: 25px; height: 25px; border-radius: 50%;
+			justify-content: center; align-items: center; z-index: 0;
+			border: solid 1.5px var(--gris-claro); color: var(--gris-claro); background: var(--azul-oscuro);
+		}
+		#consCopiada {
+			margin-left: 5px; padding: 1px 5px; text-wrap: nowrap;
+			border: var(--verde-oscuro) 2px solid; border-radius: 10px;
+			color: var(--verde-oscuro); background: var(--amarillo-claro);
+		}
 	}
 }
