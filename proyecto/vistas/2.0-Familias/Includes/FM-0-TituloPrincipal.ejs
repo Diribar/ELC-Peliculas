@@ -7,7 +7,8 @@
 			<img src="/Externa/6-LogosProvs/<%= link.prov.avatar %>" alt="<%= link.prov.nombre %>" title="<%= link.prov.nombre %>">
 		</h2>
 	<% } %>
+	<% console.log(locals.ayudasTitulo) %>
 	<% if (locals.ayudasTitulo) { %>
-		<%- include("MN-Ayuda", {mensajes: ayudasTitulo}) %>
+		<%- include("MN-Ayuda", {[typeof ayudasTitulo == "string" ? "mensaje" : "mensajes"]: ayudasTitulo}) %>
 	<% } %>
 </div>
