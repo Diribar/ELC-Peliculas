@@ -71,9 +71,9 @@
 
 	/* Temas de ayuda */
 	#tituloPrincipal .ayuda {
-		position: static; translate: none; margin-top: 10px; margin-left: 10px;
-		.ayudaMensForm {top: -2px; right: -5px; max-width: min(350px, 85vw);}
-		i {font-size: 1.5rem;}
+		/* position: static; translate: none; margin-top: 10px; margin-left: 10px; */
+		.ayudaMensForm {top: -2px; right: -5px; max-width: min(350px, 82vw);}
+		i {font-size: 1.6rem;}
 	}
 
 	/* Encabezado */
