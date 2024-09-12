@@ -7,7 +7,6 @@
 	/* Información */
 	#contenido #informacion #cuadroDeResultados {
 		position: relative;
-		margin-inline: 10px;
 
 		#listado li {
 			padding-block: 0px !important; padding-inline: 15px;
