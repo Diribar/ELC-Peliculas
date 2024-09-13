@@ -1,3 +1,8 @@
+/* Laptop */
+@media (orientation: landscape) and (height > 600px) {
+	#contenido #informacion #cuadroDeResultados {margin-inline: 10px;}
+}
+
 /* Ambos */
 @media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
 	#listado li {

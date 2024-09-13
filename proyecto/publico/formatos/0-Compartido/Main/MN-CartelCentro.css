@@ -16,6 +16,8 @@ main .cartelCentro {
 			max-height: calc(var(--alturaViewPort) * 0.5);
 			&:not(:empty) {padding-block: 40px;}
 		}
+		/* Acostado */
+		@media (orientation: landscape) and (height <= 600px) {#contenedorMensajes:not(:empty) {padding-block: 0px;} }
 	}
 
 	&#cartelProgreso {

@@ -1,9 +1,15 @@
-/* Alto */
-@media (height <= 500px) {
-	#cuerpo #tituloPrincipal {display: none;}
-	#cuerpo #cuadroDeTexto {padding-bottom: 20px;}
-}
+/* Laptop */
+@media (orientation: landscape) and (height > 600px) {#cuerpo #cuadroDeTexto {scale: 1.2;}}
 
-/* Ancho y Alto */
-@media (width > 930px) and (height > 540px) {#cuerpo #cuadroDeTexto {scale: 1.1;}}
-@media (width > 1000px) and (height > 580px) {#cuerpo #cuadroDeTexto {scale: 1.2;}}
+/* Parado */
+@media (orientation: portrait) {#cuerpoFooter {z-index: 1;}}
+
+/* Acostado */
+@media (orientation: landscape) and (height <= 600px) {
+	#cuerpo #cuadroDeTexto {
+		padding-block: 25px 15px !important;
+		form .iconos {margin-top: 15px !important;}
+	}
+
+	#cuerpo #tituloPrincipal {display: none;}
+}
