@@ -81,9 +81,7 @@ window.addEventListener("load", async () => {
 		},
 		submitForm: async function (e) {
 			e.preventDefault();
-			if (DOM.submit.className.includes("inactivo")) await this.actualizaVarios();
-			else DOM.form.submit();
-			return;
+			return DOM.submit.className.includes("inactivo") ? this.actualizaVarios() : DOM.form.submit();
 		},
 	};
 
@@ -106,15 +104,8 @@ window.addEventListener("load", async () => {
 	});
 
 	// Submit
-	DOM.form.addEventListener("submit", async (e) => {
-		FN.submitForm(e);
-	});
-	DOM.submit.addEventListener("click", async (e) => {
-		FN.submitForm(e);
-	});
-	DOM.submit.addEventListener("keydown", async (e) => {
-		if (e.key == "Enter" || e.key == "Space") FN.submitForm(e);
-	});
+	DOM.form.addEventListener("submit", async (e) => FN.submitForm(e));
+	DOM.submit.addEventListener("click", async (e) => FN.submitForm(e));
 
 	// Status inicial
 	if (Array.from(DOM.inputs).some((n) => n.value)) await FN.actualizaVarios();
