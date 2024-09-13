@@ -792,23 +792,28 @@ module.exports = {
 
 				// Deja solamente los campos necesarios
 				prods = prods.map((prod) => {
-					// Obtiene campos simples
-					const {entidad, id, nombreCastellano, ppp, avatar, cfc, epocaEstreno, coleccion_id, crueldad} = prod;
-					let {direccion, anoEstreno} = prod;
-					if (!direccion) direccion = "desconocido";
-					if (!anoEstreno) anoEstreno = "0 (desconocido)";
-					let datosProd = {entidad, id, nombreCastellano, ppp};
-					datosProd = {...datosProd, direccion, anoEstreno, avatar, cfc};
-					if (Object.keys(prod).includes("calificacion")) datosProd.calificacion = prod.calificacion;
-					if (epocaEstreno) datosProd.epocaEstreno = epocaEstreno.nombre;
-					if (coleccion_id) datosProd.coleccion_id = coleccion_id;
-					if (crueldad) datosProd.crueldad = true;
+					// Obtiene campos mandatorios
+					const {entidad, id, nombreCastellano, ppp, avatar, cfc} = prod;
+					let datosNeces = {entidad, id, nombreCastellano, ppp, avatar, cfc};
 
-					// Achica el campo dirección
-					if (direccion && direccion.indexOf(",") > 0) datosProd.direccion = direccion.slice(0, direccion.indexOf(","));
+					// Campos a pulir
+					let {direccion, anoEstreno} = prod;
+					datosNeces.direccion = !direccion
+						? "desconocido"
+						: direccion.indexOf(",") > 0
+						? direccion.slice(0, direccion.indexOf(",")) // Achica el campo dirección
+						: direccion;
+					datosNeces.anoEstreno = !anoEstreno ? "0 (desconocido)" : anoEstreno;
+
+					// Obtiene campos opcionales
+					const {epocaEstreno, coleccion_id, crueldad, calificacion} = prod;
+					if (epocaEstreno) datosNeces.epocaEstreno = epocaEstreno.nombre;
+					if (coleccion_id) datosNeces.coleccion_id = coleccion_id;
+					if (crueldad) datosNeces.crueldad = true;
+					if (calificacion) datosNeces.calificacion = prod.calificacion;
 
 					// Obtiene el nombre de la entidad
-					datosProd.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+					datosNeces.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 					// Obtiene los RCLV
 					for (let entRclv of variables.entidades.rclvs) {
@@ -822,18 +827,18 @@ module.exports = {
 							prod[campo_id] > 10 && // el id es de un registro válido
 							(!layout.codigo.includes("fechaDelAno_id") || prod[asociacion].fechaDelAno) // no se busca por fecha o el campo tiene fecha
 						) {
-							datosProd[entidadNombre] = prod[asociacion].nombre;
+							datosNeces[entidadNombre] = prod[asociacion].nombre;
 							if (layout.codigo.startsWith("fechaDelAno") && entRclv != "epocasDelAno")
-								datosProd.fechaDelAno = prod[asociacion].fechaDelAno;
+								datosNeces.fechaDelAno = prod[asociacion].fechaDelAno;
 							break;
 						}
 					}
 
 					// Si es una colección, agrega el campo 'anoFin'
-					if (prod.entidad == "colecciones") datosProd.anoFin = prod.anoFin;
+					if (prod.entidad == "colecciones") datosNeces.anoFin = prod.anoFin;
 
 					// Fin
-					return datosProd;
+					return datosNeces;
 				});
 
 				// Fin
@@ -849,23 +854,28 @@ module.exports = {
 					const {entidad, id, nombre, productos, avatar} = rclv; // necesarios
 					const {fechaDelAno_id, fechaDelAno, anoOcurrencia, epocaOcurrencia_id, epocaOcurrencia} = rclv; // eventuales
 					const {categoria_id, soloCfc} = rclv; // eventuales
-					let datosRclv = {entidad, id, nombre, productos, avatar};
+					let datosNeces = {entidad, id, nombre, productos, avatar};
 
 					// Casos especiales
-					if (rclv.nombreAltern) datosRclv.nombreAltern = rclv.nombreAltern;
-					if (fechaDelAno) datosRclv = {...datosRclv, fechaDelAno_id, fechaDelAno: fechaDelAno.nombre}; // hace falta la 'fechaDelAno_id' en el Front-End
+					if (rclv.nombreAltern) datosNeces.nombreAltern = rclv.nombreAltern;
+					if (fechaDelAno) datosNeces = {...datosNeces, fechaDelAno_id, fechaDelAno: fechaDelAno.nombre}; // hace falta la 'fechaDelAno_id' en el Front-End
 					if (epocaOcurrencia)
-						datosRclv = {...datosRclv, anoOcurrencia, epocaOcurrencia_id, epocaOcurrencia: epocaOcurrencia.consulta}; // hace falta la 'fechaDelAno_id' en el Front-End
-					if (categoria_id == "CFC" || soloCfc) datosRclv.cfc = true;
+						datosNeces = {
+							...datosNeces,
+							anoOcurrencia,
+							epocaOcurrencia_id,
+							epocaOcurrencia: epocaOcurrencia.consulta,
+						}; // hace falta la 'fechaDelAno_id' en el Front-End
+					if (categoria_id == "CFC" || soloCfc) datosNeces.cfc = true;
 
 					// Obtiene campos en función de la entidad
 					if (entidad == "personajes" && rclv.rolIglesia_id != "NN") {
-						datosRclv.rolIglesiaNombre = rclv.rolIglesia[rclv.genero_id];
-						if (rclv.canon_id != "NN") datosRclv.canonNombre = rclv.canon[rclv.genero_id];
+						datosNeces.rolIglesiaNombre = rclv.rolIglesia[rclv.genero_id];
+						if (rclv.canon_id != "NN") datosNeces.canonNombre = rclv.canon[rclv.genero_id];
 					}
 
 					// Fin
-					return datosRclv;
+					return datosNeces;
 				});
 
 				// Fin

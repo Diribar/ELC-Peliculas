@@ -73,21 +73,6 @@ window.addEventListener("load", async () => {
 		anchorVerVideo: DOM.zonaDisponible.querySelector("#carteles #verVideo span#consultas"),
 	};
 
-	// Variables - General
-	v = {
-		...(await obtiene.variablesDelBE()),
-		cabeceras: await obtiene.cabecerasPosibles(),
-		pppRutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario/?entidad=",
-		conLinksHD: "conLinksHD",
-		enCast: "enCast",
-		muestraFiltros: false,
-		contadorDeMostrarResults: 0,
-		titulo: {},
-	};
-	v.camposFiltros = Array.from(DOM.selects).map((n) => n.name);
-	v.camposConDefault = Object.keys(v.filtrosConDefault);
-	v.camposSinDefault = v.camposFiltros.filter((n) => !v.camposConDefault.includes(n));
-
 	// Variables de botonera
 	for (let icono of DOM.iconosBotonera) {
 		DOM[icono.id] = icono;
@@ -95,8 +80,15 @@ window.addEventListener("load", async () => {
 	}
 	for (let campo of DOM.selects) DOM[campo.name] = campo;
 
+	// Variables - General
+	v.camposFiltros = Array.from(DOM.selects).map((n) => n.name);
+	v.cabeceras = await obtiene.cabecerasPosibles();
+	v = {...v, ...(await obtiene.variablesDelBE())};
+	v.camposConDefault = Object.keys(v.filtrosConDefault); // 'filtrosConDefault' viene del BE
+	v.camposSinDefault = v.camposFiltros.filter((n) => !v.camposConDefault.includes(n));
+
 	// Start-up
-	await cambioDeConfig_id("start-up");
+	await cambioDeConfig_id("start-up"); // establece el layout_id
 	actualiza.cartelQuieroVerVisible();
 	await accionesPorCambioDePrefs();
 	DOM.quieroVer.focus(); // foco en el cartel 'Quiero ver'
@@ -104,4 +96,12 @@ window.addEventListener("load", async () => {
 
 // Variables
 const ruta = "/consultas/api/";
-let DOM, v, cabecera, prefs;
+let v = {
+	pppRutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario/?entidad=",
+	conLinksHD: "conLinksHD",
+	enCast: "enCast",
+	muestraFiltros: false,
+	contadorDeMostrarResults: 0,
+	titulo: {},
+};
+let DOM, cabecera, prefs;
