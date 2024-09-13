@@ -79,7 +79,8 @@
 	}
 
 	/* Información */
-	#datos #datosLargos, #datosBreves #recuadroDB {max-height: 80%;}
+	#datos #datosLargos {max-height: 75%;}
+	/* #datosBreves #recuadroDB {max-height: 80%;} */
 	:is(#datosLargos #recuadroDL, #datosBreves #recuadroDB) {z-index: 1}
 	#datosLargos #recuadroDL {max-width: calc(100vw - 1vw);} /* 6vw: márgenes */
 
