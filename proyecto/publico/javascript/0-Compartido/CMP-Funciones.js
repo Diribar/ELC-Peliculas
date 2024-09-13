@@ -33,7 +33,6 @@ let amplio = {
 				// Elimina - Limita el uso del teclado solamente a los caracteres que nos interesan
 				valor = valor
 					.replace(/[^a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/gi, "")
-					.replace(/\t\n\r/g, " ") // previene el uso de 'return'
 					.replace(/[ ]/g, " ") // previene el uso de espacios 'raros'
 					.replace(/ +/g, " "); // previene repetición de espacios
 
