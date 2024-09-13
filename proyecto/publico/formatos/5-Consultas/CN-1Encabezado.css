@@ -1,24 +1,18 @@
 #encabezado {
 	#tituloPrincipal {
 		&:has(#layoutAyuda select:not(:valid)) {visibility: hidden;}
-
-		/* Ayuda y Actualizar */
-		:is(#layoutAyuda, #iconosDelTitulo) .ayuda.consulta {
-			margin-left: 10px; align-self: flex-end;
-			ul li span {color: var(--amarillo-claro); font-variant: small-caps;}
-		}
-
-		/* Layout */
-		#layoutAyuda select {
-			background: var(--verde-oscuro); border: 0.25px solid var(--gris-oscuro); border-bottom-right-radius: 7px;
-			color: var(--amarillo-claro); padding: 3px; max-width: 180px; cursor: pointer;
-			font-size: 1.1rem; font-weight: bold;
-			optgroup {
-				background: var(--gris-claro); color: var(--azul-oscuro); font-style: italic;
-				option {cursor: pointer; font-style: normal;}
+		#layoutAyuda {
+			select {
+				background: var(--verde-oscuro); border: 0.25px solid var(--gris-oscuro); border-bottom-right-radius: 7px;
+				color: var(--amarillo-claro); padding: 3px; max-width: 180px; cursor: pointer;
+				font-size: 1.1rem; font-weight: bold;
+				optgroup {
+					background: var(--gris-claro); color: var(--azul-oscuro); font-style: italic;
+					option {cursor: pointer; font-style: normal;}
+				}
 			}
+			.ayuda.consulta {margin-left: 10px;}
 		}
-
 		#iconosDelTitulo {
 			margin-top: 15px;
 			:is(.ayuda.consulta, .iconosAzules) {margin-left: 15px;}
@@ -35,6 +29,8 @@
 			} /* Compartir */
 			#toggleFiltrosGlobal {display: none;} /* Mostrar preferencias */
 		}
+		/* Ayuda y Actualizar */
+		:is(#layoutAyuda, #iconosDelTitulo) .ayuda.consulta ul li span {color: var(--amarillo-claro); font-variant: small-caps;}
 	}
 
 	#contadorDeProds {

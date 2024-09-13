@@ -4,9 +4,8 @@
 		<div class="ayudaMensForm ayudaMensMostrar ocultar">
 			<% if (locals.parrafo) { %><p><%- parrafo %></p><% } %>
 			<% if (locals.mensaje || locals.mensajes) { %>
-				<% const tipoTexto = !!locals.mensaje %>
-				<ul type="<%- tipoTexto || (mensajes.length == 1) ? 'none' : 'disc' %>">
-					<% if (tipoTexto) { %>
+				<ul type="<%- locals.mensaje || (mensajes.length == 1) ? 'none' : 'disc' %>">
+					<% if (locals.mensaje) { %>
 						<li><%- mensaje %></li>
 					<% } else for (let mensaje of mensajes) { %>
 						<li><%- mensaje %></li>

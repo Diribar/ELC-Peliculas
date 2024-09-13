@@ -26,7 +26,7 @@
 	}
 
 	/* Sectores a ocultar */
-	#imgDerecha #sectorIconos {display: none !important;}
+	#tituloPrincipal #iconosDelTitulo .ayuda, #imgDerecha #sectorIconos {display: none !important;}
 }
 
 /* Ambos */
@@ -70,11 +70,7 @@
 	#imgDerecha img {max-height: var(--altoCuerpo);}
 
 	/* Temas de ayuda */
-	#tituloPrincipal .ayuda {
-		position: static; translate: none; margin-top: 10px; margin-left: 10px;
-		.ayudaMensForm {top: -2px; right: -5px; max-width: min(350px, 85vw);}
-		i {font-size: 1.5rem;}
-	}
+	#tituloPrincipal .ayuda.absolute {display: none;}
 
 	/* Encabezado */
 	#encabezado #colCap {
