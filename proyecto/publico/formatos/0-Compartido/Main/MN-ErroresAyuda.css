@@ -17,28 +17,37 @@ main #cuerpo :is(#tituloPrincipal, #tituloSecundario, .inputError) {position: re
 
 /* Desplegables - Temas comunes */
 .ayudaMensForm, .mensajeError, .ayudaMensForm::before, .mensajeError::before {position: absolute; cursor: default;}
-.ayudaMensForm, .mensajeError {padding: 3px 7px; border-radius: 8px; max-width: min(250px, 90vw); width: max-content;}
-.ayudaMensForm, .mensajeError {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
-.ayudaMensForm::before, .mensajeError::before {border-width: 5px; content: ""; border-style: solid;}
-
-/* Títulos - Temas particulares */
-#tituloPrincipal .ayudaMensForm, #tituloSecundario .ayudaMensForm {max-width: min(350px, 90vw);}
-#tituloPrincipal .ayudaMensForm {top: -7px; right: -7px; translate: 100% 0;}
-#tituloPrincipal .ayudaMensForm::before {top: 7px; left: 0px; translate: -100% 0;}
+:where(.ayudaMensForm, .mensajeError) {
+	padding: 3px 7px; border-radius: 8px; max-width: min(250px, 90vw); width: max-content;
+	font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;
+	&::before {border-width: 5px; content: ""; border-style: solid;}
+}
 
 /* Ayuda - Temas particulares */
-.ayudaMensForm, .ayudaMensForm * {text-wrap: wrap;}
-.ayudaMensForm {right: -7px; top: 50%; translate: 100% -50%; }
-.ayudaMensForm::before {left: 0px; top: 50%; translate: -100% -50%;}
-.ayudaMensForm::before {border-color: transparent var(--backAyuda) transparent transparent;}
-.ayudaMensForm p {margin-bottom: 3px;}
-.ayudaMensForm li {padding: 3px 0; margin-left: 0;}
+.ayudaMensForm {
+	right: -7px;
+	&::before {left: 0px; border-color: transparent var(--backAyuda) transparent transparent;}
+	&, & * {text-wrap: wrap;}
+	p {margin-bottom: 3px;}
+	li {padding: 3px 0; margin-left: 0;}
+}
+:where(#tituloPrincipal, #tituloSecundario) .ayudaMensForm {max-width: min(350px, 90vw);}
+#tituloPrincipal .ayudaMensForm {top: -7px; translate: 100% 0; &::before {top: 7px; translate: -100% 0;}}
+:not(#tituloPrincipal) .ayudaMensForm {top: 50%; translate: 100% -50%; &::before {top: 50%; translate: -100% -50%;}}
 
 /* Errores - Temas particulares */
-.mensajeError {display: none;}
-.mensajeError {right: -7px; top: 50%; translate: 100% -50%;}
-.mensajeError::before {left: -2px; top: 50%; translate: -100% -50%;}
-.mensajeError::before {border-color: transparent var(--colorMensajeError) transparent transparent;}
+.mensajeError {
+	display: none; top: 50%;
+	&::before {top: 50%; scale: 1.1;}
+	@media (orientation: landscape) and (height > 600px) {
+		right: -6px; translate: 100% -50%;
+		&::before {left: -1.8px; translate: -100% -50%;border-color: transparent var(--colorMensajeError) transparent transparent;}
+	}
+	@media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
+		left: -6px; translate: -100% -50%;
+		&::before {right: -1.8px; translate: 100% -50%;border-color: transparent transparent transparent var(--colorMensajeError);}
+	}
+}
 
 /* Hover */
 .errores :is(.fa-circle-xmark, .fa-triangle-exclamation):hover .mensajeError {display: inline;}
