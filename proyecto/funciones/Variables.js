@@ -57,7 +57,7 @@ module.exports = {
 	},
 	asuntosContactanos: [
 		{descripcion: "Comentario sobre nuestro sitio", codigo: "sitio"},
-		{descripcion: "Comentario sobre una película", codigo: "sitio"},
+		{descripcion: "Comentario sobre una película", codigo: "producto"},
 		{descripcion: "Otro motivo", codigo: "varios"},
 	],
 
