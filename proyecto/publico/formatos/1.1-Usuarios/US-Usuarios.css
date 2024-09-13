@@ -5,9 +5,9 @@
 
 	/* General del formulario */
 	#dataEntry {
-		overflow: auto; max-height: 95%; border-radius: 10px;
-		display: flex; flex-direction: column;
-		background: var(--usuarios); padding: 20px;
+		display: flex; flex-direction: column; max-height: 95%; padding: 20px;
+		background: var(--usuarios); border-radius: 10px;
+		/* overflow: auto; */
 
 		/* Título principal */
 		#tituloPrincipal, h1 {align-self: center !important;}
@@ -16,13 +16,6 @@
 		/* Íconos y Mensajes de Error */
 		.inputError {
 			.input {width: 200px; height: 27px; border: none; border-radius: 15px; padding: 3px 10px; text-align: left;}
-			.mensajeError {
-				right: -5px; top: -5px; translate: 0 -100%;
-				&::before {
-					left: auto; right: 5px; top: auto; bottom: 0px; translate: 0 100%;
-					border-color: var(--colorMensajeError) transparent transparent transparent;
-				}
-			}
 		}
 		/* Input del formulario */
 		.labelInput {
