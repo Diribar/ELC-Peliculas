@@ -1,23 +1,39 @@
 /* Marco general */
-#cuerpoFooterImgDer #imgDerecha img {max-width: 100vw;}
-#cuerpo #cuadroDeTexto {min-width: min(100vw, 450px); min-height: min(300px, 100%);}
+#cuerpoFooterImgDer {
+	#cuerpoFooter {
+		height: 100%;
 
-/* Aspectos comunes */
-#cuerpo #cuadroDeTexto, #cuadroDeTexto form {position: relative;}
-#cuadroDeTexto form, .inputError:has(textarea) {height: 100%;}
-.inputError .input {border-radius: 7px; width: 100%;}
+		/* Aspectos comunes */
+		#cuerpo #cuadroDeTexto, #cuadroDeTexto form {position: relative;}
+		#cuadroDeTexto form, .inputError:has(textarea) {height: 100%;}
 
-/* Aspectos particulares - Select */
-.inputError :is(select, option) {color: var(--azul-oscuro);}
-.inputError select {font-weight: bold;}
-.inputError select:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow;}
-.inputError select:has(option[value=""]:checked) {background: var(--rojo-claro);}
-.inputError select option {background: snow; font-size: 1.2rem;}
+		#cuerpo #cuadroDeTexto {
+			min-width: min(100vw, 450px); min-height: min(300px, 100%);
 
-/* Aspectos particulares - Textarea */
-.inputError:has(textarea) {margin-top: 10px; display: flex; flex-direction: column;}
-.inputError p {text-align: right;}
-.inputError textarea {padding: 5px; resize: none; height: inherit;}
+			form {
+				.inputError {
+					&:has(textarea) {margin-top: 10px; display: flex; flex-direction: column;}
+					.input {border-radius: 7px; width: 100%;}
 
-/* Iconos */
-form .iconos {margin-top: 20px; display: flex;}
+					/* Aspectos particulares - Select */
+					:is(select, option) {color: var(--azul-oscuro);}
+					select {
+						font-weight: bold;
+						&:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow;}
+						&:has(option[value=""]:checked) {background: var(--rojo-claro);}
+						option {background: snow; font-size: 1.2rem;}
+					}
+
+					/* Aspectos particulares - Textarea */
+					p {text-align: right;}
+					textarea {padding: 5px; resize: none; height: inherit;}
+				}
+
+			/* Iconos */
+			.iconos {margin-top: 20px; display: flex !important;}
+			}
+		}
+
+	}
+	#imgDerecha img {max-width: 100vw;}
+}
