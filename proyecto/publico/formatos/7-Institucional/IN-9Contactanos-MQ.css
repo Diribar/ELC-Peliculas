@@ -6,6 +6,10 @@
 
 /* Acostado */
 @media (orientation: landscape) and (height <= 600px) {
-	#cuerpo #cuadroDeTexto {padding-bottom: 20px;}
+	#cuerpo #cuadroDeTexto {
+		padding-block: 25px 15px !important;
+		form .iconos {margin-top: 15px !important;}
+	}
+
 	#cuerpo #tituloPrincipal {display: none;}
 }
