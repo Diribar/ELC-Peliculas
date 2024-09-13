@@ -29,7 +29,7 @@ let actualiza = {
 		if (!DOM.cabecera_id.value) DOM.cabecera_id.value = cabecera.id ? cabecera.id : "";
 
 		// Variables que dependen de otras variables 'v'
-		v.filtroPropio = v.userId && cabecera.usuario_id == v.userId;
+		v.filtroPropio = v.usuario_id && cabecera.usuario_id == v.usuario_id;
 
 		// Fin
 		return;
@@ -49,10 +49,10 @@ let actualiza = {
 		DOM.sinFiltros.title = !DOM.sinFiltros.className.includes("inactivo") ? v.titulo.sinFiltros : "No hay filtros aplicados";
 
 		// Ícono Nuevo
-		v.layout_id && !claseEdicion && v.userId ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
+		v.layout_id && !claseEdicion && v.usuario_id ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
 		DOM.nuevo.title = !DOM.nuevo.className.includes("inactivo")
 			? v.titulo.nuevo
-			: !v.userId
+			: !v.usuario_id
 			? "Necesitamos que estés logueado para crear una configuración"
 			: !v.layout_id
 			? "No está permitido crear una configuración cuando hay un error en los filtros"
@@ -75,12 +75,12 @@ let actualiza = {
 			: "";
 
 		// Ícono Guardar
-		v.layout_id && (v.nuevo || v.edicion || v.propio) && v.userId
+		v.layout_id && (v.nuevo || v.edicion || v.propio) && v.usuario_id
 			? DOM.guardar.classList.remove("inactivo")
 			: DOM.guardar.classList.add("inactivo");
 		DOM.guardar.title = !DOM.guardar.className.includes("inactivo")
 			? v.titulo.guardar
-			: !v.userId
+			: !v.usuario_id
 			? "Necesitamos que estés logueado para guardar una configuración"
 			: !v.layout_id
 			? "No está permitido guardar una configuración si no se eligió una opción"
@@ -199,7 +199,7 @@ let actualiza = {
 };
 let cambiosEnBD = {
 	actualizaEnUsuarioConfigCons_id: () => {
-		if (!v.userId || !cabecera.id) return;
+		if (!v.usuario_id || !cabecera.id) return;
 
 		// Actualiza en el usuario
 		const rutaCompleta = ruta + "actualiza-en-usuario-configCons_id/?configCons_id=";
@@ -209,7 +209,7 @@ let cambiosEnBD = {
 		return;
 	},
 	creaConfig: async function () {
-		if (!v.userId) return;
+		if (!v.usuario_id) return;
 
 		// Crea la nueva configuración
 		const rutaCompleta = ruta + "crea-una-configuracion/?cabecera=";
@@ -247,7 +247,7 @@ let cambiosEnBD = {
 		return;
 	},
 	guardaConfig: async () => {
-		if (!v.userId) return;
+		if (!v.usuario_id) return;
 
 		// Guarda los cambios
 		let configCons = {cabecera, prefs};
@@ -263,7 +263,7 @@ let cambiosEnBD = {
 		return;
 	},
 	eliminaConfig: async () => {
-		if (!v.userId) return;
+		if (!v.usuario_id) return;
 
 		// Variables
 		let cabecera_id;
@@ -287,7 +287,7 @@ let cambiosEnBD = {
 
 		// Obtiene las configuraciones posibles para el usuario, ordenando por la más reciente primero
 		const cabeceras = [...v.cabeceras].sort((a, b) => (a.creadoEn > b.creadoEn ? -1 : 1));
-		const propios = cabeceras.filter((n) => n.usuario_id == v.userId);
+		const propios = cabeceras.filter((n) => n.usuario_id == v.usuario_id);
 		cabecera_id = propios.length ? propios[0].id : "";
 
 		// Actualiza el select con el id
@@ -297,7 +297,7 @@ let cambiosEnBD = {
 		return;
 	},
 	ppp: async (elemento) => {
-		if (!v.userId) return;
+		if (!v.usuario_id) return;
 
 		// Opción actual
 		const indice = v.ppps.findIndex((n) => n == elemento);
@@ -349,7 +349,7 @@ let sessionCookie = {
 let cambioDeConfig_id = async (texto) => {
 	// Funciones
 	await actualiza.valoresInicialesDeVariables();
-	if (cabecera.id && v.userId) cambiosEnBD.actualizaEnUsuarioConfigCons_id();
+	if (cabecera.id && v.usuario_id) cambiosEnBD.actualizaEnUsuarioConfigCons_id();
 	if (texto != "start-up") await sessionCookie.eliminaConfig();
 	await actualiza.statusInicialCampos();
 	actualiza.toggleBotonFiltros();

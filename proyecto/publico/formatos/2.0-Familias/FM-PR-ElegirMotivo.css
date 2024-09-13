@@ -16,10 +16,7 @@
 					}
 					#resultadoDuplicado {margin-top: 5px; max-width: 100%; flex-wrap: wrap;}
 				}
-				#comentario {
-					width: 100%;
-					textarea {color: inherit;}
-				}
+				#comentario {width: 100%;}
 			}
 		}
 	}

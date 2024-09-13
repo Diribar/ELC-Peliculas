@@ -246,10 +246,10 @@ module.exports = {
 		},
 	},
 	tablManten: {
-		obtieneProds: async (userId) => {
+		obtieneProds: async (usuario_id) => {
 			// Variables
 			const entidades = variables.entidades.prods;
-			const camposFijos = {entidades, userId};
+			const camposFijos = {entidades, usuario_id};
 			let campos;
 
 			// Productos Inactivos
@@ -266,8 +266,8 @@ module.exports = {
 			let SE_cap = FN_tablManten.obtieneSinEdicion("capitulos");
 
 			// Calificaciones de productos y Preferencia por productos
-			let cal = baseDeDatos.obtieneTodosPorCondicion("calRegistros", {usuario_id: userId});
-			let ppp = baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id: userId, ppp_id: pppOpcsObj.yaLaVi.id});
+			let cal = baseDeDatos.obtieneTodosPorCondicion("calRegistros", {usuario_id: usuario_id});
+			let ppp = baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id: usuario_id, ppp_id: pppOpcsObj.yaLaVi.id});
 
 			// Espera las lecturas
 			[inactivos, prodsAprob, SE_pel, SE_col, SE_cap, cal, ppp] = await Promise.all([
@@ -308,10 +308,10 @@ module.exports = {
 			// Fin
 			return resultados;
 		},
-		obtieneRCLVs: async (userId) => {
+		obtieneRCLVs: async (usuario_id) => {
 			// Variables
 			const entidades = variables.entidades.rclvs;
-			const camposFijos = {entidades, userId};
+			const camposFijos = {entidades, usuario_id};
 			const include = [...variables.entidades.prods, "prodsEdiciones", "fechaDelAno"];
 			let campos;
 
@@ -340,7 +340,7 @@ module.exports = {
 			// Fin
 			return {IN, SA, SF, SP};
 		},
-		obtieneLinksInactivos: async (userId) => {
+		obtieneLinksInactivos: async (usuario_id) => {
 			// Variables
 			let include = variables.entidades.asocProds;
 			let condicion = {statusRegistro_id: inactivo_id};
@@ -349,7 +349,7 @@ module.exports = {
 			let linksInactivos = await baseDeDatos.obtieneTodosPorCondicion("links", condicion, include);
 
 			// Obtiene los productos
-			let productos = linksInactivos.length ? await FN_tablManten.obtieneProdsDeLinks(linksInactivos, userId) : {LI: []};
+			let productos = linksInactivos.length ? await FN_tablManten.obtieneProdsDeLinks(linksInactivos, usuario_id) : {LI: []};
 
 			// Fin
 			return productos;
@@ -361,7 +361,7 @@ module.exports = {
 		// Alta Guardar
 		edicAprobRech: async function (entidad, original, revId) {
 			// Variables
-			const userId = original.creadoPor_id;
+			const usuario_id = original.creadoPor_id;
 			const familia = comp.obtieneDesdeEntidad.familias(entidad);
 			const camposRevisar = variables.camposRevisar[familia].filter((n) => n[entidad] || n[familia]);
 			const ahora = comp.fechaHora.ahora();
@@ -424,7 +424,7 @@ module.exports = {
 					: ediciones.edicsAprob < ediciones.edicsRech
 					? "edicsRech"
 					: "";
-			if (campoEdic) baseDeDatos.aumentaElValorDeUnCampo("usuarios", userId, campoEdic, 1);
+			if (campoEdic) baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario_id, campoEdic, 1);
 
 			// Fin
 			return;
@@ -482,14 +482,14 @@ module.exports = {
 			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const {baseUrl} = comp.reqBasePathUrl(req);
-			const userId = original.statusSugeridoPor_id;
+			const usuario_id = original.statusSugeridoPor_id;
 			const campoDecision = petitFamilias + (aprobado ? "Aprob" : "Rech");
 
 			// Fin
 			return {
 				...{entidad, id, origen, original, statusOriginal_id, statusFinal_id},
 				...{codigo, producto, rclv, motivo_id, comentario, aprobado},
-				...{cola, revId, ahora, revisorPERL, petitFamilias, baseUrl, userId, campoDecision},
+				...{cola, revId, ahora, revisorPERL, petitFamilias, baseUrl, usuario_id, campoDecision},
 			};
 		},
 		prodsAsocs: async (entidad, id) => {
@@ -1085,7 +1085,7 @@ let FN_tablManten = {
 			.then((n) => n.sort((a, b) => b.statusSugeridoEn - a.statusSugeridoEn));
 
 		// Quita los comprometidos por capturas
-		resultados = await comp.sinProblemasDeCaptura(resultados, campos.userId);
+		resultados = await comp.sinProblemasDeCaptura(resultados, campos.usuario_id);
 
 		// Fin
 		return resultados;
@@ -1102,7 +1102,7 @@ let FN_tablManten = {
 		// Resultado
 		const resultados = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion, includeBD).then((n) =>
 			n.map((m) => {
-				let edicion = m.ediciones.find((m) => m.editadoPor_id == condicion.userId);
+				let edicion = m.ediciones.find((m) => m.editadoPor_id == condicion.usuario_id);
 				delete m.ediciones;
 				if (edicion) {
 					edicion = purgaEdicion(edicion, entidad);
@@ -1126,7 +1126,7 @@ let FN_tablManten = {
 			.then((n) => n.filter((m) => !m.ediciones.length))
 			.then((n) => n.map((m) => ({...m, entidad})));
 	},
-	obtieneProdsDeLinks: async (links, userId) => {
+	obtieneProdsDeLinks: async (links, usuario_id) => {
 		// Variables
 		let LI = [];
 
@@ -1154,7 +1154,7 @@ let FN_tablManten = {
 		if (LI.length) LI = LI.filter((n) => aprobados_ids.includes(n.statusRegistro_id));
 
 		// Deja solamente los prods sin problemas de captura
-		if (LI.length) LI = await comp.sinProblemasDeCaptura(LI, userId);
+		if (LI.length) LI = await comp.sinProblemasDeCaptura(LI, usuario_id);
 
 		// Fin
 		return {LI};

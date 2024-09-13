@@ -65,14 +65,14 @@ module.exports = {
 		// Variables
 		const tema = "mantenimiento";
 		const codigo = "tableroControl";
-		const userId = req.session.usuario.id;
+		const usuario_id = req.session.usuario.id;
 		const omnipotente = req.session.usuario.rolUsuario_id == rolOmnipotente_id;
 
 		// Productos
-		let prods = procesos.tablManten.obtieneProds(userId).then((n) => procesos.procesaCampos.prods(n));
-		let rclvs = procesos.tablManten.obtieneRCLVs(userId).then((n) => procesos.procesaCampos.rclvs(n));
+		let prods = procesos.tablManten.obtieneProds(usuario_id).then((n) => procesos.procesaCampos.prods(n));
+		let rclvs = procesos.tablManten.obtieneRCLVs(usuario_id).then((n) => procesos.procesaCampos.rclvs(n));
 		let prodsConLinksInactivos = procesos.tablManten
-			.obtieneLinksInactivos(userId)
+			.obtieneLinksInactivos(usuario_id)
 			.then((n) => procesos.procesaCampos.prods(n));
 
 		// RCLVs
@@ -156,7 +156,7 @@ module.exports = {
 		let datos = await procesos.guardar.obtieneDatos(req);
 		const {entidad, id, origen, original, statusOriginal_id, statusFinal_id} = datos;
 		const {codigo, producto, rclv, motivo_id, comentario, aprobado} = datos;
-		const {cola, revId, ahora, revisorPERL, petitFamilias, baseUrl, userId, campoDecision} = datos;
+		const {cola, revId, ahora, revisorPERL, petitFamilias, baseUrl, usuario_id, campoDecision} = datos;
 		datos = {}; // limpia la variable 'datos'
 		let destino;
 
@@ -306,7 +306,7 @@ module.exports = {
 		// CONSECUENCIAS - statusHistorial: Agrega un registro
 		let datosHist = {
 			...{entidad, entidad_id: id, aprobado}, // entidad
-			...{statusOriginalPor_id: userId, statusFinalPor_id: revId}, // personas
+			...{statusOriginalPor_id: usuario_id, statusFinalPor_id: revId}, // personas
 			...{statusOriginal_id: statusOriginal_id, statusFinal_id}, // status
 			...{statusOriginalEn: original.statusSugeridoEn}, // fecha
 			...{motivo_id, comentario},
@@ -319,10 +319,10 @@ module.exports = {
 		if (inacRecup_ids.includes(statusOriginal_id)) await comp.actualizaStatusErrores.consolidado();
 
 		// CONSECUENCIAS - Aumenta el valor de aprob/rech en el registro del usuario, en el campo 'original'
-		baseDeDatos.aumentaElValorDeUnCampo("usuarios", userId, campoDecision, 1);
+		baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario_id, campoDecision, 1);
 
 		// CONSECUENCIAS - Penaliza al usuario si corresponde
-		if (datosHist.penalizac) comp.penalizacAcum(userId, motivo, petitFamilias);
+		if (datosHist.penalizac) comp.penalizacAcum(usuario_id, motivo, petitFamilias);
 
 		// CONSECUENCIAS - Acciones para producto (rclvs y links) --> debe estar después de que se grabó el original
 		if (producto) await validacsFM.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
@@ -357,7 +357,7 @@ module.exports = {
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
 			const articulo = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? " la " : "l ";
-			const userId = req.session.usuario.id;
+			const usuario_id = req.session.usuario.id;
 
 			// Obtiene los include
 			const includeEdic = comp.obtieneTodosLosCamposInclude(entidad);
@@ -417,7 +417,7 @@ module.exports = {
 			}
 
 			// Más variables
-			const prodsDelRCLV = familia == "rclv" ? await procsFM.prodsDelRCLV(original, userId) : null;
+			const prodsDelRCLV = familia == "rclv" ? await procsFM.prodsDelRCLV(original, usuario_id) : null;
 			const canonNombre = familia == "rclv" ? comp.canonNombre(original) : null;
 			const bloqueDer = {
 				registro: await procsFM.bloques.registro({...original, entidad}),
@@ -577,7 +577,7 @@ module.exports = {
 		// Va a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
-			...{entidad, id, registro: producto, prodOrig: producto, avatar, userId: revId, familia: "producto"},
+			...{entidad, id, registro: producto, prodOrig: producto, avatar, usuario_id: revId, familia: "producto"},
 			...{links, linksProvs, linksTipos, motivos},
 			...{camposARevisar, calidades: variables.calidades},
 			...{imgDerPers, cartelGenerico: true, linkSigProd},

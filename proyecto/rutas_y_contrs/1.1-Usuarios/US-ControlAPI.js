@@ -126,11 +126,11 @@ module.exports = {
 	videoConsVisto: async (req, res) => {
 		// Variables
 		const usuario = req.session.usuario;
-		const userId = usuario ? usuario.id : null;
+		const usuario_id = usuario ? usuario.id : null;
 
 		// Si está logueado, actualiza el usuario
-		if (userId && !usuario.videoConsVisto) {
-			baseDeDatos.actualizaPorId("usuarios", userId, {videoConsVisto: true});
+		if (usuario_id && !usuario.videoConsVisto) {
+			baseDeDatos.actualizaPorId("usuarios", usuario_id, {videoConsVisto: true});
 			req.session.usuario.videoConsVisto = true;
 		}
 

@@ -3,9 +3,9 @@
 
 module.exports = {
 	varios: {
-		cabeceras: async (userId) => {
+		cabeceras: async (usuario_id) => {
 			// Obtiene la cabecera de las configuraciones propias y las provistas por el sistema
-			const usuario_id = userId ? [1, userId] : 1;
+			usuario_id = usuario_id ? [1, usuario_id] : 1;
 			const regsCabecera = await baseDeDatos.obtieneTodosPorCondicion("consRegsCabecera", {usuario_id});
 			regsCabecera.sort((a, b) => (a.nombre < b.nombre ? -1 : 1)); // los ordena alfabéticamente
 
@@ -48,7 +48,7 @@ module.exports = {
 			// Fin
 			return {cabecera_id, ...prefs};
 		},
-		ayudas: (userId) => {
+		ayudas: (usuario_id) => {
 			// Variables
 			let resultado = [];
 
@@ -56,7 +56,7 @@ module.exports = {
 			cnLayouts
 				.map((n) => ({nombre: n.nombre, comentario: n.ayuda}))
 				.filter((n) => n.comentario)
-				.filter((n) => (!userId ? !n.nombre.startsWith("Mis") : true)) // si el usuario no está logueado, quita las ayudas "Mis"
+				.filter((n) => (!usuario_id ? !n.nombre.startsWith("Mis") : true)) // si el usuario no está logueado, quita las ayudas "Mis"
 				.map((n) => {
 					if (!resultado.find((m) => m.nombre == n.nombre)) resultado.push(n);
 				});
@@ -67,7 +67,7 @@ module.exports = {
 		configCons_url: (req, res) => {
 			// Variables
 			const configCons = req.query;
-			const userId = req.session.usuario ? req.session.usuario.id : null;
+			const usuario_id = req.session.usuario ? req.session.usuario.id : null;
 
 			// Guarda la configuracion en cookies y session
 			req.session.configCons = configCons;
@@ -75,8 +75,8 @@ module.exports = {
 
 			// Guarda la 'configCons_id' en el usuario
 			const configCons_id = configCons.id;
-			if (configCons_id && userId) {
-				baseDeDatos.actualizaPorId("usuarios", userId, {configCons_id});
+			if (configCons_id && usuario_id) {
+				baseDeDatos.actualizaPorId("usuarios", usuario_id, {configCons_id});
 				req.session.usuario = {...req.session.usuario, configCons_id};
 			}
 

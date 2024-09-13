@@ -23,13 +23,13 @@ module.exports = {
 		obtieneVersionesProd: async (req, res) => {
 			// Variables
 			let {entidad: producto, id: prodId} = req.query;
-			let userId = req.session.usuario.id;
+			let usuario_id = req.session.usuario.id;
 
 			// Obtiene los datos ORIGINALES y EDITADOS del producto
 			let [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
 				entidad: producto,
 				entId: prodId,
-				userId,
+				usuario_id,
 				excluirInclude: true,
 			});
 
@@ -65,19 +65,19 @@ module.exports = {
 			// Obtiene los datos identificatorios del producto
 			const producto = req.query.entidad;
 			const prodId = req.query.id;
-			const userId = req.session.usuario.id;
+			const usuario_id = req.session.usuario.id;
 
 			// Obtiene los datos ORIGINALES y EDITADOS del producto
 			const [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
 				entidad: producto,
 				entId: prodId,
-				userId,
+				usuario_id,
 				excluirInclude: true,
 				omitirPulirEdic: true,
 			});
 
 			// Sólo se puede eliminar la edición si el producto no tiene status "creados_ids" o fue creado por otro usuario
-			const condicion = !creados_ids.includes(prodOrig.statusRegistro_id) || prodOrig.creadoPor_id != userId;
+			const condicion = !creados_ids.includes(prodOrig.statusRegistro_id) || prodOrig.creadoPor_id != usuario_id;
 
 			if (condicion && prodEdic) {
 				if (prodEdic.avatar) comp.gestionArchivos.elimina(carpetaExterna + "2-Productos/Revisar/", prodEdic.avatar);
@@ -98,7 +98,7 @@ module.exports = {
 		delProducto: async (req, res) => {
 			// Variables
 			const {entidad, id: prodId} = req.query;
-			const userId = req.session.usuario ? req.session.usuario.id : "";
+			const usuario_id = req.session.usuario ? req.session.usuario.id : "";
 			let datos;
 			let calificaciones = [];
 
@@ -109,7 +109,7 @@ module.exports = {
 			calificaciones.push({autor: "Gral.", valores: datos});
 
 			// Datos particulares
-			const condics = {usuario_id: userId, entidad, entidad_id: prodId};
+			const condics = {usuario_id: usuario_id, entidad, entidad_id: prodId};
 			const include = ["feValores", "entretiene", "calidadTecnica"];
 			datos = await baseDeDatos.obtienePorCondicion("calRegistros", condics, include);
 			if (datos) {
@@ -123,10 +123,10 @@ module.exports = {
 		delUsuarioProducto: async (req, res) => {
 			// Variables
 			const {entidad, id: prodId} = req.query;
-			const userId = req.session.usuario ? req.session.usuario.id : "";
+			const usuario_id = req.session.usuario ? req.session.usuario.id : "";
 
 			// Datos particulares
-			const condics = {usuario_id: userId, entidad, entidad_id: prodId};
+			const condics = {usuario_id: usuario_id, entidad, entidad_id: prodId};
 			const califGuardada = await baseDeDatos.obtienePorCondicion("calRegistros", condics);
 
 			// Fin
@@ -135,10 +135,10 @@ module.exports = {
 		elimina: async (req, res) => {
 			// Variables
 			const {entidad, id: entidad_id} = req.query;
-			const userId = req.session.usuario ? req.session.usuario.id : "";
+			const usuario_id = req.session.usuario ? req.session.usuario.id : "";
 
 			// Elimina
-			const condics = {usuario_id: userId, entidad, entidad_id};
+			const condics = {usuario_id: usuario_id, entidad, entidad_id};
 			await baseDeDatos.eliminaTodosPorCondicion("calRegistros", condics);
 
 			// Actualiza las calificaciones del producto

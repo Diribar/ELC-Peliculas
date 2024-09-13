@@ -529,7 +529,7 @@ module.exports = {
 			const regEntHist = await this.prodRclvVsHistorial(ultsHist, histRegEnt); // Registro de la entidad vs historial
 
 			// Consolida
-			statusErrores = [histRegEnt, regEntHist].flat()
+			statusErrores = [histRegEnt, regEntHist].flat();
 
 			// Fin
 			return;
@@ -956,13 +956,13 @@ module.exports = {
 	},
 
 	// Usuarios
-	penalizacAcum: (userId, motivo, petitFamilias) => {
+	penalizacAcum: (usuario_id, motivo, petitFamilias) => {
 		// Variables
 		let penalizac = motivo.penalizac;
 		let objeto = {};
 
 		// Aumenta la penalización acumulada
-		baseDeDatos.aumentaElValorDeUnCampo("usuarios", userId, "penalizacAcum", penalizac);
+		baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario_id, "penalizacAcum", penalizac);
 
 		// Si corresponde, que se muestre el cartel de responsabilidad
 		if (penalizac > 1 && petitFamilias) {
@@ -973,7 +973,7 @@ module.exports = {
 		if (motivo.codigo == "bloqueoInput") objeto.rolUsuario_id = rolConsultas_id;
 
 		// Si corresponde, actualiza el usuario
-		if (Object.keys(objeto).length) baseDeDatos.actualizaPorId("usuarios", userId, objeto);
+		if (Object.keys(objeto).length) baseDeDatos.actualizaPorId("usuarios", usuario_id, objeto);
 
 		// Fin
 		return;
@@ -1061,13 +1061,12 @@ module.exports = {
 				.replace(/[“”«»]/g, '"')
 				.replace(/[‘’`]/g, "'")
 				.replace(/[º]/g, "°")
-				.replace(/[  ®​​#]/g, "")
+				.replace(/[®​​#]/g, "")
 				.replace(/–/g, "-")
 				.replace("[", "(")
 				.replace("]", ")")
-				.replace(/\t/g, " ") // previene el uso de 'tab'
-				.replace(/\n/g, " ") // previene el uso de 'return'
-				.replace(/\r/g, " ") // previene el uso de 'return'
+				.replace(/\t\n\r/g, " ") // previene el uso de 'tab' y 'return'
+				.replace(/[  ]/g, " ") // previene el uso de espacios 'raros'
 				.replace(/ +/g, " "); // previene el uso de varios espacios
 		},
 		inicialMayus: (texto) => texto.slice(0, 1).toUpperCase() + texto.slice(1),

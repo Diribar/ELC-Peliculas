@@ -4,7 +4,7 @@ const procsRE = require("../3-Rev-Entidades/RE-Procesos");
 
 module.exports = {
 	// Links - Controlador Vista
-	obtieneLinksConEdicion: async (entidad, prodId, userId) => {
+	obtieneLinksConEdicion: async (entidad, prodId, usuario_id) => {
 		// Variables
 		let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		let include = ["tipo", "prov", "statusRegistro", "ediciones", "motivo"];
@@ -18,7 +18,7 @@ module.exports = {
 		// Los combina con la edición, si existe
 		links.forEach((link, i) => {
 			if (link.ediciones.length) {
-				let edicion = link.ediciones.find((n) => n.editadoPor_id == userId);
+				let edicion = link.ediciones.find((n) => n.editadoPor_id == usuario_id);
 				if (edicion)
 					for (let prop in edicion)
 						if (edicion[prop] !== null && camposARevisar.includes(prop)) links[i][prop] = edicion[prop];
@@ -54,10 +54,10 @@ module.exports = {
 		// Fin
 		return datos;
 	},
-	condicion: (link, userId, tema) => {
+	condicion: (link, usuario_id, tema) => {
 		// Variables
 		let cond = {};
-		cond.propio = link.statusSugeridoPor_id == userId;
+		cond.propio = link.statusSugeridoPor_id == usuario_id;
 		cond.ajeno = !cond.propio;
 		cond.rud = tema == "linksCRUD";
 		cond.revision = tema == "revisionEnts";
@@ -91,9 +91,9 @@ module.exports = {
 		// Fin
 		return cond;
 	},
-	sigProdInactivo: async ({producto, entidad, userId}) => {
+	sigProdInactivo: async ({producto, entidad, usuario_id}) => {
 		// Variables
-		const productos = await procsRE.tablManten.obtieneLinksInactivos(userId).then((n) => n.LI);
+		const productos = await procsRE.tablManten.obtieneLinksInactivos(usuario_id).then((n) => n.LI);
 
 		// Obtiene el siguiente producto
 		const sigProd = productos.find((n) => n.entidad != entidad || n.id != producto.id);

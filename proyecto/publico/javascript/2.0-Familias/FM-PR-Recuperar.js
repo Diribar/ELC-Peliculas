@@ -58,3 +58,6 @@ window.addEventListener("load", async () => {
 	// Si no hay inputs, focus en comentario
 	if (DOM.comentario) DOM.comentario.focus();
 });
+
+// Variables
+const entidad = new URL(location.href).searchParams.get("entidad");
