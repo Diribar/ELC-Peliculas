@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 13/sep",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Sáb. 14/sep",
+	"HoraUTC": "8:27",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 9/sep",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"11-sep-24": {},
 		"12-sep-24": {},
 		"13-sep-24": {"leyenda": "Hoy recordamos a san Juan Crisóstomo", "entidad": "personajes", "id": 215},
 		"14-sep-24": {},
-		"15-sep-24": {"leyenda": "Hoy recordamos al padre Pino Puglisi, beato", "entidad": "personajes", "id": 140}
+		"15-sep-24": {"leyenda": "Hoy recordamos al padre Pino Puglisi, beato", "entidad": "personajes", "id": 140},
+		"16-sep-24": {}
 	}
 }
