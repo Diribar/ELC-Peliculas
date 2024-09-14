@@ -19,7 +19,7 @@
 		padding: 4px 10px; margin: 0;
 	}
 	.ayuda.absolute i {font-size: 1.2rem;}
-	#iconosDelTitulo {
+	#iconosDelTitulo:has(#compartirUrl) {
 		position: absolute; bottom: -15px; translate: 0 100%;
 		:is(.ayuda.static, #compartirUrl) {margin-left: 15px;}
 		.ayuda.static {
