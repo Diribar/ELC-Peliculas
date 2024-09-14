@@ -193,14 +193,14 @@ module.exports = {
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await baseDeDatos.obtienePorId(entidad, id, include);
 		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
-		comentario = await this.comentario({entidad, id, motivo_id, entDupl, idDupl, comentario, statusFinal_id});
+		comentario = await this.comentario({entidad, id, codigo, motivo_id, entDupl, idDupl, comentario, statusFinal_id});
 
 		// Fin
 		return {entidad, id, familia, motivo_id, codigo, usuario_id, ahora, campo_id, original, statusFinal_id, comentario};
 	},
 	comentario: async function (datos) {
 		// Stoppers
-		if (datos.codigo == "recuperar") return comentario;
+		if (datos.codigo == "recuperar") return datos.comentario;
 		if (!datos.motivo_id) return null;
 
 		// Variables
@@ -217,7 +217,7 @@ module.exports = {
 		}
 
 		// Lo obtiene del formulario
-		if (datos && datos.comentario) comentario = datos.comentario;
+		if (datos.comentario) comentario = datos.comentario;
 
 		// Si corresponde, lo obtiene del movimiento anterior
 		if (!comentario) {
@@ -228,8 +228,10 @@ module.exports = {
 			}
 		}
 
-		// Fin
+		// Quita el punto final
 		if (comentario && comentario.endsWith(".")) comentario = comentario.slice(0, -1);
+
+		// Fin
 		return comentario;
 	},
 	obtieneOriginalEdicion: async ({entidad, entId, usuario_id, excluirInclude, omitirPulirEdic}) => {
