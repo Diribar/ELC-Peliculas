@@ -354,13 +354,9 @@ module.exports = {
 
 			// Procesa los comentarios
 			historialStatus = historialStatus.map((n) => {
-				const correspondeMotivo = [inactivar_id, inactivo_id].includes(n.statusFinal_id);
-				return {
-					...n,
-					comentario:
-						(n.motivo && correspondeMotivo ? n.motivo.descripcion : "") +
-						(n.comentario ? (correspondeMotivo ? ": " : "") + n.comentario : ""),
-				};
+				const motivo = n.motivo && !n.motivo.general ? n.motivo.descripcion : "";
+				const comentario = motivo + (n.comentario ? (motivo ? ": " : "") + n.comentario : "");
+				return {...n, comentario};
 			});
 
 			// Fin
@@ -1099,11 +1095,7 @@ let FN = {
 		const statusHistorial = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
 		const motivo =
 			statusHistorial && statusHistorial.motivo_id ? statusMotivos.find((n) => n.id == statusHistorial.motivo_id) : null;
-		const motivoDetalle = motivo
-			? motivo.general
-				? statusHistorial.comentario
-				: motivo.descripcion
-			: null;
+		const motivoDetalle = motivo ? (motivo.general ? statusHistorial.comentario : motivo.descripcion) : null;
 
 		// Fin
 		return {motivoDetalle};
