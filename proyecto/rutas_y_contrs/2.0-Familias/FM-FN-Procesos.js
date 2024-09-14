@@ -1099,7 +1099,11 @@ let FN = {
 		const statusHistorial = await baseDeDatos.obtienePorCondicionElUltimo("statusHistorial", condicion, "statusFinalEn");
 		const motivo =
 			statusHistorial && statusHistorial.motivo_id ? statusMotivos.find((n) => n.id == statusHistorial.motivo_id) : null;
-		const motivoDetalle = motivo ? motivo.descripcion : null;
+		const motivoDetalle = motivo
+			? motivo.general
+				? statusHistorial.comentario
+				: motivo.descripcion
+			: null;
 
 		// Fin
 		return {motivoDetalle};
