@@ -71,7 +71,7 @@ window.addEventListener("load", async () => {
 		};
 		if (revision) options.hAxis.textColor = "none";
 		else {
-			options.vAxis.title = "Cantidad de links vencidos";
+			options.vAxis.title = "Cantidad de links";
 			options.hAxis.title = "Semana";
 		}
 
