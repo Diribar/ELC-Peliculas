@@ -68,7 +68,5 @@ router.post("/correccion/motivo", correcs, m.statusCorrecto, m.motivoNecesario, 
 router.get("/correccion/status", correcs, m.capturaActivar, vista.correcs.statusForm);
 router.post("/correccion/status", correcs, m.capturaInactivar, vista.correcs.statusGuardar);
 
-// Vistas -  Historial
-
 // Fin
 module.exports = router;
