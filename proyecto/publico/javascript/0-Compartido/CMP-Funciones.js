@@ -299,3 +299,6 @@ let contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
 	// Fin
 	return;
 };
+
+// Variables
+const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
