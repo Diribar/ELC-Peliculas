@@ -6,9 +6,9 @@
 	<% const origenHTML = (locals.origen ? ('&origen=' + origen) : '') %>
 
 	<% if (locals.statusAlineado && condicHistorial && condicRegistro && condicDetalle) { %>
-		<!-- Ir al historial -->
+		<!-- Historial de movimientos -->
 		<a href="<%= '/' + familia + '/historial/?entidad=' + entidad + '&id=' + id + origenHTML %>">
-			<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ir al historial"></i>
+			<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Historial de movimientos"></i>
 		</a>
 	<% } %>
 	<% if (condicUsuario && condicRegistro && condicDetalle) { %>
