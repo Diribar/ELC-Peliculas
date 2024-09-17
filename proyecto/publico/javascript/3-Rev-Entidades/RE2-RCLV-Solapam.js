@@ -1,7 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const id = new URL(location.href).searchParams.get("id");
 	let DOM = {
 		// Variables generales
 		form: document.querySelector("form"),
@@ -38,23 +37,11 @@ window.addEventListener("load", async () => {
 		tablaCalendario: document.querySelector("form #calendario table"),
 	};
 	let v = {
-		// Campos por sector
 		camposFecha: Array.from(DOM.camposFecha).map((n) => n.name),
-
-		// Errores
 		camposError: Array.from(DOM.iconosError).map((n) => n.parentElement.id),
-		OK: {},
-		errores: {},
-
-		// Temas de fecha
-		meses: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
 		fechasDelAno: Array.from(DOM.dias_del_ano_Dia).map((n) => n.innerHTML),
-
-		// Otros
-		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.santopedia.com/buscar?q="],
 		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
 	};
-	let rutas = {validacion: "/rclv/api/edicion/valida-sector/?funcion="};
 
 	// -------------------------------------------------------
 	// Funciones
@@ -326,3 +313,14 @@ window.addEventListener("load", async () => {
 	// Status inicial
 	await startUp();
 });
+
+// Variables
+const id = new URL(location.href).searchParams.get("id");
+const rutas = {
+	validacion: "/rclv/api/edicion/valida-sector/?funcion=",
+	registrosConEsaFecha: "/rclv/api/edicion/registros-con-esa-fecha/",
+};
+
+// Errores
+let OK = {};
+let errores = {};
