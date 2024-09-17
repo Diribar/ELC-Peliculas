@@ -10,27 +10,14 @@ window.addEventListener("load", async () => {
 		cartelGenerico: document.querySelector("#todoElMain #cartelGenerico"),
 		contenedorMensajes: document.querySelector("#cartelGenerico #contenedorMensajes"),
 	};
-	let v = {
-		// Temas de horario y fechas
-		unMinuto: 60 * 1000,
-		mesesAbrev: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
-
-		// Otras variables
-		tipoUsuario: location.pathname.startsWith("/revision/") ? "revisores" : "usuarios",
-		codigo: location.pathname,
-
-		// Pointer del producto
-		entidad: new URL(location.href).searchParams.get("entidad"),
-		entId: new URL(location.href).searchParams.get("id"),
-	};
-	const familia = ["peliculas", "colecciones", "capitulos"].includes(v.entidad) ? "producto" : "rclv";
-	if (!v.entidad && location.pathname.includes("/revision/usuarios")) v.entidad = "usuarios";
+	const familia = ["peliculas", "colecciones", "capitulos"].includes(entidad) ? "producto" : "rclv";
+	if (!entidad && location.pathname.includes("/revision/usuarios")) entidad = "usuarios";
 
 	// Horario Inicial
-	const datos = await fetch("/api/horario-inicial/?entidad=" + v.entidad + "&id=" + v.entId).then((n) => n.json());
+	const datos = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + entId).then((n) => n.json());
 	const {capturadoEn, creadoEn, capturadoPor_id, usuario_id} = datos;
 	let horarioInicial = !capturadoEn ? creadoEn : capturadoPor_id == usuario_id ? capturadoEn : new Date();
-	horarioInicial = new Date(horarioInicial)
+	horarioInicial = new Date(horarioInicial);
 	horarioInicial.setSeconds(0);
 
 	// Configura el horario final
@@ -40,10 +27,10 @@ window.addEventListener("load", async () => {
 	// Tiempo restante
 	let ahora = new Date(new Date().toUTCString());
 	let tiempoMax = 60;
-	let tiempoRestante = Math.min(tiempoMax, (horarioFinal.getTime() - ahora.getTime()) / v.unMinuto);
+	let tiempoRestante = Math.min(tiempoMax, (horarioFinal.getTime() - ahora.getTime()) / unMinuto);
 
 	// Minutos y Segundos disponibles
-	v.minutosDispon =
+	minutosDispon =
 		// ¿Hay tiempo restante?
 		tiempoRestante > 0
 			? tiempoRestante
@@ -51,7 +38,7 @@ window.addEventListener("load", async () => {
 			tiempoRestante <= -60
 			? tiempoMax
 			: 0;
-	v.segundosDispon = Math.floor((v.minutosDispon % 1) * 60);
+	segundosDispon = Math.floor((minutosDispon % 1) * 60);
 
 	// Funciones
 	let FN = {
@@ -59,7 +46,7 @@ window.addEventListener("load", async () => {
 			return (
 				horario.getDate() +
 				"/" +
-				v.mesesAbrev[horario.getMonth()] +
+				meses[horario.getMonth()] +
 				" " +
 				horario.getHours() +
 				":" +
@@ -72,19 +59,19 @@ window.addEventListener("load", async () => {
 			if (!DOM.todoElMain.className.includes("ocultar")) return clearInterval(FN.timer);
 
 			// Actualiza los minutos disponibles
-			v.minutosDispon--;
-			if (v.minutosDispon < 0) v.minutosDispon = 0;
-			DOM.timer.innerHTML = v.minutosDispon + " min.";
+			minutosDispon--;
+			if (minutosDispon < 0) minutosDispon = 0;
+			DOM.timer.innerHTML = minutosDispon + " min.";
 
 			// Acciones si se acabó el tiempo
-			if (v.minutosDispon == 0) {
+			if (minutosDispon == 0) {
 				clearInterval(FN.timer);
 				return FN.funcionCartel();
 			}
 
 			// Si sigue habiendo tiempo, actualiza el formato
 			else FN.formatoTimer();
-		}, v.unMinuto),
+		}, unMinuto),
 		funcionCartel: () => {
 			// Variables
 			const horarioFinalTexto = FN.fechaHorario(horarioFinal);
@@ -95,18 +82,18 @@ window.addEventListener("load", async () => {
 			const mensajes = datos.capturadoEn
 				? [
 						"Esta captura terminó el " + dia + " a las " + hora + "hs.. ",
-						"Quedó a disposición de los demás " + v.tipoUsuario + ".",
+						"Quedó a disposición de los demás " + tipoUsuario + ".",
 						"Si nadie lo captura hasta 1 hora después, podrás volver a capturarlo.",
 				  ]
 				: [
 						"Se cumplió el plazo de 1 hora desde que se creó el registro.",
 						"Estará disponible luego de ser revisado, en caso de ser aprobado.",
 				  ];
-			const [link, clase, titulo] = v.codigo.startsWith("/revision/usuarios")
+			const [link, clase, titulo] = codigo.startsWith("/revision/usuarios")
 				? ["/revision/usuarios/tablero-de-usuarios", "fa-thumbs-up", "Entendido"]
-				: v.codigo.startsWith("/revision/")
+				: codigo.startsWith("/revision/")
 				? ["/revision/tablero-de-entidades", "fa-thumbs-up", "Entendido"]
-				: ["/" + familia + "/detalle/?entidad=" + v.entidad + "&id=" + v.entId, "fa-circle-info", "Ir a Detalle"];
+				: ["/" + familia + "/detalle/?entidad=" + entidad + "&id=" + entId, "fa-circle-info", "Ir a Detalle"];
 			contenidoDelCartelGenerico({DOM, mensajes, clase, titulo, link});
 
 			// Muestra el cartel
@@ -115,26 +102,34 @@ window.addEventListener("load", async () => {
 			DOM.cartelGenerico.classList.remove("ocultar");
 		},
 		formatoTimer: () => {
-			if (v.minutosDispon <= 15) DOM.timer.style.backgroundColor = "var(--rojo-oscuro)";
-			else if (v.minutosDispon <= 30) DOM.timer.style.backgroundColor = "var(--naranja-oscuro)";
+			if (minutosDispon <= 15) DOM.timer.style.backgroundColor = "var(--rojo-oscuro)";
+			else if (minutosDispon <= 30) DOM.timer.style.backgroundColor = "var(--naranja-oscuro)";
 		},
 	};
 
 	// STARTUP -------------------------------------------------------------
 	// Muestra el tiempo inicial
-	DOM.timer.innerHTML = Math.ceil(v.minutosDispon) + " min.";
+	DOM.timer.innerHTML = Math.ceil(minutosDispon) + " min.";
 	FN.formatoTimer();
 	DOM.timer.classList.remove("ocultar");
 
 	// Cuando se acaban los segundos del minuto inicial, actualiza el contador
 	setTimeout(() => {
 		// Actualiza los minutos disponibles
-		v.minutosDispon = parseInt(v.minutosDispon);
-		DOM.timer.innerHTML = v.minutosDispon + " min.";
-		if (v.minutosDispon == 0) return FN.funcionCartel();
+		minutosDispon = parseInt(minutosDispon);
+		DOM.timer.innerHTML = minutosDispon + " min.";
+		if (minutosDispon == 0) return FN.funcionCartel();
 
 		// Ejecuta la rutina
-		FN.formatoTimer(v.minutosDispon);
+		FN.formatoTimer(minutosDispon);
 		FN.timer;
-	}, v.segundosDispon * 1000);
+	}, segundosDispon * 1000);
 });
+
+// Variables
+const entidad = new URL(location.href).searchParams.get("entidad");
+const entId = new URL(location.href).searchParams.get("id");
+const codigo = location.pathname;
+const tipoUsuario = codigo.startsWith("/revision/") ? "revisores" : "usuarios";
+const unMinuto = 60 * 1000;
+let minutosDispon,segundosDispon
