@@ -73,16 +73,9 @@ window.addEventListener("load", async () => {
 		camposFecha: Array.from(DOM.camposFecha).map((n) => n.name),
 		camposEpoca: Array.from(DOM.camposEpoca).map((n) => n.name),
 
-		// Errores
-		camposError: Array.from(DOM.iconosError).map((n) => n.parentElement.id),
-		OK: {},
-		errores: {},
-
 		// Otros
-		linksUrl: ["https://es.wikipedia.org/wiki/", "https://www.google.com/search?q="],
-		googleIMG: {pre: "//google.com/search?q=", post: "&tbm=isch&tbs=isz:l&hl=es-419"},
+		camposError: Array.from(DOM.iconosError).map((n) => n.parentElement.id),
 		avatarInicial: document.querySelector("#imgDerecha #imgAvatar").src,
-		esImagen: false,
 		...(await fetch(rutas.obtieneVariables).then((n) => n.json())),
 	};
 	v.hoyEstamos = v.hoyEstamos.filter((n) => !n.entidad || n.entidad == entidad);
@@ -953,6 +946,11 @@ const rutas = {
 	validacion: "/rclv/api/edicion/valida-sector/?funcion=",
 	registrosConEsaFecha: "/rclv/api/edicion/registros-con-esa-fecha/",
 };
+const linksUrl = ["https://es.wikipedia.org/wiki/", "https://www.google.com/search?q="];
+const googleIMG = {pre: "//google.com/search?q=", post: "&tbm=isch&tbs=isz:l&hl=es-419"};
+let OK = {};
+let errores = {};
+let esImagen = false;
 
 // Funciones
 let opcElegida = (opciones) => {
