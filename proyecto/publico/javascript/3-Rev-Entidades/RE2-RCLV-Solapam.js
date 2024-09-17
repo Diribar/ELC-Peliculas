@@ -147,7 +147,7 @@ window.addEventListener("load", async () => {
 				if (!diasDeDuracion || diasDeDuracion < 2 || diasDeDuracion > 366) return;
 
 				// Obtiene la fecha de inicio
-				const mes = v.meses[mes_id - 1];
+				const mes = meses[mes_id - 1];
 				const fechaInicio = dia + "/" + mes;
 
 				// Obtiene los ID de inicio y de fin
@@ -190,11 +190,11 @@ window.addEventListener("load", async () => {
 				for (let campoFecha of DOM.camposFecha) params += "&" + campoFecha.name + "=" + campoFecha.value;
 
 				// Averigua si hay un error con la fecha
-				v.errores.fecha = await fetch(rutas.validacion + "fecha" + params).then((n) => n.json());
-			} else v.errores.fecha = "";
+				errores.fecha = await fetch(rutas.validacion + "fecha" + params).then((n) => n.json());
+			} else errores.fecha = "";
 
 			// OK vigencia
-			v.OK.fecha = !v.errores.fecha;
+			OK.fecha = !errores.fecha;
 
 			// Fin
 			return;
@@ -202,20 +202,20 @@ window.addEventListener("load", async () => {
 		muestraErroresOK: () => {
 			for (let i = 0; i < v.camposError.length; i++) {
 				// Íconos de OK
-				v.OK[v.camposError[i]] ? DOM.iconosOK[i].classList.remove("ocultar") : DOM.iconosOK[i].classList.add("ocultar");
+				OK[v.camposError[i]] ? DOM.iconosOK[i].classList.remove("ocultar") : DOM.iconosOK[i].classList.add("ocultar");
 
 				// Íconos de error
-				v.errores[v.camposError[i]]
+				errores[v.camposError[i]]
 					? DOM.iconosError[i].classList.remove("ocultar")
 					: DOM.iconosError[i].classList.add("ocultar");
 
 				// Mensaje de error
-				DOM.mensajesError[i].innerHTML = v.errores[v.camposError[i]] ? v.errores[v.camposError[i]] : "";
+				DOM.mensajesError[i].innerHTML = errores[v.camposError[i]] ? errores[v.camposError[i]] : "";
 			}
 		},
 		botonSubmit: () => {
 			// Variables
-			let resultado = Object.values(v.OK);
+			let resultado = Object.values(OK);
 			let resultadosTrue = resultado.length ? resultado.every((n) => !!n) : false;
 
 			// Activa/Inactiva
@@ -231,11 +231,11 @@ window.addEventListener("load", async () => {
 		// Fechas
 		impactos.fecha.muestraOcultaCamposFecha(); // El tipo de fecha siempre tiene un valor
 		if (DOM.tipoFecha.value && DOM.tipoFecha.value != "SF" && DOM.mes_id.value) impactos.fecha.muestraLosDiasDelMes();
-		if (DOM.tipoFecha.value == "SF" || (DOM.mes_id.value && DOM.dia.value) || (forzar && v.errores.fecha == undefined)) {
+		if (DOM.tipoFecha.value == "SF" || (DOM.mes_id.value && DOM.dia.value) || (forzar && errores.fecha == undefined)) {
 			// Valida el sector Fechas
 			await validacs.fecha();
 			// Si la fecha está OK, revisa los Repetidos
-			if (v.OK.fecha) impactos.fecha.epocasDelAno();
+			if (OK.fecha) impactos.fecha.epocasDelAno();
 		}
 
 		// Fin
