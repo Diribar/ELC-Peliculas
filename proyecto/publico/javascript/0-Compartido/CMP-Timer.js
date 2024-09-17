@@ -132,4 +132,4 @@ const entId = new URL(location.href).searchParams.get("id");
 const codigo = location.pathname;
 const tipoUsuario = codigo.startsWith("/revision/") ? "revisores" : "usuarios";
 const unMinuto = 60 * 1000;
-let minutosDispon,segundosDispon
+let minutosDispon, segundosDispon;
