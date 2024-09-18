@@ -32,9 +32,10 @@ body {
 body * {
 	margin: 0px; padding: 0; box-sizing: border-box;
 	color: inherit; line-height: inherit;
+	font-family: var(--Calibri);
 }
 body *:focus {outline-color: black;}
-* {font-family: var(--Calibri); font-size: 14px;}
+* {font-size: 14px;}
 
 /* Laptop */
 @media (orientation: landscape) and (height > 600px) {
