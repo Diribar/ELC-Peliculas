@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 17/sep",
-	"HoraUTC": "13:00",
+	"FechaUTC": "Mié. 18/sep",
+	"HoraUTC": "11:05",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 16/sep",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"15-sep-24": {"leyenda": "Hoy recordamos al padre Pino Puglisi, beato", "entidad": "personajes", "id": 140},
 		"16-sep-24": {},
 		"17-sep-24": {"leyenda": "Hoy recordamos a santa Hildegard von Bingen", "entidad": "personajes", "id": 77},
 		"18-sep-24": {"leyenda": "Hoy recordamos a san José de Cupertino", "entidad": "personajes", "id": 85},
-		"19-sep-24": {}
+		"19-sep-24": {},
+		"20-sep-24": {"leyenda": "Hoy recordamos a Andrés Kim y compañeros mártires, santos", "entidad": "personajes", "id": 233}
 	}
 }
