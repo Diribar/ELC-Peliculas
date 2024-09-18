@@ -113,6 +113,7 @@ module.exports = {
 		// Borra los datos de session y cookie
 		for (let prop in req.session) if (prop != "cookie") delete req.session[prop];
 		res.clearCookie("email");
+		//res.clearCookie("visita");
 
 		// Fin
 		return;

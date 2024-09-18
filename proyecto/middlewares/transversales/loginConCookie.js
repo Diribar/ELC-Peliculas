@@ -25,21 +25,27 @@ module.exports = async (req, res, next) => {
 		if (!usuario) res.clearCookie("email"); // borra el mail de cookie
 	}
 
-	// Actualización del 'id' de la visita
-	const actualizarContPers = visita.fecha != hoy || visita.recienCreada || (usuario && usuario.fechaUltimoLogin != hoy);
-	if (usuario && visita.id != usuario.visita_id) {
-		// Variables
-		const condicion = {fecha: hoy, visita_id: visita.id};
-		const {visita_id} = usuario;
-		const usuario_id = usuario.id;
+	// Averigua si se necesita actualizar el contador de personas
+	const actualizarContPers =
+		visita.recienCreada || // la variable 'visita' está recién creada
+		visita.fecha != hoy || // la variable 'visita' no coincide con la fecha de hoy
+		(usuario && usuario.fechaUltimoLogin != hoy); // la fecha del último login no coincide con la fecha de hoy
 
-		// Actualizaciones
-		visita.id = visita_id; // variable 'visita'
-		await baseDeDatos.actualizaTodosPorCondicion("loginsDelDia", condicion, {usuario_id, visita_id}); // tabla 'loginDelDia'
+	// Actualización del 'id' de la visita
+	if (usuario && visita.id != usuario.visita_id) {
+		// Actualiza la tabla 'loginDelDia'
+		const condicion = {visita_id: visita.id};
+		const datosActuales = {usuario_id: usuario.id, visita_id: usuario.visita_id};
+		await baseDeDatos
+			.actualizaTodosPorCondicion("loginsDelDia", condicion, datosActuales)
+			.then(() => eliminaDuplicados(usuario.id));
+
+		// Otras actualizaciones
+		visita.id = usuario.visita_id; // variable 'visita'
 		if (!actualizarContPers) res.cookie("visita", visita, {maxAge: unDia * 30}); // cookie 'visita'
 	}
 
-	// Acciones si alguna de las fechas es distinta a hoy o la visita está recién creada
+	// Acciones si corresponde actualizar el contador de personas
 	if (actualizarContPers) {
 		// Temas de visita
 		visita.fecha = hoy;
@@ -52,9 +58,9 @@ module.exports = async (req, res, next) => {
 			res.cookie("email", usuario.email, {maxAge: unDia * 30}); // actualiza el cookie de mail una vez al día
 		}
 
-		// Actualiza el contador de logins
+		// Actualiza el contador de personas, y el usuario en la BD
 		const usuario_id = usuario ? usuario.id : null;
-		await procesos.contadorDePersonas(usuario_id, visita.id, hoy);
+		procesos.contadorDePersonas(usuario_id, visita.id, hoy);
 	}
 
 	// Acciones si el usuario tiene una versión distinta de la actual
@@ -98,4 +104,18 @@ module.exports = async (req, res, next) => {
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
 	return next();
+};
+
+let eliminaDuplicados = async (usuario_id) => {
+	// Obtiene los registros
+	const registros = await baseDeDatos.obtieneTodosPorCondicion("loginsDelDia", {usuario_id});
+	console.log();
+
+	// Elimina los duplicados
+	registros.forEach((registro, contador) => {
+		if (contador && registro.fecha == registros[contador - 1].fecha) baseDeDatos.eliminaPorId("loginsDelDia", registro.id);
+	});
+
+	// Fin
+	return;
 };
