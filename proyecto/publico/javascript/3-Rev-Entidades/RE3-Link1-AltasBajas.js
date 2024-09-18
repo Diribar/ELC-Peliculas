@@ -83,7 +83,6 @@ window.addEventListener("load", () => {
 });
 
 // Variables repetidas con 'FM-Links-Inactivar'
-// const prodEntidad = new URL(location.href).searchParams.get("entidad");
 // const prodId = new URL(location.href).searchParams.get("id");
 // const condicion = "?prodEntidad=" + prodEntidad + "&prodId=" + prodId;
 
