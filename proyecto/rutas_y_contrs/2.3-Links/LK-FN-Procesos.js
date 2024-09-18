@@ -42,7 +42,7 @@ module.exports = {
 		if (datos.prodEntidad == "capitulos") datos.grupoCol_id = regProd.coleccion_id;
 
 		// Obtiene el proveedor
-		let proveedor = linksProvs.find((n) => n.urlDistintivo && datos.url.includes(n.urlDistintivo));
+		let proveedor = linksProvs.find((n) => n.urlDistintivo && datos.url.startsWith(n.urlDistintivo)); // debe ser 'starts'
 		proveedor = proveedor ? proveedor : linksProvs.find((n) => n.generico); // Si no se reconoce el proveedor, se asume el 'desconocido'
 		datos.prov_id = proveedor.id;
 
