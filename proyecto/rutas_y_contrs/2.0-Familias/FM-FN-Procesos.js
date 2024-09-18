@@ -206,13 +206,13 @@ module.exports = {
 		// Variables
 		let comentario = null;
 
-		// Si el motivo es 'duplicado', genera el comentario
-		if (datos.motivo_id == motivoDupl_id) {
+		// Si el movimiento es 'inactivar' y el motivo es 'duplicado', genera el comentario
+		if (datos.codigo == "inactivar" && datos.motivo_id == motivoDupl_id) {
 			// Variables
 			const {entDupl, idDupl} = datos;
 			const elLa = comp.obtieneDesdeEntidad.elLa(entDupl);
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entDupl).toLowerCase();
-			comentario = "con " + elLa + " " + entidadNombre + " id " + idDupl;
+			comentario = "con" + elLa + entidadNombre + " id " + idDupl;
 			return comentario;
 		}
 
@@ -222,9 +222,9 @@ module.exports = {
 		// Si corresponde, lo obtiene del movimiento anterior
 		if (!comentario) {
 			const {comentNeces} = statusMotivos.find((n) => n.id == datos.motivo_id);
-			if (comentNeces && datos.statusFinal_id == inactivo_id) {
+			if ((comentNeces || datos.motivo_id == motivoDupl_id) && datos.statusFinal_id == inactivo_id) {
 				const ultHist = await this.historialDeStatus.ultimoRegistro(datos.entidad, datos.id);
-				if (ultHist && ultHist.statusFinal_id == inactivar_id && ultHist.comentario) comentario = ultHist.comentario;
+				if (ultHist && ultHist.comentario) comentario = ultHist.comentario;
 			}
 		}
 
