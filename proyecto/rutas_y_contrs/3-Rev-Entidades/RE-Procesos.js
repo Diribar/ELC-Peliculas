@@ -62,7 +62,6 @@ module.exports = {
 
 				// Elimina los productos con problemas de captura
 				productos = await comp.sinProblemasDeCaptura(productos, revId);
-				console.log(47,productos.find(n=>n.edicID==81))
 
 				// Ordena por fecha descendente
 				productos.sort((a, b) => b.fechaRef - a.fechaRef);
