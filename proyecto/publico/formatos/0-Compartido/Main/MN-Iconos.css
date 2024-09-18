@@ -3,7 +3,7 @@
 
 /* Comunes */
 #sectorIconos {
-	justify-content: space-around;
+	justify-content: space-around; color: var(--bordeFlechas);
 	.iconos {
 		margin: 0 auto; padding: 5px 5px; border-radius: 18px;
 		background: var(--backFlechas); border: 2px solid var(--bordeFlechas);
