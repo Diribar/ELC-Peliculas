@@ -120,6 +120,3 @@ window.addEventListener("load", async () => {
 	// Focus en el motivo
 	DOM.selectMotivo.focus();
 });
-
-// Variables
-const entidad = new URL(location.href).searchParams.get("entidad");

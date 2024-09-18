@@ -1,8 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const entidad = new URL(location.href).searchParams.get("entidad");
-	const prodId = new URL(location.href).searchParams.get("id");
 	let DOM = {
 		dondeUbicarLosResultados: document.querySelector("#calificacionesResultados"),
 		datosLargos: document.querySelector("#cuerpo #datos #datosLargos"),
@@ -85,3 +83,4 @@ window.addEventListener("load", async () => {
 		DOM.datosBreves.classList.replace("esconderPorStartUp", "toggle"); // inicialmente oculto en acostados
 	}, 1000);
 });
+const prodId = new URL(location.href).searchParams.get("id");
