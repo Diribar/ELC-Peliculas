@@ -12,8 +12,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Variables para el ruteo del origen
-	const prodId = new URL(location.href).searchParams.get("id");
-	const paramsOrigen = "&prodEntidad=" + entidad + "&prodId=" + prodId + "&origen=PED";
+	const paramsOrigen = "&prodEntidad=" + entidad + "&prodId=" + id + "&origen=PED";
 
 	// Variables para guardar los datos
 	const rutaSession = "/producto/api/envia-a-req-session/";
@@ -33,7 +32,7 @@ window.addEventListener("load", async () => {
 	// Guardar los valores del formulario
 	let guardarLosValoresEnSession = () => {
 		// Variables
-		let objeto = "?entidad=" + entidad + "&id=" + prodId;
+		let objeto = "?entidad=" + entidad + "&id=" + id;
 
 		// Actualiza los valores
 		obtieneLosValoresEdicN()

@@ -1,12 +1,11 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const prodId = new URL(location.href).searchParams.get("id");
-	const origenUrl = location.pathname.slice(0, -1);
 	const botonCapAnt = document.querySelector("#encabezado #colCap .fa-circle-left");
 	const botonCapPost = document.querySelector("#encabezado #colCap .fa-circle-right");
+	const origenUrl = pathname.slice(0, -1);
 	const ruta = "/crud/api/obtiene-cap-ant-y-post/?id=";
-	const [capAntID, capPostID] = await fetch(ruta + prodId).then((n) => n.json());
+	const [capAntID, capPostID] = await fetch(ruta + id).then((n) => n.json());
 
 	// Acciones si existe "capítulo anterior"
 	if (capAntID) {
@@ -14,7 +13,7 @@ window.addEventListener("load", async () => {
 		botonCapAnt.addEventListener("click", () => {
 			location.href =
 				"/inactivar-captura/?entidad=capitulos&id=" +
-				prodId +
+				id +
 				"&prodEntidad=capitulos&prodId=" +
 				capAntID +
 				"&origenUrl=" +
@@ -28,11 +27,14 @@ window.addEventListener("load", async () => {
 		botonCapPost.addEventListener("click", () => {
 			location.href =
 				"/inactivar-captura/?entidad=capitulos&id=" +
-				prodId +
+				id +
 				"&prodEntidad=capitulos&prodId=" +
 				capPostID +
 				"&origenUrl=" +
 				encodeURIComponent(origenUrl);
 		});
 	} else botonCapPost.classList.add("inactivo");
+
+	// Fin
+	return
 });

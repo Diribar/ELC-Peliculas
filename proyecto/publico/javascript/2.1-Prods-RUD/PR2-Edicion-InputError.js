@@ -83,7 +83,7 @@ window.addEventListener("load", async () => {
 			let camposResp = Array.from(inputsResp).map((n) => n.name);
 
 			// Prepara la información
-			let objeto = "entidad=" + entidad + "&id=" + prodId + "&statusRegistro_id=" + statusRegistro_id;
+			let objeto = "entidad=" + entidad + "&id=" + id + "&statusRegistro_id=" + statusRegistro_id;
 			if (v.coleccion_id) objeto += "&coleccion_id=" + v.coleccion_id;
 			for (let campoNombre of v.camposNombre) {
 				const indice = camposResp.indexOf(campoNombre);
@@ -392,7 +392,6 @@ window.addEventListener("load", async () => {
 });
 
 // Variables del url
-const prodId = new URL(location.href).searchParams.get("id");
 const edicID = new URL(location.href).searchParams.get("edicID");
 let origen = new URL(location.href).searchParams.get("origen");
 origen = origen ? "&origen=" + origen : "";
@@ -400,10 +399,10 @@ origen = origen ? "&origen=" + origen : "";
 // Rutas
 const rutas = {
 	validar: "/producto/api/valida/?",
-	versiones: "/producto/api/obtiene-original-y-edicion/?entidad=" + entidad + "&id=" + prodId,
-	variablesBE: "/producto/api/edicion/obtiene-variables/?entidad=" + entidad + "&id=" + prodId,
-	eliminaEdicG: "/producto/api/edicion-guardada/eliminar/?entidad=" + entidad + "&id=" + prodId,
-	recargaLaVistaSinEdicion: location.pathname + "?entidad=" + entidad + "&id=" + prodId + origen,
+	versiones: "/producto/api/obtiene-original-y-edicion/?entidad=" + entidad + "&id=" + id,
+	variablesBE: "/producto/api/edicion/obtiene-variables/?entidad=" + entidad + "&id=" + id,
+	eliminaEdicG: "/producto/api/edicion-guardada/eliminar/?entidad=" + entidad + "&id=" + id,
+	recargaLaVistaSinEdicion: location.pathname + "?entidad=" + entidad + "&id=" + id + origen,
 };
 
 // Versiones de datos

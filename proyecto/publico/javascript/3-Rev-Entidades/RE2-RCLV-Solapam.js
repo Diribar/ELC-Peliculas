@@ -315,7 +315,6 @@ window.addEventListener("load", async () => {
 });
 
 // Variables
-const id = new URL(location.href).searchParams.get("id");
 const rutas = {
 	validacion: "/rclv/api/edicion/valida-sector/?funcion=",
 	registrosConEsaFecha: "/rclv/api/edicion/registros-con-esa-fecha/",

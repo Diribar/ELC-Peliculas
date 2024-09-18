@@ -1,13 +1,12 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const prodId = new URL(location.href).searchParams.get("id");
-	const origenUrl = location.pathname.slice(0, -1);
+	const origenUrl = pathname.slice(0, -1);
 	let ruta;
 
 	// Obtiene el ID de la colección
 	ruta = "/crud/api/obtiene-col-cap/?entidad=capitulos&id=";
-	let colID = await fetch(ruta + prodId).then((n) => n.json());
+	let colID = await fetch(ruta + id).then((n) => n.json());
 
 	// Obtiene DOM de Temporada y Capítulos
 	const tempSelect = document.querySelector("#encabezado select#temporada");
@@ -27,7 +26,7 @@ window.addEventListener("load", async () => {
 			// Actualiza la vista
 			location.href =
 				"/inactivar-captura/?entidad=capitulos&id=" +
-				prodId +
+				id +
 				"&prodEntidad=capitulos&prodId=" +
 				capID +
 				"&origenUrl=" +
@@ -49,7 +48,7 @@ window.addEventListener("load", async () => {
 		// Actualiza la vista
 		location.href =
 			"/inactivar-captura/?entidad=capitulos&id=" +
-			prodId +
+			id +
 			"&prodEntidad=capitulos&prodId=" +
 			capID +
 			"&origenUrl=" +

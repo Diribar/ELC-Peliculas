@@ -183,13 +183,12 @@ window.addEventListener("load", async () => {
 });
 
 // Datos del registro
-const entId = new URL(location.href).searchParams.get("id");
 const edicID = new URL(location.href).searchParams.get("edicID");
 const origen = new URL(location.href).searchParams.get("origen");
 
 // Rutas
-const rutaEdicion = "/revision/api/edicion/aprob-rech/?entidad=" + entidad + "&id=" + entId + "&edicID=" + edicID;
-const cola = "?entidad=" + entidad + "&id=" + entId + "&origen=" + (origen ? origen : "TE");
+const rutaEdicion = "/revision/api/edicion/aprob-rech/?entidad=" + entidad + "&id=" + id + "&edicID=" + edicID;
+const cola = "?entidad=" + entidad + "&id=" + id + "&origen=" + (origen ? origen : "TE");
 
 // Otras variables
 const url = location.pathname.replace("/revision/", "");
