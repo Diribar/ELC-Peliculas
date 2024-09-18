@@ -962,7 +962,7 @@ module.exports = {
 			resultado.push(
 				!registro.altaRevisadaEn
 					? {titulo: "Creado el", valor: comp.fechaHora.diaMesAno(registro.creadoEn)}
-					: {titulo: "Aprobado el", valor: comp.fechaHora.diaMesAno(registro.altaRevisadaEn)}
+					: {titulo: "Revisado el", valor: comp.fechaHora.diaMesAno(registro.altaRevisadaEn)}
 			);
 
 			// Status resumido
