@@ -356,7 +356,8 @@ module.exports = {
 
 			// Procesa los comentarios
 			historialStatus = historialStatus.map((n) => {
-				const motivo = n.motivo && !n.motivo.general ? n.motivo.descripcion : "";
+				const llevaComentario = [inactivar_id, inactivo_id].includes(n.statusFinal_id); // sólo esos status llevan ña descripción del motivo
+				const motivo = llevaComentario && n.motivo && !n.motivo.general ? n.motivo.descripcion : "";
 				const comentario = motivo + (n.comentario ? (motivo ? ": " : "") + n.comentario : "");
 				return {...n, comentario};
 			});
