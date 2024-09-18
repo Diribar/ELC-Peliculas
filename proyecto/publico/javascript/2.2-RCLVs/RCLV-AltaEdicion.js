@@ -934,7 +934,6 @@ window.addEventListener("load", async () => {
 });
 
 // Variables
-const id = new URL(location.href).searchParams.get("id");
 const personajes = entidad == "personajes";
 const hechos = entidad == "hechos";
 const epocasDelAno = entidad == "epocasDelAno";
