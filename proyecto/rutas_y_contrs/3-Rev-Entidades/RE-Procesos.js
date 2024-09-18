@@ -33,8 +33,8 @@ module.exports = {
 
 			// Obtiene los productos
 			ediciones.map((n) => {
-				let entidad = comp.obtieneDesdeCampo_id.entidadProd(n);
-				let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
+				const entidad = comp.obtieneDesdeCampo_id.entidadProd(n);
+				const asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 				productos.push({
 					...n[asociacion],
 					entidad,
@@ -62,6 +62,7 @@ module.exports = {
 
 				// Elimina los productos con problemas de captura
 				productos = await comp.sinProblemasDeCaptura(productos, revId);
+				console.log(47,productos.find(n=>n.edicID==81))
 
 				// Ordena por fecha descendente
 				productos.sort((a, b) => b.fechaRef - a.fechaRef);
