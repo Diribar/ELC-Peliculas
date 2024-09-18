@@ -25,7 +25,10 @@ body {
 	width: 100vw;
 }
 
-body, * {margin: 0px; padding: 0; box-sizing: border-box;}
+body, * {
+	margin: 0px; padding: 0; box-sizing: border-box;
+	font-size: inherit; color: inherit; line-height: inherit;
+}
 body *:focus {outline-color: black;}
 
 /* Laptop */
