@@ -301,5 +301,10 @@ let contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
 	return;
 };
 
-// Variables
+// Variables del url
+const entidad = new URL(location.href).searchParams.get("entidad");
+const {pathname} = location;
+
+// Variables fijas
 const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+const unMinuto = 60 * 1000;
