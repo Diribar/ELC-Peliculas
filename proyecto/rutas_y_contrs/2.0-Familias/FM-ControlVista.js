@@ -97,9 +97,9 @@ module.exports = {
 				mensajes: [
 					articInicial +
 						entidadNombre +
-						' "' +
+						' <em>' +
 						nombre +
-						'" ' +
+						'</em> ' +
 						capitulos +
 						"fue" +
 						plural1 +
