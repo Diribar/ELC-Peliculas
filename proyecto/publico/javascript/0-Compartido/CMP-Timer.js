@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
 		contenedorMensajes: document.querySelector("#cartelGenerico #contenedorMensajes"),
 	};
 	const familia = ["peliculas", "colecciones", "capitulos"].includes(entidad) ? "producto" : "rclv";
-	if (!entidad && location.pathname.includes("/revision/usuarios")) entidad = "usuarios";
+	if (!entidad && pathname.includes("/revision/usuarios")) entidad = "usuarios";
 
 	// Horario Inicial
 	const datos = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + entId).then((n) => n.json());
@@ -89,9 +89,9 @@ window.addEventListener("load", async () => {
 						"Se cumplió el plazo de 1 hora desde que se creó el registro.",
 						"Estará disponible luego de ser revisado, en caso de ser aprobado.",
 				  ];
-			const [link, clase, titulo] = codigo.startsWith("/revision/usuarios")
+			const [link, clase, titulo] = pathname.startsWith("/revision/usuarios")
 				? ["/revision/usuarios/tablero-de-usuarios", "fa-thumbs-up", "Entendido"]
-				: codigo.startsWith("/revision/")
+				: pathname.startsWith("/revision/")
 				? ["/revision/tablero-de-entidades", "fa-thumbs-up", "Entendido"]
 				: ["/" + familia + "/detalle/?entidad=" + entidad + "&id=" + entId, "fa-circle-info", "Ir a Detalle"];
 			contenidoDelCartelGenerico({DOM, mensajes, clase, titulo, link});
@@ -127,9 +127,7 @@ window.addEventListener("load", async () => {
 });
 
 // Variables
-const entidad = new URL(location.href).searchParams.get("entidad");
+const tipoUsuario = pathname.startsWith("/revision/") ? "revisores" : "usuarios";
 const entId = new URL(location.href).searchParams.get("id");
-const codigo = location.pathname;
-const tipoUsuario = codigo.startsWith("/revision/") ? "revisores" : "usuarios";
-const unMinuto = 60 * 1000;
 let minutosDispon, segundosDispon;
+

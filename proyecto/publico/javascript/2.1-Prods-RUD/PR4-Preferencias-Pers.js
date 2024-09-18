@@ -1,8 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const entidad = new URL(location.href).searchParams.get("entidad");
-	const prod_id = new URL(location.href).searchParams.get("id");
 	const domIconos = document.querySelectorAll(".iconos #ppp");
 	const opciones = await fetch("/producto/api/obtiene-opciones-de-preferencia").then((n) => n.json());
 	const rutaGuardar = "/producto/api/guarda-la-preferencia-del-usuario/?entidad=" + entidad + "&entidad_id=" + prod_id;
@@ -37,3 +35,4 @@ window.addEventListener("load", async () => {
 			guardado = true;
 		});
 });
+const prod_id = new URL(location.href).searchParams.get("id");

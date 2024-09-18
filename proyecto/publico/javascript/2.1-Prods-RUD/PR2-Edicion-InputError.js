@@ -392,7 +392,6 @@ window.addEventListener("load", async () => {
 });
 
 // Variables del url
-const entidad = new URL(location.href).searchParams.get("entidad");
 const prodId = new URL(location.href).searchParams.get("id");
 const edicID = new URL(location.href).searchParams.get("edicID");
 let origen = new URL(location.href).searchParams.get("origen");

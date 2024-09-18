@@ -203,12 +203,10 @@ const cartelMailFormato = "Debes escribir un formato de correo válido";
 const cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
 const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
 const formatoMail = /^\w+([\.-_]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-const pathname = location.pathname;
 const indice = 1 + pathname.slice(1).indexOf("/");
 const codigo = pathname.slice(indice + 1) == "alta-mail" ? "alta-mail" : "olvido-contrasena";
 const rutaInicio = "/usuarios/api/" + codigo;
 const olvidoContr = codigo == "olvido-contrasena";
-console.log(olvidoContr);
 const rutas = {
 	datosDeSession: rutaInicio + "/datosDeSession",
 	valida: rutaInicio + "/validaciones/?datos=",

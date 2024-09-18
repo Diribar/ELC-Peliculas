@@ -183,7 +183,6 @@ window.addEventListener("load", async () => {
 });
 
 // Datos del registro
-const entidad = new URL(location.href).searchParams.get("entidad");
 const entId = new URL(location.href).searchParams.get("id");
 const edicID = new URL(location.href).searchParams.get("edicID");
 const origen = new URL(location.href).searchParams.get("origen");
