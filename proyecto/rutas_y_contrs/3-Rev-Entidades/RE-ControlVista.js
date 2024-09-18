@@ -56,7 +56,7 @@ module.exports = {
 		// Va a la vista
 		//return res.send(prodsRclvs);
 		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Tablero de Entidades"},
+			...{tema, codigo, titulo: "Tablero de Revisión"},
 			...{prodsRclvs, prods, rclvs, sigProd, origen: "TE", dataEntry, mostrarRclvs},
 		});
 	},

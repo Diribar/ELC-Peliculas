@@ -1,8 +1,8 @@
 /* Encabezado */
 #cuerpo #encabezado {
 	display: flex; flex-direction: row; justify-content: space-between; align-items: center;
-	padding: 10px 20px; color: snow;
-	background: var(--azul-oscuro);
+	padding: 10px 20px; color: snow; background: var(--azul-oscuro);
+	position: sticky; top: 0px;
 	button {background: transparent; border: none;}
 
 	&.inactivar, &.rechazar, &.eliminar, &.revisionInactivar, &.cambiarMotivo {

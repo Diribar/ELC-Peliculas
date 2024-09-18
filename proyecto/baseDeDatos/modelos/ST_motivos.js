@@ -8,8 +8,9 @@ module.exports = (sequelize, dt) => {
 		prods: {type: dt.BOOLEAN},
 		rclvs: {type: dt.BOOLEAN},
 		links: {type: dt.BOOLEAN},
-		penalizac: {type: dt.DECIMAL},
 		comentNeces: {type: dt.BOOLEAN},
+		general: {type: dt.BOOLEAN},
+		penalizac: {type: dt.DECIMAL},
 		};
 	const config = {
 		tableName: "st_motivos",
