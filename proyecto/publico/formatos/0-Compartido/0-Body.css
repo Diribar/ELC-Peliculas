@@ -29,7 +29,7 @@ body {
 	color: var(--azul-oscuro);
 }
 
-body * {
+body, * {
 	margin: 0px; padding: 0; box-sizing: border-box;
 	color: inherit; line-height: inherit;
 	font-family: var(--Calibri);
