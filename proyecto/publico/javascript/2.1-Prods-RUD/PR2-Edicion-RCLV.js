@@ -12,9 +12,8 @@ window.addEventListener("load", async () => {
 	};
 
 	// Variables para el ruteo del origen
-	const prodEntidad = new URL(location.href).searchParams.get("entidad");
 	const prodId = new URL(location.href).searchParams.get("id");
-	const paramsOrigen = "&prodEntidad=" + prodEntidad + "&prodId=" + prodId + "&origen=PED";
+	const paramsOrigen = "&prodEntidad=" + entidad + "&prodId=" + prodId + "&origen=PED";
 
 	// Variables para guardar los datos
 	const rutaSession = "/producto/api/envia-a-req-session/";
@@ -34,7 +33,7 @@ window.addEventListener("load", async () => {
 	// Guardar los valores del formulario
 	let guardarLosValoresEnSession = () => {
 		// Variables
-		let objeto = "?entidad=" + prodEntidad + "&id=" + prodId;
+		let objeto = "?entidad=" + entidad + "&id=" + prodId;
 
 		// Actualiza los valores
 		obtieneLosValoresEdicN()
@@ -60,10 +59,10 @@ window.addEventListener("load", async () => {
 			guardarLosValoresEnSession();
 
 			// Obtiene la RCLV_entidad
-			const entidad = "?entidad=" + entidades(link);
+			const entidadRclv = "?entidad=" + entidades(link);
 
 			// Para ir a la vista RCLV
-			location.href = "/rclv/agregar/" + entidad + paramsOrigen;
+			location.href = "/rclv/agregar/" + entidadRclv + paramsOrigen;
 
 			// Fin
 			return
@@ -79,13 +78,13 @@ window.addEventListener("load", async () => {
 			guardarLosValoresEnSession();
 
 			// Obtiene la RCLV_entidad
-			let entidad = "?entidad=" + entidades(link);
+			let entidadRclv = "?entidad=" + entidades(link);
 
 			// Obtiene el RCLV_id
-			let id = "&id=" + DOM.inputsRCLV[i].value;
+			let rclv_id = "&id=" + DOM.inputsRCLV[i].value;
 
 			// Para ir a la vista RCLV
-			location.href = "/rclv/edicion/" + entidad + id + paramsOrigen;
+			location.href = "/rclv/edicion/" + entidadRclv + rclv_id + paramsOrigen;
 		});
 	});
 
