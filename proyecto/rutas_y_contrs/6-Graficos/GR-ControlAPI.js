@@ -3,8 +3,8 @@
 module.exports = {
 	// Usuarios
 	visitasDiarias: async (req, res) => {
-		const loginsAcums = await baseDeDatos.obtieneTodosConOrden("loginsAcums", "fecha");
-		return res.json(loginsAcums);
+		const visitasDiarias = await baseDeDatos.obtieneTodosConOrden("visitasDiarias", "fecha");
+		return res.json(visitasDiarias);
 	},
 
 	// Productos
