@@ -267,7 +267,10 @@ module.exports = {
 
 			// Calificaciones de productos y Preferencia por productos
 			let cal = baseDeDatos.obtieneTodosPorCondicion("calRegistros", {usuario_id: usuario_id});
-			let ppp = baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id: usuario_id, ppp_id: pppOpcsObj.yaLaVi.id});
+			let ppp = baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {
+				usuario_id: usuario_id,
+				ppp_id: pppOpcsObj.yaLaVi.id,
+			});
 
 			// Espera las lecturas
 			[inactivos, prodsAprob, SE_pel, SE_col, SE_cap, cal, ppp] = await Promise.all([
@@ -349,7 +352,9 @@ module.exports = {
 			let linksInactivos = await baseDeDatos.obtieneTodosPorCondicion("links", condicion, include);
 
 			// Obtiene los productos
-			let productos = linksInactivos.length ? await FN_tablManten.obtieneProdsDeLinks(linksInactivos, usuario_id) : {LI: []};
+			let productos = linksInactivos.length
+				? await FN_tablManten.obtieneProdsDeLinks(linksInactivos, usuario_id)
+				: {LI: []};
 
 			// Fin
 			return productos;
@@ -467,7 +472,7 @@ module.exports = {
 
 			// Obtiene el status final, motivo_id, y comentario
 			const {statusFinal_id, motivo_id} = await FN.statusFinalMasMotivo({codigo, desaprueba, rclv, entidad, original, req});
-			const comentario = await procsFM.comentario({...req.body, motivo_id, statusFinal_id, entidad, id});
+			const comentario = await procsFM.comentario({...req.body, codigo, motivo_id, statusFinal_id, entidad, id});
 
 			// Más variables
 			const statusOriginal_id = original.statusRegistro_id;

@@ -16,16 +16,20 @@ body {
 
 	/* Otros */
 	--datosBreves: 220px;
+	--Calibri: 'Calibri', 'Trebuchet MS', 'sans-serif';
+	--Arial: 'Arial', 'Helvetica', 'sans-serif';
 }
 
 /* Formatos */
 body {
 	background: url("/publico/imagenes/Varios/Color-de-fondo.jpg"); background-size: cover; background-attachment: fixed;
-	height: var(--alturaViewPort);
-	width: 100vw;
+	height: var(--alturaViewPort); width: 100vw;
+
+	/* Fonts */
+	color: var(--azul-oscuro); font-family: var(--Calibri); font-size: 14px;
 }
 
-body, * {
+body * {
 	margin: 0px; padding: 0; box-sizing: border-box;
 	font-size: inherit; color: inherit; line-height: inherit;
 }
