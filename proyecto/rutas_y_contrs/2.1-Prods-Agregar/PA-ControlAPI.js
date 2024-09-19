@@ -105,6 +105,33 @@ module.exports = {
 			// Fin
 			return res.json();
 		},
+		obtieneElMensaje: (req, res) => {
+			// Variables
+			const {prodsNuevos, prodsYaEnBD} = req.session.desambiguar;
+			const cantNuevos = prodsNuevos.length;
+			const coincidencias = cantNuevos + prodsYaEnBD.length;
+
+			// Obtiene el mensaje
+			const mensaje =
+				"Encontramos " +
+				(coincidencias == 1
+					? "una sola coincidencia, que " + (cantNuevos == 1 ? "no" : "ya")
+					: (hayMas ? "muchas" : coincidencias) +
+					  " coincidencias" +
+					  (hayMas ? ". Te mostramos " + coincidencias : "") +
+					  (cantNuevos == coincidencias
+							? ", ninguna"
+							: cantNuevos
+							? ", de las cuales " + cantNuevos + " no"
+							: ", todas ya")) +
+				" está" +
+				(cantNuevos > 1 && cantNuevos < coincidencias ? "n" : "") +
+				" en nuestra BD.";
+			req.session.desambiguar.mensaje = mensaje;
+
+			// Fin
+			return res.json();
+		},
 	},
 	desambGuardar: {
 		// Actualiza Datos Originales
