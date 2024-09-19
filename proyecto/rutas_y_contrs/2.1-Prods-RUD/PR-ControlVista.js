@@ -59,7 +59,9 @@ module.exports = {
 		// Lecturas de BD
 		if (entidad == "capitulos") prodComb.capitulos = procsFM.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		let links = procesos.obtieneLinksDelProducto({entidad, id, usuario_id, autTablEnts, origen});
-		let interesDelUsuario = usuario_id ? procesos.obtieneInteresDelUsuario({usuario_id: usuario_id, entidad, entidad_id: id}) : "";
+		let interesDelUsuario = usuario_id
+			? procesos.obtieneInteresDelUsuario({usuario_id: usuario_id, entidad, entidad_id: id})
+			: "";
 		let yaCalificada = usuario_id
 			? baseDeDatos.obtienePorCondicion("calRegistros", {usuario_id: usuario_id, entidad, entidad_id: id}).then((n) => !!n)
 			: "";
@@ -171,7 +173,12 @@ module.exports = {
 			}
 
 			// Obtiene el producto 'Original' y 'Editado'
-			let [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, usuario_id, excluirInclude: true});
+			let [original, edicion] = await procsFM.obtieneOriginalEdicion({
+				entidad,
+				entId: id,
+				usuario_id,
+				excluirInclude: true,
+			});
 			const avatarEdicInicial = edicion.avatar;
 			if (original.capitulos) delete original.capitulos;
 
@@ -295,6 +302,7 @@ module.exports = {
 			const anchorEncab = true;
 			let califUsuario = await baseDeDatos.obtienePorCondicion("calRegistros", condicion, include);
 			if (!califUsuario) califUsuario = {};
+			const {statusAlineado} = await procsFM.statusAlineado({entidad, prodRclv: prodComb});
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
@@ -302,7 +310,7 @@ module.exports = {
 				...{entidad, id, familia: "producto", status_id},
 				...{entidadNombre, registro: prodComb, interesDelUsuario},
 				...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
-				...{bloqueDer, atributosTitulo, califUsuario},
+				...{bloqueDer, atributosTitulo, califUsuario, statusAlineado},
 				...{iconosMobile: true, iconoDL, iconoDB, anchorEncab},
 			});
 		},
