@@ -79,8 +79,15 @@ window.addEventListener("load", async () => {
 			DOM.resultado.classList.add(formatoVigente);
 		},
 		avanzar: () => {
+			// Formato
 			DOM.botonSubmit.classList.replace("verdeClaro", "verdeOscuro");
-			DOM.botonSubmit.innerHTML = resultados.cantProds ? "Desambiguar" : "Ingr. Man.";
+
+			// Contenido
+			let resultado = resultados.cantProds ? "Desambiguar" : "Ingr. Man.";
+			DOM.botonSubmit.innerHTML = resultado;
+			DOM.inputMetodo.value = resultado;
+
+			// Fin
 			return;
 		},
 		statusInicial: async function (mostrarIconoError) {
