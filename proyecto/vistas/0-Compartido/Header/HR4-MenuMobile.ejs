@@ -1,13 +1,4 @@
 <div id="menuMobile" class="mostrarClick menuForm menuFondo ocultar">
-	<!-- Búsqueda rápida -->
-	<div class="menuOpcion mm_busquedaRapida soloAngosto">
-		<i class="fa-solid icono fa-magnifying-glass mm_busquedaRapida"></i>
-		<span class="mm_busquedaRapida">Búsqueda rápida</span>
-	</div>
-	<% if (locals.tema != "institucional" || locals.codigo != "inicio") { %>
-		<hr class=" soloAngosto">
-	<% } %>
-
 	<% if (locals.tema != "consultas" && (locals.tema != "institucional" || locals.codigo != "inicio")) { %>
 		<!-- Quiero elegir una película -->
 		<a href="/consultas" class="menuOpcion">
@@ -18,6 +9,16 @@
 		</a>
 		<hr>
 	<% } %>
+
+	<!-- Búsqueda rápida -->
+	<div class="menuOpcion mm_busquedaRapida soloAngosto">
+		<i class="fa-solid icono fa-magnifying-glass mm_busquedaRapida"></i>
+		<span class="mm_busquedaRapida">Búsqueda rápida</span>
+	</div>
+	<% if (locals.tema != "institucional" || locals.codigo != "inicio") { %>
+		<hr class=" soloAngosto">
+	<% } %>
+
 	<!-- Demostración -->
 	<div class="menuOpcion mm_demo ocultar">
 		<i class="fa-solid fa-play icono mm_demo"></i>
