@@ -1,7 +1,8 @@
 "use strict";
 
 module.exports = {
-	pelisPublico: async (req, res) => {
+	// Productos
+	prodsPorPublico: async (req, res) => {
 		// Variables
 		const publicos = ["mayores", "familia", "menores"];
 		let cfc = {};
@@ -23,7 +24,7 @@ module.exports = {
 		// Fin
 		return res.json([{cfc, vpc}, publicos]);
 	},
-	pelisCfcVpc: async (req, res) => {
+	prodsCfcVpc: async (req, res) => {
 		// Variables
 		let productos = [];
 
@@ -45,7 +46,7 @@ module.exports = {
 		// Fin
 		return res.json({aprob, pend});
 	},
-	pelisEpocaEstreno: async (req, res) => {
+	prodsPorEpocaEstr: async (req, res) => {
 		// Variables
 		const epocasInverso = [...epocasEstreno].reverse();
 		const condicion = {statusRegistro_id: aprobados_ids, anoEstreno: {[Op.ne]: null}, linksGral: {[Op.gt]: 0}};
@@ -66,6 +67,27 @@ module.exports = {
 		// Fin
 		return res.json({cfc, vpc});
 	},
+
+	// RCLVs
+	rclvsRangosSinEfems: async (req, res) => {
+		// Variables
+		let fechas = await obtieneEfemerides();
+
+		// Obtiene rangos entre efemérides
+		fechas.forEach((fecha, i) => {
+			const sig = i + 1 < fechas.length ? i + 1 : 0; // si se llegó al final, empieza desde el comienzo
+			fecha.rango = fechas[sig].id - fecha.id;
+			if (fecha.rango < 0) fecha.rango += 366; // excepción para el último registro
+		});
+
+		// Filtra los registros
+		fechas = fechas.filter((n) => n.rango > 4);
+
+		// Fin
+		return res.json(fechas);
+	},
+
+	// Links
 	linksVencim: async (req, res) =>
 		res.json({cantLinksVencPorSem, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsEstandar}),
 	linksPorProv: async (req, res) => {
@@ -83,23 +105,6 @@ module.exports = {
 
 		// Fin
 		return res.json(provs);
-	},
-	rangosSinEfs: async (req, res) => {
-		// Variables
-		let fechas = await obtieneEfemerides();
-
-		// Obtiene rangos entre efemérides
-		fechas.forEach((fecha, i) => {
-			const sig = i + 1 < fechas.length ? i + 1 : 0; // si se llegó al final, empieza desde el comienzo
-			fecha.rango = fechas[sig].id - fecha.id;
-			if (fecha.rango < 0) fecha.rango += 366; // excepción para el último registro
-		});
-
-		// Filtra los registros
-		fechas = fechas.filter((n) => n.rango > 4);
-
-		// Fin
-		return res.json(fechas);
 	},
 };
 let obtieneEfemerides = async () => {

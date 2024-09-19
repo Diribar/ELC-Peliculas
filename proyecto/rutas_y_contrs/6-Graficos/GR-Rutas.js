@@ -10,21 +10,21 @@ const usRolAutTablEnts = require("../../middlewares/porUsuario/usRolAutTablEnts"
 const combinados = [usAltaTerm, usRolAutTablEnts];
 
 // API
-router.get("/api/peliculas-cfc-vpc", API.pelisCfcVpc);
-router.get("/api/peliculas-publico", API.pelisPublico);
-router.get("/api/peliculas-epoca-estreno", API.pelisEpocaEstreno);
+router.get("/api/peliculas-cfc-vpc", API.prodsCfcVpc);
+router.get("/api/peliculas-publico", API.prodsPorPublico);
+router.get("/api/peliculas-epoca-estreno", API.prodsPorEpocaEstr);
+router.get("/api/rclvs-rangos-sin-efemerides", API.rclvsRangosSinEfems);
 router.get("/api/links-vencimiento", API.linksVencim);
 router.get("/api/links-por-proveedor", API.linksPorProv);
-router.get("/api/rangos-sin-efemerides", API.rangosSinEfs);
 
 // Vistas
-router.get("/usuarios-visitas-diarias", combinados, vista.pelisCfcVpc);
-router.get("/peliculas-cfc-vpc", combinados, vista.pelisCfcVpc);
-router.get("/peliculas-publico", combinados, vista.pelisPublico);
-router.get("/peliculas-epoca-estreno", combinados, vista.pelisEpocaEstreno);
+router.get("/usuarios-visitas-diarias", combinados, vista.visitasDiarias);
+router.get("/peliculas-cfc-vpc", combinados, vista.prodsCfcVpc);
+router.get("/peliculas-publico", combinados, vista.prodsPorPublico);
+router.get("/peliculas-epoca-estreno", combinados, vista.prodsPorEpocaEstr);
+router.get("/rclvs-rangos-sin-efemerides", combinados, vista.rclvsRangosSinEfems);
 router.get("/links-vencimiento", combinados, vista.linksVencim);
 router.get("/links-por-proveedor", combinados, vista.linksPorProv);
-router.get("/rangos-sin-efemerides", combinados, vista.rangosSinEfs);
 
 // Fin
 module.exports = router;

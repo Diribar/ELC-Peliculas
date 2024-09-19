@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Obtiene información del backend
-	const datos = await fetch("/graficos/api/rangos-sin-efemerides").then((n) => n.json());
+	const datos = await fetch("/graficos/api/rclvs-rangos-sin-efemerides").then((n) => n.json());
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart", "bar"]});

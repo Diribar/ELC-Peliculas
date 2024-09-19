@@ -1,51 +1,53 @@
 "use strict";
 
 module.exports = {
-	// Películas
-	pelisCfcVpc: (req, res) => {
-		return res.render("CMP-0Estructura", {
+	// Usuarios
+	visitasDiarias: (req, res) =>
+		res.render("CMP-0Estructura", {
 			tema: "gráficos",
-			codigo: "pelisCfcVpc",
+			codigo: "visitasDiarias",
+			titulo: "Visitas Diarias",
+		}),
+
+	// Productos
+	prodsCfcVpc: (req, res) =>
+		res.render("CMP-0Estructura", {
+			tema: "gráficos",
+			codigo: "prodsCfcVpc",
 			titulo: "Películas por Fe Católica / Valores",
-		});
-	},
-	pelisPublico: (req, res) => {
-		return res.render("CMP-0Estructura", {
+		}),
+	prodsPorPublico: (req, res) =>
+		res.render("CMP-0Estructura", {
 			tema: "gráficos",
-			codigo: "pelisPublico",
+			codigo: "prodsPorPublico",
 			titulo: "Películas por Público",
-		});
-	},
-	pelisEpocaEstreno: (req, res) => {
-		return res.render("CMP-0Estructura", {
+		}),
+	prodsPorEpocaEstr: (req, res) =>
+		res.render("CMP-0Estructura", {
 			tema: "gráficos",
-			codigo: "pelisEpocaEstreno",
+			codigo: "prodsPorEpocaEstr",
 			titulo: "Películas por Época de Estreno",
-		});
-	},
+		}),
+
+	// RCLVs
+	rclvsRangosSinEfems: (req, res) =>
+		res.render("CMP-0Estructura", {
+			tema: "gráficos",
+			codigo: "rclvsRangosSinEfems",
+			titulo: "Rangos sin Efemérides",
+		}),
 
 	// Links
-	linksVencim: (req, res) => {
-		return res.render("CMP-0Estructura", {
+	linksVencim: (req, res) =>
+		res.render("CMP-0Estructura", {
 			tema: "gráficos",
 			codigo: "linksVencim",
 			titulo: "Vencimiento Semanal de Links",
-		});
-	},
-	linksPorProv: (req, res) => {
-		return res.render("CMP-0Estructura", {
+		}),
+	linksPorProv: (req, res) =>
+		res.render("CMP-0Estructura", {
 			tema: "gráficos",
 			codigo: "linksPorProv",
 			titulo: "Cantidad de Links por Proveedor",
-		});
-	},
-
-	// Otros
-	rangosSinEfs: (req, res) => {
-		return res.render("CMP-0Estructura", {
-			tema: "gráficos",
-			codigo: "rangosSinEfs",
-			titulo: "Rangos sin Efemérides",
-		});
-	},
+		}),
 };
