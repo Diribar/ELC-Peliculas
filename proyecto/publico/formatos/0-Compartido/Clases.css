@@ -14,7 +14,6 @@
 .fa-circle-check, .fa-circle-xmark, .fa-circle-left,
 .fa-circle-right {background: var(--backIcono); border-color: var(--backIcono);}
 .fa-circle-check, .fa-solid.fa-heart, .fa-chart-simple.fa-rotate-90.true {color: var(--verde-oscuro);}
-/* .fa-heart-circle-check {color: var(--azul-oscuro);} */
 .fa-circle-xmark, .fa-trash-can, .fa-heart-circle-xmark {color: var(--rojo-oscuro);}
 
 /* Inactivo */

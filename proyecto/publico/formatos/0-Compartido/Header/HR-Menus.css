@@ -1,7 +1,7 @@
 header {
 	.menuForm {
 		/* Formato de Menús */
-		position: absolute; width: max-content; color: var(--azul-oscuro);
+		position: absolute; width: max-content;
 		&:not(:has(#muestraResultados)) {border: 1px solid rgba(0,0,0,.15);}
 		&.menuFondo {padding: 4px 0; border-radius: 10px; background: var(--gris-claro);}
 

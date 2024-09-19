@@ -1,41 +1,83 @@
-/* Variables */
-body {
-	/* Ancho */
-	--anchoImgDer: 32vw;
-	--anchoCuerpo: calc(100vw - var(--anchoImgDer));
-	/* Alto */
-	--altoHeader: clamp(52px, calc(var(--alturaViewPort) * 0.08), 60px);
-	--altoMain: calc(var(--alturaViewPort) - var(--altoHeader));
-	--altoCuerpo: calc(var(--altoMain) - var(--altoFooter));
-	--altoTituloPrincipal: 37px;
-	--altoCuerpoMenosTitulo: calc(var(--altoCuerpo) - var(--altoTituloPrincipal));
-
-	/* Desplazamiento horizontal */
-	--altoBoton: 200px;
-	--anchoBoton: 290px;
-
-	/* Otros */
-	--datosBreves: 220px;
-	--Calibri: 'Calibri', 'Trebuchet MS', 'sans-serif';
-	--Arial: 'Arial', 'Helvetica', 'sans-serif';
-}
-
 /* Formatos */
-body {
-	background: url("/publico/imagenes/Varios/Color-de-fondo.jpg"); background-size: cover; background-attachment: fixed;
-	height: var(--alturaViewPort); width: 100vw;
+html {
+	font-size: 14px; /* debe estar en 'html', porque es de donde donde toma referencia el 'rem' */
 
-	/* Fonts */
-	color: var(--azul-oscuro);
-}
+	/* Colores */
+	body {
+		--amarillo-claro:rgb(255,242,204);
+		--amarillo-intermedio: #fcff82;
+		--amarillo-oscuro: rgb(255, 230, 153);
+		--celeste-claro: rgb(220, 230, 242);
+		--celeste-oscuro: #C7D7EA;
+		--gris-claro: rgb(242,242,242);
+		--rojo-claro: #ffdbdb;
+		--verde-claro: rgb(217, 223, 205);
 
-body, * {
-	margin: 0px; padding: 0; box-sizing: border-box;
-	color: inherit; line-height: inherit;
-	font-family: var(--Calibri);
+		--gris-intermedio: rgb(200,200,200);
+		--verde-intermedio: rgb(188, 199, 167);
+
+		--gris-oscuro: rgb(100, 100, 100);
+		--gris-mas-oscuro: rgb(80, 80, 80);
+		--azul-oscuro: rgb(37,64,97);
+		--azul-frances: rgb(31,73,125);
+		--naranja-oscuro: #F57C00;
+		--rojo-oscuro: firebrick;
+		--verde-oscuro:rgb(79,98,40);
+		--verde-ingles: #009879;
+		--marron: rgb(102,51,0);
+		--usuarios: #757575;
+
+		/* Colores por Tema */
+		--colorAyuda: white;
+		--backAyuda: var(--gris-oscuro);
+		--bordeAyuda: var(--amarillo-claro);
+		--colorTitulo: var(--gris-oscuro);
+		--backTitulo: var(--amarillo-claro);
+		--bordeTitulo: var(--naranja-oscuro);
+		--colorMensajeError: var(--rojo-oscuro);
+		--backMensajeError: var(--amarillo-claro);
+		--backIcono: white;
+		--backFlechas: var(--celeste-oscuro);
+		--bordeFlechas: var(--azul-oscuro);
+		--backComandos: var(--verde-oscuro);
+	}
+
+	/* Otras variables */
+	body {
+		/* Ancho */
+		--anchoImgDer: 32vw;
+		--anchoCuerpo: calc(100vw - var(--anchoImgDer));
+		/* Alto */
+		--altoHeader: clamp(52px, calc(var(--alturaViewPort) * 0.08), 60px);
+		--altoMain: calc(var(--alturaViewPort) - var(--altoHeader));
+		--altoCuerpo: calc(var(--altoMain) - var(--altoFooter));
+		--altoTituloPrincipal: 37px;
+		--altoCuerpoMenosTitulo: calc(var(--altoCuerpo) - var(--altoTituloPrincipal));
+
+		/* Desplazamiento horizontal */
+		--altoBoton: 200px;
+		--anchoBoton: 290px;
+
+		/* Otros */
+		--datosBreves: 220px;
+		--Calibri: 'Calibri', 'Trebuchet MS', 'sans-serif';
+		--Arial: 'Arial', 'Helvetica', 'sans-serif';
+	}
+	body {
+		background: url("/publico/imagenes/Varios/Color-de-fondo.jpg"); background-size: cover; background-attachment: fixed;
+		height: var(--alturaViewPort); width: 100vw;
+		color: var(--azul-oscuro);
+		line-height: 1;
+	}
+	body, * {
+		margin: 0px; padding: 0; box-sizing: border-box;
+	}
+	body * {
+		font-family: var(--Calibri);
+		color: inherit; line-height: inherit;
+		&:focus {outline-color: black;}
+	}
 }
-body *:focus {outline-color: black;}
-* {font-size: 14px;}
 
 /* Laptop */
 @media (orientation: landscape) and (height > 600px) {
