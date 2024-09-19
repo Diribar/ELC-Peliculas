@@ -64,21 +64,28 @@ module.exports = {
 			// Fin
 			return resultado;
 		},
-		configCons_url: (req, res) => {
+		configCons_url: async function (req, res) {
 			// Variables
 			const configCons = req.query;
 			const usuario_id = req.session.usuario ? req.session.usuario.id : null;
+			const cabeceras = await this.cabeceras(usuario_id);
+			const configCons_id = configCons.id;
+
+			// Acciones si existe el configCons_id
+			if (configCons_id) {
+				// Si no es una configuración viable, la elimina
+				if (!cabeceras.find((n) => n.id == configCons_id)) delete configCons.id;
+
+				// Guarda la 'configCons_id' en el usuario
+				if (usuario_id) {
+					baseDeDatos.actualizaPorId("usuarios", usuario_id, {configCons_id});
+					req.session.usuario = {...req.session.usuario, configCons_id};
+				}
+			}
 
 			// Guarda la configuracion en cookies y session
 			req.session.configCons = configCons;
 			res.cookie("configCons", configCons, {maxAge: unDia});
-
-			// Guarda la 'configCons_id' en el usuario
-			const configCons_id = configCons.id;
-			if (configCons_id && usuario_id) {
-				baseDeDatos.actualizaPorId("usuarios", usuario_id, {configCons_id});
-				req.session.usuario = {...req.session.usuario, configCons_id};
-			}
 
 			// Fin
 			return;
