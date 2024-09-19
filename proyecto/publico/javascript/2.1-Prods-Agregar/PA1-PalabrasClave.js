@@ -8,17 +8,15 @@ window.addEventListener("load", async () => {
 		resultado: document.querySelector("#dataEntry #resultado"),
 
 		// Datos
-		inputs: document.querySelectorAll(".inputError .input"),
+		inputPalsClave: document.querySelector("#dataEntry input[name='palabrasClave']"),
+		inputMetodo: document.querySelector("#dataEntry input[name='metodo']"),
 
-		// OK/Errores
-		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
-		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
-		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
+		// OK/Error
+		iconoError: document.querySelector(".inputError .fa-circle-xmark"),
+		iconoOK: document.querySelector(".inputError .fa-circle-check"),
+		mensajeError: document.querySelector(".inputError .mensajeError"),
 	};
-	let v = {
-		campos: Array.from(DOM.inputs).map((n) => n.name),
-		resultados: {},
-	};
+	let resultados = {};
 
 	// FUNCIONES *******************************************
 	const FN = {
@@ -34,7 +32,7 @@ window.addEventListener("load", async () => {
 
 			// Validar errores
 			const datosUrl = e.target.name + "=" + encodeURIComponent(e.target.value);
-			await FN.muestraLosErrores(datosUrl, true);
+			await FN.muestraElError(datosUrl, true);
 
 			// Actualiza botón Submit
 			FN.actualizaBotonSubmit();
@@ -56,7 +54,7 @@ window.addEventListener("load", async () => {
 		},
 		muestraResultados: async () => {
 			// Variables
-			let {cantProds, cantProdsNuevos, hayMas} = v.resultados;
+			let {cantProds, cantProdsNuevos, hayMas} = resultados;
 			// Determinar oracion y formato
 			let formatoVigente = "resultadoInvalido";
 			let oracion;
@@ -82,51 +80,44 @@ window.addEventListener("load", async () => {
 		},
 		avanzar: () => {
 			DOM.botonSubmit.classList.replace("verdeClaro", "verdeOscuro");
-			DOM.botonSubmit.innerHTML = v.resultados.cantProds ? "Desambiguar" : "Ingr. Man.";
+			DOM.botonSubmit.innerHTML = resultados.cantProds ? "Desambiguar" : "Ingr. Man.";
 			return;
 		},
 		statusInicial: async function (mostrarIconoError) {
-			//Busca todos los valores
-			let datosUrl = "entidad=" + (v.entidad ? v.entidad : "");
-			DOM.inputs.forEach((input, i) => {
-				// Agrega el campo y el valor
-				datosUrl += "&" + input.name + "=" + encodeURIComponent(input.value);
-			});
+			// Agrega el campo y el valor
+			const datosUrl = "&" + DOM.inputPalsClave.name + "=" + encodeURIComponent(DOM.inputPalsClave.value);
 
 			// Consecuencias de las validaciones de errores
-			await this.muestraLosErrores(datosUrl, mostrarIconoError);
+			await this.muestraElError(datosUrl, mostrarIconoError);
 			this.actualizaBotonSubmit();
 
 			// Fin
 			return;
 		},
-		muestraLosErrores: async (datos, mostrarIconoError) => {
+		muestraElError: async (datos, mostrarIconoError) => {
 			const errores = await fetch(rutas.validaDatos + datos).then((n) => n.json());
-			v.campos.forEach((campo, indice) => {
-				if (errores[campo] !== undefined) {
-					DOM.mensajesError[indice].innerHTML = errores[campo];
-					// Acciones en función de si hay o no mensajes de error
-					errores[campo]
-						? DOM.iconosError[indice].classList.add("error")
-						: DOM.iconosError[indice].classList.remove("error");
-					errores[campo] && mostrarIconoError
-						? DOM.iconosError[indice].classList.remove("ocultar")
-						: DOM.iconosError[indice].classList.add("ocultar");
-					errores[campo]
-						? DOM.iconosOK[indice].classList.add("ocultar")
-						: DOM.iconosOK[indice].classList.remove("ocultar");
+			const {palabrasClave: error} = errores;
+
+			if (error !== undefined) {
+				DOM.mensajeError.innerHTML = error;
+				// Acciones en función de si hay o no mensajes de error
+				if (error) {
+					DOM.iconoError.classList.add("error");
+					DOM.iconoOK.classList.add("ocultar");
+					mostrarIconoError ? DOM.iconoError.classList.remove("ocultar") : DOM.iconoError.classList.add("ocultar");
+				} else {
+					DOM.iconoError.classList.remove("error");
+					DOM.iconoOK.classList.remove("ocultar");
+					DOM.iconoError.classList.add("ocultar");
 				}
-			});
+			}
+
 			// Fin
 			return;
 		},
 		actualizaBotonSubmit: () => {
-			// Detecta la cantidad de 'errores' ocultos
-			let hayErrores = Array.from(DOM.iconosError)
-				.map((n) => n.className)
-				.some((n) => n.includes("error"));
-			// Consecuencias
-			hayErrores ? DOM.botonSubmit.classList.add("inactivo") : DOM.botonSubmit.classList.remove("inactivo");
+			const hayError = DOM.iconoError.className.includes("error");
+			hayError ? DOM.botonSubmit.classList.add("inactivo") : DOM.botonSubmit.classList.remove("inactivo");
 		},
 		submitForm: async function (e) {
 			e.preventDefault();
@@ -139,8 +130,8 @@ window.addEventListener("load", async () => {
 				// Obtiene los resultados
 				DOM.botonSubmit.classList.add("inactivo");
 				DOM.botonSubmit.innerHTML = "Buscando";
-				const palabrasClave = FN.palabrasClave(DOM.inputs[0].value);
-				v.resultados = await fetch(rutas.cantProductos + palabrasClave).then((n) => n.json());
+				const palabrasClave = FN.palabrasClave(DOM.inputPalsClave.value);
+				resultados = await fetch(rutas.cantProductos + palabrasClave).then((n) => n.json());
 
 				// Muestra los resultados
 				FN.muestraResultados();
@@ -152,39 +143,25 @@ window.addEventListener("load", async () => {
 			}
 
 			// Acciones si el botón está listo para avanzar
-			if (DOM.botonSubmit.className.includes("verdeOscuro"))
-				return v.resultados.cantProds
-					? DOM.form.submit() // Desambiguar
-					: (location.href = "ingreso-manual"); // Ingreso Manual
+			if (DOM.botonSubmit.className.includes("verdeOscuro")) return DOM.form.submit(); // post
 		},
 	};
 
 	// ADD EVENT LISTENERS *********************************
-	DOM.form.addEventListener("keypress", (e) => {
-		keyPressed(e);
-		return;
-	});
-
+	DOM.form.addEventListener("keypress", (e) => keyPressed(e));
 	DOM.form.addEventListener("input", async (e) => {
-		// Validaciones estándar
-		amplio.restringeCaracteres(e, true);
-
-		// Validaciones particulares
-		await FN.particsInput(e);
+		amplio.restringeCaracteres(e, true); // Validaciones estándar
+		await FN.particsInput(e); // Validaciones particulares
 
 		// Fin
 		return;
 	});
 
 	// Submit
-	DOM.form.addEventListener("submit", async (e) => {
-		FN.submitForm(e);
-	});
-	DOM.botonSubmit.addEventListener("click", async (e) => {
-		FN.submitForm(e);
-	});
-	DOM.botonSubmit.addEventListener("keydown", async (e) => {
-		if (e.key == "Enter" || e.key == "Space") FN.submitForm(e);
+	DOM.form.addEventListener("submit", (e) => FN.submitForm(e));
+	DOM.botonSubmit.addEventListener("click", (e) => FN.submitForm(e));
+	DOM.form.addEventListener("keydown", (e) => {
+		if (e.key == "Enter") FN.submitForm(e);
 	});
 
 	// STATUS INICIAL *************************************

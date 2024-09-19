@@ -481,7 +481,7 @@ module.exports = {
 			// Restricciones si está recién creado
 			if (
 				prodRclv.statusRegistro_id == creado_id && // está en status 'creado'
-				![revId, usAutom_id].includes(prodRclv.statusRegistro_id) && // no fue creado por el usuario ni en forma automática
+				![revId, usAutom_id].includes(prodRclv.creadoPor_id) && // no fue creado por el usuario ni en forma automática
 				prodRclv.statusSugeridoEn > haceUnaHora // fue creado hace menos de una hora
 			)
 				return false;

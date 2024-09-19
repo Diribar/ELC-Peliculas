@@ -54,7 +54,7 @@ module.exports = {
 		const mostrarRclvs = Object.values(rclvs).reduce((acum, i) => acum + i.length, 0);
 
 		// Va a la vista
-		//return res.send(prodsRclvs);
+		// return res.send(prods);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Tablero de Revisión"},
 			...{prodsRclvs, prods, rclvs, sigProd, origen: "TE", dataEntry, mostrarRclvs},
