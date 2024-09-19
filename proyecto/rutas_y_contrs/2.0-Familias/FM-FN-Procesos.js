@@ -4,9 +4,10 @@ const validacsFM = require("./FM-FN-Validar");
 module.exports = {
 	// Header
 	quickSearch: {
-		condicion: (palabras, campos, usuario_id, original) => {
+		condicion: ({palabras, campos, usuario_id, original, omitirUserId}) => {
 			// Variables
 			let todasLasPalabrasEnAlgunCampo = [];
+			let condicStatusEdicion;
 
 			// Convierte las palabras en un array
 			palabras = palabras.split(" ");
@@ -38,18 +39,25 @@ module.exports = {
 			const condicPalabras = {[Op.or]: todasLasPalabrasEnAlgunCampo};
 
 			// Se fija que el registro esté en statusAprobado, o status 'creados_ids' y por el usuario
-			const condicStatus = {
-				[Op.or]: [
-					{statusRegistro_id: aprobados_ids},
-					{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: usuario_id}]},
-				],
-			};
-
+			if (original)
+				condicStatusEdicion = omitirUserId
+					? {statusRegistro_id: activos_ids}
+					: {
+							[Op.or]: [
+								{statusRegistro_id: aprobados_ids},
+								{[Op.and]: [{statusRegistro_id: creado_id}, {creadoPor_id: usuario_id}]},
+							],
+					  };
 			// Se fija que una edición sea del usuario
-			const condicEdicion = {editadoPor_id: usuario_id};
+			else if (!omitirUserId) condicStatusEdicion = {editadoPor_id: usuario_id};
+
+			// Consolida las condiciones
+			const condicConsolidada = condicStatusEdicion
+				? {[Op.and]: [condicPalabras, condicStatusEdicion]} // si existen las dos
+				: condicPalabras;
 
 			// Fin
-			return {[Op.and]: [condicPalabras, original ? condicStatus : condicEdicion]};
+			return condicConsolidada;
 		},
 		registros: async (condicion, dato) => {
 			// Obtiene los registros
