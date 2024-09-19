@@ -35,24 +35,29 @@ module.exports = {
 		const original = true;
 		let datos = [];
 		let resultados = [];
+		let campos;
 
 		// Armado de la variable 'datos' para productos originales
-		for (let entidad of entidadesProd) datos.push({familia: "producto", entidad, campos: camposProds, original});
+		campos = camposProds;
+		for (let entidad of entidadesProd) datos.push({familia: "producto", entidad, campos, original});
 
 		// Armado de la variable 'datos' para rclvs originales
 		for (let entidad of entidadesRCLV) {
-			const campos = ["personajes", "hechos"].includes(entidad) ? camposRclvs : ["nombre"];
+			campos = ["personajes", "hechos"].includes(entidad) ? camposRclvs : ["nombre"];
 			datos.push({familia: "rclv", entidad, campos, original});
 		}
 
 		// Armado de la variable 'datos' para ediciones
-		datos.push({familia: "producto", entidad: "prodsEdicion", campos: camposProds, include: variables.entidades.asocProds}); // productos
-		datos.push({familia: "rclv", entidad: "rclvsEdicion", campos: camposRclvs, include: variables.entidades.asocRclvs}); // rclvs
+		campos = camposProds;
+		datos.push({familia: "producto", entidad: "prodsEdicion", campos, include: variables.entidades.asocProds}); // productos
+		campos = camposRclvs;
+		datos.push({familia: "rclv", entidad: "rclvsEdicion", campos, include: variables.entidades.asocRclvs}); // rclvs
 
 		// Rutina
 		for (let dato of datos) {
 			// Obtiene las condiciones
-			const condicion = procsFM.quickSearch.condicion(palabras, dato.campos, usuario_id, dato.original);
+			campos = dato.campos;
+			const condicion = procsFM.quickSearch.condicion({palabras, campos, usuario_id, original: dato.original});
 
 			// Obtiene los registros que cumplen las condiciones
 			resultados.push(
