@@ -33,6 +33,7 @@ let amplio = {
 				// Elimina - Limita el uso del teclado solamente a los caracteres que nos interesan
 				valor = valor
 					.replace(/[^a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/gi, "")
+					.replace(/[\t\n\r]/g, " ") // previene el uso de 'tab' y 'return'
 					.replace(/[ ]/g, " ") // previene el uso de espacios 'raros'
 					.replace(/ +/g, " "); // previene repetición de espacios
 
@@ -299,3 +300,12 @@ let contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
 	// Fin
 	return;
 };
+
+// Variables del url
+const {pathname} = location;
+const entidad = new URL(location.href).searchParams.get("entidad");
+const id = new URL(location.href).searchParams.get("id");
+
+// Variables fijas
+const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+const unMinuto = 60 * 1000;

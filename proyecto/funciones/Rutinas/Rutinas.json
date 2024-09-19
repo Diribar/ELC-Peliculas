@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 14/sep",
-	"HoraUTC": "8:27",
+	"FechaUTC": "Mié. 18/sep",
+	"HoraUTC": "11:05",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 9/sep",
-	"HoraSemUTC": "0:28",
-	"semanaUTC": 37,
+	"FechaSemUTC": "Lun. 16/sep",
+	"HoraSemUTC": "11:25",
+	"semanaUTC": 38,
 	"SemanaUTC": "NO",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"12-sep-24": {},
-		"13-sep-24": {"leyenda": "Hoy recordamos a san Juan Crisóstomo", "entidad": "personajes", "id": 215},
-		"14-sep-24": {},
-		"15-sep-24": {"leyenda": "Hoy recordamos al padre Pino Puglisi, beato", "entidad": "personajes", "id": 140},
-		"16-sep-24": {}
+		"16-sep-24": {},
+		"17-sep-24": {"leyenda": "Hoy recordamos a santa Hildegard von Bingen", "entidad": "personajes", "id": 77},
+		"18-sep-24": {"leyenda": "Hoy recordamos a san José de Cupertino", "entidad": "personajes", "id": 85},
+		"19-sep-24": {},
+		"20-sep-24": {"leyenda": "Hoy recordamos a Andrés Kim y compañeros mártires, santos", "entidad": "personajes", "id": 233}
 	}
 }

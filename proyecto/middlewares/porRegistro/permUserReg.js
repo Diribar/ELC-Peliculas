@@ -76,7 +76,7 @@ module.exports = async (req, res, next) => {
 		else if (v.baseUrl != "/revision") {
 			informacion = {
 				mensajes: [
-					"Este registro todavía no está revisado.",
+					"Este registro fue creado por otro usuario y todavía no está revisado.",
 					"En caso de ser aprobado cuando se lo revise, estará disponible.",
 				],
 				iconos: [v.vistaEntendido],

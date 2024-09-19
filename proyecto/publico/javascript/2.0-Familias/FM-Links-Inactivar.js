@@ -67,8 +67,6 @@ window.addEventListener("load", () => {
 });
 
 // Variables
-const prodEntidad = new URL(location.href).searchParams.get("entidad");
-const prodId = new URL(location.href).searchParams.get("id");
-const condicion = "?prodEntidad=" + prodEntidad + "&prodId=" + prodId;
+const condicion = "?prodEntidad=" + entidad + "&prodId=" + id;
 const revision = location.pathname.includes("/revision/");
 const rutaEliminar = revision ? "/revision/api/link/alta-baja" : "/links/api/inactiva-o-elimina/";

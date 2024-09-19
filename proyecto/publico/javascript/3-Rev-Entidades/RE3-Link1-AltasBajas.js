@@ -69,7 +69,7 @@ window.addEventListener("load", () => {
 				}
 
 			// Redirecciona al sigProd
-			url = "?entidad=" + prodEntidad + "&id=" + prodId;
+			url = "?entidad=" + entidad + "&id=" + id;
 			sigProd = await fetch(rutaSigProd + url).then((n) => n.json());
 			return sigProd
 				? (location.href =
@@ -83,9 +83,7 @@ window.addEventListener("load", () => {
 });
 
 // Variables repetidas con 'FM-Links-Inactivar'
-// const prodEntidad = new URL(location.href).searchParams.get("entidad");
-// const prodId = new URL(location.href).searchParams.get("id");
-// const condicion = "?prodEntidad=" + prodEntidad + "&prodId=" + prodId;
+// const condicion = "?prodEntidad=" + entidad + "&prodId=" + id;
 
 // Variables
 const rutaAltaBaja = "/revision/api/link/alta-baja/";

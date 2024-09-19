@@ -1,8 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const entidad = new URL(location.href).searchParams.get("entidad");
-	const prodId = new URL(location.href).searchParams.get("id");
 	let DOM = {
 		dondeUbicarLosResultados: document.querySelector("#calificacionesResultados"),
 		datosLargos: document.querySelector("#cuerpo #datos #datosLargos"),
@@ -12,7 +10,7 @@ window.addEventListener("load", async () => {
 
 	// Obtiene las calificaciones
 	const ruta = "/producto/api/obtiene-calificaciones/";
-	const calificaciones = await fetch(ruta + "?entidad=" + entidad + "&id=" + prodId).then((n) => n.json());
+	const calificaciones = await fetch(ruta + "?entidad=" + entidad + "&id=" + id).then((n) => n.json());
 
 	// Resultados de la calificación
 	let resultados = "Gral.: <span>" + parseInt(calificaciones[0].valores[3]) + "%</span>";
