@@ -141,7 +141,6 @@ module.exports = {
 		// Variables
 		let prodsNuevos = [];
 		let prodsYaEnBD = [];
-		let mensaje;
 
 		// Funciones
 		let agregaInfoDetalleParaColeccionesDesdeAPI = async () => {
@@ -265,31 +264,6 @@ module.exports = {
 			// Fin
 			return;
 		};
-		let mensajeFN = () => {
-			// Variables
-			const coincidencias = productos.length;
-			const cantNuevos = prodsNuevos && prodsNuevos.length ? prodsNuevos.length : 0;
-
-			// Obtiene el mensaje
-			mensaje =
-				"Encontramos " +
-				(coincidencias == 1
-					? "una sola coincidencia, que " + (cantNuevos == 1 ? "no" : "ya")
-					: (hayMas ? "muchas" : coincidencias) +
-					  " coincidencias" +
-					  (hayMas ? ". Te mostramos " + coincidencias : "") +
-					  (cantNuevos == coincidencias
-							? ", ninguna"
-							: cantNuevos
-							? ", de las cuales " + cantNuevos + " no"
-							: ", todas ya")) +
-				" está" +
-				(cantNuevos > 1 && cantNuevos < coincidencias ? "n" : "") +
-				" en nuestra BD.";
-
-			// Fin
-			return;
-		};
 		let agregaCapitulos = () => {
 			// Si no hay productosYaEnBD de colecciones, saltea la rutina
 			if (!prodsYaEnBD.filter((n) => n.entidad == "colecciones").length) return;
@@ -320,14 +294,11 @@ module.exports = {
 		// Averigua qué registros ya tenemos en nuestra base de datos y agrega info
 		if (productos.length) await agregaInfoDesdeBD();
 
-		// Genera la info en el formato '{prodsNuevos, prodsYaEnBD, mensaje}'
-		mensajeFN();
-
 		// Agrega capitulos
 		if (prodsYaEnBD && prodsYaEnBD.length) agregaCapitulos();
 
 		// Fin
-		return {prodsNuevos, prodsYaEnBD, mensaje};
+		return {prodsNuevos, prodsYaEnBD};
 	},
 };
 
