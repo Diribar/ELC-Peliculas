@@ -3,6 +3,7 @@
 // Variables
 const APIsTMDB = require("../../funciones/APIsTMDB");
 const procsComp = require("./PA-FN5-Compartidos");
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
 	// USO COMPARTIDO *********************
@@ -31,6 +32,48 @@ module.exports = {
 
 		// Fin
 		return;
+	},
+	prodsIMFA: async (palabras) => {
+		// Variables
+		const entidades = ["peliculas", "colecciones"];
+		const campos = ["nombreCastellano", "nombreOriginal"];
+		const omitirUserId = true;
+		const original = true;
+		let resultados = [];
+
+		// Rutina por entidad
+		for (let entidad of entidades) {
+			// Variables
+			const datos = {familia: "producto", entidad, campos};
+
+			// Obtiene las condiciones de palabras y status
+			console.log(50,{palabras, campos, original, omitirUserId});
+
+			let condicion = procsFM.quickSearch.condicion({palabras, campos, original, omitirUserId});
+
+			// Agrega la condición de que no provenga de 'TMDB'
+			condicion[Op.and].push({fuente: {[Op.ne]: "TMDB"}});
+
+			// Obtiene los registros que cumplen las condiciones
+			resultados.push(procsFM.quickSearch.registros(condicion, datos));
+		}
+		resultados = await Promise.all(resultados).then((n) => n.flat());
+
+		// Rutina por producto
+		if (resultados.length)
+			resultados.forEach((resultado, i) => {
+				resultados[i] = {
+					...resultado,
+					yaEnBD_id: resultado.id,
+					anoEstreno: resultado.anoEstreno,
+					epocaEstreno_id: epocasEstreno.find((n) => n.desde <= resultado.anoEstreno).id,
+					nombreCastellano: resultado.nombre,
+					entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(resultado.entidad),
+				};
+			});
+
+		// Fin
+		return resultados;
 	},
 	datosAdics: {
 		valsCheckBtn: (datos) => {
