@@ -5,14 +5,16 @@ window.addEventListener("load", async () => {
 
 	// Obtiene datos del BE
 	const datos = await fetch("/graficos/api/usuarios-visitas-diarias").then((n) => n.json());
-	const {visitasDiarias} = datos;
+	const {visitasDiarias, colores} = datos;
 
 	// Obtiene los colores
-	const grupos = Object.keys(cantidades).length;
-	let {colores: todosLosColores} = datos;
-	todosLosColores.splice(grupos);
-	const coloresRelleno = todosLosColores.map((n) => n[4]);
-	const coloresBorde = todosLosColores.map((n) => n[0]); // obtiene un color de cada familia
+	const color = {
+		logins: colores.azul,
+		usSinLogin: colores.celeste,
+		visitas: colores.naranja,
+	};
+	const coloresRelleno = Object.values(color).map((n) => n[1]);
+	const coloresBorde = Object.values(color).map((n) => n[3]);
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart", "bar"]});
@@ -29,9 +31,9 @@ window.addEventListener("load", async () => {
 			const {fecha, usLogueado: logins, usSinLogin, visitaSinUs: visitas} = visitaDiaria;
 			resultado.push([
 				fecha,
-				...[logins, "stroke-color: " + coloresRelleno[0]],
-				...[usSinLogin, "stroke-color: " + coloresRelleno[1]],
-				...[visitas, "stroke-color: " + coloresRelleno[2]],
+				...[logins, "stroke-color: " + coloresBorde[0]],
+				...[usSinLogin, "stroke-color: " + coloresBorde[1]],
+				...[visitas, "stroke-color: " + coloresBorde[2]],
 			]);
 
 			// Agrega las cantidades
@@ -54,7 +56,7 @@ window.addEventListener("load", async () => {
 				startup: true,
 			},
 			chartArea: {width: "80%", height: "70%"},
-			colors: [coloresBorde[0], coloresBorde[1], coloresBorde[2]],
+			colors: coloresRelleno,
 			//legend: "none",
 			hAxis: {
 				format: "decimal",
