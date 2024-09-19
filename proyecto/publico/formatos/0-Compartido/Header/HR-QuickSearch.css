@@ -4,7 +4,7 @@
 	muestraResultados a {min-width: 200px;}
 
 	.menuMostrar {
-		position: absolute; right: -7px; top: -3px; translate: 100%;
+		right: -7px; top: -3px; translate: 100%;
 		:is(input, #muestraResultados) {border: 1px solid var(--azul-oscuro); border-radius: 5px;}
 		input {padding: 4px 5px; font-size: 1.2rem; font-weight: bold;}
 

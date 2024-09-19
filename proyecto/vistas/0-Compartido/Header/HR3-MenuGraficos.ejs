@@ -1,6 +1,11 @@
 <% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
 	<!-- Todos los revisores o superior -->
-	<div class="ayudaMensMostrar menuMostrar menuFondo ocultar">
+	<div class="mostrarClick menuMostrar menuFondo ocultar">
+		<a href="/graficos/usuarios-visitas-diarias" class="menuOpcion">
+			<i class="fa-solid fa-chart-simple icono"></i>
+			<span>Usuarios - Visitas diarias</span>
+		</a>
+		<hr>
 		<a href="/graficos/peliculas-cfc-vpc" class="menuOpcion">
 			<i class="fa-solid fa-chart-pie icono"></i>
 			<span>Películas - CFC / VPC</span>
@@ -13,7 +18,7 @@
 			<i class="fa-solid fa-chart-simple icono"></i>
 			<span>Películas - Época de estreno</span>
 		</a>
-		<hr />
+		<hr>
 		<a href="/graficos/links-vencimiento" class="menuOpcion">
 			<i class="fa-solid fa-chart-simple icono"></i>
 			<span>Links - Vencimiento Semanal</span>
@@ -22,7 +27,7 @@
 			<i class="fa-solid fa-chart-pie icono"></i>
 			<span>Links - Por Proveedor</span>
 		</a>
-		<hr />
+		<hr>
 		<a href="/graficos/rangos-sin-efemerides" class="menuOpcion">
 			<i class="fa-solid fa-chart-simple icono"></i>
 			<span>RCLVs - Rangos sin Efemérides</span>

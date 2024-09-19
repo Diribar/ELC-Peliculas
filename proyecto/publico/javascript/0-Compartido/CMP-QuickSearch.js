@@ -2,10 +2,10 @@
 window.addEventListener("load", () => {
 	// DOM
 	let DOM = {
-		ayudaMensMostrar: document.querySelector("#busquedaRapida .ayudaMensMostrar"),
-		input: document.querySelector("#busquedaRapida .ayudaMensMostrar input"),
-		muestraResultados: document.querySelector("#busquedaRapida .ayudaMensMostrar #muestraResultados"),
-		escribiMas: document.querySelector("#busquedaRapida .ayudaMensMostrar #escribiMas"),
+		mostrarClick: document.querySelector("#busquedaRapida .mostrarClick"),
+		input: document.querySelector("#busquedaRapida .mostrarClick input"),
+		muestraResultados: document.querySelector("#busquedaRapida .mostrarClick #muestraResultados"),
+		escribiMas: document.querySelector("#busquedaRapida .mostrarClick #escribiMas"),
 	};
 	let posicion = null;
 
@@ -142,7 +142,7 @@ window.addEventListener("load", () => {
 		}
 
 		// Escape - Oculta el sector de muestraResultados
-		if (e.key == "Escape") DOM.ayudaMensMostrar.classList.add("ocultar");
+		if (e.key == "Escape") DOM.mostrarClick.classList.add("ocultar");
 	});
 	DOM.muestraResultados.addEventListener("mouseover", (e) => {
 		// Variables
