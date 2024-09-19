@@ -1,6 +1,7 @@
 /* Formatos */
 html {
 	font-size: 14px; /* debe estar en 'html', porque es de donde donde toma referencia el 'rem' */
+	line-height: 1;
 
 	/* Colores */
 	body {
@@ -67,14 +68,13 @@ html {
 		background: url("/publico/imagenes/Varios/Color-de-fondo.jpg"); background-size: cover; background-attachment: fixed;
 		height: var(--alturaViewPort); width: 100vw;
 		color: var(--azul-oscuro);
-		line-height: 1;
+		line-height: inherit;
 	}
 	body, * {
 		margin: 0px; padding: 0; box-sizing: border-box;
 	}
 	body * {
-		font-family: var(--Calibri);
-		color: inherit; line-height: inherit;
+		font-family: var(--Calibri); color: inherit;
 		&:focus {outline-color: black;}
 	}
 }
