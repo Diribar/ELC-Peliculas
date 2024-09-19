@@ -18,10 +18,6 @@ window.addEventListener("load", async () => {
 	const coloresRelleno = Object.values(color).map((n) => n[1]);
 	const coloresBorde = Object.values(color).map((n) => n[3]);
 
-	// Opciones del gráfico - Ticks en el eje horizontal
-	const cantTicks = 6;
-	const periodo = Math.trunc(clientesDiarios.length / cantTicks);
-
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart", "bar"]});
 	google.charts.setOnLoadCallback(drawGraphic);
@@ -36,7 +32,7 @@ window.addEventListener("load", async () => {
 			// Alimenta los datos del gráfico
 			const {fecha, usLogueado: logins, usSinLogin, visitaSinUs: visitas} = clientesDiario;
 			resultado.push([
-				!(i % periodo) ? fecha : "",
+				".." + fecha + "..",
 				...[logins, "stroke-color: " + coloresBorde[0]],
 				...[usSinLogin, "stroke-color: " + coloresBorde[1]],
 				...[visitas, "stroke-color: " + coloresBorde[2]],
@@ -59,30 +55,24 @@ window.addEventListener("load", async () => {
 
 		const data = google.visualization.arrayToDataTable(resultado);
 		const options = {
+			isStacked: true, // columnas apiladas
 			backgroundColor: "rgb(255,242,204)",
-			fontSize: 10,
+			fontSize: 14,
 			title: "Prom. Total: " + leyendaTitulo,
-			titleTextStyle: {color: "brown"},
-			legend: {position: "bottom", alignment: "center"},
-			animation: {
-				duration: 100,
-				easing: "out",
-				startup: true,
-			},
-			chartArea: {width: "80%", height: "50%", top: "15%"},
+			titleTextStyle: {color: "brown", fontSize: 18},
+			legend: {position: "bottom", textStyle: {fontSize: 12}},
+			chartArea: {left: "15%", right: "5%", top: "15%", bottom: "20%"}, // reemplaza el ancho y alto
 			colors: coloresRelleno,
-			hAxis:{maxAlternation:1,slantedText:false,
-				textStyle:{
-					fontSize: 20,
-
-				}
+			hAxis: {
+				maxAlternation: 1, // todos los valores en una misma fila
+				slantedText: false, // todos los valores en dirección horizontal
+				textStyle: {fontSize: 12},
 			},
 			vAxis: {
 				title: "Cantidad de personas",
 				fontSize: 20,
 				viewWindow: {min: 0},
 			},
-			isStacked: true, // columnas apiladas
 		};
 
 		// Hace visible el gráfico
