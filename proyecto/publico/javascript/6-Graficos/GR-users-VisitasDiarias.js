@@ -4,8 +4,7 @@ window.addEventListener("load", async () => {
 	let cantidades = {logins: 0, usSinLogin: 0, visitas: 0};
 
 	// Obtiene datos del BE
-	const datos = await fetch("/graficos/api/usuarios-visitas-diarias").then((n) => n.json());
-	const {visitasDiarias, colores} = datos;
+	const {visitasDiarias, colores} = await fetch("/graficos/api/usuarios-visitas-diarias").then((n) => n.json());
 
 	// Obtiene los colores
 	const color = {
