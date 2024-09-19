@@ -24,8 +24,11 @@ module.exports = {
 		// Revisa si debe reemplazar una película por su colección
 		const productos = await buscar_x_PC.reemplazoDePeliPorColeccion(resultado.productos);
 
+		// Agrega hallazgos de IM y FA
+		const prodsIMFA = await procesos.prodsIMFA(palabrasClave);
+
 		// Prepara la respuesta
-		const cantProds = productos.length;
+		const cantProds = productos.length + prodsIMFA.length;
 		const {hayMas} = resultado;
 
 		// Averigua la cantidad de prodsNuevos
@@ -34,7 +37,7 @@ module.exports = {
 			let pelis = baseDeDatos.obtieneTodosPorCondicion("peliculas", {TMDB_id: TMDB_ids});
 			let coles = baseDeDatos.obtieneTodosPorCondicion("colecciones", {TMDB_id: TMDB_ids});
 			[pelis, coles] = await Promise.all([pelis, coles]);
-			cantProdsNuevos = cantProds - pelis.length - coles.length;
+			cantProdsNuevos = cantProds - pelis.length - coles.length - prodsIMFA.length;
 		} else cantProdsNuevos = 0;
 
 		// Fin
@@ -87,11 +90,10 @@ module.exports = {
 		agregaHallazgosDeIMFA: async (req, res) => {
 			// Variables
 			const {palabrasClave} = req.session.desambiguar;
-			const usuario_id = req.session.usuario ? req.session.usuario.id : 0;
 			let {prodsYaEnBD} = req.session.desambiguar;
 
 			// Obtiene los productos afines, ingresados por fuera de TMDB
-			const prodsIMFA = await procsDesamb.prodsIMFA({palabrasClave, usuario_id});
+			const prodsIMFA = await procesos.prodsIMFA(palabrasClave);
 
 			// Une y ordena los 'prodsYaEnBD' priorizando los más recientes
 			prodsYaEnBD = [...prodsYaEnBD, ...prodsIMFA];
