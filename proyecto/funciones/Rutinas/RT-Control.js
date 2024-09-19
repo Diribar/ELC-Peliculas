@@ -341,8 +341,8 @@ module.exports = {
 
 				// Tipos de navegación
 				const usLogueado = personas.filter((n) => n.usuario_id).length;
-				const usSinLogin = personas.filter((n) => !n.usuario_id && n.visita_id == "U").length;
-				const visitaSinUs = personas.filter((n) => !n.usuario_id && n.visita_id == "V").length;
+				const usSinLogin = personas.filter((n) => !n.usuario_id && n.visita_id.startsWith("U")).length;
+				const visitaSinUs = personas.filter((n) => !n.usuario_id && n.visita_id.startsWith("V")).length;
 
 				// Agrega la cantidad de personas
 				await baseDeDatos.agregaRegistro("loginsAcums", {
