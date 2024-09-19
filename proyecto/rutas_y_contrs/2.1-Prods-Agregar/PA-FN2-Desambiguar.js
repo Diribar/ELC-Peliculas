@@ -195,44 +195,6 @@ module.exports = {
 			return datos;
 		},
 	},
-	prodsIMFA: async ({palabrasClave, usuario_id}) => {
-		// Variables
-		const entidades = ["peliculas", "colecciones"];
-		const campos = ["nombreCastellano", "nombreOriginal"];
-		let resultados = [];
-
-		// Rutina por entidad
-		for (let entidad of entidades) {
-			// Variables
-			const datos = {familia: "producto", entidad, campos};
-
-			// Obtiene las condiciones de palabras y status
-			let condicion = procsFM.quickSearch.condicion(palabrasClave, campos, usuario_id);
-
-			// Agrega la condición de que no provenga de 'TMDB'
-			condicion[Op.and].push({fuente: {[Op.ne]: "TMDB"}});
-
-			// Obtiene los registros que cumplen las condiciones
-			resultados.push(procsFM.quickSearch.registros(condicion, datos));
-		}
-		resultados = await Promise.all(resultados).then((n) => n.flat());
-
-		// Rutina por producto
-		if (resultados.length)
-			resultados.forEach((resultado, i) => {
-				resultados[i] = {
-					...resultado,
-					yaEnBD_id: resultado.id,
-					anoEstreno: resultado.anoEstreno,
-					epocaEstreno_id: epocasEstreno.find((n) => n.desde <= resultado.anoEstreno).id,
-					nombreCastellano: resultado.nombre,
-					entidadNombre: comp.obtieneDesdeEntidad.entidadNombre(resultado.entidad),
-				};
-			});
-
-		// Envia
-		return resultados;
-	},
 };
 
 // Funciones auxiliares

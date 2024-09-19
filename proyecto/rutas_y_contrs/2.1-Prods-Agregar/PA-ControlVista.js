@@ -35,7 +35,7 @@ module.exports = {
 				else req.body[prop] = req.body[prop].trim();
 
 			// Obtiene el Data Entry
-			const palabrasClave = req.body.palabrasClave;
+			const {palabrasClave, metodo} = req.body;
 
 			// Guarda el Data Entry en session y cookie de palabrasClave
 			req.session.palabrasClave = palabrasClave;
@@ -45,11 +45,14 @@ module.exports = {
 			const errores = valida.palabrasClave(palabrasClave);
 			if (errores.hay) return res.redirect(req.originalUrl);
 
+			// Si corresponde, redirecciona a 'ingreso manual'
+			if (metodo == "Ingr. Man.") return res.redirect("ingreso-manual");
+
 			// Guarda el Data Entry en session y cookie de desambiguar
 			req.session.desambiguar = {palabrasClave};
 			res.cookie("desambiguar", {palabrasClave}, {maxAge: unDia});
 
-			// Redirecciona a la siguiente instancia
+			// Redirecciona a 'desambiguar'
 			return res.redirect("desambiguar");
 		},
 	},
@@ -213,7 +216,7 @@ module.exports = {
 			// Render del formulario
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo},
-				...{dataEntry: datosAdics, imgDerPers, camposDA, camposDE,camposChkBox},
+				...{dataEntry: datosAdics, imgDerPers, camposDA, camposDE, camposChkBox},
 				...{gruposPers, gruposHechos, ayudas},
 			});
 		},

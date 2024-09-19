@@ -24,8 +24,11 @@ module.exports = {
 		// Revisa si debe reemplazar una película por su colección
 		const productos = await buscar_x_PC.reemplazoDePeliPorColeccion(resultado.productos);
 
+		// Agrega hallazgos de IM y FA
+		const prodsIMFA = await procesos.prodsIMFA(palabrasClave);
+
 		// Prepara la respuesta
-		const cantProds = productos.length;
+		const cantProds = productos.length + prodsIMFA.length;
 		const {hayMas} = resultado;
 
 		// Averigua la cantidad de prodsNuevos
@@ -34,7 +37,7 @@ module.exports = {
 			let pelis = baseDeDatos.obtieneTodosPorCondicion("peliculas", {TMDB_id: TMDB_ids});
 			let coles = baseDeDatos.obtieneTodosPorCondicion("colecciones", {TMDB_id: TMDB_ids});
 			[pelis, coles] = await Promise.all([pelis, coles]);
-			cantProdsNuevos = cantProds - pelis.length - coles.length;
+			cantProdsNuevos = cantProds - pelis.length - coles.length - prodsIMFA.length;
 		} else cantProdsNuevos = 0;
 
 		// Fin
@@ -87,11 +90,10 @@ module.exports = {
 		agregaHallazgosDeIMFA: async (req, res) => {
 			// Variables
 			const {palabrasClave} = req.session.desambiguar;
-			const usuario_id = req.session.usuario ? req.session.usuario.id : 0;
 			let {prodsYaEnBD} = req.session.desambiguar;
 
 			// Obtiene los productos afines, ingresados por fuera de TMDB
-			const prodsIMFA = await procsDesamb.prodsIMFA({palabrasClave, usuario_id});
+			const prodsIMFA = await procesos.prodsIMFA(palabrasClave);
 
 			// Une y ordena los 'prodsYaEnBD' priorizando los más recientes
 			prodsYaEnBD = [...prodsYaEnBD, ...prodsIMFA];
@@ -99,6 +101,33 @@ module.exports = {
 
 			// Conserva la información en session para no tener que procesarla de nuevo
 			req.session.desambiguar.prodsYaEnBD = prodsYaEnBD;
+
+			// Fin
+			return res.json();
+		},
+		obtieneElMensaje: (req, res) => {
+			// Variables
+			const {prodsNuevos, prodsYaEnBD} = req.session.desambiguar;
+			const cantNuevos = prodsNuevos.length;
+			const coincidencias = cantNuevos + prodsYaEnBD.length;
+
+			// Obtiene el mensaje
+			const mensaje =
+				"Encontramos " +
+				(coincidencias == 1
+					? "una sola coincidencia, que " + (cantNuevos == 1 ? "no" : "ya")
+					: (hayMas ? "muchas" : coincidencias) +
+					  " coincidencias" +
+					  (hayMas ? ". Te mostramos " + coincidencias : "") +
+					  (cantNuevos == coincidencias
+							? ", ninguna"
+							: cantNuevos
+							? ", de las cuales " + cantNuevos + " no"
+							: ", todas ya")) +
+				" está" +
+				(cantNuevos > 1 && cantNuevos < coincidencias ? "n" : "") +
+				" en nuestra BD.";
+			req.session.desambiguar.mensaje = mensaje;
 
 			// Fin
 			return res.json();

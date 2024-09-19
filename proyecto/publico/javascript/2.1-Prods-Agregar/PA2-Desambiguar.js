@@ -133,6 +133,8 @@ let FN = {
 			{ruta: "reemplaza-las-peliculas-por-su-coleccion", duracion: 1000},
 			{ruta: "organiza-la-info", duracion: 1000},
 			{ruta: "agrega-hallazgos-de-IM-y-FA", duracion: 100},
+			{ruta: "obtiene-el-mensaje", duracion: 100},
+
 		];
 		let duracionTotal = 0;
 		for (let API of APIs) duracionTotal += API.duracion;
