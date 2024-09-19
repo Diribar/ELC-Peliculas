@@ -1,8 +1,10 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
+	const grupos = ["Logins", "Us. s/Login", "Visitas"];
 	let cantidades = {logins: 0, usSinLogin: 0, visitas: 0};
 	let promedio = {};
+	let leyendaTitulo = "";
 
 	// Obtiene datos del BE
 	const {clientesDiarios, colores} = await fetch("/graficos/api/usuarios-clientes-diarios").then((n) => n.json());
@@ -16,6 +18,10 @@ window.addEventListener("load", async () => {
 	const coloresRelleno = Object.values(color).map((n) => n[1]);
 	const coloresBorde = Object.values(color).map((n) => n[3]);
 
+	// Opciones del gráfico - Ticks en el eje horizontal
+	const cantTicks = 6;
+	const periodo = Math.trunc(clientesDiarios.length / cantTicks);
+
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart", "bar"]});
 	google.charts.setOnLoadCallback(drawGraphic);
@@ -23,14 +29,14 @@ window.addEventListener("load", async () => {
 	// https://developers.google.com/chart/interactive/docs/gallery/columnchart
 	function drawGraphic() {
 		// Variables
-		const resultado = [["Época", "Logins", {role: "style"}, "Usuarios s/Login", {role: "style"}, "Visitas", {role: "style"}]];
+		let resultado = [["Fecha", ...grupos.map((grupo) => [grupo, {role: "style"}]).flat()]];
 
 		// Genera la información
-		for (let visitaDiaria of clientesDiarios) {
+		clientesDiarios.forEach((clientesDiario, i) => {
 			// Alimenta los datos del gráfico
-			const {fecha, usLogueado: logins, usSinLogin, visitaSinUs: visitas} = visitaDiaria;
+			const {fecha, usLogueado: logins, usSinLogin, visitaSinUs: visitas} = clientesDiario;
 			resultado.push([
-				fecha,
+				!(i % periodo) ? fecha : "",
 				...[logins, "stroke-color: " + coloresBorde[0]],
 				...[usSinLogin, "stroke-color: " + coloresBorde[1]],
 				...[visitas, "stroke-color: " + coloresBorde[2]],
@@ -40,36 +46,40 @@ window.addEventListener("load", async () => {
 			cantidades.logins += logins;
 			cantidades.usSinLogin += usSinLogin;
 			cantidades.visitas += visitas;
-		}
+		});
 
 		// Obtiene los promedios
+		for (let metodo of Object.keys(cantidades))
+			promedio[metodo] = Math.round((cantidades[metodo] / clientesDiarios.length) * 10) / 10;
+		promedio.total = Object.values(promedio).reduce((acum, n) => Math.round((acum + n) * 10) / 10);
 
-		for (let metodo of Object.keys(cantidades)) promedio[metodo] = cantidades[metodo] / clientesDiarios.length;
-		promedio.total = Object.values(promedio).reduce((acum, n) => acum + n);
-		console.log(promedio);
+		// Opciones del gráfico - Titulo general
+		leyendaTitulo += promedio.total.toLocaleString("pt");
+		grupos.forEach((grupo, i) => (leyendaTitulo += " | " + grupo + ": " + Object.values(promedio)[i].toLocaleString("pt")));
 
-		// Opciones del gráfico
 		const data = google.visualization.arrayToDataTable(resultado);
 		const options = {
-			// title: "Cantidad: " + totalCfc + " CFC + " + totalVpc + " VPC = " + (totalCfc + totalVpc) + " Total",
 			backgroundColor: "rgb(255,242,204)",
 			fontSize: 10,
+			title: "Prom. Total: " + leyendaTitulo,
+			titleTextStyle: {color: "brown"},
+			legend: {position: "bottom", alignment: "center"},
 			animation: {
 				duration: 100,
 				easing: "out",
 				startup: true,
 			},
-			chartArea: {width: "80%", height: "70%"},
+			chartArea: {width: "80%", height: "50%", top: "15%"},
 			colors: coloresRelleno,
-			//legend: "none",
-			hAxis: {
-				format: "decimal",
-				scaleType: "number",
-				title: "Época",
+			hAxis:{maxAlternation:1,slantedText:false,
+				textStyle:{
+					fontSize: 20,
+
+				}
 			},
 			vAxis: {
-				fontSize: 20,
 				title: "Cantidad de personas",
+				fontSize: 20,
 				viewWindow: {min: 0},
 			},
 			isStacked: true, // columnas apiladas
