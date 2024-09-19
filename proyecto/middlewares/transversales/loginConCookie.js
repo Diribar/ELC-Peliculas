@@ -37,7 +37,7 @@ module.exports = async (req, res, next) => {
 		const condicion = {visita_id: visita.id};
 		const datosActuales = {usuario_id: usuario.id, visita_id: usuario.visita_id};
 		await baseDeDatos
-			.actualizaTodosPorCondicion("visitasDelDia", condicion, datosActuales)
+			.actualizaTodosPorCondicion("clientesDelDia", condicion, datosActuales)
 			.then(() => eliminaDuplicados(usuario.id));
 
 		// Otras actualizaciones
@@ -108,12 +108,12 @@ module.exports = async (req, res, next) => {
 
 let eliminaDuplicados = async (usuario_id) => {
 	// Obtiene los registros
-	const registros = await baseDeDatos.obtieneTodosPorCondicion("visitasDelDia", {usuario_id});
+	const registros = await baseDeDatos.obtieneTodosPorCondicion("clientesDelDia", {usuario_id});
 	console.log();
 
 	// Elimina los duplicados
 	registros.forEach((registro, contador) => {
-		if (contador && registro.fecha == registros[contador - 1].fecha) baseDeDatos.eliminaPorId("visitasDelDia", registro.id);
+		if (contador && registro.fecha == registros[contador - 1].fecha) baseDeDatos.eliminaPorId("clientesDelDia", registro.id);
 	});
 
 	// Fin

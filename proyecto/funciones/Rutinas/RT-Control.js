@@ -313,13 +313,13 @@ module.exports = {
 
 			// Logins diarios, quitando los duplicados
 			const loginsDiarios = await baseDeDatos
-				.obtieneTodosPorCondicion("visitasDelDia", {fecha: {[Op.lt]: hoy}})
+				.obtieneTodosPorCondicion("clientesDelDia", {fecha: {[Op.lt]: hoy}})
 				.then((n) => n.sort((a, b) => (a.fecha < b.fecha ? -1 : 1)));
 			if (!loginsDiarios.length) return;
 
 			// Si hay una inconsistencia, termina
 			const primFechaLoginsDiarios = loginsDiarios[0].fecha;
-			const ultLoginAcum = await baseDeDatos.obtienePorCondicionElUltimo("visitasDiarias");
+			const ultLoginAcum = await baseDeDatos.obtienePorCondicionElUltimo("clientesDiarios");
 			const fechaUltLoginAcum = ultLoginAcum ? ultLoginAcum.fecha : null;
 			if (fechaUltLoginAcum && primFechaLoginsDiarios <= fechaUltLoginAcum) {
 				const mensaje = primFechaLoginsDiarios == fechaUltLoginAcum ? "IGUAL" : "MENOR";
@@ -345,7 +345,7 @@ module.exports = {
 				const visitaSinUs = personas.filter((n) => !n.usuario_id && n.visita_id.startsWith("V")).length;
 
 				// Agrega la cantidad de personas
-				await baseDeDatos.agregaRegistro("visitasDiarias", {
+				await baseDeDatos.agregaRegistro("clientesDiarios", {
 					...{fecha: proximaFecha, diaSem, anoMes},
 					...{usLogueado, usSinLogin, visitaSinUs}, // las personas logueadas alguna vez en el día, figuran como 'usLogueado'
 				});
@@ -354,8 +354,8 @@ module.exports = {
 				proximaFecha = procesos.sumaUnDia(proximaFecha);
 			}
 
-			// Elimina los 'visitasDelDia' anteriores
-			baseDeDatos.eliminaTodosPorCondicion("visitasDelDia", {fecha: {[Op.lt]: hoy}});
+			// Elimina los 'clientesDelDia' anteriores
+			baseDeDatos.eliminaTodosPorCondicion("clientesDelDia", {fecha: {[Op.lt]: hoy}});
 
 			// Fin
 			return;
@@ -713,13 +713,13 @@ module.exports = {
 		},
 		eliminaLoginsAcumsRepetidos: async () => {
 			// Variables
-			const visitasDiarias = await baseDeDatos.obtieneTodos("visitasDiarias");
+			const clientesDiarios = await baseDeDatos.obtieneTodos("clientesDiarios");
 
-			// Elimina los visitasDiarias repetidos
+			// Elimina los clientesDiarios repetidos
 			let registroAnterior;
-			for (let registro of visitasDiarias) {
+			for (let registro of clientesDiarios) {
 				if (registroAnterior && registro.fecha == registroAnterior.fecha)
-					baseDeDatos.eliminaPorId("visitasDiarias", registro.id);
+					baseDeDatos.eliminaPorId("clientesDiarios", registro.id);
 				registroAnterior = registro;
 			}
 
@@ -736,7 +736,7 @@ module.exports = {
 			const tablas = [
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
-				...["visitasDiarias", "visitasDelDia"],
+				...["clientesDiarios", "clientesDelDia"],
 				...["prodsComplem", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],

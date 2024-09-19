@@ -2,7 +2,7 @@
 	<% for (let prop in vistasInstitucs) { %>
 		<a href="/institucional/<%= prop %>" class="menuOpcion">
 			<i class="fa-solid icono <%= vistasInstitucs[prop].icono %>"></i>
-			<span><%= vistasInstitucs[prop].titulo %></span>
+			<span><%= vistasInstitucs[prop].titulo.replace("ELC | ", "") %></span>
 		</a>
 		<% if (vistasInstitucs[prop].hr) { %><hr><% } %>
 	<% } %>

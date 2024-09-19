@@ -25,14 +25,14 @@ module.exports = {
 
 		// Valida que no exista ya un registro de la 'visita_id' en esta fecha
 		const condicion = {fecha: hoy, visita_id};
-		const existe = await baseDeDatos.obtienePorCondicion("visitasDelDia", condicion);
+		const existe = await baseDeDatos.obtienePorCondicion("clientesDelDia", condicion);
 		if (usuario_id) condicion.usuario_id = usuario_id;
 
 		// Si no existe, lo agrega
-		if (!existe) baseDeDatos.agregaRegistro("visitasDelDia", condicion);
+		if (!existe) baseDeDatos.agregaRegistro("clientesDelDia", condicion);
 
 		// Si es 'usuario_id' y existe sin ese campo, lo actualiza
-		if (existe && usuario_id && !existe.usuario_id) baseDeDatos.actualizaPorId("visitasDelDia", existe.id, {usuario_id});
+		if (existe && usuario_id && !existe.usuario_id) baseDeDatos.actualizaPorId("clientesDelDia", existe.id, {usuario_id});
 
 		// Si no existe o existe sin 'usuario_id', aumenta el valor del campo 'diasLogin' en el usuario
 		if (!existe || (usuario_id && !existe.usuario_id))
