@@ -34,6 +34,7 @@ router.get("/api/desambiguar-busca-los-productos", API.desambForm.buscaProds);
 router.get("/api/desambiguar-reemplaza-las-peliculas-por-su-coleccion", API.desambForm.reemplPeliPorColec);
 router.get("/api/desambiguar-organiza-la-info", API.desambForm.organizaLaInfo);
 router.get("/api/desambiguar-agrega-hallazgos-de-IM-y-FA", API.desambForm.agregaHallazgosDeIMFA);
+router.get("/api/desambiguar-obtiene-el-mensaje", API.desambForm.obtieneElMensaje);
 
 // APIs - Desambiguar - Guardar
 router.get("/api/desambiguar-actualiza-datos-originales", API.desambGuardar.actualizaDatosOrig);
