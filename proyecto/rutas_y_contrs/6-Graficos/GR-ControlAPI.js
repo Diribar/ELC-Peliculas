@@ -4,7 +4,8 @@ module.exports = {
 	// Usuarios
 	visitasDiarias: async (req, res) => {
 		const visitasDiarias = await baseDeDatos.obtieneTodosConOrden("visitasDiarias", "fecha");
-		return res.json(visitasDiarias);
+		const {colores} = variables;
+		return res.json({visitasDiarias, colores});
 	},
 
 	// Productos
