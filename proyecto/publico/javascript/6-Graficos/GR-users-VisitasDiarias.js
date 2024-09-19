@@ -1,10 +1,18 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const visitasDiarias = await fetch("/graficos/api/usuarios-visitas-diarias").then((n) => n.json());
-	const ejeX = Object.keys(cfc);
-	let totalCfc = 0;
-	let totalVpc = 0;
+	let cantidades = {logins: 0, usSinLogin: 0, visitas: 0};
+
+	// Obtiene datos del BE
+	const datos = await fetch("/graficos/api/usuarios-visitas-diarias").then((n) => n.json());
+	const {visitasDiarias} = datos;
+
+	// Obtiene los colores
+	const grupos = Object.keys(cantidades).length;
+	let {colores: todosLosColores} = datos;
+	todosLosColores.splice(grupos);
+	const coloresRelleno = todosLosColores.map((n) => n[4]);
+	const coloresBorde = todosLosColores.map((n) => n[0]); // obtiene un color de cada familia
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart", "bar"]});
@@ -13,13 +21,23 @@ window.addEventListener("load", async () => {
 	// https://developers.google.com/chart/interactive/docs/gallery/columnchart
 	function drawGraphic() {
 		// Variables
-		const resultado = [["Época", "CFC", {role: "style"}, "VPC", {role: "style"}]];
+		const resultado = [["Época", "Logins", {role: "style"}, "Usuarios s/Login", {role: "style"}, "Visitas", {role: "style"}]];
 
 		// Consolida el resultado
-		for (let valorX of ejeX) {
-			resultado.push([valorX, cfc[valorX], "stroke-color: #F57C00", vpc[valorX], "stroke-color: rgb(37,64,97)"]);
-			totalCfc += cfc[valorX];
-			totalVpc += vpc[valorX];
+		for (let visitaDiaria of visitasDiarias) {
+			// Alimenta los datos del gráfico
+			const {fecha, usLogueado: logins, usSinLogin, visitaSinUs: visitas} = visitaDiaria;
+			resultado.push([
+				fecha,
+				...[logins, "stroke-color: " + coloresRelleno[0]],
+				...[usSinLogin, "stroke-color: " + coloresRelleno[1]],
+				...[visitas, "stroke-color: " + coloresRelleno[2]],
+			]);
+
+			// Agrega las cantidades
+			cantidades.logins += logins;
+			cantidades.usSinLogin += usSinLogin;
+			cantidades.visitas += visitas;
 		}
 
 		// Especifica la información
@@ -27,7 +45,7 @@ window.addEventListener("load", async () => {
 
 		// Opciones del gráfico
 		const options = {
-			title: "Cantidad: " + totalCfc + " CFC + " + totalVpc + " VPC = " + (totalCfc + totalVpc)+" Total",
+			// title: "Cantidad: " + totalCfc + " CFC + " + totalVpc + " VPC = " + (totalCfc + totalVpc) + " Total",
 			backgroundColor: "rgb(255,242,204)",
 			fontSize: 10,
 			animation: {
@@ -36,7 +54,7 @@ window.addEventListener("load", async () => {
 				startup: true,
 			},
 			chartArea: {width: "80%", height: "70%"},
-			colors: ["rgb(255, 230, 153)", "rgb(220, 230, 242)"],
+			colors: [coloresBorde[0], coloresBorde[1], coloresBorde[2]],
 			//legend: "none",
 			hAxis: {
 				format: "decimal",
@@ -45,7 +63,7 @@ window.addEventListener("load", async () => {
 			},
 			vAxis: {
 				fontSize: 20,
-				title: "Cantidad de películas y colecciones",
+				title: "Cantidad de personas",
 				viewWindow: {min: 0},
 			},
 			isStacked: true, // columnas apiladas
