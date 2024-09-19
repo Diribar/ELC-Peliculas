@@ -1,7 +1,7 @@
 <!-- Ayuda -->
 <div class="ayuda <%- locals.ayudaClass ? ayudaClass : 'absolute' %>">
 	<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
-		<div class="ayudaMensForm ayudaMensMostrar ocultar">
+		<div class="mostrarClick ayudaMensForm ocultar">
 			<% if (locals.parrafo) { %><p><%- parrafo %></p><% } %>
 			<% if (locals.mensaje || locals.mensajes) { %>
 				<ul type="<%- locals.mensaje || (mensajes.length == 1) ? 'none' : 'disc' %>">

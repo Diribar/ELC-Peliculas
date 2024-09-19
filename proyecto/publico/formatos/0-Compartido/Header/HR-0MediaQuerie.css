@@ -21,7 +21,7 @@
         #busquedaRapida {
             position: absolute; margin: 0; width: 100%; top: 13px;
             display: flex; flex-direction: column; align-items: center;
-            .menuMostrar {
+            .menuForm {
                 translate: 0; right: auto; top: auto;
                 display: flex; flex-direction: column; align-items: center;
                 max-width: 100vw;

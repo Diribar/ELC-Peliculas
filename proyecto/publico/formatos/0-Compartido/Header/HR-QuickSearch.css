@@ -1,10 +1,10 @@
 /* Íconos de búsqueda rápida e inputMasResultados */
 #busquedaRapida {
-	:is(.menuMostrar input, #escribiMas) {width: 200px;}
+	:is(.menuForm input, #escribiMas) {width: 200px;}
 	muestraResultados a {min-width: 200px;}
 
-	.menuMostrar {
-		position: absolute; right: -7px; top: -3px; translate: 100%;
+	.menuForm {
+		right: -7px; top: -3px; translate: 100%;
 		:is(input, #muestraResultados) {border: 1px solid var(--azul-oscuro); border-radius: 5px;}
 		input {padding: 4px 5px; font-size: 1.2rem; font-weight: bold;}
 
@@ -33,4 +33,4 @@
 }
 
 /* Condicional */
-.menuMostrar:not(:has(#muestraResultados.ocultar))  input {border-bottom-left-radius: 0; border-bottom-right-radius: 0;}
+.menuForm:not(:has(#muestraResultados.ocultar))  input {border-bottom-left-radius: 0; border-bottom-right-radius: 0;}
