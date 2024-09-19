@@ -9,24 +9,32 @@ module.exports = {
 			titulo: "Visitas Diarias",
 		}),
 
-	// Películas
-	pelisCfcVpc: (req, res) =>
+	// Productos
+	prodsCfcVpc: (req, res) =>
 		res.render("CMP-0Estructura", {
 			tema: "gráficos",
-			codigo: "pelisCfcVpc",
+			codigo: "prodsCfcVpc",
 			titulo: "Películas por Fe Católica / Valores",
 		}),
-	pelisPublico: (req, res) =>
+	prodsPorPublico: (req, res) =>
 		res.render("CMP-0Estructura", {
 			tema: "gráficos",
-			codigo: "pelisPublico",
+			codigo: "prodsPorPublico",
 			titulo: "Películas por Público",
 		}),
-	pelisEpocaEstreno: (req, res) =>
+	prodsPorEpocaEstr: (req, res) =>
 		res.render("CMP-0Estructura", {
 			tema: "gráficos",
-			codigo: "pelisEpocaEstreno",
+			codigo: "prodsPorEpocaEstr",
 			titulo: "Películas por Época de Estreno",
+		}),
+
+	// RCLVs
+	rclvsRangosSinEfems: (req, res) =>
+		res.render("CMP-0Estructura", {
+			tema: "gráficos",
+			codigo: "rclvsRangosSinEfems",
+			titulo: "Rangos sin Efemérides",
 		}),
 
 	// Links
@@ -41,13 +49,5 @@ module.exports = {
 			tema: "gráficos",
 			codigo: "linksPorProv",
 			titulo: "Cantidad de Links por Proveedor",
-		}),
-
-	// Otros
-	rangosSinEfs: (req, res) =>
-		res.render("CMP-0Estructura", {
-			tema: "gráficos",
-			codigo: "rangosSinEfs",
-			titulo: "Rangos sin Efemérides",
 		}),
 };
