@@ -13,7 +13,8 @@ header {
 
 			/* Íconos que acompañan al menú */
 			.icono {
-				width: 20px; margin-right: 8px; font-weight: bold; color: inherit;
+				width: 20px; margin-right: 8px; font-weight: bold;
+				color: inherit; /* para prevenir los cambios de colores por íconos particulares */
 				display: flex; justify-content: center; align-items: center;
 			}
 
