@@ -18,7 +18,7 @@ router.get("/api/links-por-proveedor", API.linksPorProv);
 router.get("/api/rangos-sin-efemerides", API.rangosSinEfs);
 
 // Vistas
-router.get("/usuarios-visitas-diarias", combinados, vista.pelisCfcVpc);
+router.get("/usuarios-visitas-diarias", combinados, vista.visitasDiarias);
 router.get("/peliculas-cfc-vpc", combinados, vista.pelisCfcVpc);
 router.get("/peliculas-publico", combinados, vista.pelisPublico);
 router.get("/peliculas-epoca-estreno", combinados, vista.pelisEpocaEstreno);
