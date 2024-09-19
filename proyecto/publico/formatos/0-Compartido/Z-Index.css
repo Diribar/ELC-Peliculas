@@ -6,7 +6,7 @@ main #cuerpo #cartelRechazo {z-index: 12;}
 main #todoElMain {z-index: 11;}
 
 /* Header */
-header .menuMostrar {z-index: 2;}
+header .menuForm {z-index: 2;}
 header .iconoComb .adentro {z-index: 1;}
 
 /* Todo el main */
