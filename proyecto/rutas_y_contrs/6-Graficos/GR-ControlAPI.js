@@ -1,6 +1,12 @@
 "use strict";
 
 module.exports = {
+	// Usuarios
+	visitasDiarias: async (req, res) => {
+		const visitasDiarias = await baseDeDatos.obtieneTodosConOrden("visitasDiarias", "fecha");
+		return res.json(visitasDiarias);
+	},
+
 	// Productos
 	prodsPorPublico: async (req, res) => {
 		// Variables

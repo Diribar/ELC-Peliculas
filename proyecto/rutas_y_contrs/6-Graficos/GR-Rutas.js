@@ -10,6 +10,7 @@ const usRolAutTablEnts = require("../../middlewares/porUsuario/usRolAutTablEnts"
 const combinados = [usAltaTerm, usRolAutTablEnts];
 
 // API
+router.get("/usuarios-visitas-diarias", API.visitasDiarias);
 router.get("/api/peliculas-cfc-vpc", API.prodsCfcVpc);
 router.get("/api/peliculas-publico", API.prodsPorPublico);
 router.get("/api/peliculas-epoca-estreno", API.prodsPorEpocaEstr);

@@ -2,9 +2,14 @@
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <link rel="stylesheet" href="/publico/formatos/6-Graficos/GR-Graficos.css">
 
+<!-- Usuarios -->
+<% if (codigo == "visitasDiarias") { %>
+    <script src="/publico/javascript/6-Graficos/GR-users-visitasDiarias.js"></script>
+<% } %>
+
 <!-- Productos -->
 <% if (codigo == "prodsCfcVpc") { %>
-    <script src="/publico/javascript/6-Graficos/GR-prods-CfcVpc.js"></script>
+    <script src="/publico/javascript/6-Graficos/GR-prods-cfcVpc.js"></script>
 <% } %>
 <% if (codigo == "prodsPorPublico") { %>
     <script src="/publico/javascript/6-Graficos/GR-prods-porPublRecom.js"></script>
