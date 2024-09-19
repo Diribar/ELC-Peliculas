@@ -4,7 +4,6 @@
 		<% if (locals.prodEdic) { %>class="input"<% } %>
 		type="checkbox"
 		name="<%= nombre %>"
-		tabindex="-1"
 		<% if (locals.camposDE && !camposDE.includes(nombre) && nombre == "color" || dataEntry[nombre] == 1) { %>checked<% } %>
 	>
 	<label for="<%= nombre %>"><%= titulo %></label>

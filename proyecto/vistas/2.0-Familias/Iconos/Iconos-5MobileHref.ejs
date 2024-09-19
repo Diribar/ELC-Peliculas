@@ -1,10 +1,10 @@
 <% if (tema == "prodRud" && codigo == "detalle") { %>
-	<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id %>">
+	<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id %>" tabindex="-1">
 		<i class="fa-solid fa-chart-simple fa-rotate-90 <%= locals.yaCalificada || !!locals.califUsuario %>" tabindex="-1"></i>
 	</a>
 <% } %>
 <% if (["calificar", "visualizacion"].includes(codigo)) { %>
-	<a href="<%= '/producto/detalle/?entidad=' + entidad + '&id=' + id %>">
+	<a href="<%= '/producto/detalle/?entidad=' + entidad + '&id=' + id %>" tabindex="-1">
 		<i class="fa-solid fa-circle-info" tabindex="-1"></i>
 	</a>
 <% } %>

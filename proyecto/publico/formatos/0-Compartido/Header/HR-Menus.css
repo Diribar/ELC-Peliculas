@@ -1,19 +1,20 @@
 header {
 	.menuForm {
 		/* Formato de Menús */
-		position: absolute; width: max-content;
+		position: absolute; width: max-content; color: var(--azul-oscuro);
 		&:not(:has(#muestraResultados)) {border: 1px solid rgba(0,0,0,.15);}
 		&.menuFondo {padding: 4px 0; border-radius: 10px; background: var(--gris-claro);}
 
 		/* Opciones */
 		.menuOpcion {
-			display: flex; flex-direction: row; align-items: center;
-			padding: 4px 16px;
-			&:hover {background-color: var(--gris-intermedio);}
+			display: flex; flex-direction: row; align-items: center; padding: 4px 16px;
+			&.resaltar {background-color: var(--gris-intermedio);}
+			&:hover {background-color: var(--gris-oscuro); color: snow;}
 
 			/* Íconos que acompañan al menú */
 			.icono {
 				width: 20px; margin-right: 8px; font-weight: bold;
+				color: inherit; /* para prevenir los cambios de colores por íconos particulares */
 				display: flex; justify-content: center; align-items: center;
 			}
 
