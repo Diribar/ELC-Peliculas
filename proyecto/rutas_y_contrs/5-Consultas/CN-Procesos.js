@@ -111,7 +111,7 @@ module.exports = {
 				// Condiciones
 				const filtros = this.filtros(prefs);
 				let condicion = {statusRegistro_id: aprobados_ids, ...filtros};
-				if (["calificacion", "misCalificadas"].includes(layout.codigo)) condicion.calificacion = {[Op.ne]: null}; // Para la opción 'calificación', agrega pautas en las condiciones
+				if (layout.codigo == "calificacion") condicion.calificacion = {[Op.ne]: null}; // Para la opción 'calificación', agrega pautas en las condiciones
 				const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null; // si es una entidad particular, obtiene el nombre del 'campo_id'
 				if (campo_id) condicion[campo_id] = {[Op.ne]: 1}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
 
