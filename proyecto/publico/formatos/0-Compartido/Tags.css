@@ -5,8 +5,9 @@ h3 {font-size: 1.10rem;}
 h4 {font-size: 1.00rem;}
 
 /* Formularios */
-/* select, option, optgroup, input, textarea {font-size: inherit; line-height: inherit;} */
-/* label img, label, select, option {color: inherit;} */
+select, option, optgroup, input, textarea {font-size: inherit;}
+/* select, option, optgroup, input, textarea {line-height: inherit;} */
+/* label img, label, select, option, input {color: inherit;} */
 select:has(option) {cursor: pointer;}
 select optgroup {margin-top: 3px;}
 select option {font-style: normal;}
@@ -23,7 +24,8 @@ ul[type="disc"] {list-style-position: outside;}
 ul ul {padding-left: 30px;}
 
 /* Varios */
-/* button, span, em, b, u, a, i {font-size: inherit; color: inherit; line-height: inherit;} */
+button, span, em, b, u, a, i {font-size: inherit;}
+/* button, span, em, b, u, a, i {color: inherit; line-height: inherit;} */
 /* button:has(i) {border: none; outline: none;} */
 hr {margin-block: 2px; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
 p, li {line-height: 1.2rem;}

@@ -26,14 +26,16 @@ body {
 	height: var(--alturaViewPort); width: 100vw;
 
 	/* Fonts */
-	color: var(--azul-oscuro); font-family: var(--Calibri); font-size: 14px;
+	color: var(--azul-oscuro);
 }
 
-body * {
+body, * {
 	margin: 0px; padding: 0; box-sizing: border-box;
-	font-size: inherit; color: inherit; line-height: inherit;
+	color: inherit; line-height: inherit;
+	font-family: var(--Calibri);
 }
 body *:focus {outline-color: black;}
+* {font-size: 14px;}
 
 /* Laptop */
 @media (orientation: landscape) and (height > 600px) {

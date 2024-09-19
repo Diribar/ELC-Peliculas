@@ -206,8 +206,8 @@ module.exports = {
 		// Variables
 		let comentario = null;
 
-		// Si el movimiento es 'inactivar' y el motivo es 'duplicado', genera el comentario
-		if (datos.codigo == "inactivar" && datos.motivo_id == motivoDupl_id) {
+		// Si el movimiento es 'inactivar' o 'rechazar' y el motivo es 'duplicado', genera el comentario
+		if (["inactivar", "rechazar"].includes(datos.codigo) && datos.motivo_id == motivoDupl_id) {
 			// Variables
 			const {entDupl, idDupl} = datos;
 			const elLa = comp.obtieneDesdeEntidad.elLa(entDupl);

@@ -44,7 +44,7 @@ window.addEventListener("load", async () => {
 	let prov, col, sinErrores;
 
 	// FUNCIONES ---------------------------------------------------------------
-	let fn = {
+	let FN = {
 		obtieneFilaColumna: (e) => {
 			// Obtiene campo
 			let campo = e.target.name;
@@ -63,11 +63,9 @@ window.addEventListener("load", async () => {
 
 			// Quita el sufijo
 			if (url.startsWith("youtube.com") && url.includes("&")) url = url.slice(0, url.indexOf("&"));
-			if (
-				(url.startsWith("ver.formed.lat") || url.startsWith("netflix.com") || url.startsWith("dailymotion.com")) &&
-				url.includes("?")
-			)
+			if (["ver.formed.lat", "netflix.com", "dailymotion.com"].some((n) => url.startsWith(n)) && url.includes("?"))
 				url = url.slice(0, url.indexOf("?"));
+			if (url.startsWith("ver.famiplay.com") && url.includes("&utm_source")) url = url.slice(0, url.indexOf("&utm_source"));
 
 			// Conclusiones
 			DOM.urlInputs[filaAlta].value = url;
@@ -249,18 +247,18 @@ window.addEventListener("load", async () => {
 		// Barre el contenido de izquierda a derecha
 		col = columna;
 		sinErrores = true;
-		await fn.controlesEnUrl(fila);
-		if (col == 1 && sinErrores) await fn.controlesEnCalidad(fila, prov);
-		if (col == 2 && sinErrores) await fn.controlesEnCastellano(fila);
-		if (col == 3 && sinErrores) await fn.controlesEnSubtitulosCastellano(fila);
-		if (col == 4 && sinErrores) await fn.controlesEnGratuito(fila, prov);
-		if (col == 5 && sinErrores) await fn.controlesEnTipo(fila, prov);
-		if (col == 6 && sinErrores) await fn.controlesEnCompleto(fila, prov);
-		if (col == 7 && sinErrores) await fn.controlesEnParte(fila);
+		await FN.controlesEnUrl(fila);
+		if (col == 1 && sinErrores) await FN.controlesEnCalidad(fila, prov);
+		if (col == 2 && sinErrores) await FN.controlesEnCastellano(fila);
+		if (col == 3 && sinErrores) await FN.controlesEnSubtitulosCastellano(fila);
+		if (col == 4 && sinErrores) await FN.controlesEnGratuito(fila, prov);
+		if (col == 5 && sinErrores) await FN.controlesEnTipo(fila, prov);
+		if (col == 6 && sinErrores) await FN.controlesEnCompleto(fila, prov);
+		if (col == 7 && sinErrores) await FN.controlesEnParte(fila);
 		// Actualizar el formato
-		if (fila == filaAlta) fn.actualizaFormato(columna);
+		if (fila == filaAlta) FN.actualizaFormato(columna);
 		// Submit
-		fn.activaInactivaBotonGuardar(fila);
+		FN.activaInactivaBotonGuardar(fila);
 		// Pone el foco en el input a resolver o en el botón guardar
 		let celda = fila * columnas + col;
 		if (col < columnas) DOM.inputs[celda].focus();
@@ -299,11 +297,11 @@ window.addEventListener("load", async () => {
 	// Event Listeners
 	DOM.form.addEventListener("input", async (e) => {
 		// Obtiene la fila y columna
-		let [fila, columna] = fn.obtieneFilaColumna(e);
+		let [fila, columna] = FN.obtieneFilaColumna(e);
 		// Si hubo un error (fila=filas), interrumpe
 		if (fila == filas) return;
 		// Si se ingresó un url en el alta, depurarlo
-		if (fila == filaAlta && !columna) fn.depuraUrl();
+		if (fila == filaAlta && !columna) FN.depuraUrl();
 		controlesDataEntry(fila, columna);
 	});
 
