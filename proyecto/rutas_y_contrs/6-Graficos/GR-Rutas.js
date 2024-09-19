@@ -10,7 +10,7 @@ const usRolAutTablEnts = require("../../middlewares/porUsuario/usRolAutTablEnts"
 const combinados = [usAltaTerm, usRolAutTablEnts];
 
 // API
-router.get("/api/usuarios-visitas-diarias", API.visitasDiarias);
+router.get("/api/usuarios-clientes-diarios", API.clientesDiarios);
 router.get("/api/peliculas-cfc-vpc", API.prodsCfcVpc);
 router.get("/api/peliculas-publico", API.prodsPorPublico);
 router.get("/api/peliculas-epoca-estreno", API.prodsPorEpocaEstr);
@@ -19,7 +19,7 @@ router.get("/api/links-vencimiento", API.linksVencim);
 router.get("/api/links-por-proveedor", API.linksPorProv);
 
 // Vistas
-router.get("/usuarios-visitas-diarias", combinados, vista.visitasDiarias);
+router.get("/usuarios-clientes-diarios", combinados, vista.clientesDiarios);
 router.get("/peliculas-cfc-vpc", combinados, vista.prodsCfcVpc);
 router.get("/peliculas-publico", combinados, vista.prodsPorPublico);
 router.get("/peliculas-epoca-estreno", combinados, vista.prodsPorEpocaEstr);

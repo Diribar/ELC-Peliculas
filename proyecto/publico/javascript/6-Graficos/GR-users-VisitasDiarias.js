@@ -2,9 +2,10 @@
 window.addEventListener("load", async () => {
 	// Variables
 	let cantidades = {logins: 0, usSinLogin: 0, visitas: 0};
+	let promedio = {};
 
 	// Obtiene datos del BE
-	const {visitasDiarias, colores} = await fetch("/graficos/api/usuarios-visitas-diarias").then((n) => n.json());
+	const {clientesDiarios, colores} = await fetch("/graficos/api/usuarios-clientes-diarios").then((n) => n.json());
 
 	// Obtiene los colores
 	const color = {
@@ -24,8 +25,8 @@ window.addEventListener("load", async () => {
 		// Variables
 		const resultado = [["Época", "Logins", {role: "style"}, "Usuarios s/Login", {role: "style"}, "Visitas", {role: "style"}]];
 
-		// Consolida el resultado
-		for (let visitaDiaria of visitasDiarias) {
+		// Genera la información
+		for (let visitaDiaria of clientesDiarios) {
 			// Alimenta los datos del gráfico
 			const {fecha, usLogueado: logins, usSinLogin, visitaSinUs: visitas} = visitaDiaria;
 			resultado.push([
@@ -41,10 +42,14 @@ window.addEventListener("load", async () => {
 			cantidades.visitas += visitas;
 		}
 
-		// Especifica la información
-		const data = google.visualization.arrayToDataTable(resultado);
+		// Obtiene los promedios
+
+		for (let metodo of Object.keys(cantidades)) promedio[metodo] = cantidades[metodo] / clientesDiarios.length;
+		promedio.total = Object.values(promedio).reduce((acum, n) => acum + n);
+		console.log(promedio);
 
 		// Opciones del gráfico
+		const data = google.visualization.arrayToDataTable(resultado);
 		const options = {
 			// title: "Cantidad: " + totalCfc + " CFC + " + totalVpc + " VPC = " + (totalCfc + totalVpc) + " Total",
 			backgroundColor: "rgb(255,242,204)",
