@@ -47,8 +47,6 @@ module.exports = {
 			const datos = {familia: "producto", entidad, campos};
 
 			// Obtiene las condiciones de palabras y status
-			console.log(50,{palabras, campos, original, omitirUserId});
-
 			let condicion = procsFM.quickSearch.condicion({palabras, campos, original, omitirUserId});
 
 			// Agrega la condición de que no provenga de 'TMDB'
