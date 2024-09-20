@@ -39,7 +39,7 @@
 		<% if (prodRclv.statusRegistro_id == inactivo_id ) { %>
 			<!-- Cambiar el motivo -->
 			<a href="<%= '/correccion/motivo/?entidad=' + entidad + '&id=' + id + origenHTML %>" tabindex="-1">
-				<i class="<%= iconos.faSolid %> fa-circle-question" title="Cambiar el motivo" tabindex="-1"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.ayuda %>" title="Cambiar el motivo" tabindex="-1"></i>
 			</a>
 		<% } %>
 		<% if (aprobados_ids.includes(locals.status_id)) { %>
@@ -99,7 +99,7 @@
 
 			<!-- REVISION INACTIVAR Y RECUPERAR - Confirma el cambio de status -->
 			<button type="submit" id="aprueba">
-				<i class="<%= iconos.faSolid %> fa-circle-right" tabindex="-1" title="Aprueba el cambio de status"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.derecha %>" tabindex="-1" title="Aprueba el cambio de status"></i>
 			</button>
 		<% } %>
 	<% } %>

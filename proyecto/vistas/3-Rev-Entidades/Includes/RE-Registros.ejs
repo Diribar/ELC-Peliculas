@@ -3,7 +3,7 @@
 		<h3 id="<%= (familias + "_" + titulo).replace(/[-\s]/g, "") %>" class="pointer">
 			<%= titulo %>
 			(<%= regs.length %>)
-			<% if (locals.icono) { %><i class="fa-solid <%= icono %>"></i><% } %>
+			<% if (locals.icono) { %><i class="<%= iconos.faSolid %> <%= icono %>"></i><% } %>
 		</h3>
 		<div class="registros <%- !DE || !DE[titulo.replace(/[-\s]/g, "")] ? 'ocultar' : '' %>">
 			<% for (let reg of regs) { %>

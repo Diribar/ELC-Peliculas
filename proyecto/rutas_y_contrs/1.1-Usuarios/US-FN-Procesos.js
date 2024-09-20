@@ -99,7 +99,7 @@ module.exports = {
 			iconos: [
 				variables.vistaAnterior(linkVolver),
 				{
-					clase: "fa-circle-right",
+					clase: iconos.derecha,
 					link: "/usuarios/perennes",
 					titulo: "Ir a 'Solicitud de Autorización de Inputs'",
 					autofocus: true,

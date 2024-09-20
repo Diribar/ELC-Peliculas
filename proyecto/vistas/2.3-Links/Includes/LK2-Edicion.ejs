@@ -6,9 +6,9 @@
 			<img src="/Externa/6-LogosProvs/<%= link.prov.avatar %>" alt="<%= link.prov.nombre %>">
 			<input name="url" type="text" class="input ocultar" value="<%= link.url %>">
 			<div class="errores">
-				<i class="fa-solid fa-circle-xmark ocultar" style="display: none"><span class="mensajeError"></span></i>
-				<i class="fa-solid fa-circle-check" style="display: none"></i>
-				<i class="fa-solid fa-question prov_id" style="display: none"></i>
+				<i class="<%= iconos.faSolid %> fa-circle-xmark ocultar" style="display: none"><span class="mensajeError"></span></i>
+				<i class="<%= iconos.faSolid %> fa-circle-check" style="display: none"></i>
+				<i class="<%= iconos.faSolid %> fa-question prov_id" style="display: none"></i>
 			</div>
 		</div>
 	</td>
@@ -96,7 +96,7 @@
 	<!-- Acción -->
 	<td class="ancho_accion accion">
 		<button type="button" class="inactivo" title='Guardar'>
-			<i class="fa-solid fa-floppy-disk"></i>
+			<i class="<%= iconos.faSolid %> fa-floppy-disk"></i>
 		</button>
 	</td>
 </tr>
