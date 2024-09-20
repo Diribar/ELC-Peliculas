@@ -52,9 +52,6 @@ let actualizaConfigCons = {
 			DOM.nav.classList.remove("ocultar");
 			DOM.toggleFiltros.classList.remove("ocultar"); // muestra el botón "mostrar/ocultar filtros"
 			if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar");
-
-			// Oculta sectores
-			DOM.asegurate.classList.add("ocultar");
 		}
 		// Acciones si hay algún error que se necesita resolver
 		else {
@@ -67,9 +64,6 @@ let actualizaConfigCons = {
 			DOM.nav.classList.add("ocultar");
 			DOM.toggleFiltros.classList.add("ocultar"); // oculta el botón "mostrar/ocultar filtros"
 			DOM.quieroVer.classList.add("ocultar");
-
-			// Muestra un mensaje de error
-			DOM.asegurate.classList.remove("ocultar");
 		}
 
 		// Fin
