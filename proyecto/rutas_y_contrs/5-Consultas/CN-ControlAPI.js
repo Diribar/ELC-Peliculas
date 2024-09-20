@@ -1,7 +1,6 @@
 "use strict";
 // Variables
 const procesos = require("./CN-Procesos");
-const layoutDefault_id = 2; // El 'default' es "Al azar"
 
 module.exports = {
 	obtiene: {
