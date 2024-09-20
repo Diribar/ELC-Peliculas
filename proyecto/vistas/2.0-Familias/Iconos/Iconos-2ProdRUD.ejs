@@ -2,25 +2,25 @@
 	<div id="prodRud" class="iconos">
 		<% if (codigo == "edicion") { %>
 			<!-- Muestra la nueva edición sin guardar -->
-			<i class="fa-solid fa-pen-to-square activaVersion activo" tabindex="-1" title='Muestra la edición nueva'></i>
+			<i class="<%= iconos.faSolid %> fa-pen-to-square activaVersion activo" tabindex="-1" title='Muestra la edición nueva'></i>
 			<!-- Guarda los cambios de la nueva edición -->
 			<button type="submit" id="guardar" class="edicN inactivoVersion">
-				<i class="fa-solid fa-circle-check" tabindex="-1" title='Guarda la edición nueva'></i>
+				<i class="<%= iconos.faSolid %> fa-circle-check" tabindex="-1" title='Guarda la edición nueva'></i>
 			</button>
 			<!-- Recarga la vista -->
-			<i class="fa-solid fa-circle-xmark elimina edicN  inactivoVersion" tabindex="-1" title='Elimina la edición nueva'></i>
+			<i class="<%= iconos.faSolid %> fa-circle-xmark elimina edicN  inactivoVersion" tabindex="-1" title='Elimina la edición nueva'></i>
 
-			<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
+			<i class="<%= iconos.faSolid %> fa-slash inactivo" tabindex="-1"></i>
 
 			<!-- Muestra la edición guardada -->
-			<i class="fa-solid fa-pencil activaVersion inactivoVersion" tabindex="-1" title='Muestra la edición guardada'></i>
+			<i class="<%= iconos.faSolid %> fa-pencil activaVersion inactivoVersion" tabindex="-1" title='Muestra la edición guardada'></i>
 			<!-- Elimina la edición guardada -->
-			<i class="fa-solid fa-trash-can elimina edicG inactivoVersion" tabindex="-1" title='Elimina la edición guardada'></i>
+			<i class="<%= iconos.faSolid %> fa-trash-can elimina edicG inactivoVersion" tabindex="-1" title='Elimina la edición guardada'></i>
 
-			<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
+			<i class="<%= iconos.faSolid %> fa-slash inactivo" tabindex="-1"></i>
 
 			<!-- Muestra la versión original -->
-			<i class="fa-solid fa-house activaVersion" tabindex="-1" title='Muestra la versión original'></i>
+			<i class="<%= iconos.faSolid %> fa-house activaVersion" tabindex="-1" title='Muestra la versión original'></i>
 		<% } %>
 		<% if (locals.interesDelUsuario) { %>
 			<i id="ppp" class="<%= interesDelUsuario.icono %>" tabindex="-1" title="<%= interesDelUsuario.nombre %>"></i>

@@ -10,7 +10,7 @@
 			<li class="texto">Estamos listos para agregar el producto a nuestra Base de Datos</li>
 			<div id="liConAyuda" class="inputError">
 				<li class="texto">La calidad de tu trabajo, hace a la confianza que te vamos teniendo</li>
-				<i class="fa-solid fa-circle-question ayudaIconoForm ayudaClick">
+				<i class="<%= iconos.faSolid %> fa-circle-question ayudaIconoForm ayudaClick">
 					<ul class="mostrarClick ayudaMensForm ocultar" type="disc">
 						<li>Aspectos que consideramos:</li>
 						<ol id="subPuntos">
@@ -33,9 +33,9 @@
 	<!-- Iconos y Botón -->
 	<section id="sectorIconos">
 		<div class="iconos">
-			<a href="/producto/agregar/datos-adicionales" tabindex="-1" title="Volver al paso anterior"><i class="fa-solid <%= iconos.izquierda %>"></i></a>
+			<a href="/producto/agregar/datos-adicionales" tabindex="-1" title="Volver al paso anterior"><i class="<%= iconos.faSolid %> <%= iconos.izquierda %>"></i></a>
 			<button type="submit" autofocus title="Avanzar">
-				<i  class="fa-solid fa-circle-check" tabindex="-1"></i>
+				<i  class="<%= iconos.faSolid %> fa-circle-check" tabindex="-1"></i>
 			</button>
 		</div>
 	</section>
