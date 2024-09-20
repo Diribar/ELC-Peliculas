@@ -6,13 +6,13 @@ let obtiene = {
 		const id = DOM.cabecera_id.value;
 		return fetch(rutaCompleta + (id ? id : "")).then((n) => n.json());
 	},
-	prefsDeCabecera: (texto) => {
+	preferencias: (texto) => {
 		// Variables
 		const cabecera_id = cabecera.id ? cabecera.id : "";
 		texto = texto ? "&texto=" + texto : "";
 
 		// Busca la información
-		const rutaCompleta = ruta + "obtiene-las-prefs-de-la-cabecera/?cabecera_id=" + cabecera_id + texto;
+		const rutaCompleta = ruta + "obtiene-las-preferencias/?cabecera_id=" + cabecera_id + texto;
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
 	variablesDelBE: () => {
@@ -137,12 +137,12 @@ let actualiza = {
 	},
 	statusInicialCampos: async (texto) => {
 		// Variables
-		const prefsDeCabecera = await obtiene.prefsDeCabecera(texto);
+		const preferencias = await obtiene.preferencias(texto);
 
 		// Actualiza las preferencias simples (layout + filtros)
 		for (let prefSimple of DOM.prefsSimples)
-			prefSimple.value = prefsDeCabecera[prefSimple.name]
-				? prefsDeCabecera[prefSimple.name]
+			prefSimple.value = preferencias[prefSimple.name]
+				? preferencias[prefSimple.name]
 				: v.filtrosConDefault[prefSimple.name]
 				? v.filtrosConDefault[prefSimple.name]
 				: "";
@@ -154,7 +154,7 @@ let actualiza = {
 			: DOM.palClaveIcono.classList.remove("fa-circle-xmark");
 
 		// Si session está activa, lo informa
-		if (prefsDeCabecera.cambios) v.hayCambiosDeCampo = true;
+		if (preferencias.cambios) v.hayCambiosDeCampo = true;
 
 		// Fin
 		return;
