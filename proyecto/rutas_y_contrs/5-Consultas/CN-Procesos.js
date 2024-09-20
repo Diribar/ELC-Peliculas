@@ -70,18 +70,24 @@ module.exports = {
 			const usuario_id = req.session.usuario ? req.session.usuario.id : null;
 			const cabeceras = await this.cabeceras(usuario_id);
 			const configCons_id = configCons.id;
+			const {layout_id} = configCons;
 
 			// Acciones si existe el configCons_id
 			if (configCons_id) {
-				// Si no es una configuración viable, la elimina
+				// Si no es un configCons_id válido, lo elimina
 				if (!cabeceras.find((n) => n.id == configCons_id)) delete configCons.id;
 
-				// Guarda la 'configCons_id' en el usuario
-				if (usuario_id) {
-					baseDeDatos.actualizaPorId("usuarios", usuario_id, {configCons_id});
-					req.session.usuario = {...req.session.usuario, configCons_id};
-				}
+				// Si no se eliminó el 'id' lo guarda en el usuario
+				if (usuario_id)
+					if (configCons.id) {
+						baseDeDatos.actualizaPorId("usuarios", usuario_id, {configCons_id});
+						req.session.usuario = {...req.session.usuario, configCons_id};
+					} else delete req.session.usuario.configCons_id;
 			}
+
+			// Revisa si el layout_id es válido
+			const layoutsValidos = usuario_id ? cnLayouts : cnLayouts.filter((n) => n.grupo != "loginNeces");
+			if (layout_id && !layoutsValidos.find((n) => n.id == layout_id)) delete configCons.layout_id;
 
 			// Guarda la configuracion en cookies y session
 			req.session.configCons = configCons;
