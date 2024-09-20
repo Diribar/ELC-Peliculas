@@ -1,4 +1,5 @@
 "use strict";
+
 window.addEventListener("load", async () => {
 	// Variables - DOM
 	DOM = {
@@ -39,7 +40,7 @@ window.addEventListener("load", async () => {
 
 		// Configuración de Campos - Preferencias
 		nav: DOM.configFiltros.querySelector("nav"),
-		filtrosPresenciaEstable: DOM.configFiltros.querySelectorAll(".presenciaEstable"),
+		presenciaEstable: DOM.configFiltros.querySelectorAll(".presenciaEstable"),
 		selects: DOM.configFiltros.querySelectorAll("select"),
 		palClaveInput: DOM.configFiltros.querySelector("#palabrasClave input"),
 		palClaveIcono: DOM.configFiltros.querySelector("#palabrasClave i#palClaveIcono"),
@@ -59,7 +60,6 @@ window.addEventListener("load", async () => {
 		esperandoResultados: DOM.zonaDisponible.querySelector("#vistaDeResults #esperandoResultados"),
 		telonFondo: DOM.zonaDisponible.querySelector("#vistaDeResults img#telonFondo"),
 		carteles: DOM.zonaDisponible.querySelectorAll("#carteles .cartel"),
-		asegurate: DOM.zonaDisponible.querySelector("#carteles button#asegurate"),
 		quieroVer: DOM.zonaDisponible.querySelector("#carteles button#quieroVer"),
 		noTenemos: DOM.zonaDisponible.querySelector("#carteles button#noTenemos"),
 		loginNecesario: DOM.zonaDisponible.querySelector("#carteles button#loginNecesario"),

@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 19/sep",
-	"HoraUTC": "1:12",
+	"FechaUTC": "Vie. 20/sep",
+	"HoraUTC": "0:08",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 16/sep",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"17-sep-24": {"leyenda": "Hoy recordamos a santa Hildegard von Bingen", "entidad": "personajes", "id": 77},
 		"18-sep-24": {"leyenda": "Hoy recordamos a san José de Cupertino", "entidad": "personajes", "id": 85},
 		"19-sep-24": {},
 		"20-sep-24": {"leyenda": "Hoy recordamos a Andrés Kim y compañeros mártires, santos", "entidad": "personajes", "id": 233},
-		"21-sep-24": {"leyenda": "Hoy recordamos a san Mateo apóstol", "entidad": "personajes", "id": 222}
+		"21-sep-24": {"leyenda": "Hoy recordamos a san Mateo apóstol", "entidad": "personajes", "id": 222},
+		"22-sep-24": {}
 	}
 }

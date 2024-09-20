@@ -32,7 +32,7 @@
 					button.cartel {font-size: 1.5rem; font-weight: bold; font-style: italic;}
 					.cartel {
 						&#quieroVer, &.especial {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
-						&#asegurate, &#loginNecesario {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
+						&#loginNecesario {background: var(--rojo-claro); color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
 						&.especial {
 							scale: 1.5; overflow: hidden;
 							#cierra {

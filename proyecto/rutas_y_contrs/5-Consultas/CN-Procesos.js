@@ -64,21 +64,36 @@ module.exports = {
 			// Fin
 			return resultado;
 		},
-		configCons_url: (req, res) => {
+		configCons_url: async function (req, res) {
 			// Variables
 			const configCons = req.query;
 			const usuario_id = req.session.usuario ? req.session.usuario.id : null;
+			const cabeceras = await this.cabeceras(usuario_id);
+			const configCons_id = configCons.id;
+			const {layout_id} = configCons;
+
+			// Acciones si existe el configCons_id
+			if (configCons_id) {
+				// Si no es un configCons_id válido, lo elimina
+				if (!cabeceras.find((n) => n.id == configCons_id)) delete configCons.id;
+
+				// Si no se eliminó el 'id' lo guarda en el usuario
+				if (usuario_id)
+					if (configCons.id) {
+						baseDeDatos.actualizaPorId("usuarios", usuario_id, {configCons_id});
+						req.session.usuario = {...req.session.usuario, configCons_id};
+					} else delete req.session.usuario.configCons_id;
+			}
+
+			// Si se debe loguear, redirecciona
+			if (!usuario_id && layout_id) {
+				const layout = cnLayouts.find((n) => n.id == layout_id);
+				if (layout && layout.grupo == "loginNeces") return "loginNeces";
+			}
 
 			// Guarda la configuracion en cookies y session
 			req.session.configCons = configCons;
 			res.cookie("configCons", configCons, {maxAge: unDia});
-
-			// Guarda la 'configCons_id' en el usuario
-			const configCons_id = configCons.id;
-			if (configCons_id && usuario_id) {
-				baseDeDatos.actualizaPorId("usuarios", usuario_id, {configCons_id});
-				req.session.usuario = {...req.session.usuario, configCons_id};
-			}
 
 			// Fin
 			return;
