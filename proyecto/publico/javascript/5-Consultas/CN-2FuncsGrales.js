@@ -357,7 +357,7 @@ let cambioDeConfig_id = async (texto) => {
 	await actualiza.valoresInicialesDeVariables(); // revisada
 	if (cabecera.id && v.usuario_id) cambiosEnBD.actualizaEnUsuarioConfigCons_id(); // revisada
 	if (texto != "start-up") await sessionCookie.eliminaConfig(); // revisada
-	await actualiza.statusInicialCampos();
+	await actualiza.statusInicialCampos(); // revisada
 	actualiza.toggleBotonFiltros();
 
 	// Fin

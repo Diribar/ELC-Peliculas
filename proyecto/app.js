@@ -37,6 +37,7 @@ global.statusErrores = [];
 global.idMinRclv = 10;
 global.dibujosAnimados = "Dibujos Animados";
 global.documental = "Documental";
+global.layoutDefault_id = 2; // El 'default' es "Al azar"
 
 // Require 'path'
 global.path = require("path");

@@ -40,7 +40,7 @@ window.addEventListener("load", async () => {
 
 		// Configuración de Campos - Preferencias
 		nav: DOM.configFiltros.querySelector("nav"),
-		filtrosPresenciaEstable: DOM.configFiltros.querySelectorAll(".presenciaEstable"),
+		presenciaEstable: DOM.configFiltros.querySelectorAll(".presenciaEstable"),
 		selects: DOM.configFiltros.querySelectorAll("select"),
 		palClaveInput: DOM.configFiltros.querySelector("#palabrasClave input"),
 		palClaveIcono: DOM.configFiltros.querySelector("#palabrasClave i#palClaveIcono"),
