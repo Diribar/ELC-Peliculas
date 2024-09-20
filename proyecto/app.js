@@ -39,8 +39,10 @@ global.dibujosAnimados = "Dibujos Animados";
 global.documental = "Documental";
 global.iconoFaSolid = "fa-solid ";
 global.iconos = {
-	altaUsuario,
 	izquierda: "fa-circle-left",
+
+	inicio:"fa-house",
+	altaUsuario,
 	derecha: "fa-circle-right",
 	entendido: "fa-thumbs-up",
 	submit: "fa-circle-check",
