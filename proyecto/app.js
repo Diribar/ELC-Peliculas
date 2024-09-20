@@ -37,7 +37,14 @@ global.statusErrores = [];
 global.idMinRclv = 10;
 global.dibujosAnimados = "Dibujos Animados";
 global.documental = "Documental";
-global.layoutDefault_id = 2; // El 'default' es "Al azar"
+global.iconoFaSolid = "fa-solid ";
+global.iconos = {
+	altaUsuario,
+	izquierda: "fa-circle-left",
+	derecha: "fa-circle-right",
+	entendido: "fa-thumbs-up",
+	submit: "fa-circle-check",
+};
 
 // Require 'path'
 global.path = require("path");
@@ -105,7 +112,7 @@ app.set("views", [
 	...["./vistas/1.2-Rev-Usuarios", "./vistas/1.2-Rev-Usuarios/Includes"],
 	...["./vistas/2.0-Familias", "./vistas/2.0-Familias/Iconos", "./vistas/2.0-Familias/Includes"],
 	...["./vistas/2.1-Prods-Agregar", "./vistas/2.1-Prods-Agregar/Includes"],
-	...["./vistas/2.1-Prods-RUD","./vistas/2.1-Prods-RUD/Includes"],
+	...["./vistas/2.1-Prods-RUD", "./vistas/2.1-Prods-RUD/Includes"],
 	...["./vistas/2.2-RCLVs", "./vistas/2.2-RCLVs/Includes"],
 	...["./vistas/2.3-Links", "./vistas/2.3-Links/Includes"],
 	...["./vistas/3-Rev-Entidades", "./vistas/3-Rev-Entidades/Includes"],

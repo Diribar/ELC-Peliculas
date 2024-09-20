@@ -1,6 +1,7 @@
 "use strict";
 // Variables
 const procesos = require("./CN-Procesos");
+const layoutDefault_id = 2; // El 'default' es "Al azar"
 
 module.exports = {
 	obtiene: {
@@ -30,26 +31,39 @@ module.exports = {
 			// Fin
 			return res.json(cabecera);
 		},
-		prefsDeCabecera: async (req, res) => {
+		preferencias: async (req, res) => {
 			// Variables
 			const {texto, cabecera_id} = req.query;
-			let prefs_SC;
+			let preferencias;
 
 			// Si la lectura viene motivada por 'deshacer', elimina session y cookie
 			if (texto == "deshacer") procesos.varios.eliminaSessionCookie(req, res);
 			// De lo contrario, toma sus datos
-			else prefs_SC = req.session.configCons ? req.session.configCons : null;
+			else {
+				const prefsSession = req.session.configCons ? req.session.configCons : null;
+				if (prefsSession) preferencias = {...prefsSession, cambios: true};
+			}
 
 			// Obtiene las preferencias a partir de la 'cabecera_id'
-			const prefs_BD = cabecera_id ? await procesos.varios.prefs_BD({cabecera_id}) : null;
-			let prefs = prefs_SC ? {...prefs_SC, cambios: true} : prefs_BD;
+			if (!preferencias && cabecera_id) preferencias = await procesos.varios.prefs_BD({cabecera_id});
 
 			// Correcciones
-			if (prefs && prefs.id) delete prefs.id;
-			if (!prefs) prefs = {layout_id: layoutDefault_id};
+			if (!preferencias) preferencias = {layout_id: layoutDefault_id};
+			else {
+				// Miscelaneas
+				delete preferencias.id;
+
+				// Corrección de layout_id
+				const usuario_id = req.session.usuario ? req.session.usuario.id : null;
+				const {layout_id} = preferencias;
+				if (!usuario_id && layout_id) {
+					const layout = cnLayouts.find((n) => n.id == layout_id);
+					if (layout && layout.grupo == "loginNeces") preferencias.layout_id = layoutDefault_id;
+				}
+			}
 
 			// Fin
-			return res.json(prefs);
+			return res.json(preferencias);
 		},
 		variables: async (req, res) => {
 			// Variables
