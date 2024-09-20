@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
 	// Variables
 	const hoy = new Date().toISOString().slice(0, 10);
 
-	// Obtiene visita
+	// Obtiene el cliente
 	let {visita} = req.session.visita ? req.session : req.cookies.visita ? req.cookies : {visita: null};
 	if (!visita || !visita.id)
 		visita = {
@@ -25,12 +25,6 @@ module.exports = async (req, res, next) => {
 		if (!usuario) res.clearCookie("email"); // borra el mail de cookie
 	}
 
-	// Averigua si se necesita actualizar el contador de personas
-	const actualizarContPers =
-		visita.recienCreada || // la variable 'visita' está recién creada
-		visita.fecha != hoy || // la variable 'visita' no coincide con la fecha de hoy
-		(usuario && usuario.fechaUltimoLogin != hoy); // la fecha del último login no coincide con la fecha de hoy
-
 	// Actualización del 'id' de la visita
 	if (usuario && visita.id != usuario.visita_id) {
 		// Actualiza la tabla 'loginDelDia'
@@ -42,8 +36,13 @@ module.exports = async (req, res, next) => {
 
 		// Otras actualizaciones
 		visita.id = usuario.visita_id; // variable 'visita'
-		if (!actualizarContPers) res.cookie("visita", visita, {maxAge: unDia * 30}); // cookie 'visita'
+		res.cookie("visita", visita, {maxAge: unDia * 30}); // cookie 'visita'
 	}
+
+	// Averigua si se necesita actualizar el contador de personas
+	const actualizarContPers =
+		visita.recienCreada || // la variable 'visita' está recién creada
+		visita.fecha != hoy; // la variable 'visita' no coincide con la fecha de hoy
 
 	// Acciones si corresponde actualizar el contador de personas
 	if (actualizarContPers) {
