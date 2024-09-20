@@ -33,7 +33,7 @@ module.exports = async (req, res, next) => {
 					iconos: [
 						vistaAnterior,
 						{
-							clase: "fa-solid fa-pen",
+							clase: iconos.faSolid + " fa-pen",
 							link: "/" + familia + "/edicion/" + cola,
 							titulo: "Edición",
 						},
