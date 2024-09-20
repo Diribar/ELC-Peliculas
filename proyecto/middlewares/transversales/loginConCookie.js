@@ -1,6 +1,4 @@
 "use strict";
-// Requires
-const procesos = require("../../rutas_y_contrs/1.1-Usuarios/US-FN-Procesos");
 
 module.exports = async (req, res, next) => {
 	// Si corresponde, interrumpe la función
@@ -8,70 +6,110 @@ module.exports = async (req, res, next) => {
 
 	// Variables
 	const hoy = new Date().toISOString().slice(0, 10);
+	let cliente_id, tabla, actCookieCliente_id, clienteRecienCreado;
 
-	// Obtiene el cliente
-	let {visita} = req.session.visita ? req.session : req.cookies.visita ? req.cookies : {visita: null};
-	if (!visita || !visita.id)
-		visita = {
-			id: "V" + String(parseInt(Math.random() * Math.pow(10, 10))).padStart(10, "0"),
-			fecha: hoy,
-			recienCreada: true,
-		};
+	// 1.A. Cliente - Lo obtiene de session
+	let {cliente} = req.session;
+	if (cliente) cliente_id = cliente.cliente_id;
 
-	// Hace lo posible por conseguir el usuario
+	// 1.B. Cliente - Si no pudo, lo obtiene de cookies
+	if (!cliente_id && req.cookies && req.cookies.cliente_id) {
+		// Obtiene el cliente
+		const {cliente_id} = req.cookies;
+		if (cliente_id) {
+			tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
+			cliente = await baseDeDatos.obtienePorCondicion(tabla, {cliente_id}).then((n) => obtieneCamposNecesarios(n));
+		}
+
+		// Valida que exista y en caso contrario elimina la cookie
+		cliente_id = cliente ? cliente.cliente_id : null;
+		if (!cliente_id) res.clearCookie("cliente_id"); // borra el cookie
+	}
+
+	// 1.C. Cliente - Si no existe, lo crea
+	if (!cliente_id) {
+		// Crea el cliente
+		cliente = await baseDeDatos.agregaRegistro("visitas", {versionELC}).then((n) => obtieneCamposNecesarios(n));
+
+		// Crea el cliente_id y lo actualiza en la BD
+		cliente_id = "V" + String(cliente.id).padStart(10, "0");
+		baseDeDatos.actualizaPorId("visitas", cliente.id, {cliente_id});
+
+		// Actualiza variables
+		cliente.cliente_id = cliente_id;
+		clienteRecienCreado = true;
+	}
+
+	// 2. Temas con el usuario - Hace lo posible por obtenerlo
 	let {usuario} = req.session;
 	if (!usuario && req.cookies && req.cookies.email) {
-		usuario = await comp.obtieneUsuarioPorMail(req.cookies.email); // obtiene el usuario
-		if (!usuario) res.clearCookie("email"); // borra el mail de cookie
+		// obtiene el usuario
+		const {email} = req.cookies;
+		usuario = await comp.obtieneUsuarioPorMail(email);
+
+		// borra el mail de cookie
+		if (!usuario) res.clearCookie("email");
 	}
 
-	// Actualización del 'id' de la visita
-	if (usuario && visita.id != usuario.visita_id) {
-		// Actualiza la tabla 'loginDelDia'
-		const condicion = {visita_id: visita.id};
-		const datosActuales = {usuario_id: usuario.id, visita_id: usuario.visita_id};
+	// 3. Acciones si el 'cliente_id' es diferente
+	if (usuario && usuario.cliente_id != cliente.cliente_id) {
+		// A. Actualiza la tabla 'clientesDelDia'
+		const condicion = {cliente_id: cliente.cliente_id};
+		const datos = {usuario_id: usuario.id, cliente_id: usuario.cliente_id};
 		await baseDeDatos
-			.actualizaTodosPorCondicion("clientesDelDia", condicion, datosActuales)
-			.then(() => eliminaDuplicados(usuario.id));
+			.actualizaTodosPorCondicion("clientesDelDia", condicion, datos)
+			.then(() => eliminaDuplicados(usuario.id)); // pudo haber estado creado por usuario
 
-		// Otras actualizaciones
-		visita.id = usuario.visita_id; // variable 'visita'
-		res.cookie("visita", visita, {maxAge: unDia * 30}); // cookie 'visita'
+		// B. Obtiene la fecha máxima
+		const fechaMax = [usuario.fechaUltNaveg, cliente.fechaUltNaveg].sort((a, b) => (a > b ? -1 : 1))[0];
+
+		// C. Elimina el registro de la visita
+		baseDeDatos.eliminaPorId("visitas", cliente.id);
+
+		// D. Obtiene el cliente del usuario
+		cliente = await baseDeDatos.obtienePorId("usuarios", usuario.id).then((n) => obtieneCamposNecesarios(n));
+		if (usuario.fechaUltNaveg < fechaMax && !clienteRecienCreado) {
+			cliente.fechaUltNaveg = fechaMax;
+			baseDeDatos.actualizaPorId("usuarios", usuario.id, {fechaUltNaveg: fechaMax});
+		} else clienteRecienCreado = false; // el contador solamente se actualizará según la fecha del usuario
+
+		// E. Actualiza variables
+		cliente_id = cliente.cliente_id;
+		actCookieCliente_id = true;
 	}
 
-	// Averigua si se necesita actualizar el contador de personas
-	const actualizarContPers =
-		visita.recienCreada || // la variable 'visita' está recién creada
-		visita.fecha != hoy; // la variable 'visita' no coincide con la fecha de hoy
+	// 4. Actualiza el contador de clientes
+	if (clienteRecienCreado || cliente.fechaUltNaveg != hoy) {
+		// Actualiza variables
+		cliente.fechaUltimNaveg = hoy;
+		actCookieCliente_id = true;
 
-	// Acciones si corresponde actualizar el contador de personas
-	if (actualizarContPers) {
-		// Temas de visita
-		visita.fecha = hoy;
-		delete visita.recienCreada;
-		res.cookie("visita", visita, {maxAge: unDia * 30}); // actualiza el cookie de la visita una vez al día
+		// Actualiza el registro del cliente en la BD
+		tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
+		baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
 
-		// Temas de usuario
-		if (usuario) {
-			usuario.fechaUltimoLogin = hoy; // usuario
-			res.cookie("email", usuario.email, {maxAge: unDia * 30}); // actualiza el cookie de mail una vez al día
-		}
+		// Actualización diaria
+		if (usuario) res.cookie("email", usuario.email, {maxAge: unDia * 30});
 
 		// Actualiza el contador de personas, y el usuario en la BD
 		const usuario_id = usuario ? usuario.id : null;
-		procesos.contadorDePersonas(usuario_id, visita.id, hoy);
+		contadorDePersonas(usuario_id, cliente_id, hoy);
 	}
+	if (actCookieCliente_id) res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30}); // cookie 'cliente_id'
 
-	// Acciones si el usuario tiene una versión distinta de la actual
+	// Cartel de bienvenida
+
+
+	// Acciones si el cliente tiene una versión distinta de la actual
 	let informacion;
-	if (usuario && usuario.versionElcUltimoLogin != versionELC) {
+	if (cliente && cliente.versionElc != versionELC) {
 		// Variables
 		const permisos = ["permInputs", "autTablEnts", "revisorPERL", "revisorLinks", "revisorEnts", "revisorUs"];
-		let novedades = novedadesELC.filter((n) => n.versionELC > usuario.versionElcUltimoLogin && n.versionELC <= versionELC);
+		let novedades = novedadesELC.filter((n) => n.versionELC > cliente.versionElc && n.versionELC <= versionELC);
 		for (let i = novedades.length - 1; i >= 0; i--)
-			// Si la novedad especifica un permiso que el usuario no tiene, se la descarta
+			// Si la novedad especifica un permiso que el cliente no tiene, se la descarta
 			for (let permiso of permisos)
-				if (novedades[i][permiso] && !usuario.rolUsuario[permiso]) {
+				if (novedades[i][permiso] && !cliente.rolUsuario[permiso]) {
 					novedades.splice(i, 1);
 					break;
 				}
@@ -87,8 +125,8 @@ module.exports = async (req, res, next) => {
 			};
 
 		// Actualiza la versión en el usuario y la variable usuario
-		baseDeDatos.actualizaPorId("usuarios", usuario.id, {versionElcUltimoLogin: versionELC});
-		usuario.versionElcUltimoLogin = versionELC;
+		baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {versionELC});
+		cliente.versionElc = versionELC;
 	}
 
 	// Actualiza session y locals
@@ -98,7 +136,7 @@ module.exports = async (req, res, next) => {
 	}
 
 	// Actualiza visita
-	req.session.visita = visita;
+	req.session.cliente = cliente;
 
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
@@ -117,4 +155,40 @@ let eliminaDuplicados = async (usuario_id) => {
 
 	// Fin
 	return;
+};
+let contadorDePersonas = async (usuario_id, cliente_id, hoy) => {
+	// Valida que no exista ya un registro del 'cliente_id' en esta fecha
+	const condicion = {fecha: hoy, cliente_id};
+	const existe = await baseDeDatos.obtienePorCondicion("clientesDelDia", condicion);
+
+	// Acciones si no existe
+	if (!existe) {
+		// Agrega un registro en la tabla 'clientesDelDia'
+		let datos = {...condicion};
+		if (usuario_id) datos.usuario_id = usuario_id;
+		baseDeDatos.agregaRegistro("clientesDelDia", datos);
+
+		// Aumenta el valor del campo 'diasLogin' en el usuario
+		if (usuario_id) baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario_id, "diasLogin");
+	}
+
+	// Fin
+	return;
+};
+let obtieneCamposNecesarios = (usuario) => {
+	// Variables
+	const camposNecesarios = [
+		"cliente_id", // para la vinculación
+		"versionElc", // para las novedades
+		"fechaUltNaveg", // para el contador de 'clientes x día'
+		"rolUsuario_id", // para las novedades
+		"diasSinCartelBeneficios", // para mostrar el cartel
+	];
+
+	// Obtiene los datos para la variable cliente
+	let cliente = {};
+	for (let campo of camposNecesarios) cliente[campo] = usuario[campo];
+
+	// Fin
+	return cliente;
 };
