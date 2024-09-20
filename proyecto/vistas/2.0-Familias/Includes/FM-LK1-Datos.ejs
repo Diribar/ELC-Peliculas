@@ -81,7 +81,7 @@
 				<i class="<%= iconos.faSolid %> fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
 			<% } else if (link.cond.creadoAprob || link.cond.aprobado) { %>
 				<!-- Status aprobado -> INACTIVAR -->
-				<i class="<%= iconos.faSolid %> fa-circle-xmark out" tabindex="-1" title="Cambiarlo a 'Inactivar'"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.xMark %> out" tabindex="-1" title="Cambiarlo a 'Inactivar'"></i>
 			<% } else { %>
 				<!-- Sólo para que exista un 'out' -->
 				<i class="ocultar out"></i>
@@ -93,7 +93,7 @@
 			<% if (link.cond.grCreado) { %>
 				<!-- Status creado y ajeno -> APROBADO/INACTIVO -->
 				<i class="<%= iconos.faSolid %> <%= iconos.check %> revision in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
-				<i class="<%= iconos.faSolid %> fa-circle-xmark out" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.xMark %> out" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
 				<i class="ocultar revision fuera"></i> <!-- sólo para cumplir con el trío -->
 			<% } else if (link.cond.inactivar) { %>
 				<!-- Status inactivar y ajeno -> APROBADO/INACTIVO -->

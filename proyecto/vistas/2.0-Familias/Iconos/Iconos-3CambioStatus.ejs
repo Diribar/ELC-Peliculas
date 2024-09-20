@@ -30,7 +30,7 @@
 		<% } else if (!locals.statusAlineado && locals.revisorPERL) { %>
 			<!-- Corregir Status -->
 			<a href="<%= '/correccion/status/?entidad=' + entidad + '&id=' + id + origenHTML %>" tabindex="-1">
-				<i class="<%= iconos.faSolid %> fa-circle-xmark" tabindex="-1" title="Ir a 'Corregir Status'"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.xMark %>" tabindex="-1" title="Ir a 'Corregir Status'"></i>
 			</a>
 		<% } %>
 	<% } %>
@@ -45,7 +45,7 @@
 		<% if (aprobados_ids.includes(locals.status_id)) { %>
 			<!-- Inactivar -->
 			<a href="<%= '/' + familia + '/inactivar/?entidad=' + entidad + '&id=' + id + origenHTML %>" tabindex="-1">
-				<i class="<%= iconos.faSolid %> fa-circle-xmark" tabindex="-1" title="Ir a 'Inactivar'"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.xMark %>" tabindex="-1" title="Ir a 'Inactivar'"></i>
 			</a>
 		<% } %>
 		<% if (locals.status_id == inactivo_id && codigo != "eliminar") { %>
@@ -87,13 +87,13 @@
 			</button>
 			<!-- REVISION ALTA - Ir a la vista Rechazar -->
 			<a href="<%= '/revision/' + familia + '/rechazar/?entidad=' + entidad + '&id=' + id + origenHTML %>" tabindex="-1">
-				<i class="<%= iconos.faSolid %> fa-circle-xmark" tabindex="-1" title="Rechazar"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.xMark %>" tabindex="-1" title="Rechazar"></i>
 			</a>
 		<% } %>
 		<% if (["revisionInactivar", "revisionRecuperar"].includes(codigo)) {  %>
 			<!-- REVISION INACTIVAR Y RECUPERAR - Rechaza el cambio de status -->
 			<label for="desaprueba" class="inactivo">
-				<i class="<%= iconos.faSolid %> fa-circle-xmark" tabindex="-1" title="Desaprueba el cambio de status"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.xMark %>" tabindex="-1" title="Desaprueba el cambio de status"></i>
 			</label>
 			<input type="submit" id="desaprueba" formaction="<%= urlActual %>&desaprueba=true" formmethod="post">
 

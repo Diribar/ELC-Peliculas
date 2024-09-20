@@ -46,8 +46,8 @@ global.iconos = {
 	// Carteles / Formularios
 	izquierda: "fa-circle-left", // hecho
 	derecha: "fa-circle-right",// hecho
-	check: "fa-circle-check",
-	xMark: "fa-circle-xmark",
+	check: "fa-circle-check",// hecho
+	xMark: "fa-circle-xmark",// hecho
 	triangulo: "fa-triangle-exclamation",
 
 	// Ocasionales

@@ -2,7 +2,7 @@
 
 	<!-- Errores -->
 	<i
-		class="<%= iconos.faSolid %> fa-circle-xmark<%- !locals.errores || locals.nombre && !errores[nombre] ? ' ocultar' : '' %>"
+		class="<%= iconos.faSolid %> <%= iconos.xMark %><%- !locals.errores || locals.nombre && !errores[nombre] ? ' ocultar' : '' %>"
 		<% if (locals.z_index) { %>style="z-index: <%= z_index %> "<% } %>
 	>
 		<span class="mensajeError"><%- locals.nombre && locals.errores && errores[nombre] ? errores[nombre] : "" %></span>
