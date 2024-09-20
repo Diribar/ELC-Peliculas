@@ -38,14 +38,29 @@ global.idMinRclv = 10;
 global.dibujosAnimados = "Dibujos Animados";
 global.documental = "Documental";
 global.iconos = {
-	faSolid: "fa-solid",
-	izquierda: "fa-circle-left",
-
+	// Uso general
+	faSolid: "fa-solid", // hecho
 	inicio: "fa-house",
-	// altaUsuario,
+	ayuda: "fa-circle-question",
+
+	// Carteles / Formularios
+	izquierda: "fa-circle-left", // hecho
 	derecha: "fa-circle-right",
 	entendido: "fa-thumbs-up",
 	check: "fa-circle-check",
+	xMark: "fa-circle-xmark",
+	triangulo: "fa-triangle-exclamation",
+
+	// Ocasionales
+	altaUsuario: "fa-user-plus",
+	link: "fa-link",
+	edicion: "fa-pen",
+	calificar: "fa-chart-simple",
+	eliminar: "fa-trash-can",
+	detalle: "fa-circle-info",
+	compartir: "fa-share-nodes",
+	edicionCambiada: "fa-arrow-right-long",
+	agregar: "fa-circle-plus",
 };
 
 // Require 'path'
