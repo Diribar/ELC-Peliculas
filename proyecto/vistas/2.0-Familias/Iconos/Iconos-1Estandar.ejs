@@ -16,29 +16,29 @@
 	<% if (!detalle && (ORIGEN_DIF_DT && !revLinks || !locals.origen)) { %>
 		<!-- Ir a Detalle - siempre que el origen sea distinto a 'Detalle' o no haya origen -->
 		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id %>" tabindex="-1">
-			<i class="<%= iconos.faSolid %> fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
+			<i class="<%= iconos.faSolid %> <%= iconos.detalle %>" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
 	<% } %>
 	<% if (terminaste || detalle) { %>
 		<% if (locals.status_id && status_id <= aprobado_id) { %>
 			<!-- Edición, Links y Calificar - con link -->
 			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + ORIGEN_DIF_DT %>" tabindex="-1">
-				<i class="<%= iconos.faSolid %> fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.edicion %>" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 			</a>
 			<% if (familia == "producto") { %>
 				<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + ORIGEN_DIF_DT %>" tabindex="-1">
 					<i class="<%= iconos.faSolid %> fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 				</a>
 				<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id + ORIGEN_DIF_DT %>" tabindex="-1">
-					<i class="<%= iconos.faSolid %> fa-chart-simple fa-rotate-90 <%= locals.yaCalificada %>" tabindex="-1" title="<%= locals.yaCalificada ? 'Ya l'+ oa +' calificaste' : 'Califical' + oa %>"></i>
+					<i class="<%= iconos.faSolid %> <%= iconos.calificar %> fa-rotate-90 <%= locals.yaCalificada %>" tabindex="-1" title="<%= locals.yaCalificada ? 'Ya l'+ oa +' calificaste' : 'Califical' + oa %>"></i>
 				</a>
 			<% } %>
 		<% } else { %>
 			<!-- Edición, Links y Calificar - inactivos -->
-			<i class="<%= iconos.faSolid %> fa-pen inactivo" title="Ir a la vista 'Edición'" tabindex="-1"></i>
+			<i class="<%= iconos.faSolid %> <%= iconos.edicion %> inactivo" title="Ir a la vista 'Edición'" tabindex="-1"></i>
 			<% if (familia == "producto") { %>
 				<i class="<%= iconos.faSolid %> fa-link inactivo" title="Ir a la vista 'Links'" tabindex="-1"></i>
-				<i class="<%= iconos.faSolid %> fa-chart-simple fa-rotate-90 inactivo" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>" tabindex="-1"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.calificar %> fa-rotate-90 inactivo" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>" tabindex="-1"></i>
 			<% } %>
 		<% } %>
 	<% } %>

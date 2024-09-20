@@ -65,7 +65,7 @@
 			<!-- Sólo para RUD -->
 			<!-- Status creado y propio, o status aprobado -> EDICION -->
 			<% mostrar = link.cond.creadoPropio || link.cond.aprobado %>
-			<i class="<%= iconos.faSolid %> fa-pen edicion <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
+			<i class="<%= iconos.faSolid %> <%= iconos.edicion %> edicion <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
 
 			<!-- Status provisorio y propio -> DESHACER -->
 			<% mostrar = link.cond.provPropio %>
@@ -78,7 +78,7 @@
 			<!-- ELIMINAR -->
 			<% if (link.cond.creadoPropio || locals.usuario && usuario.rolUsuario.revisorLinks && link.cond.inactivo) { %>
 				<!-- Status creado+propio, o Revisor+Inactivo -> ELIMINAR PERMANENTEMENTE -->
-				<i class="<%= iconos.faSolid %> fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.eliminar %> out" tabindex="-1" title="Eliminarlo permanentemente"></i>
 			<% } else if (link.cond.creadoAprob || link.cond.aprobado) { %>
 				<!-- Status aprobado -> INACTIVAR -->
 				<i class="<%= iconos.faSolid %> <%= iconos.xMark %> out" tabindex="-1" title="Cambiarlo a 'Inactivar'"></i>

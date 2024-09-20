@@ -432,13 +432,13 @@ module.exports = {
 			autofocus: true,
 		}),
 		producto: (entidad, id) => ({
-			clase: "fa-circle-info",
+			clase: iconos.detalle,
 			link: "/producto/detalle/?entidad=" + entidad + "&id=" + id,
 			titulo: "Ir a la vista Detalle",
 			autofocus: true,
 		}),
 		rclv: (entidad, id) => ({
-			clase: "fa-circle-info",
+			clase: iconos.detalle,
 			link: "/rclv/detalle/?entidad=" + entidad + "&id=" + id,
 			titulo: "Ir al 'Detalle de RCLV'",
 			autofocus: true,
