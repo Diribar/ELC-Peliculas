@@ -40,7 +40,7 @@ global.documental = "Documental";
 global.iconos = {
 	// Uso general
 	faSolid: "fa-solid", // hecho
-	inicio: "fa-house",
+	inicio: "fa-house", // hecho
 	ayuda: "fa-circle-question",
 
 	// Carteles / Formularios
