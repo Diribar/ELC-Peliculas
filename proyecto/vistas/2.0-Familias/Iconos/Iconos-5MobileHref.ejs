@@ -1,6 +1,6 @@
 <% if (tema == "prodRud" && codigo == "detalle") { %>
 	<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id %>" tabindex="-1">
-		<i class="<%= iconos.faSolid %> <%= iconos.calificar %> fa-rotate-90 <%= locals.yaCalificada || !!locals.califUsuario %>" tabindex="-1"></i>
+		<i class="<%= iconos.faSolid %> <%= iconos.calificar %> <%= iconos.rotar %> <%= locals.yaCalificada || !!locals.califUsuario %>" tabindex="-1"></i>
 	</a>
 <% } %>
 <% if (["calificar", "visualizacion"].includes(codigo)) { %>
