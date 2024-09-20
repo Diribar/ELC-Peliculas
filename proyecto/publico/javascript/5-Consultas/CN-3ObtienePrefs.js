@@ -71,7 +71,7 @@ let actualizaConfigCons = {
 	},
 	presenciaEstable: () => {
 		// Impacto en prefs: todos los campos con presencia estable y que tengan un valor, impactan en el resultado
-		for (let filtro of DOM.filtrosPresenciaEstable) if (filtro.value) prefs[filtro.name] = filtro.value;
+		for (let filtro of DOM.presenciaEstable) if (filtro.value) prefs[filtro.name] = filtro.value;
 
 		// Actualiza el valor de 'palabrasClave'
 		if (
@@ -101,14 +101,16 @@ let actualizaConfigCons = {
 		return;
 	},
 	pppOpciones: () => {
-		// Si el usuario no está logueado o quiere ver sus calificaciones, interrumpe la función
-		if (!v.usuario_id || v.layoutBD.codigo == "misCalificadas") return;
+		// Si el usuario no está logueado, interrumpe la función
+		if (!v.usuario_id) return;
 
-		// Acciones si la opción elegida es "Mis preferencias"
-		if (v.layoutBD.codigo == "misPrefs") {
-			prefs.pppOpciones = v.pppOpcsObj.misPreferencias.combo.split(",");
-			muestraOcultaActualizaPref(false, "pppOpciones"); // oculta el sector
+		// Si la opción elegida es "Mis preferencias" o "Mis calificaciones", oculta el sector
+		if (["misPrefs", "misCalificadas"].includes(v.layoutBD.codigo)) {
+			muestraOcultaActualizaPref(false, "pppOpciones");
+			if (v.layoutBD.codigo == "misCalificadas") return; // interrumpe la función
+			else prefs.pppOpciones = v.pppOpcsObj.misPreferencias.combo.split(","); // procesa la preferencia
 		}
+
 		// Acciones si la opción elegida es otra
 		else {
 			// Muestra/Oculta el sector y actualiza el valor del filtro
