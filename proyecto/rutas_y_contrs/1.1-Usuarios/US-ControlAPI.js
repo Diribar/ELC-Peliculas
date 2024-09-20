@@ -57,7 +57,7 @@ module.exports = {
 				const usuario = await baseDeDatos.agregaRegistro("usuarios", {
 					...{email, contrasena},
 					statusRegistro_id: mailPendValidar_id,
-					versionElcUltimoLogin: versionELC,
+					versionELC,
 				});
 				const visita_id = "U" + String(usuario.id).padStart(10, "0");
 				baseDeDatos.actualizaPorId("usuarios", usuario.id, {visita_id});
