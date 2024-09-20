@@ -25,7 +25,7 @@
 						<!-- Aprobar y Rechazar -->
 						<div class="aprobRech">
 							<label for="<%= campo.nombre %>-SI">
-								<i class="<%= iconos.faSolid %> fa-circle-check sinDecision"></i>
+								<i class="<%= iconos.faSolid %> <%= iconos.check %> sinDecision"></i>
 							</label>
 							<input id="<%= campo.nombre %>-SI" type="radio" name="<%= campo.nombre %>" value="SI" class="ocultar">
 							<label for="<%= campo.nombre %>-NO">
@@ -48,7 +48,7 @@
 			<i id="liberarSalir" class="<%= iconos.faSolid %> <%= iconos.izquierda %>" tabindex="-1" title="Volver al Tablero"></i>
 		</a>
 		<button type="submit">
-			<i id="submit" class="<%= iconos.faSolid %> fa-circle-check inactivo" title="Entendido"></i>
+			<i id="submit" class="<%= iconos.faSolid %> <%= iconos.check %> inactivo" title="Entendido"></i>
 		</button>
 	</section>
 </form>

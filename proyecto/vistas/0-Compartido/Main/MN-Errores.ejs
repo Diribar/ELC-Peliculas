@@ -17,7 +17,7 @@
 
 	<!-- OK -->
 	<i
-		class="<%= iconos.faSolid %> fa-circle-check<%- (locals.nombre && (locals.dataEntry && !dataEntry[nombre] || locals.errores && errores[nombre])) ? ' ocultar' : '' %>"
+		class="<%= iconos.faSolid %> <%= iconos.check %><%- (locals.nombre && (locals.dataEntry && !dataEntry[nombre] || locals.errores && errores[nombre])) ? ' ocultar' : '' %>"
 		<% if (locals.ocultarOK) { %>style="display: none;"<% } %>
 	>
 	</i>

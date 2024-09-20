@@ -45,13 +45,13 @@ global.iconos = {
 
 	// Carteles / Formularios
 	izquierda: "fa-circle-left", // hecho
-	derecha: "fa-circle-right",
-	entendido: "fa-thumbs-up",
+	derecha: "fa-circle-right",// hecho
 	check: "fa-circle-check",
 	xMark: "fa-circle-xmark",
 	triangulo: "fa-triangle-exclamation",
 
 	// Ocasionales
+	entendido: "fa-thumbs-up",
 	altaUsuario: "fa-user-plus",
 	link: "fa-link",
 	edicion: "fa-pen",

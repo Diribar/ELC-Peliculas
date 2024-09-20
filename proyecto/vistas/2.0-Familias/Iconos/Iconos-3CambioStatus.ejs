@@ -51,7 +51,7 @@
 		<% if (locals.status_id == inactivo_id && codigo != "eliminar") { %>
 			<!-- Recuperar -->
 			<a href="<%= '/' + familia + '/recuperar/?entidad=' + entidad + '&id=' + id + origenHTML %>" tabindex="-1">
-				<i class="<%= iconos.faSolid %> fa-circle-check" tabindex="-1" title="Ir a 'Recuperar'"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.check %>" tabindex="-1" title="Ir a 'Recuperar'"></i>
 			</a>
 			<% if (locals.usuario && usuario.rolUsuario.revisorPERL) { %>
 				<!-- Eliminar -->
@@ -68,7 +68,7 @@
 	<% if (condicRclvCrud || condicRevision && !locals.statusCreado || condicRevSolapam) { %>
 		<!-- CRUD - Aprobar -->
 		<button type="submit" autofocus class="inactivo">
-			<i class="<%= iconos.faSolid %> fa-circle-check" title="Guardar"></i>
+			<i class="<%= iconos.faSolid %> <%= iconos.check %>" title="Guardar"></i>
 		</button>
 		<!-- CRUD - Eliminar edición RCLV -->
 		<% if (tema == "rclvCrud" && codigo == "edicion" && edicID) { %>
@@ -83,7 +83,7 @@
 		<% if (locals.statusCreado) { %>
 			<!-- REVISION ALTA - Aprobar -->
 			<button type="submit" autofocus>
-				<i class="<%= iconos.faSolid %> fa-circle-check" title="Aprobar"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.check %>" title="Aprobar"></i>
 			</button>
 			<!-- REVISION ALTA - Ir a la vista Rechazar -->
 			<a href="<%= '/revision/' + familia + '/rechazar/?entidad=' + entidad + '&id=' + id + origenHTML %>" tabindex="-1">
@@ -113,7 +113,7 @@
 		<% if (condicCrud && !condicCrudEliminar || condicRevRech || tema == "correccion") {  %>
 			<!-- VISTAS CRUD (Inactivar/Recuperar) - Para cambiar el status y enviar a Revisión -->
 			<!-- VISTAS REVISION (Inactivar/Recuperar/Rechazo) - Para confirmar el cambio de status -->
-			<i class="<%= iconos.faSolid %> fa-circle-check" tabindex="-1" title="Confirma el cambio de status"></i>
+			<i class="<%= iconos.faSolid %> <%= iconos.check %>" tabindex="-1" title="Confirma el cambio de status"></i>
 		<% } %>
 		<% if (condicCrudEliminar) {  %>
 			<!-- Elimina definitivamente -->

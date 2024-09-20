@@ -73,7 +73,7 @@
 
 			<!-- Status inactivo -> RECUPERAR -->
 			<% mostrar = link.cond.inactivo %>
-			<i class="<%= iconos.faSolid %> fa-circle-check in <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a Recuperar"></i>
+			<i class="<%= iconos.faSolid %> <%= iconos.check %> in <%- !mostrar ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a Recuperar"></i>
 
 			<!-- ELIMINAR -->
 			<% if (link.cond.creadoPropio || locals.usuario && usuario.rolUsuario.revisorLinks && link.cond.inactivo) { %>
@@ -92,7 +92,7 @@
 			<!-- Sólo para Revisión -->
 			<% if (link.cond.grCreado) { %>
 				<!-- Status creado y ajeno -> APROBADO/INACTIVO -->
-				<i class="<%= iconos.faSolid %> fa-circle-check revision in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.check %> revision in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
 				<i class="<%= iconos.faSolid %> fa-circle-xmark out" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
 				<i class="ocultar revision fuera"></i> <!-- sólo para cumplir con el trío -->
 			<% } else if (link.cond.inactivar) { %>
