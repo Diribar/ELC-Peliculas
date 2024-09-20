@@ -85,9 +85,11 @@ module.exports = {
 					} else delete req.session.usuario.configCons_id;
 			}
 
-			// Revisa si el layout_id es válido
-			const layoutsValidos = usuario_id ? cnLayouts : cnLayouts.filter((n) => n.grupo != "loginNeces");
-			if (layout_id && !layoutsValidos.find((n) => n.id == layout_id)) delete configCons.layout_id;
+			// Si se debe loguear, redirecciona
+			if (!usuario_id && layout_id) {
+				const layout = cnLayouts.find((n) => n.id == layout_id);
+				if (layout && layout.grupo == "loginNeces") return "loginNeces";
+			}
 
 			// Guarda la configuracion en cookies y session
 			req.session.configCons = configCons;
