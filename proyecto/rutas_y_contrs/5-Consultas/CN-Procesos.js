@@ -68,13 +68,13 @@ module.exports = {
 			// Variables
 			const configCons = req.query;
 			const usuario_id = req.session.usuario ? req.session.usuario.id : null;
-			const cabeceras = await this.cabeceras(usuario_id);
 			const configCons_id = configCons.id;
 			const {layout_id} = configCons;
 
 			// Acciones si existe el configCons_id
 			if (configCons_id) {
 				// Si no es un configCons_id válido, lo elimina
+				const cabeceras = await this.cabeceras(usuario_id);
 				if (!cabeceras.find((n) => n.id == configCons_id)) delete configCons.id;
 
 				// Si no se eliminó el 'id' lo guarda en el usuario
