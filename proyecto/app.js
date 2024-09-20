@@ -45,7 +45,7 @@ global.iconos = {
 	// altaUsuario,
 	derecha: "fa-circle-right",
 	entendido: "fa-thumbs-up",
-	submit: "fa-circle-check",
+	check: "fa-circle-check",
 };
 
 // Require 'path'

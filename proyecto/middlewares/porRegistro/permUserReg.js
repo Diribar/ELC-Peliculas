@@ -155,7 +155,7 @@ module.exports = async (req, res, next) => {
 		const linkInactivar =
 			"/inactivar-captura/?entidad=" + captura.entidad + "&id=" + captura.entidad_id + "&urlDestino=" + originalUrl;
 		const liberar = {
-			clase: iconos.submit,
+			clase: iconos.check,
 			link: linkInactivar,
 			titulo: "Liberar automáticamente",
 			autofocus: true,
