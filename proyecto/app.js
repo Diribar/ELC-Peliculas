@@ -37,11 +37,11 @@ global.statusErrores = [];
 global.idMinRclv = 10;
 global.dibujosAnimados = "Dibujos Animados";
 global.documental = "Documental";
-global.iconoFaSolid = "fa-solid ";
 global.iconos = {
+	faSolid: "fa-solid",
 	izquierda: "fa-circle-left",
 
-	inicio:"fa-house",
+	inicio: "fa-house",
 	// altaUsuario,
 	derecha: "fa-circle-right",
 	entendido: "fa-thumbs-up",
