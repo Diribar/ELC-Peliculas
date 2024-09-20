@@ -7,9 +7,13 @@ let obtiene = {
 		return fetch(rutaCompleta + (id ? id : "")).then((n) => n.json());
 	},
 	prefsDeCabecera: (texto) => {
-		texto = texto ? "texto=" + texto + "&" : "";
-		const rutaCompleta = ruta + "obtiene-las-prefs-de-la-cabecera/?" + texto + "cabecera_id=";
-		return fetch(rutaCompleta + (cabecera.id ? cabecera.id : "")).then((n) => n.json());
+		// Variables
+		const cabecera_id = cabecera.id ? cabecera.id : "";
+		texto = texto ? "&texto=" + texto : "";
+
+		// Busca la información
+		const rutaCompleta = ruta + "obtiene-las-prefs-de-la-cabecera/?cabecera_id=" + cabecera_id + texto;
+		return fetch(rutaCompleta).then((n) => n.json());
 	},
 	variablesDelBE: () => {
 		const rutaCompleta = ruta + "obtiene-variables/";
@@ -26,10 +30,10 @@ let actualiza = {
 		v.hayCambiosDeCampo = false;
 		v.nombreOK = false;
 		cabecera = await obtiene.cabecera();
-		if (!DOM.cabecera_id.value) DOM.cabecera_id.value = cabecera.id ? cabecera.id : "";
 
-		// Variables que dependen de otras variables 'v'
-		v.filtroPropio = v.usuario_id && cabecera.usuario_id == v.usuario_id;
+		// Acciones
+		if (!DOM.cabecera_id.value && cabecera.id) DOM.cabecera_id.value = cabecera.id;
+		v.filtroPropio = !!(v.usuario_id && cabecera.usuario_id == v.usuario_id);
 
 		// Fin
 		return;
@@ -49,7 +53,9 @@ let actualiza = {
 		DOM.sinFiltros.title = !DOM.sinFiltros.className.includes("inactivo") ? v.titulo.sinFiltros : "No hay filtros aplicados";
 
 		// Ícono Nuevo
-		v.layout_id && !claseEdicion && v.usuario_id ? DOM.nuevo.classList.remove("inactivo") : DOM.nuevo.classList.add("inactivo");
+		v.layout_id && !claseEdicion && v.usuario_id
+			? DOM.nuevo.classList.remove("inactivo")
+			: DOM.nuevo.classList.add("inactivo");
 		DOM.nuevo.title = !DOM.nuevo.className.includes("inactivo")
 			? v.titulo.nuevo
 			: !v.usuario_id
@@ -348,9 +354,9 @@ let sessionCookie = {
 };
 let cambioDeConfig_id = async (texto) => {
 	// Funciones
-	await actualiza.valoresInicialesDeVariables();
-	if (cabecera.id && v.usuario_id) cambiosEnBD.actualizaEnUsuarioConfigCons_id();
-	if (texto != "start-up") await sessionCookie.eliminaConfig();
+	await actualiza.valoresInicialesDeVariables(); // revisada
+	if (cabecera.id && v.usuario_id) cambiosEnBD.actualizaEnUsuarioConfigCons_id(); // revisada
+	if (texto != "start-up") await sessionCookie.eliminaConfig(); // revisada
 	await actualiza.statusInicialCampos();
 	actualiza.toggleBotonFiltros();
 
