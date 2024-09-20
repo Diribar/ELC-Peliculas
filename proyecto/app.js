@@ -58,6 +58,7 @@ global.iconos = {
 	detalle: "fa-circle-info",
 	edicionCambiada: "fa-arrow-right-long",
 	agregar: "fa-circle-plus",
+	rotar: "fa-rotate-90",
 };
 
 // Require 'path'
