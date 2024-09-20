@@ -413,11 +413,11 @@ module.exports = {
 	},
 
 	// Links a vistas
-	vistaInicio: {clase: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},
-	vistaAnterior: (url) => ({clase: "fa-circle-left", link: url ? url : "/", titulo: "Volver a la vista anterior"}),
+	vistaInicio: {clase: iconos.inicio, link: "/", titulo: "Ir a 'Inicio'"},
+	vistaAnterior: (url) => ({clase: iconos.izquierda, link: url ? url : "/", titulo: "Volver a la vista anterior"}),
 	vistaActual: (req) => ({clase: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"}),
-	vistaSiguiente: (url) => ({clase: "fa-circle-right", link: url ? url : "/", titulo: "Ir a la vista siguiente"}),
-	vistaEntendido: (url) => ({clase: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"}),
+	vistaSiguiente: (url) => ({clase: iconos.derecha, link: url ? url : "/", titulo: "Ir a la vista siguiente"}),
+	vistaEntendido: (url) => ({clase: iconos.entendido, link: url ? url : "/", titulo: "Entendido"}),
 	vistaTablero: {
 		clase: "fa-spell-check",
 		link: "/revision/tablero-de-entidades",
