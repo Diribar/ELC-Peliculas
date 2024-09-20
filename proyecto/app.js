@@ -42,7 +42,7 @@ global.iconos = {
 	izquierda: "fa-circle-left",
 
 	inicio:"fa-house",
-	altaUsuario,
+	// altaUsuario,
 	derecha: "fa-circle-right",
 	entendido: "fa-thumbs-up",
 	submit: "fa-circle-check",
