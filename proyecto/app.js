@@ -40,10 +40,10 @@ global.documental = "Documental";
 global.iconoFaSolid = "fa-solid ";
 global.iconos = {
 	altaUsuario,
-	izquierda: iconoFaSolid + "fa-circle-left",
-	derecha: iconoFaSolid + "fa-circle-right",
-	entendido: iconoFaSolid + "fa-thumbs-up",
-	submit: iconoFaSolid + "fa-circle-check",
+	izquierda: "fa-circle-left",
+	derecha: "fa-circle-right",
+	entendido: "fa-thumbs-up",
+	submit: "fa-circle-check",
 };
 
 // Require 'path'
