@@ -160,15 +160,10 @@ module.exports = async (req, res, next) => {
 			titulo: "Liberar automáticamente",
 			autofocus: true,
 		};
-
-		// Genera la información
-		const informacion = {
-			mensajes,
-			iconos: [v.vistaSinCaptura, liberar],
-		};
+		const iconosInfo = [v.vistaSinCaptura, liberar];
 
 		// Fin
-		return res.render("CMP-0Estructura", {informacion});
+		return res.render("CMP-0Estructura", {informacion: {mensajes, iconos: iconosInfo}});
 	}
 
 	// Fin
