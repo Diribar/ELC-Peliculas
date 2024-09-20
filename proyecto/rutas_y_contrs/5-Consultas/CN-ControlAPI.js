@@ -33,16 +33,18 @@ module.exports = {
 		prefsDeCabecera: async (req, res) => {
 			// Variables
 			const {texto, cabecera_id} = req.query;
-			let prefs_SC;
+			let prefs;
 
 			// Si la lectura viene motivada por 'deshacer', elimina session y cookie
 			if (texto == "deshacer") procesos.varios.eliminaSessionCookie(req, res);
 			// De lo contrario, toma sus datos
-			else prefs_SC = req.session.configCons ? req.session.configCons : null;
+			else {
+				const prefs_SC = req.session.configCons ? req.session.configCons : null;
+				if (prefs_SC) prefs = {...prefs_SC, cambios: true};
+			}
 
 			// Obtiene las preferencias a partir de la 'cabecera_id'
-			const prefs_BD = cabecera_id ? await procesos.varios.prefs_BD({cabecera_id}) : null;
-			let prefs = prefs_SC ? {...prefs_SC, cambios: true} : prefs_BD;
+			if (!prefs && cabecera_id) prefs = await procesos.varios.prefs_BD({cabecera_id});
 
 			// Correcciones
 			if (prefs && prefs.id) delete prefs.id;
