@@ -21,7 +21,9 @@ module.exports = async (req, res, next) => {
 		// Obtiene el cliente
 		if (cliente_id.startsWith("U")) {
 			// Obtiene el cliente
-			cliente = await baseDeDatos.obtienePorCondicion("usuarios", {cliente_id}).then((n) => obtieneCamposNecesarios(n));
+			cliente = await baseDeDatos
+				.obtienePorCondicion("usuarios", {cliente_id}, "rolUsuario")
+				.then((n) => obtieneCamposNecesarios(n));
 
 			// Actualiza el cliente con la 'fechaUltNaveg'
 			cliente.fechaUltNaveg = fechaUltNaveg;
@@ -31,7 +33,8 @@ module.exports = async (req, res, next) => {
 		else {
 			// Crea y obtiene el cliente
 			const datos = {versionElc: "1.10", mostrarCartelBienvenida: false, fechaUltNaveg};
-			cliente = await baseDeDatos.agregaRegistro("visitas", datos).then((n) => obtieneCamposNecesarios(n));
+			cliente = await baseDeDatos.agregaRegistro("visitas", datos);
+			cliente = await baseDeDatos.obtienePorId("visitas", cliente.id, "rolUsuario").then((n) => obtieneCamposNecesarios(n));
 
 			// Actualiza el cliente con el 'cliente_id'
 			cliente_id = "V" + String(cliente.id).padStart(10, "0");
@@ -67,7 +70,8 @@ module.exports = async (req, res, next) => {
 	// 1.D. Cliente - Si no existe, lo crea
 	if (!cliente_id) {
 		// Crea el cliente
-		cliente = await baseDeDatos.agregaRegistro("visitas", {versionElc}).then((n) => obtieneCamposNecesarios(n));
+		cliente = await baseDeDatos.agregaRegistro("visitas", {versionElc})
+		cliente = await baseDeDatos.obtienePorId("visitas", cliente.id, "rolUsuario").then((n) => obtieneCamposNecesarios(n));
 
 		// Crea el cliente_id y lo actualiza en la BD
 		cliente_id = "V" + String(cliente.id).padStart(10, "0");
@@ -84,6 +88,7 @@ module.exports = async (req, res, next) => {
 		// obtiene el usuario
 		const {email} = req.cookies;
 		usuario = await comp.obtieneUsuarioPorMail(email);
+		return res.send(["123", email]);
 
 		// borra el mail de cookie
 		if (!usuario) res.clearCookie("email");
@@ -197,6 +202,7 @@ let contadorDePersonas = async (usuario_id, cliente_id, hoy) => {
 let obtieneCamposNecesarios = (usuario) => {
 	// Variables
 	const camposNecesarios = [
+		"id",
 		"cliente_id", // para la vinculación
 		"versionElc", // para las novedades
 		"fechaUltNaveg", // para el contador de 'clientes x día'
