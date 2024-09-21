@@ -137,7 +137,7 @@ module.exports = async (req, res, next) => {
 
 		// Actualiza el registro del cliente en la BD
 		tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
-		baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
+		baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
 
 		// Actualización diaria
 		if (usuario) res.cookie("email", usuario.email, {maxAge: unDia * 30});
