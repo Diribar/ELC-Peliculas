@@ -320,16 +320,16 @@ module.exports = {
 			// Si hay una inconsistencia, termina
 			const primFechaLoginsDiarios = loginsDiarios[0].fecha;
 			const ultClientesAcums = await baseDeDatos.obtienePorCondicionElUltimo("clientesDiarios");
-			const fechaUltLoginAcum = ultClientesAcums ? ultClientesAcums.fecha : null;
-			if (fechaUltLoginAcum && primFechaLoginsDiarios <= fechaUltLoginAcum) {
-				const mensaje = primFechaLoginsDiarios == fechaUltLoginAcum ? "IGUAL" : "MENOR";
+			const fechaUltClientesAcums = ultClientesAcums ? ultClientesAcums.fecha : null;
+			if (fechaUltClientesAcums && primFechaLoginsDiarios <= fechaUltClientesAcums) {
+				const mensaje = primFechaLoginsDiarios == fechaUltClientesAcums ? "IGUAL" : "MENOR";
 				console.log("Inconsistencia: Fecha Diaria", mensaje, "a Fecha Acumulada");
 				return;
 			}
 
 			// Obtiene la fecha inicial para acumulados
-			let proximaFecha = fechaUltLoginAcum // condición si hay logins acums
-				? procesos.sumaUnDia(fechaUltLoginAcum) // le suma un día al último registro
+			let proximaFecha = fechaUltClientesAcums // condición si hay logins acums
+				? procesos.sumaUnDia(fechaUltClientesAcums) // le suma un día al último registro
 				: primFechaLoginsDiarios; // la fecha del primer registro
 
 			// Loop mientras el día sea menor al actual
