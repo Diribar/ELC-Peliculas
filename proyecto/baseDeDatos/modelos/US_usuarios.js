@@ -1,7 +1,12 @@
 module.exports = (sequelize, dt) => {
 	const alias = "usuarios";
 	const columns = {
-		visita_id: {type: dt.STRING(11)},
+		cliente_id: {type: dt.STRING(11)},
+		versionElc: {type: dt.STRING(4)},
+		fechaUltNaveg: {type: dt.DATE},
+		rolUsuario_id: {type: dt.INTEGER},
+		diasSinCartelBenefs: {type: dt.INTEGER}, // default '0'
+
 		email: {type: dt.STRING(100)},
 		contrasena: {type: dt.STRING(50)},
 
@@ -14,7 +19,6 @@ module.exports = (sequelize, dt) => {
 		genero_id: {type: dt.STRING(1)},
 		pais_id: {type: dt.STRING(2)},
 		avatar: {type: dt.STRING(100)},
-		rolUsuario_id: {type: dt.INTEGER},
 
 		cartelResp_prods: {type: dt.BOOLEAN},
 		cartelResp_rclvs: {type: dt.BOOLEAN},
@@ -22,8 +26,6 @@ module.exports = (sequelize, dt) => {
 		cartelFinPenaliz: {type: dt.BOOLEAN},
 
 		autorizadoFA: {type: dt.BOOLEAN},
-		diasLogin: {type: dt.INTEGER},
-		versionElcUltimoLogin: {type: dt.STRING(4)},
 		configCons_id: {type: dt.INTEGER},
 		videoConsVisto: {type: dt.BOOLEAN},
 
@@ -42,10 +44,10 @@ module.exports = (sequelize, dt) => {
 		penalizadoEn: {type: dt.DATE},
 		penalizadoHasta: {type: dt.DATE},
 
-		fechaUltimoLogin: {type: dt.DATE},
 		fechaContrasena: {type: dt.DATE},
 		fechaRevisores: {type: dt.DATE},
 
+		diasNaveg: {type: dt.INTEGER},
 		creadoEn: {type: dt.DATE},
 		completadoEn: {type: dt.DATE},
 		editadoEn: {type: dt.DATE},
