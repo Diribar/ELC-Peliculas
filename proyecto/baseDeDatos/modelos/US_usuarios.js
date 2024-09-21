@@ -55,7 +55,7 @@ module.exports = (sequelize, dt) => {
 		statusRegistro_id: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "usuarios",
+		tableName: "us_usuarios",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
