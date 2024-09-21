@@ -13,8 +13,8 @@ module.exports = (sequelize, dt) => {
 		creadoEn: {type: dt.DATE}, // para la estadística
 
 		// Carteles
-		mostrarCartelBienvenida, // default 'true '
-		mostrarCartelCookies, // default 'true '
+		mostrarCartelBienvenida: {type: dt.BOOLEAN}, // default 'true '
+		mostrarCartelCookies: {type: dt.BOOLEAN}, // default 'true '
 	};
 	const config = {
 		tableName: "us_visitas",
