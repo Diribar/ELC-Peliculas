@@ -88,7 +88,6 @@ module.exports = async (req, res, next) => {
 		// obtiene el usuario
 		const {email} = req.cookies;
 		usuario = await comp.obtieneUsuarioPorMail(email);
-		return res.send(["123", email]);
 
 		// borra el mail de cookie
 		if (!usuario) res.clearCookie("email");
