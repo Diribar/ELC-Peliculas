@@ -281,6 +281,7 @@ app.set("views", [
 
 	// Middlewares transversales
 	app.use(require("./middlewares/transversales/loginConCookie")); // Para estar siempre logueado, si existe el cookie - depende de procesos anteriores
+	app.use(require("./middlewares/transversales/carteles")); // Para estar siempre logueado, si existe el cookie - depende de procesos anteriores
 	app.use(require("./middlewares/transversales/urlsUsadas")); // Para tener el rastro de los últimos url - depende de procesos anteriores
 
 	// Urls que dependen de la variable 'global'
