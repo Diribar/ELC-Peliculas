@@ -30,7 +30,7 @@ module.exports = async (req, res, next) => {
 		// Crea el cliente
 		else {
 			// Crea y obtiene el cliente
-			const datos = {versionELC: "1.10", mostrarCartelBienvenida: false, fechaUltNaveg};
+			const datos = {versionElc: "1.10", mostrarCartelBienvenida: false, fechaUltNaveg};
 			cliente = await baseDeDatos.agregaRegistro("visitas", datos).then((n) => obtieneCamposNecesarios(n));
 
 			// Actualiza el cliente con el 'cliente_id'
@@ -67,7 +67,7 @@ module.exports = async (req, res, next) => {
 	// 1.D. Cliente - Si no existe, lo crea
 	if (!cliente_id) {
 		// Crea el cliente
-		cliente = await baseDeDatos.agregaRegistro("visitas", {versionELC}).then((n) => obtieneCamposNecesarios(n));
+		cliente = await baseDeDatos.agregaRegistro("visitas", {versionElc}).then((n) => obtieneCamposNecesarios(n));
 
 		// Crea el cliente_id y lo actualiza en la BD
 		cliente_id = "V" + String(cliente.id).padStart(10, "0");
