@@ -70,7 +70,7 @@ module.exports = async (req, res, next) => {
 	// 1.D. Cliente - Si no existe, lo crea
 	if (!cliente_id) {
 		// Crea el cliente
-		cliente = await baseDeDatos.agregaRegistro("visitas", {versionElc})
+		cliente = await baseDeDatos.agregaRegistro("visitas", {versionElc});
 		cliente = await baseDeDatos.obtienePorId("visitas", cliente.id, "rolUsuario").then((n) => obtieneCamposNecesarios(n));
 
 		// Crea el cliente_id y lo actualiza en la BD
@@ -189,7 +189,7 @@ let contadorDePersonas = async (usuario_id, cliente_id, hoy) => {
 		// Variables de usuario o visita
 		const esUsuario = cliente_id.startsWith("U");
 		const tabla = esUsuario ? "usuarios" : "visitas";
-		const id = await obtienePorCondicion(tabla, {cliente_id}).then((n) => n.id); // obtiene el id
+		const id = await baseDeDatos.obtienePorCondicion(tabla, {cliente_id}).then((n) => n.id); // obtiene el id
 
 		// Actualizaciones en el registro del cliente
 		baseDeDatos.aumentaElValorDeUnCampo(tabla, id, "diasNaveg"); // aumenta el valor del campo 'diasNaveg'
