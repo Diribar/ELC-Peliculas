@@ -6,15 +6,16 @@ module.exports = async (req, res, next) => {
 
 	// Variables
 	const {cliente} = req.session;
+	return next();
 
 	// Cartel de bienvenida
 
-	// Acciones si el cliente tiene una versión distinta de la actual
+	// Cartel de novedades
 	let informacion;
-	if (cliente && cliente.versionElc != versionELC) {
+	if (cliente && cliente.versionElc != versionElc) {
 		// Variables
 		const permisos = ["permInputs", "autTablEnts", "revisorPERL", "revisorLinks", "revisorEnts", "revisorUs"];
-		let novedades = novedadesELC.filter((n) => n.versionELC > cliente.versionElc && n.versionELC <= versionELC);
+		let novedades = novedadesELC.filter((n) => n.versionElc > cliente.versionElc && n.versionElc <= versionElc);
 		for (let i = novedades.length - 1; i >= 0; i--)
 			// Si la novedad especifica un permiso que el cliente no tiene, se la descarta
 			for (let permiso of permisos)
@@ -34,9 +35,13 @@ module.exports = async (req, res, next) => {
 			};
 
 		// Actualiza la versión en el usuario y la variable usuario
-		baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {versionELC});
-		cliente.versionElc = versionELC;
+		baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {versionElc});
+		cliente.versionElc = versionElc;
 	}
+
+	// Cartel de cookies
+
+	// Cartel de beneficios
 
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
