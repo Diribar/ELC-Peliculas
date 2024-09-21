@@ -1,7 +1,7 @@
 <div class="mostrarClick menuForm menuFondo ocultar">
 	<% for (let prop in vistasInstitucs) { %>
 		<a href="/institucional/<%= prop %>" class="menuOpcion">
-			<i class="fa-solid icono <%= vistasInstitucs[prop].icono %>"></i>
+			<i class="<%= iconos.faSolid %> <%= vistasInstitucs[prop].icono %> icono"></i>
 			<span><%= vistasInstitucs[prop].titulo.replace("ELC | ", "") %></span>
 		</a>
 		<% if (vistasInstitucs[prop].hr) { %><hr><% } %>
@@ -13,7 +13,7 @@
 		<span>Grupo ELC</span>
 	</a> -->
 	<!-- <a href="#" class="menuOpcion inactivo">
-		<i class="fa-solid fa-person-walking icono"></i>
+		<i class="<%= iconos.faSolid %> fa-person-walking icono"></i>
 		<span>Nuestra Historia</span>
 	</a> -->
 </div>
