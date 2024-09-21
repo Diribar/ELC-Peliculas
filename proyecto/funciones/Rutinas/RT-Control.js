@@ -319,8 +319,8 @@ module.exports = {
 
 			// Si hay una inconsistencia, termina
 			const primFechaLoginsDiarios = loginsDiarios[0].fecha;
-			const ultLoginAcum = await baseDeDatos.obtienePorCondicionElUltimo("clientesDiarios");
-			const fechaUltLoginAcum = ultLoginAcum ? ultLoginAcum.fecha : null;
+			const ultClientesAcums = await baseDeDatos.obtienePorCondicionElUltimo("clientesDiarios");
+			const fechaUltLoginAcum = ultClientesAcums ? ultClientesAcums.fecha : null;
 			if (fechaUltLoginAcum && primFechaLoginsDiarios <= fechaUltLoginAcum) {
 				const mensaje = primFechaLoginsDiarios == fechaUltLoginAcum ? "IGUAL" : "MENOR";
 				console.log("Inconsistencia: Fecha Diaria", mensaje, "a Fecha Acumulada");
@@ -345,7 +345,7 @@ module.exports = {
 				const visitaSinUs = personas.filter((n) => !n.usuario_id && n.visita_id.startsWith("V")).length;
 
 				// Agrega la cantidad de personas
-				await baseDeDatos.agregaRegistro("clientesDiarios", {
+				await baseDeDatos.agregaRegistro("clientesAcums", {
 					...{fecha: proximaFecha, diaSem, anoMes},
 					...{usLogueado, usSinLogin, visitaSinUs}, // las personas logueadas alguna vez en el día, figuran como 'usLogueado'
 				});
@@ -713,13 +713,13 @@ module.exports = {
 		},
 		eliminaLoginsAcumsRepetidos: async () => {
 			// Variables
-			const clientesDiarios = await baseDeDatos.obtieneTodos("clientesDiarios");
+			const clientesAcums = await baseDeDatos.obtieneTodos("clientesAcums");
 
-			// Elimina los clientesDiarios repetidos
+			// Elimina los clientesAcums repetidos
 			let registroAnterior;
-			for (let registro of clientesDiarios) {
+			for (let registro of clientesAcums) {
 				if (registroAnterior && registro.fecha == registroAnterior.fecha)
-					baseDeDatos.eliminaPorId("clientesDiarios", registro.id);
+					baseDeDatos.eliminaPorId("clientesAcums", registro.id);
 				registroAnterior = registro;
 			}
 
@@ -736,7 +736,7 @@ module.exports = {
 			const tablas = [
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
-				...["clientesDiarios", "clientesDelDia"],
+				...["clientesAcums", "clientesDelDia"],
 				...["prodsComplem", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],
