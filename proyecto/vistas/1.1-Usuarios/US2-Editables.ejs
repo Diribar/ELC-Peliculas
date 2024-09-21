@@ -55,10 +55,10 @@
 		<input id="inputImagen" name="avatar" type="file" accept="image/*" class="input ocultar">
 		<!-- Errores -->
 		<div class="errores">
-			<i class="<%= iconos.faSolid %> fa-circle-xmark <%- !errores.avatar ? 'ocultar' : '' %>">
+			<i class="<%= iconos.faSolid %> <%= iconos.xMark %> <%- !errores.avatar ? 'ocultar' : '' %>">
 				<span class="mensajeError"><%- errores.avatar ? errores.avatar : "" %></span>
 			</i>
-			<i class="<%= iconos.faSolid %> fa-circle-check ocultaOK_imagen"></i>
+			<i class="<%= iconos.faSolid %> <%= iconos.check %> ocultaOK_imagen"></i>
 		</div>
 	</div>
 </section>
