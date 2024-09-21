@@ -12,7 +12,7 @@
 		<%- include("MN-Errores", {nombre: "avatar"}) %>
 	</div>
 	<!-- Aviso de cambio en el data-entry -->
-	<i class="<%= iconos.faSolid %> fa-arrow-right-long ocultar"></i>
+	<i class="<%= iconos.faSolid %> <%= iconos.edicionCambiada %> ocultar"></i>
 	<!-- Links a sitios externos para buscar imágenes alternativas -->
 	<nav class="agregados scaleChildren">
 		<% const nombre = registro.nombreCastellano ? registro.nombreCastellano.toLowerCase() : registro.nombreOriginal ? registro.nombreOriginal.toLowerCase() : "" %>

@@ -33,7 +33,7 @@ main #cuerpo :is(#tituloPrincipal, #tituloSecundario, .inputError) {position: re
 }
 :where(#tituloPrincipal, #tituloSecundario) .ayudaMensForm {max-width: min(350px, 90vw);}
 #tituloPrincipal .ayudaMensForm {top: -7px; translate: 100% 0; &::before {top: 7px; translate: -100% 0;}}
-:not(#tituloPrincipal) .ayudaMensForm {top: 50%; translate: 100% -50%; &::before {top: 50%; translate: -100% -50%;}}
+.ayudaMensForm {top: 50%; translate: 100% -50%; &::before {top: 50%; translate: -100% -50%;}}
 
 /* Errores - Temas particulares */
 .mensajeError {

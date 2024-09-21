@@ -11,7 +11,7 @@
 		</div>
 		<% if (locals.prodEdic) { %>
 			<!-- Aviso de cambio en el data-entry -->
-			<i class="<%= iconos.faSolid %> fa-arrow-right-long ocultar"></i>
+			<i class="<%= iconos.faSolid %> <%= iconos.edicionCambiada %> ocultar"></i>
 		<% } %>
 	</div>
 	<%- include("MN-Errores", {nombre, ocultarOK: true}) %>

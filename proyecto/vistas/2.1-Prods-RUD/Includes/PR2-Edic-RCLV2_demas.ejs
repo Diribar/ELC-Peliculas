@@ -21,10 +21,10 @@
 		<% if (campo.mensajes) { %><%- include("MN-Ayuda", {mensajes: campo.mensajes}) %><% } %>
 
 		<!-- Link a Relación con la vida -->
-		<i id="alta" class="<%= iconos.faSolid %> fa-circle-plus linkRCLV <%= nombre %>" title='Agregar "<%= titulo.toLowerCase() %>"'></i>
+		<i id="alta" class="<%= iconos.faSolid %> <%= iconos.agregar %> linkRCLV <%= nombre %>" title='Agregar "<%= titulo.toLowerCase() %>"'></i>
 		<i id="edicion" class="<%= iconos.faSolid %> fa-square-pen linkRCLV ocultar <%= nombre %>" title='Editar "<%= titulo.toLowerCase() %>"'></i>
 
 		<!-- Aviso de cambio en el data-entry -->
-		<i class="<%= iconos.faSolid %> fa-arrow-right-long ocultar"></i>
+		<i class="<%= iconos.faSolid %> <%= iconos.edicionCambiada %> ocultar"></i>
 	</div>
 </section>
