@@ -41,7 +41,7 @@ global.iconos = {
 	// Uso general
 	faSolid: "fa-solid", // hecho
 	inicio: "fa-house", // hecho
-	ayuda: "fa-circle-question",
+	ayuda: "fa-circle-question",// hecho
 
 	// Carteles / Formularios
 	izquierda: "fa-circle-left", // hecho

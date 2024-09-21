@@ -405,10 +405,10 @@ module.exports = {
 	ayudaLinks: {
 		parrafo: "<em>Color de los bordes (simil semáforo):</em>",
 		mensajes: [
-			"<i class='fa-solid fa-circle enCast'></i> hablada en <b>castellano</b>",
-			"<i class='fa-solid fa-circle subtCast'></i> <b>subtitulos</b> en castellano",
-			"<i class='fa-solid fa-circle otroIdioma'></i> hablada en <b>otro</b> idioma",
-			"<i class='fa-solid fa-circle elegi'></i> <b>elegí</b> el idioma",
+			"<i class='" + iconos.faSolid + " fa-circle enCast'></i> hablada en <b>castellano</b>",
+			"<i class='" + iconos.faSolid + " fa-circle subtCast'></i> <b>subtitulos</b> en castellano",
+			"<i class='" + iconos.faSolid + " fa-circle otroIdioma'></i> hablada en <b>otro</b> idioma",
+			"<i class='" + iconos.faSolid + " fa-circle elegi'></i> <b>elegí</b> el idioma",
 		],
 	},
 

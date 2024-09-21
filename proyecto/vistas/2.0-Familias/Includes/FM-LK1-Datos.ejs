@@ -98,12 +98,12 @@
 			<% } else if (link.cond.inactivar) { %>
 				<!-- Status inactivar y ajeno -> APROBADO/INACTIVO -->
 				<i class="<%= iconos.faSolid %> <%= iconos.izquierda %> revision in" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
-				<i class="<%= iconos.faSolid %> fa-circle-right revision fuera aprob" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.derecha %> revision fuera aprob" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
 				<i class="ocultar out"></i>
 			<% } else if (link.cond.recuperar) { %>
 				<!-- Status recuperar y ajeno -> APROBADO/INACTIVO -->
 				<i class="<%= iconos.faSolid %> <%= iconos.izquierda %> revision fuera" tabindex="-1" title="Cambiarlo a 'Inactivo'"></i>
-				<i class="<%= iconos.faSolid %> fa-circle-right revision in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
+				<i class="<%= iconos.faSolid %> <%= iconos.derecha %> revision in aprob" tabindex="-1" title="Cambiarlo a 'Aprobado'"></i>
 				<i class="ocultar out"></i>
 			<% } else { %>
 				<!-- Para cuando el link está en un status estable -->
@@ -115,7 +115,7 @@
 
 		<!-- MOTIVO POR EL QUE ESTÁ EN STATUS PROVISORIO O INACTIVO -->
 		<% if (link.motivo) { %>
-			<i class="<%= iconos.faSolid %> fa-circle-question " tabindex="-1" title="<%= link.motivo.descripcion %>"></i>
+			<i class="<%= iconos.faSolid %> <%= iconos.ayuda %> " tabindex="-1" title="<%= link.motivo.descripcion %>"></i>
 		<% } %>
 	</td>
 </tr>
