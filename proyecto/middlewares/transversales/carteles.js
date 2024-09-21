@@ -1,7 +1,5 @@
 "use strict";
 
-const {obtienePorCondicion} = require("../../funciones/BaseDatos");
-
 module.exports = async (req, res, next) => {
 	// Si corresponde, interrumpe la función
 	if (req.originalUrl.includes("/api/")) return next();
