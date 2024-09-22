@@ -282,7 +282,7 @@ app.set("views", [
 	// Middlewares transversales
 	app.use(require("./middlewares/transversales/clientesSession.js")); // para obtener el cliente
 	app.use(require("./middlewares/transversales/clientesContador.js")); // para obtener el usuario
-	app.use(require("./middlewares/transversales/carteles")); // en función de las novedades, revisa si se debe mostrar algún cartel
+	app.use(require("./middlewares/transversales/clientesCarteles.js")); // en función de las novedades, revisa si se debe mostrar algún cartel
 	app.use(require("./middlewares/transversales/urlsUsadas")); // para tener los últimos url
 
 	// Urls que dependen de la variable 'global'
