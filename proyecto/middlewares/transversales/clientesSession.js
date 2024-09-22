@@ -6,7 +6,10 @@ module.exports = async (req, res, next) => {
 	let {usuario, cliente} = req.session;
 
 	// Si el 'cliente_id' tiene un valor y coincide en ambas variables, interrumpe la función
-	if (usuario && cliente && usuario.cliente_id && usuario.cliente_id == cliente.cliente_id) return next();
+	if (usuario && cliente && usuario.cliente_id && usuario.cliente_id == cliente.cliente_id) {
+		res.locals.usuario = usuario;
+		return next();
+	}
 
 	// Usuario - lo obtiene de la cookie
 	if (!usuario && req.cookies && req.cookies.email) {
@@ -78,7 +81,7 @@ module.exports = async (req, res, next) => {
 		res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
 	}
 
-	// Cliente - 3. La obtiene de la cookie 'cliente'
+	// Cliente - 3. Lo obtiene de la cookie 'cliente'
 	if (!cliente && req.cookies && req.cookies.cliente_id) {
 		// Obtiene el cliente_id
 		let {cliente_id} = req.cookies;
@@ -93,7 +96,7 @@ module.exports = async (req, res, next) => {
 		if (!cliente) res.clearCookie("cliente_id");
 	}
 
-	// Cliente - 4- Si no existe, lo crea
+	// Cliente - 4- Lo crea
 	if (!cliente) {
 		// Crea el cliente
 		cliente = await baseDeDatos.agregaRegistro("visitas", {versionElc});
@@ -109,11 +112,11 @@ module.exports = async (req, res, next) => {
 	}
 
 	// Actualiza usuario y cliente
+	req.session.cliente = cliente;
 	if (usuario) {
 		req.session.usuario = usuario;
 		res.locals.usuario = usuario;
 	}
-	req.session.cliente = cliente;
 
 	// Fin
 	return next();
