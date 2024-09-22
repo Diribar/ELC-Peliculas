@@ -284,8 +284,9 @@ window.addEventListener("load", async () => {
 		// Acciones si la versión actual no es la edición nueva
 		if (!estamosEnEdicNueva) return;
 
-		// Validaciones estándar (función genérica)
+		// Validaciones estándar y obtiene el valor
 		amplio.restringeCaracteres(e);
+		const valor = e.target.value;
 
 		// Acciones si se cambió el país
 		if (e.target == DOM.paisesSelect) {
@@ -295,14 +296,14 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambió el tipo de actuación
 		if (e.target.name == "tipoActuacion_id") {
-			if ([v.anime_id, v.documental_id].includes(Number(e.target.value))) {
-				DOM.actores.value = e.target.value == v.anime_id ? dibujosAnimados : documental;
+			if ([v.anime_id, v.documental_id].includes(Number(valor))) {
+				DOM.actores.value = valor == v.anime_id ? dibujosAnimados : documental;
 				DOM.actores.readOnly = true;
 			} else DOM.actores.readOnly = false;
 		}
 
 		// Acciones si se cambió el avatar
-		if (e.target == DOM.inputAvatar) await revisaAvatar({DOM, v, version, FN});
+		if (e.target == DOM.inputAvatar) await revisaAvatar({DOM, v, FN, version});
 		// Acciones si no se cambió el avatar
 		else FN.actualizaVarios();
 
