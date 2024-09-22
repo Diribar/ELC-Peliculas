@@ -410,8 +410,7 @@ const rutas = {
 const versiones = ["edicN", "edicG", "orig"];
 let versionActual = "edicN";
 let estamosEnEdicNueva = true;
-let versionAnt;
-let DOM, v, version ;
+let DOM, v, version, versionAnt;
 
 // Funciones
 let obtieneLosValoresEdicN = () => {
