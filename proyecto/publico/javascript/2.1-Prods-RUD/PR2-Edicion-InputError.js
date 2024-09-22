@@ -77,7 +77,7 @@ window.addEventListener("load", async () => {
 			});
 		},
 		averiguaMuestraLosErrores: async () => {
-			// Obtiene los valores simples más los chequeados
+			// Obtiene los valores simples más los checks
 			let inputsRadioChecked = document.querySelectorAll(".inputError input[type='radio']:checked");
 			let inputsResp = Array.prototype.concat.call(...DOM.inputsSimples, ...inputsRadioChecked);
 			let camposResp = Array.from(inputsResp).map((n) => n.name);
@@ -97,10 +97,10 @@ window.addEventListener("load", async () => {
 						: "";
 				if (campoNombre != "avatar") objeto += "&" + campoNombre + "=" + valor;
 			}
-			if (estamosEnEdicNueva && (DOM.inputAvatar.value || !esImagen)) {
+			if (estamosEnEdicNueva && (DOM.inputAvatar.value || !v.esImagen)) {
 				objeto += "&avatar=" + DOM.inputAvatar.value;
 				if (DOM.inputAvatar.value) {
-					objeto += "&esImagen=" + (esImagen ? "SI" : "NO");
+					objeto += "&esImagen=" + (v.esImagen ? "SI" : "NO");
 					objeto += "&tamano=" + DOM.inputAvatar.files[0].size;
 				}
 			}
@@ -349,7 +349,7 @@ window.addEventListener("load", async () => {
 			// 1. Acciones exclusivas para edicN
 			if (!indice) {
 				// Vuelve al status original la condición del avatar
-				esImagen = true;
+				v.esImagen = true;
 
 				// Elimina Session y Cookies
 				fetch("/producto/api/edicion-nueva/eliminar");
@@ -410,9 +410,8 @@ const rutas = {
 const versiones = ["edicN", "edicG", "orig"];
 let versionActual = "edicN";
 let estamosEnEdicNueva = true;
-let versionAnt = null;
-let esImagen = true;
-let DOM, v, version;
+let versionAnt;
+let DOM, v, version ;
 
 // Funciones
 let obtieneLosValoresEdicN = () => {
