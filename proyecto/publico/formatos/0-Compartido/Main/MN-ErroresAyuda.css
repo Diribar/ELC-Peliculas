@@ -19,7 +19,7 @@ main #cuerpo :is(#tituloPrincipal, #tituloSecundario, .inputError) {position: re
 .ayudaMensForm, .mensajeError, .ayudaMensForm::before, .mensajeError::before {position: absolute; cursor: default;}
 :where(.ayudaMensForm, .mensajeError) {
 	padding: 3px 7px; border-radius: 8px; max-width: min(250px, 90vw); width: max-content;
-	font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;
+	font-weight: normal; font-size: 1rem !important; line-height: 1.2rem; text-align: left;
 	&::before {border-width: 5px; content: ""; border-style: solid;}
 }
 
