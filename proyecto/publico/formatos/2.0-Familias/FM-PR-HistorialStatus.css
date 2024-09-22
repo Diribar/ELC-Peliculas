@@ -2,9 +2,8 @@
 #datos #datosLargos #recuadroDL {
 	#contenido, #informacion, #historial, .titulos {background-color: inherit;}
 	#contenido #informacion {
-		max-height: 250px;
+		max-width: 600px; max-height: 250px;
 		#historial {
-			max-width: 600px;
 			overflow-y: auto; position: relative;
 			.titulos {
 				display: flex; flex-direction: row;
@@ -17,7 +16,7 @@
 					vertical-align: top;
 					&.fecha {min-width: 65px; text-align: right;}
 					&.status {
-						max-width: 220px; text-wrap: wrap;
+						text-wrap: wrap;
 						span {line-height: 1.1; font-style: italic;}
 					}
 				}
@@ -36,6 +35,6 @@
 				h3 {margin-right: 3px;}
 			}
 		}
-		#comentario {margin-left: 15px; width: 250px;}
+		#comentario {margin-left: 15px; min-width: 250px; width: 250px;}
 	}
 }
