@@ -1,3 +1,4 @@
+// Revisa si corresponde actualizar el contador (no se usa con apis)
 "use strict";
 
 module.exports = async (req, res, next) => {
