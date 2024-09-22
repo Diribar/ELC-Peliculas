@@ -280,7 +280,8 @@ app.set("views", [
 	await rutinas.startupMasConfiguracion();
 
 	// Middlewares transversales
-	app.use(require("./middlewares/transversales/loginConCookie")); // para obtener el cliente y usuario
+	app.use(require("./middlewares/transversales/obtieneUsCliente.js")); // para obtener el cliente
+	app.use(require("./middlewares/transversales/contadorClientes.js")); // para obtener el usuario
 	app.use(require("./middlewares/transversales/carteles")); // en función de las novedades, revisa si se debe mostrar algún cartel
 	app.use(require("./middlewares/transversales/urlsUsadas")); // para tener los últimos url
 
