@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 
 		// Datos compartidos con usuario - innecesarios en 'session'
 		diasNaveg: {type: dt.INTEGER}, // para la estadística
-		creadoEn: {type: dt.DATE}, // para la estadística
+		visitaCreadaEn: {type: dt.DATE}, // para la estadística
 
 		// Carteles
 		mostrarCartelBienvenida: {type: dt.BOOLEAN}, // default 'true '

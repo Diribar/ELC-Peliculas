@@ -38,7 +38,7 @@ module.exports = {
 				// Convierte el resultado en texto
 				errores.credenciales =
 					procesos.comentarios.credsInvalidas.altaMail + "<br>Intentos disponibles: " + intentosPendsCookie;
-			} else errores.credenciales = "";
+			} else delete errores.credenciales;
 
 			// session - guarda la info
 			const datos = req.session.altaMail && req.session.altaMail.datos ? {...req.session.altaMail.datos, email} : {email};
@@ -50,18 +50,31 @@ module.exports = {
 		envioDeMail: async (req, res) => {
 			// Envía el mail con la contraseña
 			const {email} = req.query;
+			const {cliente} = req.session.cliente;
 			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena({email, altaMail: true});
 
-			// Si no hubo errores con el envío del mensaje, crea el usuario
-			if (mailEnviado) {
-				const usuario = await baseDeDatos.agregaRegistro("usuarios", {
-					...{email, contrasena},
-					statusRegistro_id: mailPendValidar_id,
-					versionElc,
-				});
-				const cliente_id = "U" + String(usuario.id).padStart(10, "0");
-				baseDeDatos.actualizaPorId("usuarios", usuario.id, {cliente_id});
-			}
+			// Si hubo errores con el envío del mensaje, interrumpe la función
+			if (!mailEnviado) return res.json(mailEnviado);
+
+			// Crea el usuario
+			const {diasNaveg, visitaCreadaEn} = cliente;
+			const usuario = await baseDeDatos.agregaRegistro("usuarios", {
+				...{email, contrasena},
+				...{diasNaveg, visitaCreadaEn},
+				statusRegistro_id: mailPendValidar_id,
+				versionElc,
+			});
+
+			// Crea la variable 'cliente_id' y la actualiza en la BD
+			const cliente_id = "U" + String(usuario.id).padStart(10, "0");
+			baseDeDatos.actualizaPorId("usuarios", usuario.id, {cliente_id});
+
+			// Actualiza la tabla 'clientesDelDia'
+			const condicion = {cliente_id: cliente.cliente_id};
+			const datosActuales = {usuario_id: usuario.id, cliente_id};
+			await baseDeDatos
+				.actualizaTodosPorCondicion("clientesDelDia", condicion, datosActuales)
+				.then(() => eliminaDuplicados(usuario.id));
 
 			// Guarda el mail en 'session'
 			req.session.login = {datos: {email}};
@@ -137,4 +150,16 @@ module.exports = {
 		// Fin
 		return res.json();
 	},
+};
+
+let eliminaDuplicados = async (usuario_id) => {
+	// Obtiene los registros
+	const registros = await baseDeDatos.obtieneTodosPorCondicion("clientesDelDia", {usuario_id});
+
+	// Elimina los duplicados
+	for (let i = registros.length - 1; i > 0; i--)
+		if (registros[i].fecha == registros[i - 1].fecha) baseDeDatos.eliminaPorId("clientesDelDia", registros[i].id);
+
+	// Fin
+	return;
 };

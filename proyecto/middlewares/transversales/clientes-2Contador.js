@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
 	// Tareas diarias
 	if (req.session.clienteRecienCreado || cliente.fechaUltNaveg < hoy) {
 		// 'fechaUltimNaveg'
-		tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
+		const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
 		baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
 		cliente.fechaUltimNaveg = hoy;
 

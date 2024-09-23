@@ -48,6 +48,7 @@ module.exports = (sequelize, dt) => {
 		fechaRevisores: {type: dt.DATE},
 
 		diasNaveg: {type: dt.INTEGER},
+		visitaCreadaEn: {type: dt.DATE},
 		creadoEn: {type: dt.DATE},
 		completadoEn: {type: dt.DATE},
 		editadoEn: {type: dt.DATE},
