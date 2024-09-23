@@ -50,14 +50,14 @@ module.exports = {
 		envioDeMail: async (req, res) => {
 			// Envía el mail con la contraseña
 			const {email} = req.query;
-			const {cliente} = req.session.cliente;
+			const {cliente} = req.session;
 			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena({email, altaMail: true});
 
 			// Si hubo errores con el envío del mensaje, interrumpe la función
 			if (!mailEnviado) return res.json(mailEnviado);
 
 			// Crea el usuario
-			const {diasNaveg, visitaCreadaEn} = cliente;
+			const {diasNaveg, visitaCreadaEn, cliente_id: cliente_idViejo} = cliente;
 			const usuario = await baseDeDatos.agregaRegistro("usuarios", {
 				...{email, contrasena},
 				...{diasNaveg, visitaCreadaEn},
@@ -65,12 +65,13 @@ module.exports = {
 				versionElc,
 			});
 
-			// Crea la variable 'cliente_id' y la actualiza en la BD
+			// Crea la variable 'cliente_id' y la actualiza en la BD y la cookie
 			const cliente_id = "U" + String(usuario.id).padStart(10, "0");
-			baseDeDatos.actualizaPorId("usuarios", usuario.id, {cliente_id});
+			await baseDeDatos.actualizaPorId("usuarios", usuario.id, {cliente_id}); // es necesario el 'await' para session
+			res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
 
 			// Actualiza la tabla 'clientesDelDia'
-			const condicion = {cliente_id: cliente.cliente_id};
+			const condicion = {cliente_id: cliente_idViejo};
 			const datosActuales = {usuario_id: usuario.id, cliente_id};
 			await baseDeDatos
 				.actualizaTodosPorCondicion("clientesDelDia", condicion, datosActuales)
@@ -78,6 +79,10 @@ module.exports = {
 
 			// Guarda el mail en 'session'
 			req.session.login = {datos: {email}};
+
+			// Elimina el registro de visita y su session
+			baseDeDatos.eliminaTodosPorCondicion("visitas", {cliente_id: cliente_idViejo});
+			delete req.session.cliente;
 
 			// Devuelve la info
 			return res.json(mailEnviado);
