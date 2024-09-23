@@ -30,7 +30,7 @@ window.addEventListener("load", async () => {
 		// Genera la información
 		clientesAcums.forEach((clientesDiario, i) => {
 			// Alimenta los datos del gráfico
-			const {fecha, usLogueado: logins, usSinLogin, visitaSinUs: visitas} = clientesDiario;
+			const {fecha, logins, usSinLogin, visitas} = clientesDiario;
 			resultado.push([
 				".." + fecha + "..",
 				...[logins, "stroke-color: " + coloresBorde[0]],
