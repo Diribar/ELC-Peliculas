@@ -8,36 +8,36 @@ module.exports = async (req, res, next) => {
 	// Variables
 	let {usuario, cliente} = req.session;
 	let {cliente_id, fechaUltNaveg} = cliente;
+	const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
 
-	// Tareas diarias
-	if (req.session.clienteRecienCreado || fechaUltNaveg < hoy) {
-		// 'fechaUltNaveg'
-		const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
-		baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
-		cliente.fechaUltNaveg = hoy;
+	// Si corresponde, interrumpe la función
+	if (!req.session.clienteRecienCreado && fechaUltNaveg == hoy) return next();
 
-		// Contador de clientes, y usuario en la BD
-		const usuario_id = usuario ? usuario.id : null;
-		contadorDePersonas(usuario_id, cliente_id);
+	// Actualiza 'fechaUltNaveg' en la tabla 'usuarios/visitas' y en la variable 'cliente'
+	baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
+	cliente.fechaUltNaveg = hoy;
 
-		// Cookies
-		if (usuario) res.cookie("email", usuario.email, {maxAge: unDia * 30});
-		res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
+	// Contador de clientes
+	const usuario_id = usuario ? usuario.id : null;
+	contadorDeClientes(usuario_id, cliente_id);
 
-		// Session
-		req.session.cliente = cliente;
-		if (usuario) {
-			req.session.usuario = usuario;
-			res.locals.usuario = usuario;
-		}
-		delete req.session.clienteRecienCreado;
+	// Actualiza cookies
+	if (usuario) res.cookie("email", usuario.email, {maxAge: unDia * 30});
+	res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
+
+	// Actualiza session
+	req.session.cliente = cliente;
+	if (usuario) {
+		req.session.usuario = usuario;
+		res.locals.usuario = usuario;
 	}
+	delete req.session.clienteRecienCreado;
 
 	// Fin
 	return next();
 };
 
-let contadorDePersonas = async (usuario_id, cliente_id) => {
+let contadorDeClientes = async (usuario_id, cliente_id) => {
 	// Valida que no exista ya un registro del 'cliente_id' en esta fecha
 	const condicion = {fecha: hoy, cliente_id};
 	const existe = await baseDeDatos.obtienePorCondicion("clientesDelDia", condicion);
