@@ -2,20 +2,20 @@
 "use strict";
 
 module.exports = async (req, res, next) => {
-	return next()
 	// Si corresponde, interrumpe la función
 	if (req.originalUrl.includes("/api/")) return next();
 
 	// Variables
 	let {usuario, cliente} = req.session;
-	let {cliente_id} = cliente;
+	let {cliente_id, fechaUltNaveg} = cliente;
+	return next();
 
 	// Tareas diarias
-	if (req.session.clienteRecienCreado || cliente.fechaUltNaveg < hoy) {
-		// 'fechaUltimNaveg'
+	if (req.session.clienteRecienCreado || fechaUltNaveg < hoy) {
+		// 'fechaUltNaveg'
 		const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
 		baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
-		cliente.fechaUltimNaveg = hoy;
+		cliente.fechaUltNaveg = hoy;
 
 		// Contador de clientes, y usuario en la BD
 		const usuario_id = usuario ? usuario.id : null;
