@@ -9,7 +9,6 @@ module.exports = async (req, res, next) => {
 	// Variables
 	let {usuario, cliente} = req.session;
 	let {cliente_id} = cliente;
-	const hoy = new Date().toISOString().slice(0, 10);
 
 	// Tareas diarias
 	if (req.session.clienteRecienCreado || cliente.fechaUltNaveg < hoy) {
@@ -20,7 +19,7 @@ module.exports = async (req, res, next) => {
 
 		// Contador de clientes, y usuario en la BD
 		const usuario_id = usuario ? usuario.id : null;
-		contadorDePersonas(usuario_id, cliente_id, hoy);
+		contadorDePersonas(usuario_id, cliente_id);
 
 		// Cookies
 		if (usuario) res.cookie("email", usuario.email, {maxAge: unDia * 30});
@@ -39,7 +38,7 @@ module.exports = async (req, res, next) => {
 	return next();
 };
 
-let contadorDePersonas = async (usuario_id, cliente_id, hoy) => {
+let contadorDePersonas = async (usuario_id, cliente_id) => {
 	// Valida que no exista ya un registro del 'cliente_id' en esta fecha
 	const condicion = {fecha: hoy, cliente_id};
 	const existe = await baseDeDatos.obtienePorCondicion("clientesDelDia", condicion);
