@@ -6,7 +6,7 @@ module.exports = (sequelize, dt) => {
 		anoMes: {type: dt.STRING(3)},
 		usLogueado: {type: dt.INTEGER},
 		usSinLogin: {type: dt.INTEGER},
-		visitaSinUs: {type: dt.INTEGER},
+		visitas: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "aux_clientes_acums",
