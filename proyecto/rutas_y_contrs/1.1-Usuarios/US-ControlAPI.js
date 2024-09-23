@@ -59,8 +59,8 @@ module.exports = {
 					statusRegistro_id: mailPendValidar_id,
 					versionElc,
 				});
-				const visita_id = "U" + String(usuario.id).padStart(10, "0");
-				baseDeDatos.actualizaPorId("usuarios", usuario.id, {visita_id});
+				const cliente_id = "U" + String(usuario.id).padStart(10, "0");
+				baseDeDatos.actualizaPorId("usuarios", usuario.id, {cliente_id});
 			}
 
 			// Guarda el mail en 'session'
