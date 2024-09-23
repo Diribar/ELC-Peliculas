@@ -785,8 +785,17 @@ module.exports = {
 			? "/Externa/" + revisar + original.avatar
 			: sinAvatar;
 
-		// avatarEdic
-		const edic = edicion && edicion.avatar ? "/Externa/" + revisar + edicion.avatar : orig;
+		// Obtiene el avatar de la edición
+		const edic =
+			edicion && edicion.avatar
+				? edicion.avatar.includes("/")
+					? edicion.avatar
+					: comp.gestionArchivos.existe(carpetaExterna + final + edicion.avatar)
+					? "/Externa/" + final + edicion.avatar
+					: comp.gestionArchivos.existe(carpetaExterna + revisar + edicion.avatar)
+					? "/Externa/" + revisar + edicion.avatar
+					: orig
+				: orig;
 
 		// Fin
 		return {orig, edic};
