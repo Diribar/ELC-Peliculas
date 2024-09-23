@@ -125,17 +125,17 @@ module.exports = async (req, res, next) => {
 let obtieneCamposNecesarios = (usuario) => {
 	// Variables
 	const camposNecesarios = [
-		"id",
-		"cliente_id", // para la vinculación
-		"versionElc", // para las novedades
-		"fechaUltNaveg", // para el contador de 'clientes x día'
-		"diasSinCartelBenefs", // para mostrar el cartel
-		"rolUsuario", // para las novedades
+		...["id", "cliente_id"], // identificación
+		...["diasNaveg", "fechaUltNaveg", "visitaCreadaEn"], // para el contador de 'clientes x día'
+		...["versionElc", "diasSinCartelBenefs", "rolUsuario"], // para mostrar carteles
 	];
 
 	// Obtiene los datos para la variable cliente
 	let cliente = {};
 	for (let campo of camposNecesarios) cliente[campo] = usuario[campo];
+
+	// Adecua el campo 'visitaCreadaEn'
+	cliente.visitaCreadaEn = cliente.visitaCreadaEn.toISOString().slice(0, 10);
 
 	// Fin
 	return cliente;
