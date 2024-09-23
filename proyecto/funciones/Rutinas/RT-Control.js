@@ -39,6 +39,7 @@ module.exports = {
 	// Consolidados
 	FechaHoraUTC: async function () {
 		// Variables
+		hoy = new Date().toISOString().slice(0, 10);
 		const info = {...rutinasJSON};
 		const minutos = new Date().getMinutes();
 

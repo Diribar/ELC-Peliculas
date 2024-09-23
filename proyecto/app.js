@@ -5,6 +5,7 @@ global.unDia = unaHora * 24;
 global.unaSemana = unDia * 7;
 global.unAno = unDia * 365;
 global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+global.hoy = new Date().toISOString().slice(0, 10);
 
 // Variable 'global' - Links
 global.linkSemInicial = 1;
