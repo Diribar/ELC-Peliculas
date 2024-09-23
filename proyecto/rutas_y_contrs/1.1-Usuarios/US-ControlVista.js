@@ -227,7 +227,7 @@ module.exports = {
 
 			// Actualiza datos en la BD - tabla 'clientesDelDia' (await necesario para 'session')
 			await baseDeDatos
-				.actualizaTodosPorCondicion("clientesDelDia", {cliente_id}, {usuario_id})
+				.actualizaTodosPorCondicion("clientesDelDia", {cliente_id, fecha: hoy}, {usuario_id})
 				.then(() => procesos.eliminaDuplicados(usuario.id));
 
 			// Limpia la información obsoleta

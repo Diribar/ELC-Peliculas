@@ -72,7 +72,7 @@ module.exports = {
 
 			// Actualiza la tabla 'clientesDelDia'
 			await baseDeDatos
-				.actualizaTodosPorCondicion("clientesDelDia", {cliente_id: cliente_idViejo}, {cliente_id})
+				.actualizaTodosPorCondicion("clientesDelDia", {cliente_id: cliente_idViejo, fecha: hoy}, {cliente_id})
 				.then(() => procesos.eliminaDuplicados(usuario.id));
 
 			// Guarda el mail en 'session'
@@ -154,4 +154,3 @@ module.exports = {
 		return res.json();
 	},
 };
-
