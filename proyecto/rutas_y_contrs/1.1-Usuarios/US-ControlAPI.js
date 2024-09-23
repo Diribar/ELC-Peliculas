@@ -38,7 +38,7 @@ module.exports = {
 				// Convierte el resultado en texto
 				errores.credenciales =
 					procesos.comentarios.credsInvalidas.altaMail + "<br>Intentos disponibles: " + intentosPendsCookie;
-			} else delete errores.credenciales ;
+			} else delete errores.credenciales;
 
 			// session - guarda la info
 			const datos = req.session.altaMail && req.session.altaMail.datos ? {...req.session.altaMail.datos, email} : {email};
@@ -54,8 +54,10 @@ module.exports = {
 
 			// Si no hubo errores con el envío del mensaje, crea el usuario
 			if (mailEnviado) {
+				const {diasNaveg, visitaCreadaEn} = req.session.cliente;
 				const usuario = await baseDeDatos.agregaRegistro("usuarios", {
 					...{email, contrasena},
+					...{diasNaveg, visitaCreadaEn},
 					statusRegistro_id: mailPendValidar_id,
 					versionElc,
 				});
