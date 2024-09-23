@@ -49,14 +49,16 @@ module.exports = {
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
 		if (info.FechaUTC == FechaUTC) return;
 
-		// Actualiza los valores de la rutina "FechaHoraUTC" en el archivo JSON
+		// Encabezado de las rutinas diarias
 		console.log();
 		console.log("Rutinas diarias:");
-		const feedback = {FechaUTC, HoraUTC, FechaHoraUTC: "NO"};
 		const comienzo = Date.now();
+
+		// Actualiza los valores de la rutina "FechaHoraUTC" en el archivo JSON
+		const feedback = {FechaUTC, HoraUTC, FechaHoraUTC: "NO"};
 		procesos.guardaArchivoDeRutinas(feedback); // Actualiza la fecha y hora, más el valor "NO" en el campo "FechaHoraUTC"
 		const duracion = Date.now() - comienzo;
-		procesos.finRutinasDiariasSemanales("FechaHoraUTC", duracion, null); // Actualiza el valor "SI" en el campo "FechaHoraUTC", y avisa que se ejecutó
+		procesos.finRutinasDiariasSemanales("FechaHoraUTC", duracion); // Actualiza el valor "SI" en el campo "FechaHoraUTC", y avisa que se ejecutó
 
 		// Actualiza los campos de Rutinas Diarias
 		const feedback_RD = {};
@@ -95,7 +97,7 @@ module.exports = {
 		const comienzo = Date.now();
 		procesos.guardaArchivoDeRutinas(feedback);
 		const duracion = Date.now() - comienzo;
-		procesos.finRutinasDiariasSemanales("SemanaUTC", duracion, null);
+		procesos.finRutinasDiariasSemanales("SemanaUTC", duracion);
 
 		// Actualiza los campos de Rutinas Semanales
 		const feedback_RS = {};
