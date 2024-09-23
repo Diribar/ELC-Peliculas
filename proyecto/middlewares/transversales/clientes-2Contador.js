@@ -8,7 +8,6 @@ module.exports = async (req, res, next) => {
 	// Variables
 	let {usuario, cliente} = req.session;
 	let {cliente_id, fechaUltNaveg} = cliente;
-	return next();
 
 	// Tareas diarias
 	if (req.session.clienteRecienCreado || fechaUltNaveg < hoy) {
@@ -43,22 +42,21 @@ let contadorDePersonas = async (usuario_id, cliente_id) => {
 	const condicion = {fecha: hoy, cliente_id};
 	const existe = await baseDeDatos.obtienePorCondicion("clientesDelDia", condicion);
 
-	// Acciones si no existe
-	if (!existe) {
-		// Agrega un registro en la tabla 'clientesDelDia'
-		let datos = {...condicion};
-		if (usuario_id) datos.usuario_id = usuario_id;
-		baseDeDatos.agregaRegistro("clientesDelDia", datos);
+	// Si ya existe, interrumpe la función
+	if (existe) return;
 
-		// Variables de usuario o visita
-		const esUsuario = cliente_id.startsWith("U");
-		const tabla = esUsuario ? "usuarios" : "visitas";
-		const id = await baseDeDatos.obtienePorCondicion(tabla, {cliente_id}).then((n) => n.id); // obtiene el id
+	// Agrega un registro en la tabla 'clientesDelDia'
+	let datos = {...condicion};
+	if (usuario_id) datos.usuario_id = usuario_id;
+	baseDeDatos.agregaRegistro("clientesDelDia", datos);
 
-		// Actualizaciones en el registro del cliente
-		baseDeDatos.aumentaElValorDeUnCampo(tabla, id, "diasNaveg"); // aumenta el valor del campo 'diasNaveg'
-		if (!usuario_id) baseDeDatos.aumentaElValorDeUnCampo(tabla, id, "diasSinCartelBenefs"); // si no está logueado, aumenta el valor del campo 'diasSinCartelBenefs'
-	}
+	// Variables de usuario o visita
+	const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
+	const id = await baseDeDatos.obtienePorCondicion(tabla, {cliente_id}).then((n) => n.id); // obtiene el id
+
+	// Actualizaciones en el registro del cliente
+	baseDeDatos.aumentaElValorDeUnCampo(tabla, id, "diasNaveg"); // aumenta el valor del campo 'diasNaveg'
+	if (!usuario_id) baseDeDatos.aumentaElValorDeUnCampo(tabla, id, "diasSinCartelBenefs"); // si no está logueado, aumenta el valor del campo 'diasSinCartelBenefs'
 
 	// Fin
 	return;
