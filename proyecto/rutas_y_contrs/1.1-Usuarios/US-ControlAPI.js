@@ -65,15 +65,10 @@ module.exports = {
 				versionElc,
 			});
 
-			// Crea la variable 'cliente_id' y la actualiza en la BD y la cookie
+			// Actualiza 'cliente_id' en la BD 'usuarios' y en la cookie 'cliente_id'
 			const cliente_id = "U" + String(usuario.id).padStart(10, "0");
 			await baseDeDatos.actualizaPorId("usuarios", usuario.id, {cliente_id}); // es necesario el 'await' para session
 			res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
-
-			// Actualiza la tabla 'clientesDelDia'
-			await baseDeDatos
-				.actualizaTodosPorCondicion("clientesDelDia", {cliente_id: cliente_idViejo, fecha: hoy}, {cliente_id})
-				.then(() => procesos.eliminaDuplicados(usuario.id));
 
 			// Guarda el mail en 'session'
 			req.session.login = {datos: {email}};
