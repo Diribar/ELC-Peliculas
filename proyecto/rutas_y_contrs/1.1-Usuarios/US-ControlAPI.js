@@ -38,7 +38,7 @@ module.exports = {
 				// Convierte el resultado en texto
 				errores.credenciales =
 					procesos.comentarios.credsInvalidas.altaMail + "<br>Intentos disponibles: " + intentosPendsCookie;
-			} else errores.credenciales = "";
+			} else delete errores.credenciales ;
 
 			// session - guarda la info
 			const datos = req.session.altaMail && req.session.altaMail.datos ? {...req.session.altaMail.datos, email} : {email};
