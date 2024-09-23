@@ -208,16 +208,17 @@ module.exports = {
 			});
 		},
 		guardar: async (req, res) => {
-			// Variables
+			// Actualiza cookies - no se actualiza 'session'', para que se ejecute el middleware 'clientesSession'
 			const {email} = req.body;
+			res.cookie("email", email, {maxAge: unDia});
+
+			// Actualiza y obtiene el usuario
+			await baseDeDatos.actualizaTodosPorCondicion("usuarios", {email}, {diasSinCartelBeneficios: 0}); // debe hacerse con 'await' para que session lo tome bien
+			const usuario = await comp.obtieneUsuarioPorMail(email);
 
 			// Si corresponde, le cambia el status a 'mailValidado'
-			const usuario = await comp.obtieneUsuarioPorMail(email);
 			if (usuario.statusRegistro_id == mailPendValidar_id)
 				await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
-
-			// cookies - no se actualiza 'session'', para que se ejecute el middleware 'loginConCookie'
-			res.cookie("email", email, {maxAge: unDia});
 
 			// Limpia la información provisoria
 			res.clearCookie("intentosLogin");
