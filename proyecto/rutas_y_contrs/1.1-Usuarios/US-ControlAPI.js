@@ -47,7 +47,7 @@ module.exports = {
 			// Devuelve la info
 			return res.json(errores);
 		},
-		envioDeMail: async (req, res) => {
+		envioDeMailAltaUsuario: async (req, res) => {
 			// Envía el mail con la contraseña
 			const {email} = req.query;
 			const {cliente} = req.session;
@@ -121,7 +121,7 @@ module.exports = {
 			// Devuelve la info
 			return res.json(errores);
 		},
-		envioDeMail: async (req, res) => {
+		envioDeMailAltaContr: async (req, res) => {
 			// Variables
 			const {email} = req.query;
 			const usuario = email ? await baseDeDatos.obtienePorCondicion("usuarios", {email}) : "";
