@@ -39,6 +39,7 @@ module.exports = {
 	// Consolidados
 	FechaHoraUTC: async function () {
 		// Variables
+		hoy = new Date().toISOString().slice(0, 10);
 		const info = {...rutinasJSON};
 		const minutos = new Date().getMinutes();
 
@@ -310,9 +311,6 @@ module.exports = {
 			return;
 		},
 		clientesAcums: async () => {
-			// Variables
-			const hoy = new Date().toISOString().slice(0, 10);
-
 			// Logins diarios, quitando los duplicados
 			const loginsDiarios = await baseDeDatos
 				.obtieneTodosPorCondicion("clientesDelDia", {fecha: {[Op.lt]: hoy}})

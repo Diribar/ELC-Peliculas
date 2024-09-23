@@ -45,6 +45,17 @@ module.exports = {
 		contrasena = bcryptjs.hashSync(contrasena, 10);
 		return {contrasena, mailEnviado};
 	},
+	eliminaDuplicados: async (usuario_id) => {
+		// Obtiene los registros
+		const registros = await baseDeDatos.obtieneTodosPorCondicion("clientesDelDia", {usuario_id});
+
+		// Elimina los duplicados
+		for (let i = registros.length - 1; i > 0; i--)
+			if (registros[i].fecha == registros[i - 1].fecha) baseDeDatos.eliminaPorId("clientesDelDia", registros[i].id);
+
+		// Fin
+		return;
+	},
 
 	// Carteles de información
 	cartelNuevaContrasena: {
@@ -88,7 +99,6 @@ module.exports = {
 	logout: (req, res) => {
 		// Borra los datos de session y cookie
 		for (let prop in req.session) if (prop != "cookie") delete req.session[prop];
-		//res.clearCookie("visita");
 		res.clearCookie("email");
 
 		// Fin

@@ -24,10 +24,10 @@ router.get("/api/valida-login", API.valida.login);
 router.get("/api/valida-editables", API.valida.editables);
 router.get("/api/valida-perennes", API.valida.perennes);
 router.get("/api/alta-mail/validaciones", API.altaMail.validaMail);
-router.get("/api/alta-mail/envio-de-mail", API.altaMail.envioDeMail);
+router.get("/api/alta-mail/envio-de-mail", API.altaMail.envioDeMailAltaUsuario);
 router.get("/api/olvido-contrasena/datosDeSession", API.olvidoContr.datosDeSession);
 router.get("/api/olvido-contrasena/validaciones", API.olvidoContr.validaDatosPer);
-router.get("/api/olvido-contrasena/envio-de-mail", API.olvidoContr.envioDeMail);
+router.get("/api/olvido-contrasena/envio-de-mail", API.olvidoContr.envioDeMailAltaContr);
 router.get("/api/video-de-consultas-visto", API.videoConsVisto);
 
 // Vistas - Sólo visitas

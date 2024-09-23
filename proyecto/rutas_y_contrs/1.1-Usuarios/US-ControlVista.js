@@ -212,17 +212,28 @@ module.exports = {
 			const {email} = req.body;
 			res.cookie("email", email, {maxAge: unDia});
 
-			// Actualiza y obtiene el usuario
-			await baseDeDatos.actualizaTodosPorCondicion("usuarios", {email}, {diasSinCartelBeneficios: 0}); // debe hacerse con 'await' para que session lo tome bien
+			// Obtiene el usuario
 			const usuario = await comp.obtieneUsuarioPorMail(email);
+			const {cliente_id, usuario_id} = usuario;
 
 			// Si corresponde, le cambia el status a 'mailValidado'
 			if (usuario.statusRegistro_id == mailPendValidar_id)
 				await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
 
-			// Limpia la información provisoria
+			// Actualiza datos en la BD - tabla 'usuarios' (await necesario para 'session')
+			fechaUltNaveg = [usuario.fechaUltNaveg, cliente.fechaUltNaveg].sort((a, b) => (a > b ? -1 : 1))[0];
+			const datos = {diasSinCartelBenefs: 0, fechaUltNaveg};
+			await baseDeDatos.actualizaPorId("usuarios", usuario.id, datos);
+
+			// Actualiza datos en la BD - tabla 'clientesDelDia' (await necesario para 'session')
+			await baseDeDatos
+				.actualizaTodosPorCondicion("clientesDelDia", {cliente_id, fecha: hoy}, {usuario_id})
+				.then(() => procesos.eliminaDuplicados(usuario.id));
+
+			// Limpia la información obsoleta
 			res.clearCookie("intentosLogin");
 			delete req.session.login;
+			delete req.session.cliente;
 
 			// Redirecciona
 			return res.redirect("/usuarios/garantiza-login-y-completo");

@@ -47,17 +47,17 @@ module.exports = {
 			// Devuelve la info
 			return res.json(errores);
 		},
-		envioDeMail: async (req, res) => {
+		envioDeMailAltaUsuario: async (req, res) => {
 			// Envía el mail con la contraseña
 			const {email} = req.query;
-			const {cliente} = req.session.cliente;
+			const {cliente} = req.session;
+			const {diasNaveg, visitaCreadaEn, cliente_id: cliente_idViejo} = cliente;
 			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena({email, altaMail: true});
 
 			// Si hubo errores con el envío del mensaje, interrumpe la función
 			if (!mailEnviado) return res.json(mailEnviado);
 
 			// Crea el usuario
-			const {diasNaveg, visitaCreadaEn} = cliente;
 			const usuario = await baseDeDatos.agregaRegistro("usuarios", {
 				...{email, contrasena},
 				...{diasNaveg, visitaCreadaEn},
@@ -65,19 +65,22 @@ module.exports = {
 				versionElc,
 			});
 
-			// Crea la variable 'cliente_id' y la actualiza en la BD
+			// Crea la variable 'cliente_id' y la actualiza en la BD y la cookie
 			const cliente_id = "U" + String(usuario.id).padStart(10, "0");
-			baseDeDatos.actualizaPorId("usuarios", usuario.id, {cliente_id});
+			await baseDeDatos.actualizaPorId("usuarios", usuario.id, {cliente_id}); // es necesario el 'await' para session
+			res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
 
 			// Actualiza la tabla 'clientesDelDia'
-			const condicion = {cliente_id: cliente.cliente_id};
-			const datosActuales = {usuario_id: usuario.id, cliente_id};
 			await baseDeDatos
-				.actualizaTodosPorCondicion("clientesDelDia", condicion, datosActuales)
-				.then(() => eliminaDuplicados(usuario.id));
+				.actualizaTodosPorCondicion("clientesDelDia", {cliente_id: cliente_idViejo, fecha: hoy}, {cliente_id})
+				.then(() => procesos.eliminaDuplicados(usuario.id));
 
 			// Guarda el mail en 'session'
 			req.session.login = {datos: {email}};
+
+			// Elimina el registro de visita y su session
+			baseDeDatos.eliminaTodosPorCondicion("visitas", {cliente_id: cliente_idViejo});
+			delete req.session.cliente;
 
 			// Devuelve la info
 			return res.json(mailEnviado);
@@ -116,7 +119,7 @@ module.exports = {
 			// Devuelve la info
 			return res.json(errores);
 		},
-		envioDeMail: async (req, res) => {
+		envioDeMailAltaContr: async (req, res) => {
 			// Variables
 			const {email} = req.query;
 			const usuario = email ? await baseDeDatos.obtienePorCondicion("usuarios", {email}) : "";
@@ -150,16 +153,4 @@ module.exports = {
 		// Fin
 		return res.json();
 	},
-};
-
-let eliminaDuplicados = async (usuario_id) => {
-	// Obtiene los registros
-	const registros = await baseDeDatos.obtieneTodosPorCondicion("clientesDelDia", {usuario_id});
-
-	// Elimina los duplicados
-	for (let i = registros.length - 1; i > 0; i--)
-		if (registros[i].fecha == registros[i - 1].fecha) baseDeDatos.eliminaPorId("clientesDelDia", registros[i].id);
-
-	// Fin
-	return;
 };
