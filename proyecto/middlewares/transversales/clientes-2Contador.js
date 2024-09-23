@@ -14,8 +14,8 @@ module.exports = async (req, res, next) => {
 	if (!req.session.clienteRecienCreado && fechaUltNaveg == hoy) return next();
 
 	// Actualiza 'fechaUltNaveg' en la tabla 'usuarios/visitas' y en la variable 'cliente'
-	//baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
-	//cliente.fechaUltNaveg = hoy;
+	baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
+	cliente.fechaUltNaveg = hoy;
 
 	// Contador de clientes
 	const usuario_id = usuario ? usuario.id : null;
