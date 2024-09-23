@@ -51,13 +51,13 @@ module.exports = {
 			// Envía el mail con la contraseña
 			const {email} = req.query;
 			const {cliente} = req.session;
+			const {diasNaveg, visitaCreadaEn, cliente_id: cliente_idViejo} = cliente;
 			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena({email, altaMail: true});
 
 			// Si hubo errores con el envío del mensaje, interrumpe la función
 			if (!mailEnviado) return res.json(mailEnviado);
 
 			// Crea el usuario
-			const {diasNaveg, visitaCreadaEn, cliente_id: cliente_idViejo} = cliente;
 			const usuario = await baseDeDatos.agregaRegistro("usuarios", {
 				...{email, contrasena},
 				...{diasNaveg, visitaCreadaEn},
