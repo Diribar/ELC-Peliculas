@@ -155,12 +155,10 @@ module.exports = {
 let eliminaDuplicados = async (usuario_id) => {
 	// Obtiene los registros
 	const registros = await baseDeDatos.obtieneTodosPorCondicion("clientesDelDia", {usuario_id});
-	console.log();
 
 	// Elimina los duplicados
-	registros.forEach((registro, contador) => {
-		if (contador && registro.fecha == registros[contador - 1].fecha) baseDeDatos.eliminaPorId("clientesDelDia", registro.id);
-	});
+	for (let i = registros.length - 1; i > 0; i--)
+		if (registros[i].fecha == registros[i - 1].fecha) baseDeDatos.eliminaPorId("clientesDelDia", registros[i].id);
 
 	// Fin
 	return;
