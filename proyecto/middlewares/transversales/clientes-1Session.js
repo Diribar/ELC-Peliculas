@@ -104,10 +104,10 @@ module.exports = async (req, res, next) => {
 		baseDeDatos.actualizaPorId("visitas", cliente.id, {cliente_id});
 
 		// Crea la cooke
-		cliente.cliente_id = cliente_id;
 		res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
 
 		// Actualiza variables
+		cliente.cliente_id = cliente_id;
 		req.session.clienteRecienCreado = true;
 	}
 
