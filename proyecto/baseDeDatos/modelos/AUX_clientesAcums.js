@@ -4,7 +4,7 @@ module.exports = (sequelize, dt) => {
 		fecha: {type: dt.STRING(10)},
 		diaSem: {type: dt.STRING(3)},
 		anoMes: {type: dt.STRING(3)},
-		usLogueado: {type: dt.INTEGER},
+		logins: {type: dt.INTEGER},
 		usSinLogin: {type: dt.INTEGER},
 		visitas: {type: dt.INTEGER},
 	};
