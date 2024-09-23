@@ -73,7 +73,7 @@ module.exports = {
 			// Actualiza la tabla 'clientesDelDia'
 			await baseDeDatos
 				.actualizaTodosPorCondicion("clientesDelDia", {cliente_id: cliente_idViejo}, {cliente_id})
-				.then(() => eliminaDuplicados(usuario.id));
+				.then(() => procesos.eliminaDuplicados(usuario.id));
 
 			// Guarda el mail en 'session'
 			req.session.login = {datos: {email}};
@@ -155,14 +155,3 @@ module.exports = {
 	},
 };
 
-let eliminaDuplicados = async (usuario_id) => {
-	// Obtiene los registros
-	const registros = await baseDeDatos.obtieneTodosPorCondicion("clientesDelDia", {usuario_id});
-
-	// Elimina los duplicados
-	for (let i = registros.length - 1; i > 0; i--)
-		if (registros[i].fecha == registros[i - 1].fecha) baseDeDatos.eliminaPorId("clientesDelDia", registros[i].id);
-
-	// Fin
-	return;
-};
