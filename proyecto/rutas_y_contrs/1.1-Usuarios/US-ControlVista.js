@@ -220,9 +220,10 @@ module.exports = {
 			if (usuario.statusRegistro_id == mailPendValidar_id)
 				await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
 
-			// Limpia la información provisoria
+			// Limpia la información obsoleta
 			res.clearCookie("intentosLogin");
 			delete req.session.login;
+			delete req.session.cliente;
 
 			// Redirecciona
 			return res.redirect("/usuarios/garantiza-login-y-completo");
