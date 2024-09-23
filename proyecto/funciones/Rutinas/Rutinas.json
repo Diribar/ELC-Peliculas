@@ -1,13 +1,13 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 22/sep",
-	"HoraUTC": "0:00",
-	"FechaHoraUTC": "NO",
+	"FechaUTC": "Lun. 23/sep",
+	"HoraUTC": "12:52",
+	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 16/sep",
-	"HoraSemUTC": "11:25",
-	"semanaUTC": 38,
-	"SemanaUTC": "NO",
+	"FechaSemUTC": "Lun. 23/sep",
+	"HoraSemUTC": "12:52",
+	"semanaUTC": 39,
+	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
 	"MotivoHorarias2": "Actualizaciones que se necesita que sean horarias",
@@ -18,10 +18,10 @@
 	"MotivoDiarias3": "Estadísticas que se necesita que se actualicen en forma diaria",
 	"RutinasDiarias": {
 		"imagenDerecha": "SI",
-		"clientesAcums": "NO",
-		"rutinasDiariasEnUsuario": "NO",
-		"eliminaLinksInactivos": "NO",
-		"ABM_noRevisores": "NO"
+		"clientesAcums": "SI",
+		"rutinasDiariasEnUsuario": "SI",
+		"eliminaLinksInactivos": "SI",
+		"ABM_noRevisores": "SI"
 	},
 	"Subtitulo5": "-------------- RUTINAS SEMANALES ---------------",
 	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"20-sep-24": {"leyenda": "Hoy recordamos a Andrés Kim y compañeros mártires, santos", "entidad": "personajes", "id": 233},
 		"21-sep-24": {"leyenda": "Hoy recordamos a san Mateo apóstol", "entidad": "personajes", "id": 222},
 		"22-sep-24": {},
 		"23-sep-24": {"leyenda": "Hoy recordamos al padre Pío de Pietrelcina, santo", "entidad": "personajes", "id": 104},
-		"24-sep-24": {}
+		"24-sep-24": {},
+		"25-sep-24": {}
 	}
 }
