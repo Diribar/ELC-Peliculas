@@ -21,10 +21,33 @@ module.exports = async (req, res, next) => {
 		if (!usuario) res.clearCookie("email");
 	}
 
-	// Cliente - 1. Usuario logueado: lo obtiene del usuario (la cookie 'cliente_id' se guarda con el cambio de día en 'contador')
-	if (usuario && (!cliente || usuario.cliente_id != cliente.cliente_id)) cliente = obtieneCamposNecesarios(usuario);
+	// Cliente - 1. Usuario logueado: lo obtiene del usuario
+	if (usuario && (!cliente || usuario.cliente_id != cliente.cliente_id)) {
+		// Obtiene el cliente y eventualmente
+		cliente = obtieneCamposNecesarios(usuario);
 
-	// Cliente - 2. Visita con cookie 'visita': lo obtiene de esa cookie, la borra y crea la cookie 'cliente'
+		// Si corresponde, actualiza la cookie
+		const {cliente_id} = cliente;
+		if (!req.cookies.cliente_id || req.cookies.cliente_id != cliente_id)
+			res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
+	}
+
+	// Cliente - 2. Visita con cookie 'cliente_id': lo obtiene de esa cookie
+	if (!cliente && req.cookies && req.cookies.cliente_id) {
+		// Obtiene el cliente_id
+		let {cliente_id} = req.cookies;
+
+		// Obtiene el cliente
+		let tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
+		cliente = await baseDeDatos
+			.obtienePorCondicion(tabla, {cliente_id}, "rolUsuario")
+			.then((n) => (n ? obtieneCamposNecesarios(n) : null));
+
+		// Si el cliente no existe, elimina la cookie
+		if (!cliente) res.clearCookie("cliente_id");
+	}
+
+	// Cliente - 3. Visita con cookie 'visita': lo obtiene de esa cookie, la borra y crea la cookie 'cliente'
 	if (!cliente && req.cookies && req.cookies.visita && req.cookies.visita.id) {
 		// Obtiene el cliente_id
 		let cliente_id = req.cookies.visita.id;
@@ -40,11 +63,9 @@ module.exports = async (req, res, next) => {
 				// Descarta los campos innecesarios
 				cliente = obtieneCamposNecesarios(cliente);
 
-				// Fecha máxima
+				// Actualiza el cliente con la 'fechaUltNaveg'
 				const fechaBD = cliente.fechaUltNaveg;
 				const fechaMax = [fechaCookie, fechaBD].sort((a, b) => (a > b ? -1 : 1))[0];
-
-				// Actualiza el cliente con la 'fechaUltNaveg'
 				if (fechaBD < fechaMax) baseDeDatos.actualizaPorId("usuarios", cliente.id, {fechaUltNaveg: fechaMax});
 				cliente.fechaUltNaveg = fechaMax;
 			}
@@ -65,21 +86,6 @@ module.exports = async (req, res, next) => {
 		// Acciones con cookies
 		res.clearCookie("visita");
 		res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
-	}
-
-	// Cliente - 3. Visita con cookie 'cliente_id': lo obtiene de esa cookie
-	if (!cliente && req.cookies && req.cookies.cliente_id) {
-		// Obtiene el cliente_id
-		let {cliente_id} = req.cookies;
-
-		// Obtiene el cliente
-		let tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
-		cliente = await baseDeDatos
-			.obtienePorCondicion(tabla, {cliente_id}, "rolUsuario")
-			.then((n) => (n ? obtieneCamposNecesarios(n) : null));
-
-		// Si el cliente no existe, elimina la cookie
-		if (!cliente) res.clearCookie("cliente_id");
 	}
 
 	// Cliente - 4. Primera visita: lo crea
