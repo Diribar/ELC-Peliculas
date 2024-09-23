@@ -21,7 +21,7 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		// await this.rutinas.loginsPorDia();
+		// await this.rutinas.eliminaImagenesSinRegistro();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -307,7 +307,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		loginsPorDia: async () => {
+		clientesAcums: async () => {
 			// Variables
 			const hoy = new Date().toISOString().slice(0, 10);
 
@@ -319,7 +319,7 @@ module.exports = {
 
 			// Si hay una inconsistencia, termina
 			const primFechaLoginsDiarios = loginsDiarios[0].fecha;
-			const ultClientesAcums = await baseDeDatos.obtienePorCondicionElUltimo("clientesDiarios");
+			const ultClientesAcums = await baseDeDatos.obtienePorCondicionElUltimo("clientesAcums");
 			const fechaUltClientesAcums = ultClientesAcums ? ultClientesAcums.fecha : null;
 			if (fechaUltClientesAcums && primFechaLoginsDiarios <= fechaUltClientesAcums) {
 				const mensaje = primFechaLoginsDiarios == fechaUltClientesAcums ? "IGUAL" : "MENOR";
@@ -340,14 +340,14 @@ module.exports = {
 				const personas = loginsDiarios.filter((n) => n.fecha == proximaFecha);
 
 				// Tipos de navegación
-				const usLogueado = personas.filter((n) => n.usuario_id).length;
-				const usSinLogin = personas.filter((n) => !n.usuario_id && n.visita_id.startsWith("U")).length;
-				const visitaSinUs = personas.filter((n) => !n.usuario_id && n.visita_id.startsWith("V")).length;
+				const logins = personas.filter((n) => n.usuario_id).length;
+				const usSinLogin = personas.filter((n) => !n.usuario_id && n.cliente_id.startsWith("U")).length;
+				const visitas = personas.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
 
 				// Agrega la cantidad de personas
 				await baseDeDatos.agregaRegistro("clientesAcums", {
 					...{fecha: proximaFecha, diaSem, anoMes},
-					...{usLogueado, usSinLogin, visitaSinUs}, // las personas logueadas alguna vez en el día, figuran como 'usLogueado'
+					...{logins, usSinLogin, visitas}, // las personas logueadas alguna vez en el día, figuran como 'logins'
 				});
 
 				// Obtiene la fecha siguiente
