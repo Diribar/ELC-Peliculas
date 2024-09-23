@@ -2,6 +2,7 @@
 "use strict";
 
 module.exports = async (req, res, next) => {
+	return next()
 	// Si corresponde, interrumpe la función
 	if (req.originalUrl.includes("/api/")) return next();
 
