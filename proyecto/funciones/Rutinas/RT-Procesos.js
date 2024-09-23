@@ -590,7 +590,7 @@ module.exports = {
 		const novedades = sonIguales ? ", sin novedades" : "";
 
 		// Feedback del proceso
-		console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(7, " ") , "-", campo + novedades);
+		console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(7, " "), "-", campo + novedades);
 
 		// Fin
 		return;
@@ -871,7 +871,12 @@ let eliminaLasImagenes = (avatars, carpeta) => {
 
 	// Rutina para detectar nombres sin archivo
 	for (let avatar of avatars)
-		if (!archivos.includes(avatar.imagen)) console.log("Registros sin avatar:", avatar.nombre, "(" + avatar.entidad + ")");
+		if (!archivos.includes(avatar.imagen))
+			console.log(
+				"Archivo no encontrado:",
+				carpeta + "/" + avatar.imagen,
+				"(" + avatar.nombre + " - " + avatar.entidad + ")"
+			);
 
 	// Fin
 	return;
