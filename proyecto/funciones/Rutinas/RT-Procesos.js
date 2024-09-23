@@ -25,6 +25,7 @@ module.exports = {
 
 			// Si los datos son iguales, saltea los controles posteriores
 			if (datoNuevo == datoGuardado) continue;
+			// De lo contrario, avisa que son distintos
 			else if (!datoGuardado) sonIguales = false;
 			// String - varios casos
 			else if (typeof datoNuevo == "string") sonIguales = false;
@@ -32,10 +33,7 @@ module.exports = {
 			else if (Array.isArray(datoNuevo)) {
 				if (!Array.isArray(datoGuardado)) sonIguales = false;
 				else if (datoNuevo.length != datoGuardado.length) sonIguales = false;
-				else
-					datoNuevo.forEach((n, i) => {
-						if (n != datoGuardado[i]) sonIguales = false;
-					});
+				else if (datoNuevo.some((n) => !datoGuardado.includes(n))) sonIguales = false;
 			}
 			// Objeto - 'RutinasDiarias' y 'RutinasSemanales' / la de 'ImagenesDerecha' se revisa en una función anterior a esta rutina
 			else if (Array.isArray(datoGuardado)) sonIguales = false; // Revisa si el original no es un objeto
@@ -47,10 +45,7 @@ module.exports = {
 				// Revisa que tengan la misma cantidad de campos
 				if (camposNuevo.length != camposGuardado.length) sonIguales = false;
 				// Revisa que tengan el mismo valor de string
-				else
-					camposNuevo.forEach((n, i) => {
-						if (n != camposGuardado[i]) sonIguales = false;
-					});
+				else if (camposNuevo.some((n) => datoNuevo[n] != datoGuardado[n])) sonIguales = false;
 			}
 
 			// Fin
@@ -582,11 +577,11 @@ module.exports = {
 	},
 	finRutinasDiariasSemanales: function (campo, duracion, menu) {
 		// Variables
-		duracion = duracion.toLocaleString("pt"); // 'es' no coloca el separador de miles
+		duracion = duracion.toLocaleString("pt"); // 'pt' fue la opción encontrada que coloca el separador de miles
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
 
 		// Averigua si hubieron novedades
-		const sonIguales = menu ? this.guardaArchivoDeRutinas({[campo]: "SI"}, menu) : null;
+		const sonIguales = this.guardaArchivoDeRutinas({[campo]: "SI"}, menu);
 		const novedades = sonIguales ? ", sin novedades" : "";
 
 		// Feedback del proceso
