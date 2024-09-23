@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 	let leyendaTitulo = "";
 
 	// Obtiene datos del BE
-	const {clientesDiarios, colores} = await fetch("/graficos/api/usuarios-clientes-diarios").then((n) => n.json());
+	const {clientesAcums, colores} = await fetch("/graficos/api/usuarios-clientes-acums").then((n) => n.json());
 
 	// Obtiene los colores
 	const color = {
@@ -28,7 +28,7 @@ window.addEventListener("load", async () => {
 		let resultado = [["Fecha", ...grupos.map((grupo) => [grupo, {role: "style"}]).flat()]];
 
 		// Genera la información
-		clientesDiarios.forEach((clientesDiario, i) => {
+		clientesAcums.forEach((clientesDiario, i) => {
 			// Alimenta los datos del gráfico
 			const {fecha, usLogueado: logins, usSinLogin, visitaSinUs: visitas} = clientesDiario;
 			resultado.push([
@@ -46,7 +46,7 @@ window.addEventListener("load", async () => {
 
 		// Obtiene los promedios
 		for (let metodo of Object.keys(cantidades))
-			promedio[metodo] = Math.round((cantidades[metodo] / clientesDiarios.length) * 10) / 10;
+			promedio[metodo] = Math.round((cantidades[metodo] / clientesAcums.length) * 10) / 10;
 		promedio.total = Object.values(promedio).reduce((acum, n) => Math.round((acum + n) * 10) / 10);
 
 		// Opciones del gráfico - Titulo general

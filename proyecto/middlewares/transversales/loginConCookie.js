@@ -1,7 +1,5 @@
 "use strict";
 
-const {obtienePorCondicion} = require("../../funciones/BaseDatos");
-
 module.exports = async (req, res, next) => {
 	// Si corresponde, interrumpe la función
 	if (req.originalUrl.includes("/api/")) return next();
@@ -23,7 +21,9 @@ module.exports = async (req, res, next) => {
 		// Obtiene el cliente
 		if (cliente_id.startsWith("U")) {
 			// Obtiene el cliente
-			cliente = await baseDeDatos.obtienePorCondicion("usuarios", {cliente_id}).then((n) => obtieneCamposNecesarios(n));
+			cliente = await baseDeDatos
+				.obtienePorCondicion("usuarios", {cliente_id}, "rolUsuario")
+				.then((n) => obtieneCamposNecesarios(n));
 
 			// Actualiza el cliente con la 'fechaUltNaveg'
 			cliente.fechaUltNaveg = fechaUltNaveg;
@@ -32,8 +32,9 @@ module.exports = async (req, res, next) => {
 		// Crea el cliente
 		else {
 			// Crea y obtiene el cliente
-			const datos = {versionELC: "1.10", mostrarCartelBienvenida: false, fechaUltNaveg};
-			cliente = await baseDeDatos.agregaRegistro("visitas", datos).then((n) => obtieneCamposNecesarios(n));
+			const datos = {versionElc: "1.10", mostrarCartelBienvenida: false, fechaUltNaveg};
+			cliente = await baseDeDatos.agregaRegistro("visitas", datos);
+			cliente = await baseDeDatos.obtienePorId("visitas", cliente.id, "rolUsuario").then((n) => obtieneCamposNecesarios(n));
 
 			// Actualiza el cliente con el 'cliente_id'
 			cliente_id = "V" + String(cliente.id).padStart(10, "0");
@@ -69,7 +70,8 @@ module.exports = async (req, res, next) => {
 	// 1.D. Cliente - Si no existe, lo crea
 	if (!cliente_id) {
 		// Crea el cliente
-		cliente = await baseDeDatos.agregaRegistro("visitas", {versionELC}).then((n) => obtieneCamposNecesarios(n));
+		cliente = await baseDeDatos.agregaRegistro("visitas", {versionElc});
+		cliente = await baseDeDatos.obtienePorId("visitas", cliente.id, "rolUsuario").then((n) => obtieneCamposNecesarios(n));
 
 		// Crea el cliente_id y lo actualiza en la BD
 		cliente_id = "V" + String(cliente.id).padStart(10, "0");
@@ -134,7 +136,7 @@ module.exports = async (req, res, next) => {
 
 		// Actualiza el registro del cliente en la BD
 		tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
-		baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
+		baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
 
 		// Actualización diaria
 		if (usuario) res.cookie("email", usuario.email, {maxAge: unDia * 30});
@@ -186,7 +188,7 @@ let contadorDePersonas = async (usuario_id, cliente_id, hoy) => {
 		// Variables de usuario o visita
 		const esUsuario = cliente_id.startsWith("U");
 		const tabla = esUsuario ? "usuarios" : "visitas";
-		const id = await obtienePorCondicion(tabla, {cliente_id}).then((n) => n.id); // obtiene el id
+		const id = await baseDeDatos.obtienePorCondicion(tabla, {cliente_id}).then((n) => n.id); // obtiene el id
 
 		// Actualizaciones en el registro del cliente
 		baseDeDatos.aumentaElValorDeUnCampo(tabla, id, "diasNaveg"); // aumenta el valor del campo 'diasNaveg'
@@ -199,6 +201,7 @@ let contadorDePersonas = async (usuario_id, cliente_id, hoy) => {
 let obtieneCamposNecesarios = (usuario) => {
 	// Variables
 	const camposNecesarios = [
+		"id",
 		"cliente_id", // para la vinculación
 		"versionElc", // para las novedades
 		"fechaUltNaveg", // para el contador de 'clientes x día'

@@ -76,7 +76,7 @@ global.nodeEnv = carpeta == "Proyecto" ? "development" : "production";
 require("dotenv").config();
 global.fetch = require("node-fetch");
 global.anoELC = process.env.anoELC;
-global.versionELC = process.env.versionELC;
+global.versionElc = process.env.versionElc;
 global.carpetaPublica = path.join(__dirname, "publico");
 global.carpetaExterna = path.join(__dirname, "..", process.env.carpetaExterna);
 
