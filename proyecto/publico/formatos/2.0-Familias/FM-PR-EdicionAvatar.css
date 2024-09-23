@@ -24,7 +24,7 @@
 		.errores {
 			.mensajeError {
 				right: auto; top: auto;
-				left: 50%; top: -5px; translate: -50% -100%;
+				left: 50%; top: -7px; translate: -50% -100%;
 				&::before {
 					left: 50%; bottom: 0; translate: -50% 100%;
 					border-color: var(--colorMensajeError) transparent transparent;

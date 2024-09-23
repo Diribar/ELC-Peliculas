@@ -1,3 +1,4 @@
+// Muestra carteles que se activan con el acceso al sitio (no se usa con apis)
 "use strict";
 
 module.exports = async (req, res, next) => {

@@ -67,7 +67,7 @@ window.addEventListener("load", async () => {
 		leyNombreDefault: document.querySelector("form select.input[name=leyNombre] option"),
 		leyNombreFijo: document.querySelector("form #leyNombre:not(:has(select))"),
 	};
-	let v = {
+	v = {
 		// Campos por sector
 		camposNombre: Array.from(DOM.camposNombre).map((n) => n.name),
 		camposFecha: Array.from(DOM.camposFecha).map((n) => n.name),
@@ -444,7 +444,7 @@ window.addEventListener("load", async () => {
 				let params = "&avatar=" + encodeURIComponent(DOM.inputAvatar.value);
 				params += "&imgOpcional=SI";
 				if (DOM.inputAvatar.value) {
-					params += "&esImagen=" + (esImagen  ? "SI" : "NO");
+					params += "&esImagen=" + (v.esImagen ? "SI" : "NO");
 					params += "&tamano=" + DOM.inputAvatar.files[0].size;
 				}
 
@@ -758,7 +758,7 @@ window.addEventListener("load", async () => {
 		const campo = e.target.name;
 		if (!DOM[campo]) return;
 
-		// Obtiene el valor
+		// Validaciones estándar y obtiene el valor
 		amplio.restringeCaracteres(e);
 		let valor = e.target.value;
 
@@ -939,7 +939,6 @@ const hechos = entidad == "hechos";
 const epocasDelAno = entidad == "epocasDelAno";
 const ano = personajes ? "anoNacim" : "anoComienzo";
 const rutas = {
-	// Rutas
 	obtieneVariables: "/rclv/api/edicion/obtiene-variables",
 	validacion: "/rclv/api/edicion/valida-sector/?funcion=",
 	registrosConEsaFecha: "/rclv/api/edicion/registros-con-esa-fecha/",
@@ -948,7 +947,7 @@ const linksUrl = ["https://es.wikipedia.org/wiki/", "https://www.google.com/sear
 const googleIMG = {pre: "//google.com/search?q=", post: "&tbm=isch&tbs=isz:l&hl=es-419"};
 let OK = {};
 let errores = {};
-let esImagen = false;
+let v;
 
 // Funciones
 let opcElegida = (opciones) => {
