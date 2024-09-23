@@ -223,7 +223,7 @@ module.exports = {
 			// Actualiza datos en la BD - tabla 'usuarios' (await necesario para 'session')
 			fechaUltNaveg = [usuario.fechaUltNaveg, cliente.fechaUltNaveg].sort((a, b) => (a > b ? -1 : 1))[0];
 			const datos = {diasSinCartelBenefs: 0, fechaUltNaveg};
-			await baseDeDatos.actualizaTodosPorCondicion("usuarios", {email}, datos);
+			await baseDeDatos.actualizaPorId("usuarios", usuario.id, datos);
 
 			// Actualiza datos en la BD - tabla 'clientesDelDia' (await necesario para 'session')
 			await baseDeDatos
