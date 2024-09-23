@@ -71,10 +71,8 @@ module.exports = {
 			res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
 
 			// Actualiza la tabla 'clientesDelDia'
-			const condicion = {cliente_id: cliente_idViejo};
-			const datosActuales = {usuario_id: usuario.id, cliente_id};
 			await baseDeDatos
-				.actualizaTodosPorCondicion("clientesDelDia", condicion, datosActuales)
+				.actualizaTodosPorCondicion("clientesDelDia", {cliente_id: cliente_idViejo}, {cliente_id})
 				.then(() => eliminaDuplicados(usuario.id));
 
 			// Guarda el mail en 'session'
