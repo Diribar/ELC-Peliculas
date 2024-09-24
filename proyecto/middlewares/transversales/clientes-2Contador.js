@@ -1,7 +1,7 @@
 // Revisa si corresponde actualizar el contador (no se usa con apis)
 "use strict";
 
-module.exports = async (req, res, next) => {
+module.exports = (req, res, next) => {
 	// Si corresponde, interrumpe la función
 	if (req.originalUrl.includes("/api/")) return next();
 

@@ -59,7 +59,7 @@ window.addEventListener("load", async () => {
 			isStacked: true, // columnas apiladas
 			backgroundColor: "rgb(255,242,204)",
 			fontSize: 14,
-			title: "Prom. Total: " + leyendaTitulo,
+			title: "Prom.: " + leyendaTitulo,
 			titleTextStyle: {color: "brown", fontSize: 18},
 			legend: {position: "bottom", textStyle: {fontSize: 12}},
 			chartArea: {left: "15%", right: "5%", top: "15%", bottom: "20%"}, // reemplaza el ancho y alto
