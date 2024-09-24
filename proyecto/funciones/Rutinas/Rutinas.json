@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 20/sep",
-	"HoraUTC": "0:08",
+	"FechaUTC": "Dom. 22/sep",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "NO",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 16/sep",
@@ -18,10 +18,10 @@
 	"MotivoDiarias3": "Estadísticas que se necesita que se actualicen en forma diaria",
 	"RutinasDiarias": {
 		"imagenDerecha": "SI",
-		"loginsPorDia": "SI",
-		"rutinasDiariasEnUsuario": "SI",
-		"eliminaLinksInactivos": "SI",
-		"ABM_noRevisores": "SI"
+		"loginsPorDia": "NO",
+		"rutinasDiariasEnUsuario": "NO",
+		"eliminaLinksInactivos": "NO",
+		"ABM_noRevisores": "NO"
 	},
 	"Subtitulo5": "-------------- RUTINAS SEMANALES ---------------",
 	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"18-sep-24": {"leyenda": "Hoy recordamos a san José de Cupertino", "entidad": "personajes", "id": 85},
-		"19-sep-24": {},
 		"20-sep-24": {"leyenda": "Hoy recordamos a Andrés Kim y compañeros mártires, santos", "entidad": "personajes", "id": 233},
 		"21-sep-24": {"leyenda": "Hoy recordamos a san Mateo apóstol", "entidad": "personajes", "id": 222},
-		"22-sep-24": {}
+		"22-sep-24": {},
+		"23-sep-24": {"leyenda": "Hoy recordamos al padre Pío de Pietrelcina, santo", "entidad": "personajes", "id": 104},
+		"24-sep-24": {}
 	}
 }

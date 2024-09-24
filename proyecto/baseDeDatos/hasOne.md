@@ -1,11 +1,11 @@
 usuarios
 	diasLogin
-	versionElcUltimoLogin
+	versionElc
 	configCons_id
 	videoConsVisto
 
 	fechaRevisores
-	fechaUltimoLogin
+	fechaUltNaveg
 	fechaContrasena
 
 	penalizacAcum

@@ -77,7 +77,7 @@ window.addEventListener("load", async () => {
 			});
 		},
 		averiguaMuestraLosErrores: async () => {
-			// Obtiene los valores simples más los chequeados
+			// Obtiene los valores simples más los checks
 			let inputsRadioChecked = document.querySelectorAll(".inputError input[type='radio']:checked");
 			let inputsResp = Array.prototype.concat.call(...DOM.inputsSimples, ...inputsRadioChecked);
 			let camposResp = Array.from(inputsResp).map((n) => n.name);
@@ -97,10 +97,10 @@ window.addEventListener("load", async () => {
 						: "";
 				if (campoNombre != "avatar") objeto += "&" + campoNombre + "=" + valor;
 			}
-			if (estamosEnEdicNueva && (DOM.inputAvatar.value || !esImagen)) {
+			if (estamosEnEdicNueva && (DOM.inputAvatar.value || !v.esImagen)) {
 				objeto += "&avatar=" + DOM.inputAvatar.value;
 				if (DOM.inputAvatar.value) {
-					objeto += "&esImagen=" + (esImagen ? "SI" : "NO");
+					objeto += "&esImagen=" + (v.esImagen ? "SI" : "NO");
 					objeto += "&tamano=" + DOM.inputAvatar.files[0].size;
 				}
 			}
@@ -284,8 +284,9 @@ window.addEventListener("load", async () => {
 		// Acciones si la versión actual no es la edición nueva
 		if (!estamosEnEdicNueva) return;
 
-		// Validaciones estándar (función genérica)
+		// Validaciones estándar y obtiene el valor
 		amplio.restringeCaracteres(e);
+		const valor = e.target.value;
 
 		// Acciones si se cambió el país
 		if (e.target == DOM.paisesSelect) {
@@ -295,14 +296,14 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambió el tipo de actuación
 		if (e.target.name == "tipoActuacion_id") {
-			if ([v.anime_id, v.documental_id].includes(Number(e.target.value))) {
-				DOM.actores.value = e.target.value == v.anime_id ? dibujosAnimados : documental;
+			if ([v.anime_id, v.documental_id].includes(Number(valor))) {
+				DOM.actores.value = valor == v.anime_id ? dibujosAnimados : documental;
 				DOM.actores.readOnly = true;
 			} else DOM.actores.readOnly = false;
 		}
 
 		// Acciones si se cambió el avatar
-		if (e.target == DOM.inputAvatar) await revisaAvatar({DOM, v, version, FN});
+		if (e.target == DOM.inputAvatar) await revisaAvatar({DOM, v, FN, version});
 		// Acciones si no se cambió el avatar
 		else FN.actualizaVarios();
 
@@ -348,7 +349,7 @@ window.addEventListener("load", async () => {
 			// 1. Acciones exclusivas para edicN
 			if (!indice) {
 				// Vuelve al status original la condición del avatar
-				esImagen = true;
+				v.esImagen = true;
 
 				// Elimina Session y Cookies
 				fetch("/producto/api/edicion-nueva/eliminar");
@@ -409,9 +410,7 @@ const rutas = {
 const versiones = ["edicN", "edicG", "orig"];
 let versionActual = "edicN";
 let estamosEnEdicNueva = true;
-let versionAnt = null;
-let esImagen = true;
-let DOM, v, version;
+let DOM, v, version, versionAnt;
 
 // Funciones
 let obtieneLosValoresEdicN = () => {

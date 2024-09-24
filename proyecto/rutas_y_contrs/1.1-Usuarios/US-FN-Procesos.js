@@ -17,30 +17,6 @@ module.exports = {
 		// Fin
 		return;
 	},
-	// ControlVista: loginGuardar
-	contadorDePersonas: async (usuario_id, visita_id, hoy) => {
-		// Actualiza el usuario
-		const fechaUltimoLogin = hoy;
-		if (usuario_id) baseDeDatos.actualizaPorId("usuarios", usuario_id, {fechaUltimoLogin});
-
-		// Valida que no exista ya un registro de la 'visita_id' en esta fecha
-		const condicion = {fecha: hoy, visita_id};
-		const existe = await baseDeDatos.obtienePorCondicion("clientesDelDia", condicion);
-		if (usuario_id) condicion.usuario_id = usuario_id;
-
-		// Si no existe, lo agrega
-		if (!existe) baseDeDatos.agregaRegistro("clientesDelDia", condicion);
-
-		// Si es 'usuario_id' y existe sin ese campo, lo actualiza
-		if (existe && usuario_id && !existe.usuario_id) baseDeDatos.actualizaPorId("clientesDelDia", existe.id, {usuario_id});
-
-		// Si no existe o existe sin 'usuario_id', aumenta el valor del campo 'diasLogin' en el usuario
-		if (!existe || (usuario_id && !existe.usuario_id))
-			baseDeDatos.aumentaElValorDeUnCampo("usuarios", usuario_id, "diasLogin");
-
-		// Fin
-		return;
-	},
 	// ControlVista: altaMail y olvidoContr
 	envioDeMailConContrasena: async ({email, altaMail}) => {
 		// Variables

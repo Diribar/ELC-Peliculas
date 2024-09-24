@@ -203,7 +203,7 @@ let pierdeTiempo = (ms) => {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-let revisaAvatar = async ({DOM, v, indice, version, FN}) => {
+let revisaAvatar = async ({DOM, v, FN, version, indice}) => {
 	// 1. Acciones si se omitió ingresar un archivo
 	if (!DOM.inputAvatar.value) {
 		// Vuelve a la imagen original

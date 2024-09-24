@@ -134,7 +134,7 @@ window.addEventListener("load", () => {
 		}
 
 		// Acciones si se cambió el avatar
-		if (campo == "avatar") await revisaAvatar({DOM, v, indice, FN});
+		if (campo == "avatar") await revisaAvatar({DOM, v, FN, indice});
 		// Acciones para los demás campos
 		else if (indice > -1) await FN.actualizaVarios(indice);
 	});

@@ -76,7 +76,7 @@ global.nodeEnv = carpeta == "Proyecto" ? "development" : "production";
 require("dotenv").config();
 global.fetch = require("node-fetch");
 global.anoELC = process.env.anoELC;
-global.versionELC = process.env.versionELC;
+global.versionElc = process.env.versionElc;
 global.carpetaPublica = path.join(__dirname, "publico");
 global.carpetaExterna = path.join(__dirname, "..", process.env.carpetaExterna);
 
@@ -280,8 +280,10 @@ app.set("views", [
 	await rutinas.startupMasConfiguracion();
 
 	// Middlewares transversales
-	app.use(require("./middlewares/transversales/loginConCookie")); // Para estar siempre logueado, si existe el cookie - depende de procesos anteriores
-	app.use(require("./middlewares/transversales/urlsUsadas")); // Para tener el rastro de los últimos url - depende de procesos anteriores
+	app.use(require("./middlewares/transversales/clientes-1Session.js")); // para obtener el cliente
+	app.use(require("./middlewares/transversales/clientes-2Contador.js")); // para obtener el usuario
+	app.use(require("./middlewares/transversales/clientes-3Carteles.js")); // en función de las novedades, revisa si se debe mostrar algún cartel
+	app.use(require("./middlewares/transversales/urlsUsadas")); // para tener los últimos url
 
 	// Urls que dependen de la variable 'global'
 	app.use("/", require("./rutas_y_contrs/2.0-Familias/FM-Rutas")); // incluye algunas de 'revisión' y corrección

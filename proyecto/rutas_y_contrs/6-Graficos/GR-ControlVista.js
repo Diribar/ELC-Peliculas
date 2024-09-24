@@ -2,10 +2,10 @@
 
 module.exports = {
 	// Usuarios
-	clientesDiarios: (req, res) =>
+	clientesAcums: (req, res) =>
 		res.render("CMP-0Estructura", {
 			tema: "gráficos",
-			codigo: "clientesDiarios",
+			codigo: "clientesAcums",
 			titulo: "Visitas Diarias",
 		}),
 
