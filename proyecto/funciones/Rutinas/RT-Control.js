@@ -339,15 +339,17 @@ module.exports = {
 				const anoMes = proximaFecha.slice(0, 7);
 				const navegantes = navegsDelDia.filter((n) => n.fecha == proximaFecha);
 
-				// Cantidad de navegantes
+				// Cantidad y fidelidad de navegantes
 				const logins = navegantes.filter((n) => n.usuario_id).length;
 				const usSinLogin = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("U")).length;
 				const visitas = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
+				const fidelidades = procesos.fidelidades(clientes);
 
 				// Agrega la cantidad de navegantes
 				await baseDeDatos.agregaRegistro("navegsAcums", {
 					...{fecha: proximaFecha, diaSem, anoMes},
 					...{logins, usSinLogin, visitas},
+					...fidelidades
 				});
 
 				// Obtiene la fecha siguiente
@@ -360,13 +362,13 @@ module.exports = {
 			// Fin
 			return;
 		},
-		tiposDeCliente: async () => {
+		fidelidadClientes: async () => {
 			// Variables
 			const diaSem = diasSemana[new Date(hoy).getUTCDay()];
 			const anoMes = hoy.slice(0, 7);
 
 			// Si ya se obtuvo la foto del día, interrumpe la función
-			const existe = await baseDeDatos.obtienePorCondicion("tiposDeCliente", {fecha: hoy});
+			const existe = await baseDeDatos.obtienePorCondicion("fidelidadClientes", {fecha: hoy});
 			if (existe) return;
 
 			// Obtiene los clientes
@@ -374,34 +376,11 @@ module.exports = {
 			const visitas = baseDeDatos.obtieneTodos("visitas");
 			const clientes = await Promise.all([usuarios, visitas]).then((a, b) => [...a, ...b]);
 
-			// Obtiene los tipos de cliente - 1. Altas del día
-			let inicio = [...clientes];
-			fin = inicio.filter((n) => n.fecha != n.visitaCreadaEn);
-			const altasDelDia = inicio.length - fin.length;
-
-			// Obtiene los tipos de cliente - 2. Más de 15
-			inicio = fin;
-			fin = inicio.filter((n) => n.diasNaveg <= 15);
-			const masDeQuince = inicio.length - fin.length;
-
-			// Obtiene los tipos de cliente - 3. Más de 5
-			inicio = fin;
-			fin = inicio.filter((n) => n.diasNaveg <= 5);
-			const masDeCinco = inicio.length - fin.length;
-
-			// Obtiene los tipos de cliente - 4. Cinco o menos (y 15 días transcurridos)
-			inicio = fin;
-			fin = inicio.filter(
-				(n) => (new Date(n.fecha).getTime() - new Date(n.visitaCreadaEn).getTime()) / unDia > 15 // más de 15 días desde creado
-			);
-			const cincoOMenos = inicio.length - fin.length;
-			const transicion = fin.length;
+			// Obtiene la fidelidad de los clientes
+			const fidelidades = procesos.fidelidades(clientes);
 
 			// Guarda los resultados
-			await baseDeDatos.agregaRegistro("tiposDeCliente", {
-				...{fecha: hoy, diaSem, anoMes},
-				...{altasDelDia, transicion, cincoOMenos, masDeCinco, masDeQuince},
-			});
+			await baseDeDatos.agregaRegistro("fidelidadClientes", {fecha: hoy, diaSem, anoMes,...fidelidades});
 
 			// Fin
 			return;
