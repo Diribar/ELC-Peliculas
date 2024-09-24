@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 	const coloresBorde = Object.values(color).map((n) => n[3]);
 
 	// Aspectos de la imagen de Google
-	google.charts.load("current", {packages: ["corechart", "bar"]});
+	google.charts.load("current", {packages: ["corechart"]});
 	google.charts.setOnLoadCallback(drawGraphic);
 
 	// https://developers.google.com/chart/interactive/docs/gallery/columnchart
@@ -28,11 +28,11 @@ window.addEventListener("load", async () => {
 		let resultado = [["Fecha", ...grupos.map((grupo) => [grupo, {role: "style"}]).flat()]];
 
 		// Genera la información
-		navegsAcums.forEach((clientesDiario, i) => {
+		for (let navegsPorDia of navegsAcums) {
 			// Alimenta los datos del gráfico
-			const {fecha, logins, usSinLogin, visitas} = clientesDiario;
+			const {fecha, logins, usSinLogin, visitas} = navegsPorDia;
 			resultado.push([
-				".." + fecha + "..",
+				" " + fecha + " ",
 				...[logins, "stroke-color: " + coloresBorde[0]],
 				...[usSinLogin, "stroke-color: " + coloresBorde[1]],
 				...[visitas, "stroke-color: " + coloresBorde[2]],
@@ -42,12 +42,13 @@ window.addEventListener("load", async () => {
 			cantidades.logins += logins;
 			cantidades.usSinLogin += usSinLogin;
 			cantidades.visitas += visitas;
-		});
+		}
 
 		// Obtiene los promedios
-		for (let metodo of Object.keys(cantidades))
-			promedio[metodo] = Math.round((cantidades[metodo] / navegsAcums.length) * 10) / 10;
-		promedio.total = Object.values(promedio).reduce((acum, n) => Math.round((acum + n) * 10) / 10);
+		for (let metodo of Object.keys(cantidades)) promedio[metodo] = Math.round(cantidades[metodo] / navegsAcums.length);
+		promedio.total = Object.values(promedio).reduce((acum, n) => Math.round(acum + n));
+		resultado[0].push("Promedio");
+		for (let i = 1; i < resultado.length; i++) resultado[i].push(promedio.total);
 
 		// Opciones del gráfico - Titulo general
 		leyendaTitulo += promedio.total.toLocaleString("pt");
@@ -73,6 +74,8 @@ window.addEventListener("load", async () => {
 				fontSize: 20,
 				viewWindow: {min: 0},
 			},
+			seriesType: "bars",
+			series: {3: {type: "line"}},
 		};
 
 		// Hace visible el gráfico
