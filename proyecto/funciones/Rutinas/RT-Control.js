@@ -374,7 +374,7 @@ module.exports = {
 			// Obtiene los clientes
 			const usuarios = baseDeDatos.obtieneTodos("usuarios");
 			const visitas = baseDeDatos.obtieneTodos("visitas");
-			const clientes = await Promise.all([usuarios, visitas]).then((a, b) => [...a, ...b]);
+			const clientes = await Promise.all([usuarios, visitas]).then(([a, b]) => [...a, ...b]);
 
 			// Obtiene la fidelidad de los clientes
 			const fidelidades = procesos.fidelidades(clientes);
