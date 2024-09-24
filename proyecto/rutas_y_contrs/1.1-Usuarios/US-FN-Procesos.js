@@ -47,11 +47,11 @@ module.exports = {
 	},
 	eliminaDuplicados: async (usuario_id) => {
 		// Obtiene los registros
-		const registros = await baseDeDatos.obtieneTodosPorCondicion("clientesDelDia", {usuario_id});
+		const registros = await baseDeDatos.obtieneTodosPorCondicion("navegsDelDia", {usuario_id});
 
 		// Elimina los duplicados
 		for (let i = registros.length - 1; i > 0; i--)
-			if (registros[i].fecha == registros[i - 1].fecha) baseDeDatos.eliminaPorId("clientesDelDia", registros[i].id);
+			if (registros[i].fecha == registros[i - 1].fecha) baseDeDatos.eliminaPorId("navegsDelDia", registros[i].id);
 
 		// Fin
 		return;

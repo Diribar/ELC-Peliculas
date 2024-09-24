@@ -208,26 +208,34 @@ module.exports = {
 			});
 		},
 		guardar: async (req, res) => {
-			// Actualiza cookies - no se actualiza 'session'', para que se ejecute el middleware 'clientesSession'
+			// Variables
 			const {email} = req.body;
+			const {cliente} = req.session;
+			const {cliente_id} = cliente;
+
+			// Actualiza cookies - no se actualiza 'session'', para que se ejecute el middleware 'clientesSession'
 			res.cookie("email", email, {maxAge: unDia});
 
 			// Obtiene el usuario
 			const usuario = await comp.obtieneUsuarioPorMail(email);
-			const {cliente_id, usuario_id} = usuario;
+			const {id: usuario_id} = usuario;
 
 			// Si corresponde, le cambia el status a 'mailValidado'
 			if (usuario.statusRegistro_id == mailPendValidar_id)
 				await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
 
 			// Actualiza datos en la BD - tabla 'usuarios' (await necesario para 'session')
-			fechaUltNaveg = [usuario.fechaUltNaveg, cliente.fechaUltNaveg].sort((a, b) => (a > b ? -1 : 1))[0];
+			const fechaUltNaveg = [usuario.fechaUltNaveg, cliente.fechaUltNaveg].sort((a, b) => (a > b ? -1 : 1))[0];
 			const datos = {diasSinCartelBenefs: 0, fechaUltNaveg};
 			await baseDeDatos.actualizaPorId("usuarios", usuario.id, datos);
 
-			// Actualiza datos en la BD - tabla 'clientesDelDia' (await necesario para 'session')
+			// Actualiza datos en la BD - tabla 'navegsDelDia' (await necesario para 'session')
 			await baseDeDatos
-				.actualizaTodosPorCondicion("clientesDelDia", {cliente_id, fecha: hoy}, {usuario_id})
+				.actualizaTodosPorCondicion(
+					"navegsDelDia",
+					{cliente_id, fecha: hoy}, // el 'cliente_id' puede diferir del 'usuario.cliente_id'
+					{usuario_id, cliente_id: usuario.cliente_id}
+				)
 				.then(() => procesos.eliminaDuplicados(usuario.id));
 
 			// Limpia la información obsoleta
