@@ -21,7 +21,7 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		// await this.rutinas.eliminaImagenesSinRegistro();
+		// await this.rutinas.navegsAcums();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
