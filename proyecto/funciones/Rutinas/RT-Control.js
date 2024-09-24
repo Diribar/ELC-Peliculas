@@ -757,7 +757,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		eliminaLoginsAcumsRepetidos: async () => {
+		eliminaNavegsAcumsRep: async () => {
 			// Variables
 			const navegsAcums = await baseDeDatos.obtieneTodos("navegsAcums");
 
