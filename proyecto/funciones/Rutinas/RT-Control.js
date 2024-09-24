@@ -343,7 +343,7 @@ module.exports = {
 				const logins = navegantes.filter((n) => n.usuario_id).length;
 				const usSinLogin = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("U")).length;
 				const visitas = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
-				const fidelidades = procesos.fidelidades(clientes);
+				const fidelidades = procesos.fidelidades(navegantes);
 
 				// Agrega la cantidad de navegantes
 				await baseDeDatos.agregaRegistro("navegsAcums", {
