@@ -229,10 +229,10 @@ module.exports = {
 			const datos = {diasSinCartelBenefs: 0, fechaUltNaveg};
 			await baseDeDatos.actualizaPorId("usuarios", usuario.id, datos);
 
-			// Actualiza datos en la BD - tabla 'clientesDelDia' (await necesario para 'session')
+			// Actualiza datos en la BD - tabla 'navegsDelDia' (await necesario para 'session')
 			await baseDeDatos
 				.actualizaTodosPorCondicion(
-					"clientesDelDia",
+					"navegsDelDia",
 					{cliente_id, fecha: hoy}, // el 'cliente_id' puede diferir del 'usuario.cliente_id'
 					{usuario_id, cliente_id: usuario.cliente_id}
 				)
