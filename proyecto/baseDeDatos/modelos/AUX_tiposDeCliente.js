@@ -7,9 +7,10 @@ module.exports = (sequelize, dt) => {
 		// Calidad de clientes
 		altasDelDia: {type: dt.INTEGER},
 		transicion: {type: dt.INTEGER},
-		cincoOMenos: {type: dt.INTEGER},
-		masDeCinco: {type: dt.INTEGER},
-		masDeQuince: {type: dt.INTEGER},
+		unoATres: {type: dt.INTEGER},
+		unoADiez: {type: dt.INTEGER},
+		masDeDiez: {type: dt.INTEGER},
+		masDeTreinta: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "aux_tipos_de_cliente",
