@@ -2,12 +2,12 @@
 <section id="izquierda">
 	<!-- Menú para Mobile -->
 	<div id="mostrarMenuMobile" class="grupos">
-		<i class="fa-solid fa-bars ayudaClick iconoHeader"></i>
+		<i class="<%= iconos.faSolid %> fa-bars ayudaClick iconoHeader"></i>
 		<%- include("HR4-MenuMobile") %>
 	</div>
 	<!-- Menú de Home -->
 	<div class="grupos ocultoMobile">
-		<i class="fa-solid fa-house scale ayudaClick iconoHeader" title="Menú de Inicio"></i>
+		<i class="<%= iconos.faSolid %> <%= iconos.inicio %> scale ayudaClick iconoHeader" title="Menú de Inicio"></i>
 		<%- include("HR1-MenuHome") %>
 	</div>
 	<!-- Consultas -->
@@ -18,35 +18,35 @@
 	</a>
 	<!-- Búsqueda rápida -->
 	<div id="busquedaRapida" class="grupos">
-		<i class="fa-solid fa-magnifying-glass scale ayudaClick iconoHeader ocultoMobileParado" title="Búsqueda rápida"></i>
+		<i class="<%= iconos.faSolid %> fa-magnifying-glass scale ayudaClick iconoHeader ocultoMobileParado" title="Búsqueda rápida"></i>
 		<%- include("HR-BusqRapida") %>
 	</div>
 	<!-- Agregar un Producto -->
 	<a href="/producto/agregar/confirma" tabindex="-1" class="grupos margenDerecho ocultoMobile">
 		<div class="scale iconoComb" title="Agregar una Película">
-			<i class="fa-solid fa-video iconoHeader"></i>
-			<i class="fa-solid fa-plus iconoHeader adentro"></i>
+			<i class="<%= iconos.faSolid %> fa-video iconoHeader"></i>
+			<i class="<%= iconos.faSolid %> fa-plus iconoHeader adentro"></i>
 		</div>
 	</a>
 
 	<!-- Tablero de Revisión -->
 	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.autTablEnts) { %>
 		<a href="/revision/tablero-de-entidades" tabindex="-1" class="grupos ocultoMobile">
-			<i class="fa-solid scale iconoHeader revision fa-user-graduate" title="Tablero de Revisión"></i>
+			<i class="<%= iconos.faSolid %> scale iconoHeader revision fa-user-graduate" title="Tablero de Revisión"></i>
 		</a>
 	<% } %>
 
 	<!-- Tablero de Mantenimiento (sólo rol 'permInputs') -->
 	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.permInputs) { %>
 		<a href="/revision/tablero-de-mantenimiento" tabindex="-1" class="grupos ocultoMobile">
-			<i class="fa-solid fa-tools scale iconoHeader revision" title="Tablero de Mantenimiento"></i>
+			<i class="<%= iconos.faSolid %> fa-tools scale iconoHeader revision" title="Tablero de Mantenimiento"></i>
 		</a>
 	<% } %>
 
 	<!-- Gráficos -->
 	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
 		<div class="grupos ocultoMobile">
-			<i class="fa-solid fa-chart-line scale ayudaClick iconoHeader revision" title="Menú de Gráficos"></i>
+			<i class="<%= iconos.faSolid %> fa-chart-line scale ayudaClick iconoHeader revision" title="Menú de Gráficos"></i>
 			<%- include("HR3-MenuGraficos") %>
 		</div>
 	<% } %>
@@ -59,7 +59,7 @@
 <section id="derecha">
 	<!-- Videos de capacitación -->
 	<div class="grupos ocultoMobileParado">
-		<i class="fa-solid fa-circle-question scale ayudaClick iconoHeader" title="Videos de capacitación"></i>
+		<i class="<%= iconos.faSolid %> <%= iconos.ayuda %> scale ayudaClick iconoHeader" title="Videos de capacitación"></i>
 		<%- include("HR6-MenuCapacitac") %>
 	</div>
 	<!-- Usuario -->

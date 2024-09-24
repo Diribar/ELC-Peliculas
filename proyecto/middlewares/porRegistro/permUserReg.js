@@ -155,15 +155,15 @@ module.exports = async (req, res, next) => {
 		const linkInactivar =
 			"/inactivar-captura/?entidad=" + captura.entidad + "&id=" + captura.entidad_id + "&urlDestino=" + originalUrl;
 		const liberar = {
-			clase: "fa-circle-check",
+			clase: iconos.check,
 			link: linkInactivar,
 			titulo: "Liberar automáticamente",
 			autofocus: true,
 		};
-		const iconos = [v.vistaSinCaptura, liberar];
+		const iconosInfo = [v.vistaSinCaptura, liberar];
 
 		// Fin
-		return res.render("CMP-0Estructura", {informacion: {mensajes, iconos}});
+		return res.render("CMP-0Estructura", {informacion: {mensajes, iconos: iconosInfo}});
 	}
 
 	// Fin

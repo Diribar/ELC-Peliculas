@@ -11,11 +11,11 @@
 			<div class="iconos">
 				<!-- Salir -->
 				<a href="<%= urlSalir %>" tabindex="-1">
-					<i class="fa-solid fa-circle-left" title="Salir"></i>
+					<i class="<%= iconos.faSolid %> <%= iconos.izquierda %>" title="Salir"></i>
 				</a>
 				<!-- Submit -->
 				<button type="submit" class="<%- (!locals.errores || errores.hay) ? 'inactivo' : '' %>">
-					<i class="fa-solid fa-circle-check" title="Confirmar"></i>
+					<i class="<%= iconos.faSolid %> <%= iconos.check %>" title="Confirmar"></i>
 				</button>
 			</div>
 		</section>

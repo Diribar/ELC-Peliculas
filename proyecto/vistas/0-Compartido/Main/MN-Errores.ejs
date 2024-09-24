@@ -2,7 +2,7 @@
 
 	<!-- Errores -->
 	<i
-		class="fa-solid fa-circle-xmark<%- !locals.errores || locals.nombre && !errores[nombre] ? ' ocultar' : '' %>"
+		class="<%= iconos.faSolid %> <%= iconos.xMark %><%- !locals.errores || locals.nombre && !errores[nombre] ? ' ocultar' : '' %>"
 		<% if (locals.z_index) { %>style="z-index: <%= z_index %> "<% } %>
 	>
 		<span class="mensajeError"><%- locals.nombre && locals.errores && errores[nombre] ? errores[nombre] : "" %></span>
@@ -10,14 +10,14 @@
 
 	<% if (tema == "prodRud" && codigo == "edicion") { %>
 		<!-- Advertencia -->
-		<i class="fa-solid fa-triangle-exclamation ocultar">
+		<i class="<%= iconos.faSolid %> fa-triangle-exclamation ocultar">
 			<span class="mensajeError"></span>
 		</i>
 	<% } %>
 
 	<!-- OK -->
 	<i
-		class="fa-solid fa-circle-check<%- (locals.nombre && (locals.dataEntry && !dataEntry[nombre] || locals.errores && errores[nombre])) ? ' ocultar' : '' %>"
+		class="<%= iconos.faSolid %> <%= iconos.check %><%- (locals.nombre && (locals.dataEntry && !dataEntry[nombre] || locals.errores && errores[nombre])) ? ' ocultar' : '' %>"
 		<% if (locals.ocultarOK) { %>style="display: none;"<% } %>
 	>
 	</i>

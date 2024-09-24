@@ -37,13 +37,28 @@ global.statusErrores = [];
 global.idMinRclv = 10;
 global.dibujosAnimados = "Dibujos Animados";
 global.documental = "Documental";
-global.iconoFaSolid = "fa-solid ";
 global.iconos = {
-	altaUsuario,
+	// Uso general
+	faSolid: "fa-solid",
+	inicio: "fa-house",
+	ayuda: "fa-circle-question",
+
+	// Carteles / Formularios
 	izquierda: "fa-circle-left",
 	derecha: "fa-circle-right",
+	check: "fa-circle-check",
+	xMark: "fa-circle-xmark",
+	triangulo: "fa-triangle-exclamation",
+
+	// Ocasionales
 	entendido: "fa-thumbs-up",
-	submit: "fa-circle-check",
+	edicion: "fa-pen",
+	calificar: "fa-chart-simple",
+	eliminar: "fa-trash-can",
+	detalle: "fa-circle-info",
+	edicionCambiada: "fa-arrow-right-long",
+	agregar: "fa-circle-plus",
+	rotar: "fa-rotate-90",
 };
 
 // Require 'path'

@@ -43,7 +43,7 @@ const asocRclvs = ["personaje", "hecho", "tema", "evento", "epocaDelAno"];
 module.exports = {
 	// Institucional
 	vistasInstitucs: {
-		inicio: {titulo: "ELC | Películas con Valores", codigo: "inicio", icono: "fa-house", hr: true}, // 'hr' significa que pone una línea divisoria en el menú del header
+		inicio: {titulo: "ELC | Películas con Valores", codigo: "inicio", icono: iconos.inicio, hr: true}, // 'hr' significa que pone una línea divisoria en el menú del header
 		"quienes-somos": {titulo: "ELC | Quiénes somos", codigo: "quienesSomos", icono: "fa-people-group"},
 		"mision-y-vision": {titulo: "ELC | Nuestra Misión y Visión", codigo: "misionVision", icono: "fa-heart", hr: true},
 		"en-que-consiste-este-sitio": {titulo: "ELC | En qué consiste este sitio", codigo: "enQueConsiste", icono: "fa-question"},
@@ -405,19 +405,19 @@ module.exports = {
 	ayudaLinks: {
 		parrafo: "<em>Color de los bordes (simil semáforo):</em>",
 		mensajes: [
-			"<i class='fa-solid fa-circle enCast'></i> hablada en <b>castellano</b>",
-			"<i class='fa-solid fa-circle subtCast'></i> <b>subtitulos</b> en castellano",
-			"<i class='fa-solid fa-circle otroIdioma'></i> hablada en <b>otro</b> idioma",
-			"<i class='fa-solid fa-circle elegi'></i> <b>elegí</b> el idioma",
+			"<i class='" + iconos.faSolid + " fa-circle enCast'></i> hablada en <b>castellano</b>",
+			"<i class='" + iconos.faSolid + " fa-circle subtCast'></i> <b>subtitulos</b> en castellano",
+			"<i class='" + iconos.faSolid + " fa-circle otroIdioma'></i> hablada en <b>otro</b> idioma",
+			"<i class='" + iconos.faSolid + " fa-circle elegi'></i> <b>elegí</b> el idioma",
 		],
 	},
 
 	// Links a vistas
-	vistaInicio: {clase: "fa-house", link: "/", titulo: "Ir a 'Inicio'"},
-	vistaAnterior: (url) => ({clase: "fa-circle-left", link: url ? url : "/", titulo: "Volver a la vista anterior"}),
+	vistaInicio: {clase: iconos.inicio, link: "/", titulo: "Ir a 'Inicio'"},
+	vistaAnterior: (url) => ({clase: iconos.izquierda, link: url ? url : "/", titulo: "Volver a la vista anterior"}),
 	vistaActual: (req) => ({clase: "fa-rotate-right", link: req.originalUrl, titulo: "Volver a intentarlo"}),
-	vistaSiguiente: (url) => ({clase: "fa-circle-right", link: url ? url : "/", titulo: "Ir a la vista siguiente"}),
-	vistaEntendido: (url) => ({clase: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"}),
+	vistaSiguiente: (url) => ({clase: iconos.derecha, link: url ? url : "/", titulo: "Ir a la vista siguiente"}),
+	vistaEntendido: (url) => ({clase: iconos.entendido, link: url ? url : "/", titulo: "Entendido"}),
 	vistaTablero: {
 		clase: "fa-spell-check",
 		link: "/revision/tablero-de-entidades",
@@ -432,13 +432,13 @@ module.exports = {
 			autofocus: true,
 		}),
 		producto: (entidad, id) => ({
-			clase: "fa-circle-info",
+			clase: iconos.detalle,
 			link: "/producto/detalle/?entidad=" + entidad + "&id=" + id,
 			titulo: "Ir a la vista Detalle",
 			autofocus: true,
 		}),
 		rclv: (entidad, id) => ({
-			clase: "fa-circle-info",
+			clase: iconos.detalle,
 			link: "/rclv/detalle/?entidad=" + entidad + "&id=" + id,
 			titulo: "Ir al 'Detalle de RCLV'",
 			autofocus: true,

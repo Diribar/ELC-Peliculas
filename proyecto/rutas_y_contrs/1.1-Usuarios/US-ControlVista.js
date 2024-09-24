@@ -251,7 +251,7 @@ module.exports = {
 			// Variables
 			const codigo = req.params.id;
 			const mensajeCola = "Con el ícono de entendido salís del circuito de usuario.";
-			let mensajes, titulo, iconos;
+			let mensajes, titulo, iconosInfo; // la variable 'iconos' está definida en 'app'
 
 			// Vista fuera de usuario
 			const urlFueraDeUsuarios = req.session.urlFueraDeUsuarios ? req.session.urlFueraDeUsuarios : "";
@@ -261,24 +261,25 @@ module.exports = {
 			if (codigo == "alta-mail") {
 				mensajes = [procesos.comentarios.accesoSuspendido("para dar de alta tu mail"), mensajeCola];
 				titulo = "Alta de Mail suspendida por 24hs";
-				iconos = vistaEntendido;
+				iconosInfo = vistaEntendido;
 			}
 
 			// Feedback Login suspendido
 			if (codigo == "login") {
 				mensajes = [procesos.comentarios.accesoSuspendido("para realizar el login"), mensajeCola];
 				titulo = "Login suspendido por 24hs";
-				iconos = vistaEntendido;
+				iconosInfo = vistaEntendido;
 			}
 
 			// Feedback Olvido de Contraseña suspendido
 			if (codigo == "olvido-contrasena") {
 				mensajes = [procesos.comentarios.accesoSuspendido("para validar tus datos"), mensajeCola];
 				titulo = "Olvido de Contraseña suspendido por 24hs";
-				iconos = [{...variables.vistaAnterior("/usuarios/login"), titulo: "Ir a la vista de Login"}, vistaEntendido];
+				iconosInfo = [{...variables.vistaAnterior("/usuarios/login"), titulo: "Ir a la vista de Login"}, vistaEntendido];
 			}
 
-			const informacion = {mensajes, iconos, titulo};
+			// Consolida la información
+			const informacion = {mensajes, iconos: iconosInfo, titulo};
 
 			// Logout
 			procesos.logout(req, res);
