@@ -39,7 +39,7 @@ module.exports = async (req, res, next) => {
 
 let contadorDeClientes = async (usuario_id, cliente) => {
 	// Variables
-	const {cliente_id, fechaUltNaveg, visitaCreadaEn} = cliente;
+	const {cliente_id, diasNaveg, visitaCreadaEn} = cliente;
 
 	// Valida que no exista ya un registro del 'cliente_id' en esta fecha
 	const condicion = {fecha: hoy, cliente_id};
@@ -49,7 +49,7 @@ let contadorDeClientes = async (usuario_id, cliente) => {
 	if (existe) return;
 
 	// Agrega un registro en la tabla 'navegsDelDia'
-	let datos = {...condicion, fechaUltNaveg, visitaCreadaEn};
+	let datos = {...condicion, diasNaveg, visitaCreadaEn};
 	if (usuario_id) datos.usuario_id = usuario_id;
 	baseDeDatos.agregaRegistro("navegsDelDia", datos);
 
