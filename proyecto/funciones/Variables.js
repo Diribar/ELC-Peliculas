@@ -400,7 +400,6 @@ module.exports = {
 	inputVacio: "Necesitamos que completes este campo",
 	selectVacio: "Necesitamos que elijas una opción",
 	radioVacio: "Necesitamos que elijas una opción",
-	urlDesconocida: "No tenemos esa dirección en nuestro sistema",
 	rclvSinElegir: "Necesitamos que respondas alguna de las opciones",
 	ayudaLinks: {
 		parrafo: "<em>Color de los bordes (simil semáforo):</em>",
