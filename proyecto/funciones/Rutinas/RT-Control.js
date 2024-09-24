@@ -349,27 +349,29 @@ module.exports = {
 				fin = inicio.filter((n) => n.fecha != n.visitaCreadaEn);
 				const altasDelDia = inicio.length - fin.length;
 
-				// Calidad de clientes - 2. Más de 30
+				// Calidad de clientes - 2. Más de 15
 				inicio = fin;
-				fin = inicio.filter((n) => n.diasNaveg <= 30);
-				const masDeTreinta = inicio.length - fin.length;
+				fin = inicio.filter((n) => n.diasNaveg <= 15);
+				const masDeQuince = inicio.length - fin.length;
 
-				// Calidad de clientes - 3. Más de 10
+				// Calidad de clientes - 3. Más de 5
 				inicio = fin;
-				fin = inicio.filter((n) => n.diasNaveg <= 10);
-				const masDeDiez = inicio.length - fin.length;
+				fin = inicio.filter((n) => n.diasNaveg <= 5);
+				const masDeCinco = inicio.length - fin.length;
 
-				// Calidad de clientes - 4. Cinco o menos
+				// Calidad de clientes - 4. Cinco o menos (y 15 días transcurridos)
 				inicio = fin;
-				fin = inicio.filter((n) => n.diasNaveg > 5);
+				fin = inicio.filter(
+					(n) => (new Date(n.fecha).getTime() - new Date(n.visitaCreadaEn).getTime()) / unDia > 15 // más de 15 días desde creado
+				);
 				const cincoOMenos = inicio.length - fin.length;
-				const otras = fin.length;
+				const transicion = fin.length;
 
 				// Agrega la cantidad de personas
 				await baseDeDatos.agregaRegistro("clientesAcums", {
 					...{fecha: proximaFecha, diaSem, anoMes},
 					...{logins, usSinLogin, visitas},
-					...{altasDelDia, cincoOMenos, otras, masDeDiez, masDeTreinta},
+					...{altasDelDia, transicion, cincoOMenos, masDeCinco, masDeQuince},
 				});
 
 				// Obtiene la fecha siguiente
