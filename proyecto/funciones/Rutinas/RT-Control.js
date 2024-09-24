@@ -337,12 +337,12 @@ module.exports = {
 				// Variables
 				const diaSem = diasSemana[new Date(proximaFecha).getUTCDay()];
 				const anoMes = proximaFecha.slice(0, 7);
-				const clientes = navegsDelDia.filter((n) => n.fecha == proximaFecha);
+				const navegantes = navegsDelDia.filter((n) => n.fecha == proximaFecha);
 
-				// Cantidad de clientes
-				const logins = clientes.filter((n) => n.usuario_id).length;
-				const usSinLogin = clientes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("U")).length;
-				const visitas = clientes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
+				// Cantidad de navegantes
+				const logins = navegantes.filter((n) => n.usuario_id).length;
+				const usSinLogin = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("U")).length;
+				const visitas = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
 
 				// Agrega la cantidad de navegantes
 				await baseDeDatos.agregaRegistro("navegsAcums", {
