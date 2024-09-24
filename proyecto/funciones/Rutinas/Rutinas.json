@@ -19,7 +19,6 @@
 	"RutinasDiarias": {
 		"imagenDerecha": "SI",
 		"navegsAcums": "SI",
-		"fidelidadClientes": "SI",
 		"rutinasDiariasEnUsuario": "SI",
 		"eliminaLinksInactivos": "SI",
 		"ABM_noRevisores": "SI"
