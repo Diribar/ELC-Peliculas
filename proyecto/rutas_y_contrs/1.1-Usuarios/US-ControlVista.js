@@ -210,18 +210,38 @@ module.exports = {
 		guardar: async (req, res) => {
 			// Variables
 			const {email} = req.body;
+			const {cliente} = req.session;
+			const {cliente_id} = cliente;
+
+			// Actualiza cookies - no se actualiza 'session'', para que se ejecute el middleware 'clientesSession'
+			res.cookie("email", email, {maxAge: unDia});
+
+			// Obtiene el usuario
+			const usuario = await comp.obtieneUsuarioPorMail(email);
+			const {id: usuario_id} = usuario;
 
 			// Si corresponde, le cambia el status a 'mailValidado'
-			const usuario = await comp.obtieneUsuarioPorMail(email);
 			if (usuario.statusRegistro_id == mailPendValidar_id)
 				await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
 
-			// cookies - no se actualiza 'session'', para que se ejecute el middleware 'loginConCookie'
-			res.cookie("email", email, {maxAge: unDia});
+			// Actualiza datos en la BD - tabla 'usuarios' (await necesario para 'session')
+			const fechaUltNaveg = [usuario.fechaUltNaveg, cliente.fechaUltNaveg].sort((a, b) => (a > b ? -1 : 1))[0];
+			const datos = {diasSinCartelBenefs: 0, fechaUltNaveg};
+			await baseDeDatos.actualizaPorId("usuarios", usuario.id, datos);
 
-			// Limpia la información provisoria
+			// Actualiza datos en la BD - tabla 'navegsDelDia' (await necesario para 'session')
+			await baseDeDatos
+				.actualizaTodosPorCondicion(
+					"navegsDelDia",
+					{cliente_id, fecha: hoy}, // el 'cliente_id' puede diferir del 'usuario.cliente_id'
+					{usuario_id, cliente_id: usuario.cliente_id}
+				)
+				.then(() => procesos.eliminaDuplicados(usuario.id));
+
+			// Limpia la información obsoleta
 			res.clearCookie("intentosLogin");
 			delete req.session.login;
+			delete req.session.cliente;
 
 			// Redirecciona
 			return res.redirect("/usuarios/garantiza-login-y-completo");

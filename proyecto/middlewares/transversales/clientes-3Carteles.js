@@ -4,10 +4,10 @@
 module.exports = async (req, res, next) => {
 	// Si corresponde, interrumpe la función
 	if (req.originalUrl.includes("/api/")) return next();
+	return next();
 
 	// Variables
 	const {cliente} = req.session;
-	return next();
 
 	// Cartel de bienvenida
 

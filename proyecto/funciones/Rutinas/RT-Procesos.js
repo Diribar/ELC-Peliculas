@@ -25,6 +25,7 @@ module.exports = {
 
 			// Si los datos son iguales, saltea los controles posteriores
 			if (datoNuevo == datoGuardado) continue;
+			// De lo contrario, avisa que son distintos
 			else if (!datoGuardado) sonIguales = false;
 			// String - varios casos
 			else if (typeof datoNuevo == "string") sonIguales = false;
@@ -32,10 +33,7 @@ module.exports = {
 			else if (Array.isArray(datoNuevo)) {
 				if (!Array.isArray(datoGuardado)) sonIguales = false;
 				else if (datoNuevo.length != datoGuardado.length) sonIguales = false;
-				else
-					datoNuevo.forEach((n, i) => {
-						if (n != datoGuardado[i]) sonIguales = false;
-					});
+				else if (datoNuevo.some((n) => !datoGuardado.includes(n))) sonIguales = false;
 			}
 			// Objeto - 'RutinasDiarias' y 'RutinasSemanales' / la de 'ImagenesDerecha' se revisa en una función anterior a esta rutina
 			else if (Array.isArray(datoGuardado)) sonIguales = false; // Revisa si el original no es un objeto
@@ -47,10 +45,7 @@ module.exports = {
 				// Revisa que tengan la misma cantidad de campos
 				if (camposNuevo.length != camposGuardado.length) sonIguales = false;
 				// Revisa que tengan el mismo valor de string
-				else
-					camposNuevo.forEach((n, i) => {
-						if (n != camposGuardado[i]) sonIguales = false;
-					});
+				else if (camposNuevo.some((n) => datoNuevo[n] != datoGuardado[n])) sonIguales = false;
 			}
 
 			// Fin
@@ -582,20 +577,55 @@ module.exports = {
 	},
 	finRutinasDiariasSemanales: function (campo, duracion, menu) {
 		// Variables
-		duracion = duracion.toLocaleString("pt"); // 'es' no coloca el separador de miles
+		duracion = duracion.toLocaleString("pt"); // 'pt' fue la opción encontrada que coloca el separador de miles
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
 
 		// Averigua si hubieron novedades
-		const sonIguales = menu ? this.guardaArchivoDeRutinas({[campo]: "SI"}, menu) : null;
+		const sonIguales = this.guardaArchivoDeRutinas({[campo]: "SI"}, menu);
 		const novedades = sonIguales ? ", sin novedades" : "";
 
 		// Feedback del proceso
-		console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(7, " ") , "-", campo + novedades);
+		console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(7, " "), "-", campo + novedades);
 
 		// Fin
 		return;
 	},
 	sumaUnDia: (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10),
+	fidelidades: (registros) => {
+		// Buena noticia - Altas del día
+		let inicio = [...registros];
+		let fin = inicio.filter((n) => n.fecha != n.visitaCreadaEn);
+		const altasDelDia = inicio.length - fin.length;
+
+		// Buena noticia - Más de 30
+		inicio = fin;
+		fin = inicio.filter((n) => n.diasNaveg <= 30);
+		const masDeTreinta = inicio.length - fin.length;
+
+		// Buena noticia - Más de 10
+		inicio = fin;
+		fin = inicio.filter((n) => n.diasNaveg <= 10);
+		const masDeDiez = inicio.length - fin.length;
+
+		// Problema - Uno a diez (y días transcurridos)
+		inicio = fin;
+		fin = inicio.filter(
+			(n) => (new Date(n.fecha).getTime() - new Date(n.visitaCreadaEn).getTime()) / unDia <= 90 // días desde creado
+		);
+		const unoADiez = inicio.length - fin.length;
+
+		// Problema - Uno a tres (y días transcurridos)
+		inicio = fin;
+		fin = inicio.filter(
+			(n) => n.diasNaveg > 3 || (new Date(n.fecha).getTime() - new Date(n.visitaCreadaEn).getTime()) / unDia <= 30 // días desde creado
+		);
+		const unoATres = inicio.length - fin.length;
+
+		// Inocuo - Transición
+		const transicion = fin.length;
+
+		return {altasDelDia, transicion, cincoOMenos, masDeCinco, masDeQuince};
+	},
 };
 
 // Variables
@@ -871,7 +901,12 @@ let eliminaLasImagenes = (avatars, carpeta) => {
 
 	// Rutina para detectar nombres sin archivo
 	for (let avatar of avatars)
-		if (!archivos.includes(avatar.imagen)) console.log("Registros sin avatar:", avatar.nombre, "(" + avatar.entidad + ")");
+		if (!archivos.includes(avatar.imagen))
+			console.log(
+				"Archivo no encontrado:",
+				carpeta + "/" + avatar.imagen,
+				"(" + avatar.nombre + " - " + avatar.entidad + ")"
+			);
 
 	// Fin
 	return;

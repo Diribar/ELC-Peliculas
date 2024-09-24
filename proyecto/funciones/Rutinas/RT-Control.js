@@ -21,7 +21,7 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		// await this.rutinas.loginsPorDia();
+		// await this.rutinas.eliminaImagenesSinRegistro();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -39,6 +39,7 @@ module.exports = {
 	// Consolidados
 	FechaHoraUTC: async function () {
 		// Variables
+		hoy = new Date().toISOString().slice(0, 10);
 		const info = {...rutinasJSON};
 		const minutos = new Date().getMinutes();
 
@@ -49,14 +50,16 @@ module.exports = {
 		const {FechaUTC, HoraUTC} = procesos.fechaHoraUTC();
 		if (info.FechaUTC == FechaUTC) return;
 
-		// Actualiza los valores de la rutina "FechaHoraUTC" en el archivo JSON
+		// Encabezado de las rutinas diarias
 		console.log();
 		console.log("Rutinas diarias:");
-		const feedback = {FechaUTC, HoraUTC, FechaHoraUTC: "NO"};
 		const comienzo = Date.now();
+
+		// Actualiza los valores de la rutina "FechaHoraUTC" en el archivo JSON
+		const feedback = {FechaUTC, HoraUTC, FechaHoraUTC: "NO"};
 		procesos.guardaArchivoDeRutinas(feedback); // Actualiza la fecha y hora, más el valor "NO" en el campo "FechaHoraUTC"
 		const duracion = Date.now() - comienzo;
-		procesos.finRutinasDiariasSemanales("FechaHoraUTC", duracion, null); // Actualiza el valor "SI" en el campo "FechaHoraUTC", y avisa que se ejecutó
+		procesos.finRutinasDiariasSemanales("FechaHoraUTC", duracion); // Actualiza el valor "SI" en el campo "FechaHoraUTC", y avisa que se ejecutó
 
 		// Actualiza los campos de Rutinas Diarias
 		const feedback_RD = {};
@@ -95,7 +98,7 @@ module.exports = {
 		const comienzo = Date.now();
 		procesos.guardaArchivoDeRutinas(feedback);
 		const duracion = Date.now() - comienzo;
-		procesos.finRutinasDiariasSemanales("SemanaUTC", duracion, null);
+		procesos.finRutinasDiariasSemanales("SemanaUTC", duracion);
 
 		// Actualiza los campos de Rutinas Semanales
 		const feedback_RS = {};
@@ -307,55 +310,77 @@ module.exports = {
 			// Fin
 			return;
 		},
-		loginsPorDia: async () => {
-			// Variables
-			const hoy = new Date().toISOString().slice(0, 10);
-
-			// Logins diarios, quitando los duplicados
-			const loginsDiarios = await baseDeDatos
-				.obtieneTodosPorCondicion("clientesDelDia", {fecha: {[Op.lt]: hoy}})
+		navegsAcums: async () => {
+			// Navegantes diarios, quitando los duplicados
+			const navegsDelDia = await baseDeDatos
+				.obtieneTodosPorCondicion("navegsDelDia", {fecha: {[Op.lt]: hoy}})
 				.then((n) => n.sort((a, b) => (a.fecha < b.fecha ? -1 : 1)));
-			if (!loginsDiarios.length) return;
+			if (!navegsDelDia.length) return;
 
 			// Si hay una inconsistencia, termina
-			const primFechaLoginsDiarios = loginsDiarios[0].fecha;
-			const ultClientesAcums = await baseDeDatos.obtienePorCondicionElUltimo("clientesDiarios");
-			const fechaUltClientesAcums = ultClientesAcums ? ultClientesAcums.fecha : null;
-			if (fechaUltClientesAcums && primFechaLoginsDiarios <= fechaUltClientesAcums) {
-				const mensaje = primFechaLoginsDiarios == fechaUltClientesAcums ? "IGUAL" : "MENOR";
+			const primFechaNavegsDelDia = navegsDelDia[0].fecha;
+			const ultNavegAcums = await baseDeDatos.obtienePorCondicionElUltimo("navegsAcums");
+			const utlFechaClientesAcums = ultNavegAcums && ultNavegAcums.fecha;
+			if (utlFechaClientesAcums && primFechaNavegsDelDia <= utlFechaClientesAcums) {
+				const mensaje = primFechaNavegsDelDia == utlFechaClientesAcums ? "IGUAL" : "MENOR";
 				console.log("Inconsistencia: Fecha Diaria", mensaje, "a Fecha Acumulada");
 				return;
 			}
 
 			// Obtiene la fecha inicial para acumulados
-			let proximaFecha = fechaUltClientesAcums // condición si hay logins acums
-				? procesos.sumaUnDia(fechaUltClientesAcums) // le suma un día al último registro
-				: primFechaLoginsDiarios; // la fecha del primer registro
+			let proximaFecha = utlFechaClientesAcums // condición si hay logins acums
+				? procesos.sumaUnDia(utlFechaClientesAcums) // le suma un día al último registro
+				: primFechaNavegsDelDia; // la fecha del primer registro
 
 			// Loop mientras el día sea menor al actual
 			while (proximaFecha < hoy) {
 				// Variables
 				const diaSem = diasSemana[new Date(proximaFecha).getUTCDay()];
 				const anoMes = proximaFecha.slice(0, 7);
-				const personas = loginsDiarios.filter((n) => n.fecha == proximaFecha);
+				const navegantes = navegsDelDia.filter((n) => n.fecha == proximaFecha);
 
-				// Tipos de navegación
-				const usLogueado = personas.filter((n) => n.usuario_id).length;
-				const usSinLogin = personas.filter((n) => !n.usuario_id && n.visita_id.startsWith("U")).length;
-				const visitaSinUs = personas.filter((n) => !n.usuario_id && n.visita_id.startsWith("V")).length;
+				// Cantidad y fidelidad de navegantes
+				const logins = navegantes.filter((n) => n.usuario_id).length;
+				const usSinLogin = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("U")).length;
+				const visitas = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
+				const fidelidades = procesos.fidelidades(clientes);
 
-				// Agrega la cantidad de personas
-				await baseDeDatos.agregaRegistro("clientesAcums", {
+				// Agrega la cantidad de navegantes
+				await baseDeDatos.agregaRegistro("navegsAcums", {
 					...{fecha: proximaFecha, diaSem, anoMes},
-					...{usLogueado, usSinLogin, visitaSinUs}, // las personas logueadas alguna vez en el día, figuran como 'usLogueado'
+					...{logins, usSinLogin, visitas},
+					...fidelidades
 				});
 
 				// Obtiene la fecha siguiente
 				proximaFecha = procesos.sumaUnDia(proximaFecha);
 			}
 
-			// Elimina los 'clientesDelDia' anteriores
-			baseDeDatos.eliminaTodosPorCondicion("clientesDelDia", {fecha: {[Op.lt]: hoy}});
+			// Elimina los 'navegsDelDia' anteriores
+			baseDeDatos.eliminaTodosPorCondicion("navegsDelDia", {fecha: {[Op.lt]: hoy}});
+
+			// Fin
+			return;
+		},
+		fidelidadClientes: async () => {
+			// Variables
+			const diaSem = diasSemana[new Date(hoy).getUTCDay()];
+			const anoMes = hoy.slice(0, 7);
+
+			// Si ya se obtuvo la foto del día, interrumpe la función
+			const existe = await baseDeDatos.obtienePorCondicion("fidelidadClientes", {fecha: hoy});
+			if (existe) return;
+
+			// Obtiene los clientes
+			const usuarios = baseDeDatos.obtieneTodos("usuarios");
+			const visitas = baseDeDatos.obtieneTodos("visitas");
+			const clientes = await Promise.all([usuarios, visitas]).then((a, b) => [...a, ...b]);
+
+			// Obtiene la fidelidad de los clientes
+			const fidelidades = procesos.fidelidades(clientes);
+
+			// Guarda los resultados
+			await baseDeDatos.agregaRegistro("fidelidadClientes", {fecha: hoy, diaSem, anoMes,...fidelidades});
 
 			// Fin
 			return;
@@ -711,15 +736,15 @@ module.exports = {
 			// Fin
 			return;
 		},
-		eliminaLoginsAcumsRepetidos: async () => {
+		eliminaNavegsAcumsRep: async () => {
 			// Variables
-			const clientesAcums = await baseDeDatos.obtieneTodos("clientesAcums");
+			const navegsAcums = await baseDeDatos.obtieneTodos("navegsAcums");
 
-			// Elimina los clientesAcums repetidos
+			// Elimina los navegsAcums repetidos
 			let registroAnterior;
-			for (let registro of clientesAcums) {
+			for (let registro of navegsAcums) {
 				if (registroAnterior && registro.fecha == registroAnterior.fecha)
-					baseDeDatos.eliminaPorId("clientesAcums", registro.id);
+					baseDeDatos.eliminaPorId("navegsAcums", registro.id);
 				registroAnterior = registro;
 			}
 
@@ -736,7 +761,7 @@ module.exports = {
 			const tablas = [
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
-				...["clientesAcums", "clientesDelDia"],
+				...["navegsAcums", "navegsDelDia"],
 				...["prodsComplem", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],

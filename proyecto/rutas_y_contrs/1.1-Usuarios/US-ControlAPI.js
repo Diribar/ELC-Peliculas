@@ -38,7 +38,7 @@ module.exports = {
 				// Convierte el resultado en texto
 				errores.credenciales =
 					procesos.comentarios.credsInvalidas.altaMail + "<br>Intentos disponibles: " + intentosPendsCookie;
-			} else errores.credenciales = "";
+			} else delete errores.credenciales;
 
 			// session - guarda la info
 			const datos = req.session.altaMail && req.session.altaMail.datos ? {...req.session.altaMail.datos, email} : {email};
@@ -47,24 +47,35 @@ module.exports = {
 			// Devuelve la info
 			return res.json(errores);
 		},
-		envioDeMail: async (req, res) => {
+		envioDeMailAltaUsuario: async (req, res) => {
 			// Envía el mail con la contraseña
 			const {email} = req.query;
+			const {cliente} = req.session;
+			const {diasNaveg, visitaCreadaEn, cliente_id: cliente_idViejo} = cliente;
 			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena({email, altaMail: true});
 
-			// Si no hubo errores con el envío del mensaje, crea el usuario
-			if (mailEnviado) {
-				const usuario = await baseDeDatos.agregaRegistro("usuarios", {
-					...{email, contrasena},
-					statusRegistro_id: mailPendValidar_id,
-					versionElc,
-				});
-				const visita_id = "U" + String(usuario.id).padStart(10, "0");
-				baseDeDatos.actualizaPorId("usuarios", usuario.id, {visita_id});
-			}
+			// Si hubo errores con el envío del mensaje, interrumpe la función
+			if (!mailEnviado) return res.json(mailEnviado);
+
+			// Crea el usuario
+			const usuario = await baseDeDatos.agregaRegistro("usuarios", {
+				...{email, contrasena},
+				...{diasNaveg, visitaCreadaEn},
+				statusRegistro_id: mailPendValidar_id,
+				versionElc,
+			});
+
+			// Actualiza 'cliente_id' en la BD 'usuarios' y en la cookie 'cliente_id'
+			const cliente_id = "U" + String(usuario.id).padStart(10, "0");
+			await baseDeDatos.actualizaPorId("usuarios", usuario.id, {cliente_id}); // es necesario el 'await' para session
+			res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
 
 			// Guarda el mail en 'session'
 			req.session.login = {datos: {email}};
+
+			// Elimina el registro de visita y su session
+			baseDeDatos.eliminaTodosPorCondicion("visitas", {cliente_id: cliente_idViejo});
+			delete req.session.cliente;
 
 			// Devuelve la info
 			return res.json(mailEnviado);
@@ -103,7 +114,7 @@ module.exports = {
 			// Devuelve la info
 			return res.json(errores);
 		},
-		envioDeMail: async (req, res) => {
+		envioDeMailAltaContr: async (req, res) => {
 			// Variables
 			const {email} = req.query;
 			const usuario = email ? await baseDeDatos.obtienePorCondicion("usuarios", {email}) : "";
