@@ -988,7 +988,8 @@ module.exports = {
 		const camposNecesarios = [
 			...["id", "cliente_id"], // identificación
 			...["versionElc", "diasSinCartelBenefs", "rolUsuario"], // para mostrar carteles
-			"fechaUltNaveg", // para el contador de 'clientes x día'
+			...["diasNaveg", "visitaCreadaEn"], // para calcular la antigüedad
+			"fechaUltNaveg", // para detectar un nuevo día de actividad
 		];
 
 		// Obtiene los datos para la variable cliente
