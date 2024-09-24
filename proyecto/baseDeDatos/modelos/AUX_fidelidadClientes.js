@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "tiposDeCliente";
+	const alias = "fidelidadClientes";
 	const columns = {
 		fecha: {type: dt.STRING(10)},
 		anoMes: {type: dt.STRING(3)},
@@ -13,7 +13,7 @@ module.exports = (sequelize, dt) => {
 		masDeTreinta: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "aux_tipos_de_cliente",
+		tableName: "aux_fidelidad_clientes",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
