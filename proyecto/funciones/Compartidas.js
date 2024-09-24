@@ -987,8 +987,8 @@ module.exports = {
 		// Variables
 		const camposNecesarios = [
 			...["id", "cliente_id"], // identificación
-			...["diasNaveg", "fechaUltNaveg", "visitaCreadaEn"], // para el contador de 'clientes x día'
 			...["versionElc", "diasSinCartelBenefs", "rolUsuario"], // para mostrar carteles
+			"fechaUltNaveg", // para el contador de 'clientes x día'
 		];
 
 		// Obtiene los datos para la variable cliente
