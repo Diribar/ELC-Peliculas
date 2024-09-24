@@ -98,7 +98,7 @@ module.exports = async (req, res, next) => {
 		const cliente_id = "V" + String(cliente.id).padStart(10, "0");
 		baseDeDatos.actualizaPorId("visitas", cliente.id, {cliente_id});
 
-		// Crea la cooke
+		// Crea la cookie
 		res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
 
 		// Actualiza variables
