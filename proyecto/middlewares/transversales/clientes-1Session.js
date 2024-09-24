@@ -4,11 +4,6 @@
 module.exports = async (req, res, next) => {
 	// Variables
 	let {usuario, cliente} = req.session;
-	// res.clearCookie("cliente_id");
-	// const visita={id:"V0000000012",fecha:"2024-09-22"}
-	// res.cookie("cliente_id", "V0000000014", {maxAge: unDia * 30});
-	// return
-	// console.log(11, cliente);
 
 	// Si el 'cliente_id' tiene un valor y coincide en ambas variables, interrumpe la función
 	if (usuario && cliente && usuario.cliente_id && usuario.cliente_id == cliente.cliente_id) {
