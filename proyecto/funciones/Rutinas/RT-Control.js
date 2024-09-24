@@ -312,13 +312,13 @@ module.exports = {
 		},
 		clientesAcums: async () => {
 			// Logins diarios, quitando los duplicados
-			const loginsDiarios = await baseDeDatos
+			const clientesDelDia = await baseDeDatos
 				.obtieneTodosPorCondicion("clientesDelDia", {fecha: {[Op.lt]: hoy}})
 				.then((n) => n.sort((a, b) => (a.fecha < b.fecha ? -1 : 1)));
-			if (!loginsDiarios.length) return;
+			if (!clientesDelDia.length) return;
 
 			// Si hay una inconsistencia, termina
-			const primFechaLoginsDiarios = loginsDiarios[0].fecha;
+			const primFechaLoginsDiarios = clientesDelDia[0].fecha;
 			const ultClientesAcums = await baseDeDatos.obtienePorCondicionElUltimo("clientesAcums");
 			const fechaUltClientesAcums = ultClientesAcums ? ultClientesAcums.fecha : null;
 			if (fechaUltClientesAcums && primFechaLoginsDiarios <= fechaUltClientesAcums) {
@@ -337,17 +337,39 @@ module.exports = {
 				// Variables
 				const diaSem = diasSemana[new Date(proximaFecha).getUTCDay()];
 				const anoMes = proximaFecha.slice(0, 7);
-				const personas = loginsDiarios.filter((n) => n.fecha == proximaFecha);
+				const clientes = clientesDelDia.filter((n) => n.fecha == proximaFecha);
 
-				// Tipos de navegación
-				const logins = personas.filter((n) => n.usuario_id).length;
-				const usSinLogin = personas.filter((n) => !n.usuario_id && n.cliente_id.startsWith("U")).length;
-				const visitas = personas.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
+				// Cantidad de clientes
+				const logins = clientes.filter((n) => n.usuario_id).length;
+				const usSinLogin = clientes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("U")).length;
+				const visitas = clientes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
+
+				// Calidad de clientes - 1. Altas del día
+				let inicio = [...clientes];
+				fin = inicio.filter((n) => n.fecha != n.visitaCreadaEn);
+				const altasDelDia = inicio.length - fin.length;
+
+				// Calidad de clientes - 2. Más de 30
+				inicio = fin;
+				fin = inicio.filter((n) => n.diasNaveg <= 30);
+				const masDeTreinta = inicio.length - fin.length;
+
+				// Calidad de clientes - 3. Más de 10
+				inicio = fin;
+				fin = inicio.filter((n) => n.diasNaveg <= 10);
+				const masDeDiez = inicio.length - fin.length;
+
+				// Calidad de clientes - 4. Cinco o menos
+				inicio = fin;
+				fin = inicio.filter((n) => n.diasNaveg > 5);
+				const cincoOMenos = inicio.length - fin.length;
+				const otras = fin.length;
 
 				// Agrega la cantidad de personas
 				await baseDeDatos.agregaRegistro("clientesAcums", {
 					...{fecha: proximaFecha, diaSem, anoMes},
-					...{logins, usSinLogin, visitas}, // las personas logueadas alguna vez en el día, figuran como 'logins'
+					...{logins, usSinLogin, visitas},
+					...{altasDelDia, cincoOMenos, otras, masDeDiez, masDeTreinta},
 				});
 
 				// Obtiene la fecha siguiente
