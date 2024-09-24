@@ -624,7 +624,7 @@ module.exports = {
 		// Inocuo - Transición
 		const transicion = fin.length;
 
-		return {altasDelDia, transicion, cincoOMenos, masDeCinco, masDeQuince};
+		return {altasDelDia, transicion, unoATres, unoADiez, masDeDiez, masDeTreinta};
 	},
 };
 

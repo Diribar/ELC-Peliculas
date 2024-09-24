@@ -6,8 +6,12 @@ module.exports = async (req, res, next) => {
 
 	// Acciones si no se reconoce la url
 	let informacion = {
-		mensajes: ["No tenemos esa dirección en nuestro sistema"],
-		iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio], // se usa actual porque no llegó a cambiar el session
+		mensajes: [
+			"Estamos trabajando en mejoras para nuestro sitio.",
+			"Te pedimos disculpas por el inconveniente.",
+			"Esperamos terminarlo en unos pocos minutos.",
+		],
+		iconos: [],
 	};
 
 	// Fin

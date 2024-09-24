@@ -21,7 +21,7 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		// await this.rutinas.eliminaImagenesSinRegistro();
+		// await this.rutinas.navegsAcums();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -343,7 +343,7 @@ module.exports = {
 				const logins = navegantes.filter((n) => n.usuario_id).length;
 				const usSinLogin = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("U")).length;
 				const visitas = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
-				const fidelidades = procesos.fidelidades(clientes);
+				const fidelidades = procesos.fidelidades(navegantes);
 
 				// Agrega la cantidad de navegantes
 				await baseDeDatos.agregaRegistro("navegsAcums", {
@@ -374,7 +374,7 @@ module.exports = {
 			// Obtiene los clientes
 			const usuarios = baseDeDatos.obtieneTodos("usuarios");
 			const visitas = baseDeDatos.obtieneTodos("visitas");
-			const clientes = await Promise.all([usuarios, visitas]).then((a, b) => [...a, ...b]);
+			const clientes = await Promise.all([usuarios, visitas]).then(([a, b]) => [...a, ...b]);
 
 			// Obtiene la fidelidad de los clientes
 			const fidelidades = procesos.fidelidades(clientes);

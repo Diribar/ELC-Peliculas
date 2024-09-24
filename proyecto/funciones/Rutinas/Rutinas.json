@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 23/sep",
-	"HoraUTC": "12:52",
+	"FechaUTC": "Mar. 24/sep",
+	"HoraUTC": "14:16",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 23/sep",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"21-sep-24": {"leyenda": "Hoy recordamos a san Mateo apóstol", "entidad": "personajes", "id": 222},
 		"22-sep-24": {},
 		"23-sep-24": {"leyenda": "Hoy recordamos al padre Pío de Pietrelcina, santo", "entidad": "personajes", "id": 104},
 		"24-sep-24": {},
-		"25-sep-24": {}
+		"25-sep-24": {},
+		"26-sep-24": {}
 	}
 }

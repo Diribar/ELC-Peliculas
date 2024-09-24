@@ -983,25 +983,6 @@ module.exports = {
 		const usuario = await baseDeDatos.obtienePorCondicion("usuarios", {email}, include);
 		return usuario;
 	},
-	obtieneCamposNecesarios: (usuario) => {
-		// Variables
-		const camposNecesarios = [
-			...["id", "cliente_id"], // identificación
-			...["versionElc", "diasSinCartelBenefs", "rolUsuario"], // para mostrar carteles
-			...["diasNaveg", "visitaCreadaEn"], // para calcular la antigüedad
-			"fechaUltNaveg", // para detectar un nuevo día de actividad
-		];
-
-		// Obtiene los datos para la variable cliente
-		let cliente = {};
-		for (let campo of camposNecesarios) cliente[campo] = usuario[campo];
-
-		// Adecua el campo 'visitaCreadaEn'
-		cliente.visitaCreadaEn = cliente.visitaCreadaEn.toISOString().slice(0, 10);
-
-		// Fin
-		return cliente;
-	},
 
 	// Varias
 	letras: {
