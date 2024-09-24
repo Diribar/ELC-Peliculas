@@ -988,7 +988,7 @@ module.exports = {
 		const camposNecesarios = [
 			...["id", "cliente_id"], // identificación
 			...["versionElc", "diasSinCartelBenefs", "rolUsuario"], // para mostrar carteles
-			...["diasNaveg", "visitaCreadaEn"], // para calcular la antigüedad
+			...["diasNaveg", "visitaCreadaEn"], // para 'navegsPorDia'
 			"fechaUltNaveg", // para detectar un nuevo día de actividad
 		];
 
