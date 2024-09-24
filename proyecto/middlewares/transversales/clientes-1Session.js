@@ -28,8 +28,8 @@ module.exports = async (req, res, next) => {
 
 	// Cliente - 1. Usuario logueado: lo obtiene del usuario
 	if (usuario && (!cliente || usuario.cliente_id != cliente.cliente_id)) {
-		// Obtiene el cliente y eventualmente
-		cliente = comp.obtieneCamposNecesarios(usuario);
+		// Obtiene el cliente
+		cliente = obtieneCamposNecesarios(usuario);
 
 		// Si corresponde, actualiza la cookie
 		const {cliente_id} = cliente;
@@ -46,7 +46,7 @@ module.exports = async (req, res, next) => {
 		let tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
 		cliente = await baseDeDatos
 			.obtienePorCondicion(tabla, {cliente_id}, "rolUsuario")
-			.then((n) => (n ? comp.obtieneCamposNecesarios(n) : null));
+			.then((n) => (n ? obtieneCamposNecesarios(n) : null));
 
 		// Si el cliente no existe, elimina la cookie
 		if (!cliente) res.clearCookie("cliente_id");
@@ -66,7 +66,7 @@ module.exports = async (req, res, next) => {
 			// Acciones si el cliente existe
 			if (cliente) {
 				// Descarta los campos innecesarios
-				cliente = comp.obtieneCamposNecesarios(cliente);
+				cliente = obtieneCamposNecesarios(cliente);
 
 				// Actualiza el cliente con la 'fechaUltNaveg'
 				const fechaBD = cliente.fechaUltNaveg;
@@ -80,7 +80,7 @@ module.exports = async (req, res, next) => {
 			// Crea y obtiene el cliente
 			const datos = {versionElc: "1.10", mostrarCartelBienvenida: false, fechaUltNaveg: fechaCookie};
 			cliente = await baseDeDatos.agregaRegistro("visitas", datos);
-			cliente = await baseDeDatos.obtienePorId("visitas", cliente.id, "rolUsuario").then((n) => comp.obtieneCamposNecesarios(n));
+			cliente = await baseDeDatos.obtienePorId("visitas", cliente.id, "rolUsuario").then((n) => obtieneCamposNecesarios(n));
 
 			// Actualiza el cliente con el 'cliente_id'
 			cliente_id = "V" + String(cliente.id).padStart(10, "0");
@@ -97,7 +97,7 @@ module.exports = async (req, res, next) => {
 	if (!cliente) {
 		// Crea el cliente
 		cliente = await baseDeDatos.agregaRegistro("visitas", {versionElc});
-		cliente = await baseDeDatos.obtienePorId("visitas", cliente.id, "rolUsuario").then((n) => comp.obtieneCamposNecesarios(n));
+		cliente = await baseDeDatos.obtienePorId("visitas", cliente.id, "rolUsuario").then((n) => obtieneCamposNecesarios(n));
 
 		// Crea el cliente_id y lo actualiza en la BD
 		const cliente_id = "V" + String(cliente.id).padStart(10, "0");
@@ -122,3 +122,22 @@ module.exports = async (req, res, next) => {
 	return next();
 };
 
+let obtieneCamposNecesarios = (usuario) => {
+	// Variables
+	const camposNecesarios = [
+		...["id", "cliente_id"], // identificación
+		...["versionElc", "diasSinCartelBenefs", "rolUsuario"], // para mostrar carteles
+		...["diasNaveg", "visitaCreadaEn"], // para 'navegsPorDia'
+		"fechaUltNaveg", // para detectar un nuevo día de actividad
+	];
+
+	// Obtiene los datos para la variable cliente
+	let cliente = {};
+	for (let campo of camposNecesarios) cliente[campo] = usuario[campo];
+
+	// Adecua el campo 'visitaCreadaEn'
+	cliente.visitaCreadaEn = cliente.visitaCreadaEn.toISOString().slice(0, 10);
+
+	// Fin
+	return cliente;
+};
