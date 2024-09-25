@@ -381,9 +381,6 @@ module.exports = {
 			autofocus: true,
 		}),
 	},
-
-	// Varios
-	tablasSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
 };
 
 let regsRCLV = async (usuario_id) => {
