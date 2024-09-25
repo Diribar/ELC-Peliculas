@@ -256,7 +256,7 @@ let opcsLeyNombrePers = {
 		// Trabajo sobre 'canon'
 		if (canon) {
 			const primerNombre = nombre.split(" ")[0];
-			if (canon == "santo" && !variables.prefijosSanto.includes(primerNombre)) canon = "san"; // si corresponde, lo conmvierte en 'san'
+			if (canon == "santo" && !prefijosSanto.includes(primerNombre)) canon = "san"; // si corresponde, lo conmvierte en 'san'
 			if (canon_id == "ST") canon = "a " + canon;
 			else canon = (genero_id == "MS" ? "al" : "a " + genero.loLa) + " " + canon; // le agrega el artículo antes
 			canon += " ";
