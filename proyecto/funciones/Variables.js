@@ -349,17 +349,6 @@ module.exports = {
 		];
 	},
 
-	// Mensajes
-	ayudaLinks: {
-		parrafo: "<em>Color de los bordes (simil semáforo):</em>",
-		mensajes: [
-			"<i class='" + iconos.faSolid + " fa-circle enCast'></i> hablada en <b>castellano</b>",
-			"<i class='" + iconos.faSolid + " fa-circle subtCast'></i> <b>subtitulos</b> en castellano",
-			"<i class='" + iconos.faSolid + " fa-circle otroIdioma'></i> hablada en <b>otro</b> idioma",
-			"<i class='" + iconos.faSolid + " fa-circle elegi'></i> <b>elegí</b> el idioma",
-		],
-	},
-
 	// Links a vistas
 	vistaInicio: {clase: iconos.inicio, link: "/", titulo: "Ir a 'Inicio'"},
 	vistaAnterior: (url) => ({clase: iconos.izquierda, link: url ? url : "/", titulo: "Volver a la vista anterior"}),
@@ -394,27 +383,6 @@ module.exports = {
 	},
 
 	// Varios
-	origenes: [
-		// Productos
-		{codigo: "PDA", url: "/producto/agregar/datos-adicionales"},
-		{codigo: "PDT", url: "/producto/detalle", cola: true},
-		{codigo: "PED", url: "/producto/edicion", cola: true},
-		{codigo: "RPA", url: "/revision/producto/alta", cola: true},
-		{url: "/producto/calificar", cola: true},
-		{url: "/producto/historial", cola: true},
-		{url: "/revision/producto/edicion", cola: true},
-		// RCLVs
-		{codigo: "RDT", url: "/rclv/detalle", cola: true},
-		{codigo: "RRA", url: "/revision/rclv/alta", cola: true},
-		// Links
-		{url: "/links/abm", cola: true},
-		{codigo: "RL", url: "/revision/links", cola: true},
-		// Tableros
-		{codigo: "TE", url: "/revision/tablero-de-entidades"},
-		{codigo: "TM", url: "/revision/tablero-de-mantenimiento"},
-		{codigo: "TU", url: "/revision/usuarios/tablero-de-usuarios"},
-		{codigo: "CN", url: "/consultas"},
-	],
 	tablasSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
 	colores: {
 		azul: ["#8BC1F7", "#519DE9", "#06C", "#004B95", "#002F5D"], // 1. Blue
