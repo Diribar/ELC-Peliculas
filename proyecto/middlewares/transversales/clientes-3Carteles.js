@@ -6,9 +6,10 @@ module.exports = async (req, res, next) => {
 	if (req.originalUrl.includes("/api/")) return next();
 
 	// Variables
-	const {cliente} = req.session;
+	const {usuario, cliente} = req.session;
 	const {cliente_id} = cliente;
-	const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
+	const esUsuario = cliente_id.startsWith("U");
+	const tabla = esUsuario ? "usuarios" : "visitas";
 	let informacion;
 
 	// Cartel de bienvenida
@@ -63,6 +64,49 @@ module.exports = async (req, res, next) => {
 	}
 
 	// Cartel de beneficios
+	if (!informacion && cliente.diasSinCartelBenefs >= 10) {
+		// Cliente sin login
+		if (!usuario) {
+			// Opciones si es un usuario
+			if (esUsuario)
+				informacion = {
+					iconos: [
+						{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
+						{clase: "fa-circle-user amarillo", link: "/usuarios/login", titulo: "Ir a login"},
+					],
+					titulo: "Beneficios de loguearte",
+				};
+			// Opciones si es una visita
+			else
+				informacion = {
+					iconos: [
+						{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
+						{clase: "fa-user-plus amarillo", link: "/usuarios/alta-mail", titulo: "Crear un usuario"},
+					],
+					titulo: "Beneficios de crear un usuario",
+				};
+			informacion.mensajes = [
+				"Marcar tus preferencias por película (la quiero ver, ya la vi, no me interesa)",
+				"Ver mis últimas películas consultadas",
+				"Tener tus mismas preferencias en distintos dispositivos (ej: mobil y laptop)",
+			];
+		}
+		// Usuario sin completar
+		else
+			informacion = {
+				mensajes: mensajeAptoInput,
+				iconos: [
+					{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
+					{clase: "fa-circle-user amarillo", link: "/usuarios/perennes", titulo: "Obtener el rol 'Apto Inputs'"},
+				],
+				titulo: "Beneficios del rol 'Apto Input'",
+			};
+		informacion.trabajando = true;
+
+		// Actualiza la tabla usuario y la variable usuario
+		baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {diasSinCartelBeneficios: 0});
+		cliente.diasSinCartelBeneficios = 0;
+	}
 
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
