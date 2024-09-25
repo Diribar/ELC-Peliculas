@@ -11,6 +11,7 @@ module.exports = async (req, res, next) => {
 		mensajes: ["Por favor confirmanos que sos una persona", "Elegí el ícono del pulgar para arriba"],
 		iconos: [{clase: iconos.xMark, titulo: "No confirmo"}, variables.vistaEntendido(req.session.urlActual)],
 		check: true,
+		titulo: "Verificación"
 	};
 
 	// Fin
