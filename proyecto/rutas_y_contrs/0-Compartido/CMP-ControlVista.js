@@ -12,7 +12,7 @@ module.exports = {
 		if (!origenCodigo && !origenUrl) return res.redirect("/");
 
 		// Rutina para encontrar el destino
-		for (let origen of variables.origenes)
+		for (let origen of origenDeUrls)
 			if ((origenCodigo && origenCodigo == origen.codigo) || (origenUrl && origenUrl == origen.url)) {
 				destino = origen.url;
 				if (origen.cola)
