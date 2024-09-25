@@ -18,7 +18,7 @@ module.exports = {
 	// RCLV
 	prefijosSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
 	idMinRclv: 10,
-	prioridadesRCLV: [
+	prioridadesRclv: [
 		{id: 1, nombre: "Menor"},
 		{id: 2, nombre: "Estándar"},
 		{id: 3, nombre: "Mayor"},
