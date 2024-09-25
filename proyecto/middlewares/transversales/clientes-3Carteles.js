@@ -18,10 +18,13 @@ module.exports = async (req, res, next) => {
 				"¡Bienvenido/a a nuestro sitio de Recomendación de Películas!",
 				"Intentamos reunir todas las películas con valores afines a la Fe Católica.",
 				"Queremos resolver el clásico problema de:<ul><li><em>No sé qué ver</em></li><li><em>Quiero ver una película que me deje algo bueno</em></li></ul>",
-				"Si registrás un usuario y te logueás, podrás acceder a más beneficios.",
 				"Usamos cookies para que tengas una mejor experiencia de usuario.",
+				"Con el ícono de la derecha podés crear un usuario, para acceder a más beneficios.",
 			],
-			iconos: [variables.vistaEntendido(req.session.urlActual)],
+			iconos: [
+				{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
+				{clase: "fa-user-plus amarillo", link: "/usuarios/alta-mail", titulo: "Crear un usuario"},
+			],
 			titulo: "Te damos la Bienvenida",
 			check: true,
 		};
@@ -62,10 +65,10 @@ module.exports = async (req, res, next) => {
 	// Cartel de beneficios
 
 	// Se asegura de que el cliente ya no figure como 'recienCreado'
-	// if (cliente.recienCreado) {
-	// 	baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {recienCreado: false});
-	// 	delete cliente.recienCreado;
-	// }
+	if (cliente.recienCreado) {
+		baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {recienCreado: false});
+		delete cliente.recienCreado;
+	}
 
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
