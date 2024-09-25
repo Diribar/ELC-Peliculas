@@ -19,8 +19,8 @@ module.exports = (req, res, next) => {
 
 	// Actualiza la tabla 'usuarios/visitas' y la variable 'cliente'
 	fechaUltNaveg = hoy;
-	diasSinCartelBeneficios++;
 	diasNaveg++;
+	if (!usuario) diasSinCartelBeneficios++;
 	const datos = {fechaUltNaveg, diasSinCartelBeneficios, diasNaveg};
 	cliente = {...cliente, ...datos};
 	baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, datos);
