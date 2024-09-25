@@ -120,7 +120,7 @@ let obtieneCamposNecesarios = (usuario) => {
 	// Variables
 	const camposNecesarios = [
 		...["id", "cliente_id"], // identificación
-		...["versionElc", "diasSinCartelBenefs", "mostrarCartelBienvenida"], // para mostrar carteles
+		...["mostrarCartelBienvenida", "versionElc", "diasSinCartelBenefs"], // para mostrar carteles
 		...["diasNaveg", "visitaCreadaEn"], // para 'navegsPorDia'
 		...["fechaUltNaveg", "recienCreado"], // para el 'contador de navegaciones'
 		"rolUsuario", // para mostrar carteles
