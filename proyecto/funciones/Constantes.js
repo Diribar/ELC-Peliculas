@@ -5,45 +5,30 @@ const unDia = unaHora * 24;
 const unaSemana = unDia * 7;
 const unAno = unDia * 365;
 
-const linkSemInicial= 1
-const linksSemsPrimRev= 4
-const linksSemsEstrRec= 5
-const linksSemsEstandar= 26
-
+const linkSemInicial = 1;
+const linksSemsPrimRev = 4;
+const linksSemsEstrRec = 5;
+const linksSemsEstandar = 26;
 
 module.exports = {
 	// Tiempo
 	rutinasDeInicio: Date.now(),
-	unaHora,
-	unDia,
-	unaSemana,
-	unAno,
+	...{unaHora, unDia, unaSemana, unAno},
 	diasSemana: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
 	hoy: new Date().toISOString().slice(0, 10),
-	primerLunesDelAno: null,
-	semanaUTC: null,
-	lunesDeEstaSemana: null,
-	fechaDelAnoHoy_id: null,
-	anoHoy: null,
+	...{primerLunesDelAno: null, semanaUTC: null, lunesDeEstaSemana: null, fechaDelAnoHoy_id: null, anoHoy: null},
 
 	// Links
-	linkSemInicial,
-	linksSemsPrimRev,
-	linksSemsEstrRec,
-	linksSemsEstandar,
+	...{linkSemInicial, linksSemsPrimRev, linksSemsEstrRec, linksSemsEstandar},
 	linksVU_primRev: unaSemana * linksSemsPrimRev,
 	linksVU_estrRec: unaSemana * linksSemsEstrRec,
 	linksVU_estandar: unaSemana * linksSemsEstandar,
-	sinLinks: 0,
-	linksTalVez: 1,
-	conLinks: 2,
-	linkAnoReciente: 2, // cantidad de años
+	...{sinLinks: 0, linksTalVez: 1, conLinks: 2},
+	linkAnoReciente: 2,
 	cantLinksVencPorSem: null,
 
 	// Usuario
-	maxIntentosCookies: 3, // cantidad que se tolera
-	maxIntentosBD: 3, // cantidad que se tolera
-	usAutom_id: 2, // usuario 'automático'
+	...{maxIntentosCookies: 3, maxIntentosBD: 3, usAutom_id: 2},
 
 	// Otras
 	tamMaxImagen: 1024000, // 1Mb
@@ -77,4 +62,10 @@ module.exports = {
 		agregar: "fa-circle-plus",
 		rotar: "fa-rotate-90",
 	},
+	asuntosContactanos: [
+		{descripcion: "Comentario sobre nuestro sitio", codigo: "sitio"},
+		{descripcion: "Comentario sobre una película", codigo: "producto"},
+		{descripcion: "Otro motivo", codigo: "varios"},
+	],
+
 };
