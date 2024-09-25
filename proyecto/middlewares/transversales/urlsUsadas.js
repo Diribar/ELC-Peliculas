@@ -73,15 +73,9 @@ module.exports = (req, res, next) => {
 let FN_rutaAceptada = (urlActual, urlAnterior) => {
 	// Variables
 	const rutasAceptadas = [
-		"/producto",
-		"/rclv",
-		"/links",
-		"/usuarios",
-		"/revision",
-		"/consultas",
-		"/institucional",
-		"/graficos",
-		"/correccion",
+		...["/producto", "/rclv", "/links", "/usuarios"],
+		...["/institucional", "/revision", "/consultas", "/graficos", "/correccion"],
+		...["/cookies", "/session"],
 	];
 	const ciertasRutas = ["/usuarios/garantiza-login-y-completo", "/usuarios/logout", "/api/"];
 

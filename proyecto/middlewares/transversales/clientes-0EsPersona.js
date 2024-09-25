@@ -3,7 +3,11 @@
 
 module.exports = async (req, res, next) => {
 	// Si corresponde, interrumpe la función
-	if ((req.session && (req.session.cliente || req.session.esPersona)) || (req.cookies && req.cookies.cliente_id)) return next();
+	if (
+		(req.session && (req.session.cliente || req.session.esPersona)) ||
+		(req.cookies && (req.cookies.cliente_id || req.cookies.email))
+	)
+		return next();
 
 	// Prepara la información
 	req.session.esPersona = true;
@@ -11,6 +15,7 @@ module.exports = async (req, res, next) => {
 		mensajes: ["Por favor confirmanos que sos una persona", "Elegí el ícono del pulgar para arriba"],
 		iconos: [{clase: iconos.xMark, titulo: "No confirmo"}, variables.vistaEntendido(req.session.urlActual)],
 		check: true,
+		titulo: "Verificación",
 	};
 
 	// Fin

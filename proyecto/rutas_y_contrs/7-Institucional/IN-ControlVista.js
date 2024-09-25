@@ -55,7 +55,7 @@ module.exports = {
 			const {asunto, comentario} = req.body;
 			const usuario = req.session.usuario;
 			const emailELC = "sp2015w@gmail.com";
-			const asuntoMail = variables.asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
+			const asuntoMail = asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
 			let mailEnviado, destino, datos;
 
 			// Envía el mail a ELC
@@ -90,7 +90,7 @@ module.exports = {
 			const direccion = req.session.urlFueraDeContactanos;
 			if (!req.session.contactanos) return res.redirect(direccion);
 			const {asunto, comentario} = req.session.contactanos;
-			const asuntoMail = variables.asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
+			const asuntoMail = asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
 			delete req.session.contactanos;
 
 			// Información

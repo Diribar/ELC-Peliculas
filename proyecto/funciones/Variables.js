@@ -55,11 +55,6 @@ module.exports = {
 		},
 		"derechos-de-autor": {titulo: "ELC | Derechos de Autor", codigo: "derechosAutor", icono: "fa-copyright"},
 	},
-	asuntosContactanos: [
-		{descripcion: "Comentario sobre nuestro sitio", codigo: "sitio"},
-		{descripcion: "Comentario sobre una película", codigo: "producto"},
-		{descripcion: "Otro motivo", codigo: "varios"},
-	],
 
 	// Todos
 	entidades: {
