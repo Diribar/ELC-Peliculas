@@ -13,7 +13,6 @@ window.addEventListener("load", async () => {
 
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
-		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 
 		// Específicos de Palabras Clave
@@ -31,7 +30,6 @@ window.addEventListener("load", async () => {
 		entidad: document.querySelector("#dataEntry #entidad").innerHTML,
 		agregarAvatar: DOM.imgAvatar.src.includes("imagenes/Avatar"),
 		datosUrl: null,
-		validaDatos: "/producto/agregar/api/valida/" + paso + "/?",
 	};
 	if (DOM.paisesSelect) {
 		DOM.paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
@@ -72,7 +70,7 @@ window.addEventListener("load", async () => {
 		},
 		averiguaMuestraLosErrores: async () => {
 			// Obtiene los errores
-			let errores = await fetch(v.validaDatos + v.datosUrl).then((n) => n.json());
+			let errores = await fetch(validaDatos + v.datosUrl).then((n) => n.json());
 
 			// Acciones en función de si hay errores o no
 			v.campos.forEach((campo, indice) => {
@@ -80,15 +78,9 @@ window.addEventListener("load", async () => {
 				DOM.mensajesError[indice].innerHTML = errores[campo];
 
 				// Acciones si hay mensaje de error
-				if (errores[campo]) {
-					DOM.iconosOK[indice].classList.add("ocultar");
-					DOM.iconosError[indice].classList.remove("ocultar");
-				}
-				// Acciones si no hay mensaje de error
-				else {
-					DOM.iconosOK[indice].classList.remove("ocultar");
-					DOM.iconosError[indice].classList.add("ocultar");
-				}
+				errores[campo]
+					? DOM.iconosError[indice].classList.remove("ocultar")
+					: DOM.iconosError[indice].classList.add("ocultar");
 			});
 
 			// Fin
@@ -96,9 +88,9 @@ window.addEventListener("load", async () => {
 		},
 		actualizaBotonSubmit: () => {
 			// Detecta la cantidad de 'errores' ocultos
-			let hayErrores = Array.from(DOM.iconosOK)
+			let hayErrores = Array.from(DOM.iconosError)
 				.map((n) => n.className)
-				.some((n) => n.includes("ocultar"));
+				.some((n) => !n.includes("ocultar"));
 			// Consecuencias
 			hayErrores ? DOM.submit.classList.add("inactivo") : DOM.submit.classList.remove("inactivo");
 		},
@@ -175,10 +167,10 @@ window.addEventListener("load", async () => {
 	DOM.form.addEventListener("submit", async (e) => FN.submitForm(e));
 	DOM.submit.addEventListener("click", async (e) => FN.submitForm(e));
 	DOM.submit.addEventListener("keydown", async (e) => {
-		if (e.key == "Enter" || e.key == "Space") FN.submitForm(e);
+		if (e.key == "Enter") FN.submitForm(e);
 	});
 });
 
 // Variables
-let url = location.pathname;
-let paso = url.slice(url.lastIndexOf("/") + 1);
+const paso = pathname.slice(pathname.lastIndexOf("/") + 1);
+const validaDatos = "/producto/agregar/api/valida/" + paso + "/?";

@@ -32,22 +32,7 @@ module.exports = async (req, res, next) => {
 			res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
 	}
 
-	// Cliente - 2. Visita con cookie 'cliente_id': lo obtiene de esa cookie
-	if (!cliente && req.cookies && req.cookies.cliente_id) {
-		// Obtiene el cliente_id
-		let {cliente_id} = req.cookies;
-
-		// Obtiene el cliente
-		let tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
-		cliente = await baseDeDatos
-			.obtienePorCondicion(tabla, {cliente_id}, "rolUsuario")
-			.then((n) => (n ? obtieneCamposNecesarios(n) : null));
-
-		// Si el cliente no existe, elimina la cookie
-		if (!cliente) res.clearCookie("cliente_id");
-	}
-
-	// Cliente - 3. Visita con cookie 'visita': lo obtiene de esa cookie, la borra y crea la cookie 'cliente'
+	// Cliente - 2. Visita con cookie 'visita': lo obtiene de esa cookie, la borra y crea la cookie 'cliente'
 	if (!cliente && req.cookies && req.cookies.visita && req.cookies.visita.id) {
 		// Obtiene el cliente_id
 		let cliente_id = req.cookies.visita.id;
@@ -88,6 +73,21 @@ module.exports = async (req, res, next) => {
 		res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
 	}
 
+	// Cliente - 3. Visita con cookie 'cliente_id': lo obtiene de esa cookie
+	if (!cliente && req.cookies && req.cookies.cliente_id) {
+		// Obtiene el cliente_id
+		let {cliente_id} = req.cookies;
+
+		// Obtiene el cliente
+		let tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
+		cliente = await baseDeDatos
+			.obtienePorCondicion(tabla, {cliente_id}, "rolUsuario")
+			.then((n) => (n ? obtieneCamposNecesarios(n) : null));
+
+		// Si el cliente no existe, elimina la cookie
+		if (!cliente) res.clearCookie("cliente_id");
+	}
+
 	// Cliente - 4. Primera visita: lo crea
 	if (!cliente) {
 		// Crea el cliente
@@ -98,7 +98,7 @@ module.exports = async (req, res, next) => {
 		const cliente_id = "V" + String(cliente.id).padStart(10, "0");
 		baseDeDatos.actualizaPorId("visitas", cliente.id, {cliente_id});
 
-		// Crea la cooke
+		// Crea la cookie
 		res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
 
 		// Actualiza variables

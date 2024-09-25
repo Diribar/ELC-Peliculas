@@ -1,7 +1,7 @@
 // Revisa si corresponde actualizar el contador (no se usa con apis)
 "use strict";
 
-module.exports = async (req, res, next) => {
+module.exports = (req, res, next) => {
 	// Si corresponde, interrumpe la función
 	if (req.originalUrl.includes("/api/")) return next();
 
@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
 	const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
 
 	// Si corresponde, interrumpe la función
-	if (!req.session.clienteRecienCreado && fechaUltNaveg == hoy) return next();
+	if (!req.session.clienteRecienCreado || fechaUltNaveg == hoy) return next();
 
 	// Actualiza 'fechaUltNaveg' en la tabla 'usuarios/visitas' y en la variable 'cliente'
 	baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});

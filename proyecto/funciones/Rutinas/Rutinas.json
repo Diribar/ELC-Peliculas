@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 24/sep",
-	"HoraUTC": "14:16",
+	"FechaUTC": "Mié. 25/sep",
+	"HoraUTC": "9:11",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 23/sep",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"22-sep-24": {},
 		"23-sep-24": {"leyenda": "Hoy recordamos al padre Pío de Pietrelcina, santo", "entidad": "personajes", "id": 104},
 		"24-sep-24": {},
 		"25-sep-24": {},
-		"26-sep-24": {}
+		"26-sep-24": {},
+		"27-sep-24": {"leyenda": "Hoy recordamos a san Vicente de Paul", "entidad": "personajes", "id": 103}
 	}
 }
