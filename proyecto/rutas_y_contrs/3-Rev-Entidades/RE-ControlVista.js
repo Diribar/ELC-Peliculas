@@ -579,7 +579,7 @@ module.exports = {
 			...{tema, codigo, titulo, ayudasTitulo, origen},
 			...{entidad, id, registro: producto, prodOrig: producto, avatar, usuario_id: revId, familia: "producto"},
 			...{links, linksProvs, linksTipos, motivos},
-			...{camposARevisar, calidades: variables.calidades},
+			...{camposARevisar, calidadesDeLink},
 			...{imgDerPers, cartelGenerico: true, linkSigProd},
 		});
 	},
