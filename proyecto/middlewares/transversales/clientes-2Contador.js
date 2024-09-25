@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
 	const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
 
 	// Si no está recién creado y la fecha es igual a hoy, interrumpe la función
-	if (!req.session.clienteRecienCreado && fechaUltNaveg == hoy) return next();
+	if (!cliente.recienCreado && fechaUltNaveg == hoy) return next();
 
 	// Actualiza 'fechaUltNaveg' en la tabla 'usuarios/visitas' y en la variable 'cliente'
 	baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
@@ -20,6 +20,12 @@ module.exports = (req, res, next) => {
 	// Contador de clientes
 	const usuario_id = usuario ? usuario.id : null;
 	contadorDeClientes(usuario_id, cliente);
+
+	// Se asegura de que el cliente ya no figure como 'recienCreado'
+	if (cliente.recienCreado) {
+		baseDeDatos.actualizaPorId(tabla, id, {recienCreado: false});
+		delete cliente.recienCreado
+	}
 
 	// Actualiza cookies
 	if (usuario) res.cookie("email", usuario.email, {maxAge: unDia * 30});
@@ -31,7 +37,6 @@ module.exports = (req, res, next) => {
 		req.session.usuario = usuario;
 		res.locals.usuario = usuario;
 	}
-	if (req.session.clienteRecienCreado) delete req.session.clienteRecienCreado;
 
 	// Fin
 	return next();
