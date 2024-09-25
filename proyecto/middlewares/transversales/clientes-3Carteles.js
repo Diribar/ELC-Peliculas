@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
 	let informacion;
 
 	// Cartel de bienvenida
-	if (!informacion && cliente.mostrarCartelBienvenida) {
+	if (!informacion && cliente.recienCreado) {
 		informacion = {
 			mensajes: [
 				"¡Bienvenido/a a nuestro sitio de Recomendación de Películas!",
@@ -30,8 +30,8 @@ module.exports = async (req, res, next) => {
 		};
 
 		// Actualiza la tabla usuario y la variable usuario
-		baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {mostrarCartelBienvenida: false});
-		cliente.mostrarCartelBienvenida = false;
+		baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {recienCreado: false});
+		cliente.recienCreado = false;
 	}
 
 	// Cartel de novedades
@@ -63,12 +63,6 @@ module.exports = async (req, res, next) => {
 	}
 
 	// Cartel de beneficios
-
-	// Se asegura de que el cliente ya no figure como 'recienCreado'
-	if (cliente.recienCreado) {
-		baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {recienCreado: false});
-		delete cliente.recienCreado;
-	}
 
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});

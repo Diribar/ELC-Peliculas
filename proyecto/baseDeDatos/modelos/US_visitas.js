@@ -13,7 +13,6 @@ module.exports = (sequelize, dt) => {
 		visitaCreadaEn: {type: dt.DATE}, // para la estadística
 
 		// Carteles
-		mostrarCartelBienvenida: {type: dt.BOOLEAN}, // default 'true '
 		recienCreado: {type: dt.BOOLEAN}, // default 'true '
 	};
 	const config = {
