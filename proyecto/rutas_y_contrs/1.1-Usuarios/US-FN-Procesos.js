@@ -84,7 +84,7 @@ module.exports = {
 				{
 					clase: iconos.derecha,
 					link: "/usuarios/perennes",
-					titulo: "Obtener el rol 'Apto Inputs'",
+					titulo: "Obtener el rol 'Apto Input'",
 					autofocus: true,
 				},
 			],

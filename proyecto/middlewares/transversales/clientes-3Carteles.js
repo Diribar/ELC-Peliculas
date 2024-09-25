@@ -97,7 +97,7 @@ module.exports = async (req, res, next) => {
 				mensajes: mensajeAptoInput,
 				iconos: [
 					{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
-					{clase: "fa-circle-user amarillo", link: "/usuarios/perennes", titulo: "Obtener el rol 'Apto Inputs'"},
+					{clase: "fa-circle-user amarillo", link: "/usuarios/perennes", titulo: "Obtener el rol 'Apto Input'"},
 				],
 				titulo: "Beneficios del rol 'Apto Input'",
 			};
