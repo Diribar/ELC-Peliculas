@@ -73,7 +73,7 @@ main .cartelCentro {
 
 		/* Íconos especiales */
 		:where(.fa-house, .fa-spell-check) {color: var(--azul-oscuro); background: snow; border: 1px solid snow;}
-		:where(.fa-circle-info, .fa-thumbs-up, .fa-pen) {color: var(--amarillo-oscuro);}
+		:where(.fa-circle-info, .fa-thumbs-up, .fa-pen, .amarillo) {color: var(--amarillo-oscuro);}
 	}
 }
 

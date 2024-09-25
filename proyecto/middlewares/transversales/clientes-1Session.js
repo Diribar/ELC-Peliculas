@@ -58,7 +58,7 @@ module.exports = async (req, res, next) => {
 		// Crea el cliente
 		else {
 			// Crea y obtiene el cliente
-			const datos = {versionElc: "1.10", mostrarCartelBienvenida: false, fechaUltNaveg: fechaCookie};
+			const datos = {versionElc: "1.10", recienCreado: false, fechaUltNaveg: fechaCookie};
 			cliente = await baseDeDatos.agregaRegistro("visitas", datos);
 			cliente = await baseDeDatos.obtienePorId("visitas", cliente.id, "rolUsuario").then((n) => obtieneCamposNecesarios(n));
 
@@ -120,9 +120,9 @@ let obtieneCamposNecesarios = (usuario) => {
 	// Variables
 	const camposNecesarios = [
 		...["id", "cliente_id"], // identificación
-		...["versionElc", "diasSinCartelBenefs"], // para mostrar carteles
-		...["diasNaveg", "visitaCreadaEn"], // para 'navegsPorDia'
-		...["fechaUltNaveg","recienCreado"], // para el 'contador de navegaciones'
+		...["recienCreado", "fechaUltNaveg"], // para el 'contador de navegaciones'
+		...["diasNaveg", "visitaCreadaEn"], // para la tabla 'navegsPorDia'
+		...["recienCreado", "versionElc", "diasSinCartelBenefs"], // para mostrar carteles
 		"rolUsuario", // para mostrar carteles
 	];
 

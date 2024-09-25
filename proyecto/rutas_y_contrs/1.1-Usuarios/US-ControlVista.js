@@ -12,7 +12,7 @@ module.exports = {
 		const codigo = ruta.slice(1) == "alta-mail" ? "altaMail" : "olvidoContr";
 		const altaMail = codigo == "altaMail";
 		const olvidoContr = codigo == "olvidoContr";
-		const titulo = altaMail ? "Alta de Usuario - Mail" : olvidoContr ? "Olvido de Contraseña" : "";
+		const titulo = altaMail ? "Creación de Usuario - Mail" : olvidoContr ? "Olvido de Contraseña" : "";
 		const datosGrales = altaMail ? req.session.altaMail : olvidoContr ? req.session.olvidoContr : {};
 
 		// Info para la vista
@@ -43,7 +43,7 @@ module.exports = {
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo: "Alta de Usuario - Datos Editables"},
+				...{tema, codigo, titulo: "Creación de Usuario - Datos Editables"},
 				...{dataEntry, errores, avatar, hablaHispana, hablaNoHispana, generos},
 				urlSalir: req.session.urlSinLogin,
 			});
@@ -120,7 +120,7 @@ module.exports = {
 			// Vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, dataEntry, errores, hablaHispana, hablaNoHispana},
-				titulo: "Alta de Usuario - Datos Perennes",
+				titulo: "Creación de Usuario - Datos Perennes",
 				urlSalir: req.session.urlSinLogin,
 			});
 		},
@@ -358,7 +358,7 @@ module.exports = {
 					"Con el ícono de abajo regresás a la vista anterior.",
 				],
 				iconos: [{...variables.vistaEntendido("/usuarios/alta-mail"), titulo: "Entendido e ir a la vista anterior"}],
-				titulo: altaMail ? "Alta de Usuario fallida" : olvidoContr ? "Actualización de Contraseña fallida" : "",
+				titulo: altaMail ? "Creación de Usuario - Falla" : olvidoContr ? "Actualización de Contraseña fallida" : "",
 			};
 
 			// Vista

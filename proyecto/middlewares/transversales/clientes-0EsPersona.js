@@ -13,7 +13,10 @@ module.exports = async (req, res, next) => {
 	req.session.esPersona = true;
 	const informacion = {
 		mensajes: ["Por favor confirmanos que sos una persona", "Elegí el ícono del pulgar para arriba"],
-		iconos: [{clase: iconos.xMark, titulo: "No confirmo"}, variables.vistaEntendido(req.session.urlActual)],
+		iconos: [
+			{clase: iconos.xMark, titulo: "No confirmo"},
+			{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
+		],
 		check: true,
 		titulo: "Verificación",
 	};

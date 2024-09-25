@@ -12,9 +12,30 @@ module.exports = async (req, res, next) => {
 	let informacion;
 
 	// Cartel de bienvenida
+	if (!informacion && cliente.recienCreado) {
+		informacion = {
+			mensajes: [
+				"¡Bienvenido/a a nuestro sitio de Recomendación de Películas!",
+				"Intentamos reunir todas las películas con valores afines a la Fe Católica.",
+				"Queremos resolver el clásico problema de:<ul><li><em>No sé qué ver</em></li><li><em>Quiero ver una película que me deje algo bueno</em></li></ul>",
+				"Usamos cookies para que tengas una mejor experiencia de usuario.",
+				"Con el ícono de la derecha podés crear un usuario, para acceder a más beneficios.",
+			],
+			iconos: [
+				{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
+				{clase: "fa-user-plus amarillo", link: "/usuarios/alta-mail", titulo: "Crear un usuario"},
+			],
+			titulo: "Te damos la Bienvenida",
+			check: true,
+		};
+
+		// Actualiza la tabla usuario y la variable usuario
+		baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {recienCreado: false});
+		cliente.recienCreado = false;
+	}
 
 	// Cartel de novedades
-	if (!informacion && cliente && cliente.versionElc != versionElc) {
+	if (!informacion && cliente.versionElc != versionElc) {
 		// Variables
 		const permisos = ["permInputs", "autTablEnts", "revisorPERL", "revisorLinks", "revisorEnts", "revisorUs"];
 		let novedades = novedadesELC.filter((n) => n.versionElc > cliente.versionElc && n.versionElc <= versionElc);
@@ -41,15 +62,7 @@ module.exports = async (req, res, next) => {
 		cliente.versionElc = versionElc;
 	}
 
-	// Cartel de cookies
-
 	// Cartel de beneficios
-
-	// Se asegura de que el cliente ya no figure como 'recienCreado'
-	// if (cliente.recienCreado) {
-	// 	baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {recienCreado: false});
-	// 	delete cliente.recienCreado;
-	// }
 
 	// Fin
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
