@@ -1021,7 +1021,7 @@ module.exports = {
 				.replace(/[ÐĎĐ]/g, "D")
 				.replace(/[đď]/g, "d")
 				.replace(/[ÈÊËĒĔĖĘĚ]/g, "E")
-				.replace(/[èêëēĕėęěе]/g, "e")
+				.replace(/[èêëēĕėęě]/g, "e")
 				.replace(/[ĜĞĠĢ]/g, "G")
 				.replace(/[ĝğġģ]/g, "g")
 				.replace(/[ĦĤ]/g, "H")
@@ -1066,12 +1066,9 @@ module.exports = {
 				.replace(/–/g, "-")
 				.replace("[", "(")
 				.replace("]", ")")
-				.replace("Серrеn Tарmаw", "Cepren Tapmaw")
 				.replace(/[\t\n\r]/g, " ") // previene el uso de 'tab' y 'return'
 				.replace(/[  ]/g, " ") // previene el uso de espacios 'raros'
 				.replace(/ +/g, " "); // previene el uso de varios espacios
-				// Andrzej Chyra (Jerzy), Maja Ostaszewska (Anna), Artur Zmijewski (Andrzej), Danuta Stenka (General's Wife), Jan Englert (General), Magdalena Cielecka (Agnieszka), Agnieszka Glinska (School Director), Pawel Malaszynski (Pilot Lieutenant), Maja Komorowska (Professor's Wife), Wladyslaw Kowalski (Professor U. J.), Antoni Pawlicki (Tadeusz), Agnieszka Kawiorska (Ewa), Сергей Гармаш (Captain Popow), Joachim Paul Assbock (Müller), Waldemar Barwinski (Officer Samobójca)
-				// Andrzej Chyra (Jerzy), Maja Ostaszewska (Anna), Artur Zmijewski (Andrzej), Danuta Stenka (General's Wife), Jan Englert (General), Magdalena Cielecka (Agnieszka), Agnieszka Glinska (School Director), Pawel Malaszynski (Pilot Lieutenant), Maja Komorowska (Professor's Wife), Wladyslaw Kowalski (Professor U. J.), Antoni Pawlicki (Tadeusz), Agnieszka Kawiorska (Ewa), Сергеn Tарmаw (Captain Popow), Joachim Paul Assbock (Müller), Waldemar Barwinski (Officer Samobójca)
 		},
 		inicialMayus: (texto) => texto.slice(0, 1).toUpperCase() + texto.slice(1),
 		oa: (usuario) => (usuario.genero_id == "F" ? "a " : "o "),
