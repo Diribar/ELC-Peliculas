@@ -103,7 +103,6 @@ module.exports = async (req, res, next) => {
 
 		// Actualiza variables
 		cliente.cliente_id = cliente_id;
-		req.session.clienteRecienCreado = true;
 	}
 
 	// Actualiza usuario y cliente
@@ -123,7 +122,7 @@ let obtieneCamposNecesarios = (usuario) => {
 		...["id", "cliente_id"], // identificación
 		...["versionElc", "diasSinCartelBenefs"], // para mostrar carteles
 		...["diasNaveg", "visitaCreadaEn"], // para 'navegsPorDia'
-		"fechaUltNaveg", // para detectar un nuevo día de actividad
+		["fechaUltNaveg","recienCreado"], // para el 'contador de navegaciones'
 		"rolUsuario", // para mostrar carteles
 	];
 

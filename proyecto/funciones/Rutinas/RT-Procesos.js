@@ -884,7 +884,7 @@ let datosImgDerecha = (resultado) => {
 		imgDerecha = {
 			titulo: "ELC - Películas",
 			carpeta: "./publico/imagenes/Varios/",
-			nombreArchivo: "Institucional-Imagen.jpg",
+			nombreArchivo: "Institucional.jpg",
 		};
 
 	// Fin
