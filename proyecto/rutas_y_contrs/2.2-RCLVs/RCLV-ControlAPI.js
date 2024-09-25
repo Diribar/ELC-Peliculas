@@ -29,7 +29,7 @@ module.exports = {
 			.then((n) => n.map((m) => m.nombre));
 		return res.json(casos);
 	},
-	prefijos: (req, res) => res.json(variables.prefijos),
+	prefijos: (req, res) => res.json(prefijos),
 	obtieneLeyNombre: (req, res) => {
 		const opciones = procesos.altaEdicForm.opcsLeyNombre(req.query);
 		return res.json(opciones);
