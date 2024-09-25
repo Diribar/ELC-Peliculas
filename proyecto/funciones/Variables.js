@@ -41,21 +41,6 @@ const asocProds = ["pelicula", "coleccion", "capitulo"];
 const asocRclvs = ["personaje", "hecho", "tema", "evento", "epocaDelAno"];
 
 module.exports = {
-	// Institucional
-	vistasInstitucs: {
-		inicio: {titulo: "ELC | Películas con Valores", codigo: "inicio", icono: iconos.inicio, hr: true}, // 'hr' significa que pone una línea divisoria en el menú del header
-		"quienes-somos": {titulo: "ELC | Quiénes somos", codigo: "quienesSomos", icono: "fa-people-group"},
-		"mision-y-vision": {titulo: "ELC | Nuestra Misión y Visión", codigo: "misionVision", icono: "fa-heart", hr: true},
-		"en-que-consiste-este-sitio": {titulo: "ELC | En qué consiste este sitio", codigo: "enQueConsiste", icono: "fa-question"},
-		"nuestro-perfil-de-peliculas": {
-			titulo: "ELC | Nuestro Perfil de Películas",
-			codigo: "perfilPelis",
-			icono: "fa-trophy",
-			hr: true,
-		},
-		"derechos-de-autor": {titulo: "ELC | Derechos de Autor", codigo: "derechosAutor", icono: "fa-copyright"},
-	},
-
 	// Todos
 	entidades: {
 		// Productos y RCLVs
@@ -365,10 +350,6 @@ module.exports = {
 	},
 
 	// Mensajes
-	inputVacio: "Necesitamos que completes este campo",
-	selectVacio: "Necesitamos que elijas una opción",
-	radioVacio: "Necesitamos que elijas una opción",
-	rclvSinElegir: "Necesitamos que respondas alguna de las opciones",
 	ayudaLinks: {
 		parrafo: "<em>Color de los bordes (simil semáforo):</em>",
 		mensajes: [

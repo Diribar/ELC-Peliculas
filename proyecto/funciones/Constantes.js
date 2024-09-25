@@ -9,8 +9,33 @@ const linkSemInicial = 1;
 const linksSemsPrimRev = 4;
 const linksSemsEstrRec = 5;
 const linksSemsEstandar = 26;
+const iconos = {
+	...{faSolid: "fa-solid", inicio: "fa-house", ayuda: "fa-circle-question"}, // Uso general
+	...{triangulo: "fa-triangle-exclamation", entendido: "fa-thumbs-up"}, // Carteles
+	...{izquierda: "fa-circle-left", derecha: "fa-circle-right", check: "fa-circle-check", xMark: "fa-circle-xmark"}, // Formularios
+
+	// Ocasionales
+	...{agregar: "fa-circle-plus", calificar: "fa-chart-simple", eliminar: "fa-trash-can"},
+	...{edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
+	detalle: "fa-circle-info",
+};
 
 module.exports = {
+	// Institucional
+	vistasInstitucs: {
+		inicio: {titulo: "ELC | Películas con Valores", codigo: "inicio", icono: iconos.inicio, hr: true}, // 'hr' significa que pone una línea divisoria en el menú del header
+		"quienes-somos": {titulo: "ELC | Quiénes somos", codigo: "quienesSomos", icono: "fa-people-group"},
+		"mision-y-vision": {titulo: "ELC | Nuestra Misión y Visión", codigo: "misionVision", icono: "fa-heart", hr: true},
+		"en-que-consiste-este-sitio": {titulo: "ELC | En qué consiste este sitio", codigo: "enQueConsiste", icono: "fa-question"},
+		"nuestro-perfil-de-peliculas": {
+			titulo: "ELC | Nuestro Perfil de Películas",
+			codigo: "perfilPelis",
+			icono: "fa-trophy",
+			hr: true,
+		},
+		"derechos-de-autor": {titulo: "ELC | Derechos de Autor", codigo: "derechosAutor", icono: "fa-copyright"},
+	},
+
 	// Productos
 	dibujosAnimados: "Dibujos Animados",
 	documental: "Documental",
@@ -44,7 +69,7 @@ module.exports = {
 		{nombre: "Cuevana", url: "cuevana"},
 		{nombre: "Google Drive", url: "drive.google.com/"},
 	],
-	calidades: [240, 360, 480, 720, 1080],
+	calidadesDeLink: [240, 360, 480, 720, 1080],
 
 	// Usuario
 	...{maxIntentosCookies: 3, maxIntentosBD: 3, usAutom_id: 2},
@@ -62,32 +87,16 @@ module.exports = {
 	imgInstitucional: "/publico/imagenes/Varios/Institucional.jpg",
 	largoComentario: 150,
 	statusErrores: [],
-	iconos: {
-		// Uso general
-		faSolid: "fa-solid",
-		inicio: "fa-house",
-		ayuda: "fa-circle-question",
-
-		// Carteles / Formularios
-		izquierda: "fa-circle-left",
-		derecha: "fa-circle-right",
-		check: "fa-circle-check",
-		xMark: "fa-circle-xmark",
-		triangulo: "fa-triangle-exclamation",
-
-		// Ocasionales
-		entendido: "fa-thumbs-up",
-		edicion: "fa-pen",
-		calificar: "fa-chart-simple",
-		eliminar: "fa-trash-can",
-		detalle: "fa-circle-info",
-		edicionCambiada: "fa-arrow-right-long",
-		agregar: "fa-circle-plus",
-		rotar: "fa-rotate-90",
-	},
+	iconos,
 	asuntosContactanos: [
 		{descripcion: "Comentario sobre nuestro sitio", codigo: "sitio"},
 		{descripcion: "Comentario sobre una película", codigo: "producto"},
 		{descripcion: "Otro motivo", codigo: "varios"},
 	],
+
+	// Mensajes
+	inputVacio: "Necesitamos que completes este campo",
+	selectVacio: "Necesitamos que elijas una opción",
+	radioVacio: "Necesitamos que elijas una opción",
+	rclvSinElegir: "Necesitamos que respondas alguna de las opciones",
 };
