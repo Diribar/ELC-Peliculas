@@ -30,7 +30,7 @@ module.exports = async (req, res, next) => {
 		};
 
 		// Actualiza la tabla usuario y la variable usuario
-		baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {recienCreado: false});
+		baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {recienCreado: false});
 		cliente.recienCreado = false;
 	}
 

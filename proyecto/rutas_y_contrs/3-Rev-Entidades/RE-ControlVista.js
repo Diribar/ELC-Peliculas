@@ -273,7 +273,7 @@ module.exports = {
 			// 1. Actualiza el status de los capítulos
 			statusFinal_id == aprobado_id
 				? await validacsFM.capsAprobs(id)
-				: await baseDeDatos.actualizaTodosPorCondicion(
+				: await baseDeDatos.actualizaPorCondicion(
 						"capitulos",
 						{coleccion_id: id},
 						{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: usAutom_id}
@@ -301,7 +301,7 @@ module.exports = {
 
 		// CONSECUENCIAS - statusHistorial: si el registro 'inactivar_id' no tiene comentarios, lo elimina
 		const condicion = {entidad, entidad_id: id, statusFinal_id: inactivar_id, comentario: null};
-		baseDeDatos.eliminaTodosPorCondicion("statusHistorial", condicion);
+		baseDeDatos.eliminaPorCondicion("statusHistorial", condicion);
 
 		// CONSECUENCIAS - statusHistorial: Agrega un registro
 		let datosHist = {

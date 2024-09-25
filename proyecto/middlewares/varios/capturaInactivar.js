@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
 
 	// Inactiva el registro
 	const condicion = {entidad, entidad_id: id, capturadoPor_id};
-	await baseDeDatos.actualizaTodosPorCondicion("capturas", condicion, {activa: false});
+	await baseDeDatos.actualizaPorCondicion("capturas", condicion, {activa: false});
 
 	// Fin
 	return next();

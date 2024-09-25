@@ -149,7 +149,7 @@ module.exports = {
 				procesos.varios.eliminaSessionCookie(req, res);
 
 				// Si no es nuevo, elimina la información guardada
-				if (!cabecera.nuevo) await baseDeDatos.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id: id});
+				if (!cabecera.nuevo) await baseDeDatos.eliminaPorCondicion("consRegsPrefs", {cabecera_id: id});
 
 				// Guarda la nueva información
 				for (let prop in prefs) {
@@ -165,7 +165,7 @@ module.exports = {
 			const {cabecera_id} = req.query;
 
 			// Se eliminan los registros de campo de la configuración
-			await baseDeDatos.eliminaTodosPorCondicion("consRegsPrefs", {cabecera_id});
+			await baseDeDatos.eliminaPorCondicion("consRegsPrefs", {cabecera_id});
 
 			// Se elimina el registro de cabecera de la configuración
 			await baseDeDatos.eliminaPorId("consRegsCabecera", cabecera_id);

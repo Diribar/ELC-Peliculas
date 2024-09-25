@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
 	if (!cliente.recienCreado && fechaUltNaveg == hoy) return next();
 
 	// Actualiza 'fechaUltNaveg' en la tabla 'usuarios/visitas' y en la variable 'cliente'
-	baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
+	baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
 	cliente.fechaUltNaveg = hoy;
 
 	// Contador de clientes

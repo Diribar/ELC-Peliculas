@@ -231,7 +231,7 @@ module.exports = {
 
 			// Actualiza datos en la BD - tabla 'navegsDelDia' (await necesario para 'session')
 			await baseDeDatos
-				.actualizaTodosPorCondicion(
+				.actualizaPorCondicion(
 					"navegsDelDia",
 					{cliente_id, fecha: hoy}, // el 'cliente_id' puede diferir del 'usuario.cliente_id'
 					{usuario_id, cliente_id: usuario.cliente_id}

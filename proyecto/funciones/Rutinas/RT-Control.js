@@ -237,12 +237,12 @@ module.exports = {
 					const datos = {id, ...camposNulos, [campo_id]: producto.id, azar};
 
 					// Guarda los cambios
-					baseDeDatos.actualizaTodosPorCondicion("prodsComplem", {id}, datos); // actualiza el campo 'azar' en el registro
+					baseDeDatos.actualizaPorCondicion("prodsComplem", {id}, datos); // actualiza el campo 'azar' en el registro
 				}
 			}
 
 			// Elimina los sobrantes
-			baseDeDatos.eliminaTodosPorCondicion("prodsComplem", {id: {[Op.gt]: id}});
+			baseDeDatos.eliminaPorCondicion("prodsComplem", {id: {[Op.gt]: id}});
 
 			// Fin
 			return;
@@ -253,7 +253,7 @@ module.exports = {
 			const condicion = {capturadoEn: {[Op.lt]: haceDosHoras}};
 
 			// Actualiza la BD
-			baseDeDatos.eliminaTodosPorCondicion("capturas", condicion);
+			baseDeDatos.eliminaPorCondicion("capturas", condicion);
 
 			// Fin
 			return;
@@ -357,7 +357,7 @@ module.exports = {
 			}
 
 			// Elimina los 'navegsDelDia' anteriores
-			baseDeDatos.eliminaTodosPorCondicion("navegsDelDia", {fecha: {[Op.lt]: hoy}});
+			baseDeDatos.eliminaPorCondicion("navegsDelDia", {fecha: {[Op.lt]: hoy}});
 
 			// Fin
 			return;
@@ -392,7 +392,7 @@ module.exports = {
 			// Elimina usuarios antiguos que no confirmaron su contraseña
 			const fechaDeCorte = new Date(new Date().getTime() - unDia);
 			const condicion = {statusRegistro_id: mailPendValidar_id, fechaContrasena: {[Op.lt]: fechaDeCorte}};
-			await baseDeDatos.eliminaTodosPorCondicion("usuarios", condicion);
+			await baseDeDatos.eliminaPorCondicion("usuarios", condicion);
 
 			// Fin
 			return;
@@ -400,7 +400,7 @@ module.exports = {
 		eliminaLinksInactivos: async () => {
 			const fechaDeCorte = comp.fechaHora.nuevoHorario(-25);
 			const condicion = {statusRegistro_id: inactivo_id, statusSugeridoEn: {[Op.lt]: fechaDeCorte}};
-			await baseDeDatos.eliminaTodosPorCondicion("links", condicion);
+			await baseDeDatos.eliminaPorCondicion("links", condicion);
 			return;
 		},
 		ABM_noRevisores: async () => {
@@ -466,7 +466,7 @@ module.exports = {
 			paises.forEach((pais, i) => {
 				const cantidad = paisesID[pais.id] ? paisesID[pais.id] : 0;
 				paises[i].cantProds.cantidad = cantidad;
-				baseDeDatos.actualizaTodosPorCondicion("paisesCantProds", {pais_id: pais.id}, {cantidad});
+				baseDeDatos.actualizaPorCondicion("paisesCantProds", {pais_id: pais.id}, {cantidad});
 			});
 
 			// Fin
@@ -479,7 +479,7 @@ module.exports = {
 			// Links por proveedor
 			for (let linkProv of linksProvs.filter((n) => n.urlDistintivo)) {
 				const cantidad = linksTotales.filter((n) => n.url.startsWith(linkProv.urlDistintivo)).length;
-				baseDeDatos.actualizaTodosPorCondicion("linksProvsCantLinks", {link_id: linkProv.id}, {cantidad});
+				baseDeDatos.actualizaPorCondicion("linksProvsCantLinks", {link_id: linkProv.id}, {cantidad});
 			}
 
 			// Fin
@@ -591,7 +591,7 @@ module.exports = {
 					if (coleccion[rclv_id] > 10) {
 						const condicion = {coleccion_id: coleccion.id};
 						const datos = {[rclv_id]: 1};
-						baseDeDatos.actualizaTodosPorCondicion("capitulos", condicion, datos);
+						baseDeDatos.actualizaPorCondicion("capitulos", condicion, datos);
 					}
 
 			// Fin
@@ -605,7 +605,7 @@ module.exports = {
 			// Busca
 			for (let entidad of entidades) {
 				const ano = entidad == "personajes" ? "anoNacim" : "anoComienzo";
-				await baseDeDatos.actualizaTodosPorCondicion(entidad, {...condicion, [ano]: {[Op.ne]: null}}, {[ano]: null});
+				await baseDeDatos.actualizaPorCondicion(entidad, {...condicion, [ano]: {[Op.ne]: null}}, {[ano]: null});
 			}
 
 			// Fin
@@ -753,7 +753,7 @@ module.exports = {
 		},
 		eliminaRegsDelHistStatus: async () => {
 			const condicion = {statusOriginal_id: creadoAprob_id, statusFinal_id: aprobado_id};
-			await baseDeDatos.eliminaTodosPorCondicion("statusHistorial", condicion);
+			await baseDeDatos.eliminaPorCondicion("statusHistorial", condicion);
 			return;
 		},
 		idDeTablas: async () => {
@@ -817,14 +817,14 @@ const stoppersFeedbackParaUsers = (usuario) => {
 const obsoletas = {
 	actualizaCapEnCons: async () => {
 		// Colecciones
-		await baseDeDatos.actualizaTodosPorCondicion("colecciones", {TMDB_entidad: "collection"}, {capEnCons: true});
-		await baseDeDatos.actualizaTodosPorCondicion("colecciones", {TMDB_entidad: "tv"}, {capEnCons: false});
+		await baseDeDatos.actualizaPorCondicion("colecciones", {TMDB_entidad: "collection"}, {capEnCons: true});
+		await baseDeDatos.actualizaPorCondicion("colecciones", {TMDB_entidad: "tv"}, {capEnCons: false});
 
 		// Capítulos
 		const colecciones = await baseDeDatos.obtieneTodos("colecciones");
 		for (let coleccion of colecciones) {
 			const capEnCons = coleccion.TMDB_entidad == "collection" ? true : coleccion.TMDB_entidad == "tv" ? false : null;
-			baseDeDatos.actualizaTodosPorCondicion("capitulos", {coleccion_id: coleccion.id}, {capEnCons});
+			baseDeDatos.actualizaPorCondicion("capitulos", {coleccion_id: coleccion.id}, {capEnCons});
 		}
 
 		// Fin

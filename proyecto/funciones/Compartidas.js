@@ -708,7 +708,7 @@ module.exports = {
 
 			// Actualiza cada 'tipoDeLink' en la colección
 			baseDeDatos.actualizaPorId("colecciones", colID, {[tipoDeLink]: tieneLink});
-			baseDeDatos.actualizaTodosPorCondicion("capsSinLink", {coleccion_id: colID}, {[tipoDeLink]: capID});
+			baseDeDatos.actualizaPorCondicion("capsSinLink", {coleccion_id: colID}, {[tipoDeLink]: capID});
 		}
 
 		// Fin
@@ -919,7 +919,7 @@ module.exports = {
 			};
 
 			// Actualiza el status en los links
-			await baseDeDatos.actualizaTodosPorCondicion("links", condicion, novedades);
+			await baseDeDatos.actualizaPorCondicion("links", condicion, novedades);
 
 			// Fin
 			return;

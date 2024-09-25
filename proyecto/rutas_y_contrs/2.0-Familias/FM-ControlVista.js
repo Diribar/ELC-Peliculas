@@ -68,7 +68,7 @@ module.exports = {
 
 				// Borra el vínculo en los fechasDelAno
 				if (entidad == "epocasDelAno")
-					await baseDeDatos.actualizaTodosPorCondicion("fechasDelAno", {[campo_id]: id}, {[campo_id]: 1});
+					await baseDeDatos.actualizaPorCondicion("fechasDelAno", {[campo_id]: id}, {[campo_id]: 1});
 			}
 
 			// Elimina el registro
@@ -76,7 +76,7 @@ module.exports = {
 			await baseDeDatos.eliminaPorId(entidad, id);
 
 			// Elimina registros vinculados
-			for (let tabla of eliminarCuandoSinEntidadId) baseDeDatos.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
+			for (let tabla of eliminarCuandoSinEntidadId) baseDeDatos.eliminaPorCondicion(tabla, {entidad, entidad_id: id});
 
 			// Actualiza solapamiento y la variable 'fechasDelAno'
 			if (entidad == "epocasDelAno") comp.actualizaSolapam();
@@ -156,7 +156,7 @@ module.exports = {
 			// 2. Acciones si es una colección
 			if (entidad == "colecciones") {
 				// 2.1. Actualiza sus capítulos con el mismo status
-				await baseDeDatos.actualizaTodosPorCondicion(
+				await baseDeDatos.actualizaPorCondicion(
 					"capitulos",
 					{coleccion_id: id},
 					{...datos, statusColeccion_id: statusFinal_id, statusSugeridoPor_id: usAutom_id}
@@ -260,7 +260,7 @@ module.exports = {
 
 			// Acciones si se aprueba el status del producto
 			if (opcion == "prodRclv") {
-				await baseDeDatos.eliminaTodosPorCondicion("statusHistorial", {entidad, entidad_id: id}); // elimina el historial de ese 'prodRclv'
+				await baseDeDatos.eliminaPorCondicion("statusHistorial", {entidad, entidad_id: id}); // elimina el historial de ese 'prodRclv'
 				if (prodRclv.statusRegistro_id > aprobado_id) destino = "inactivar"; // establece que se redireccione a 'inactivar'
 			}
 
