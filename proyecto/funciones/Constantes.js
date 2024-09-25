@@ -19,9 +19,9 @@ module.exports = {
 	prefijosSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
 	idMinRclv: 10,
 	prioridadesRclv: [
-		{id: 1, nombre: "Menor"},
-		{id: 2, nombre: "Estándar"},
-		{id: 3, nombre: "Mayor"},
+		{id: 1, nombre: "Menor", codigo: "menor"},
+		{id: 2, nombre: "Estándar", codigo: "estandar"},
+		{id: 3, nombre: "Mayor", codigo: "mayor"},
 	],
 	prefijos: [
 		...["Ven", "Venerable"],
@@ -90,5 +90,4 @@ module.exports = {
 		{descripcion: "Comentario sobre una película", codigo: "producto"},
 		{descripcion: "Otro motivo", codigo: "varios"},
 	],
-
 };
