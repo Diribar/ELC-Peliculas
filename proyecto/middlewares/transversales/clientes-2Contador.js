@@ -21,12 +21,6 @@ module.exports = (req, res, next) => {
 	const usuario_id = usuario ? usuario.id : null;
 	contadorDeClientes(usuario_id, cliente);
 
-	// Se asegura de que el cliente ya no figure como 'recienCreado'
-	if (cliente.recienCreado) {
-		baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {recienCreado: false});
-		delete cliente.recienCreado;
-	}
-
 	// Actualiza cookies
 	if (usuario) res.cookie("email", usuario.email, {maxAge: unDia * 30});
 	res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});

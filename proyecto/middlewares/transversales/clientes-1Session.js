@@ -76,10 +76,10 @@ module.exports = async (req, res, next) => {
 	// Cliente - 3. Visita con cookie 'cliente_id': lo obtiene de esa cookie
 	if (!cliente && req.cookies && req.cookies.cliente_id) {
 		// Obtiene el cliente_id
-		let {cliente_id} = req.cookies;
+		const {cliente_id} = req.cookies;
 
 		// Obtiene el cliente
-		let tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
+		const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
 		cliente = await baseDeDatos
 			.obtienePorCondicion(tabla, {cliente_id}, "rolUsuario")
 			.then((n) => (n ? obtieneCamposNecesarios(n) : null));
@@ -122,7 +122,7 @@ let obtieneCamposNecesarios = (usuario) => {
 		...["id", "cliente_id"], // identificación
 		...["versionElc", "diasSinCartelBenefs"], // para mostrar carteles
 		...["diasNaveg", "visitaCreadaEn"], // para 'navegsPorDia'
-		["fechaUltNaveg","recienCreado"], // para el 'contador de navegaciones'
+		...["fechaUltNaveg","recienCreado"], // para el 'contador de navegaciones'
 		"rolUsuario", // para mostrar carteles
 	];
 
