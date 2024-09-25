@@ -8,7 +8,7 @@ module.exports = {
 		// Campo palabrasClave
 		let errores = {};
 		let longitud = dato ? comp.validacs.longitud(dato, 3, 55) : "";
-		errores.palabrasClave = !dato ? variables.inputVacio : longitud ? longitud : "";
+		errores.palabrasClave = !dato ? inputVacio : longitud ? longitud : "";
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -28,7 +28,7 @@ module.exports = {
 		// Dirección
 		let url = datos.url;
 		errores.url = !url
-			? variables.inputVacio
+			? inputVacio
 			: !url.includes("www.filmaffinity.com/") ||
 			  url.indexOf("www.filmaffinity.com/") + 21 >= url.indexOf("/film") ||
 			  url.indexOf("/film") + 5 >= url.indexOf(".html")
@@ -47,7 +47,7 @@ module.exports = {
 		// Contenido
 		let contenido = datos.contenido ? procesos.FA.contenidoFA(datos.contenido) : {};
 		errores.contenido = !datos.contenido
-			? variables.inputVacio
+			? inputVacio
 			: !Object.keys(contenido).length
 			? "No se obtuvo ningún dato"
 			: "";

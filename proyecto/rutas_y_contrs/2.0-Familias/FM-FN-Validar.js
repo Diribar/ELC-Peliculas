@@ -17,8 +17,8 @@ module.exports = {
 			let errores = {...erroresDD, ...erroresDA};
 
 			// Si corresponde, agrega campos particulares
-			errores.publico_id = !datos.publico_id ? variables.selectVacio : "";
-			errores.epocaOcurrencia_id = !datos.epocaOcurrencia_id ? variables.selectVacio : "";
+			errores.publico_id = !datos.publico_id ? selectVacio : "";
+			errores.epocaOcurrencia_id = !datos.epocaOcurrencia_id ? selectVacio : "";
 
 			// Lleva los errores a su mínima expresión
 			for (let prop in errores) if (!errores[prop]) delete errores[prop];
@@ -26,7 +26,7 @@ module.exports = {
 			// Obtiene errores 'sensible'
 			delete errores.hay;
 			for (let prop in errores)
-				if (![variables.inputVacio, variables.selectVacio, variables.rclvSinElegir].includes(errores[prop]))
+				if (![inputVacio, selectVacio, rclvSinElegir].includes(errores[prop]))
 					errores.sensible = true;
 
 			// Resumen de errores
@@ -41,17 +41,17 @@ module.exports = {
 			// Variables
 			let errores = {};
 			if (!datos.entidadNombre) datos.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(datos.entidad);
-			const cartelMusica = variables.inputVacio + '. Si no tiene música, poné "Desconocido"';
-			const cartelActores = variables.inputVacio + '. Si no conseguís información, poné "Desconocido"';
+			const cartelMusica = inputVacio + '. Si no tiene música, poné "Desconocido"';
+			const cartelActores = inputVacio + '. Si no conseguís información, poné "Desconocido"';
 			const camposPosibles = [
-				{nombre: "nombreCastellano", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
-				{nombre: "nombreOriginal", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 70},
-				{nombre: "direccion", tipoIdioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
-				{nombre: "guion", tipoIdioma: "basico", cartel: variables.inputVacio, corto: 3, largo: 100},
+				{nombre: "nombreCastellano", tipoIdioma: "completo", cartel: inputVacio, corto: 3, largo: 70},
+				{nombre: "nombreOriginal", tipoIdioma: "completo", cartel: inputVacio, corto: 3, largo: 70},
+				{nombre: "direccion", tipoIdioma: "basico", cartel: inputVacio, corto: 3, largo: 100},
+				{nombre: "guion", tipoIdioma: "basico", cartel: inputVacio, corto: 3, largo: 100},
 				{nombre: "musica", tipoIdioma: "basico", cartel: cartelMusica, corto: 3, largo: 100},
-				{nombre: "produccion", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 3, largo: 100},
+				{nombre: "produccion", tipoIdioma: "completo", cartel: inputVacio, corto: 3, largo: 100},
 				{nombre: "actores", tipoIdioma: "completo", cartel: cartelActores, corto: 3, largo: 500},
-				{nombre: "sinopsis", tipoIdioma: "completo", cartel: variables.inputVacio, corto: 11, largo: 1004},
+				{nombre: "sinopsis", tipoIdioma: "completo", cartel: inputVacio, corto: 11, largo: 1004},
 			];
 			// Campos individuales estándar
 			for (let campo of camposPosibles) {
@@ -66,7 +66,7 @@ module.exports = {
 						if (!respuesta) respuesta = comp.validacs.longitud(dato, campo.corto, campo.largo);
 						if (!respuesta) respuesta = comp.validacs.castellano[tipoIdioma](dato);
 						if (!respuesta) respuesta = comp.validacs.inicial[tipoIdioma](dato);
-					} else respuesta = variables.inputVacio;
+					} else respuesta = inputVacio;
 
 					// Fin
 					errores[nombre] = respuesta;
@@ -76,7 +76,7 @@ module.exports = {
 			// ***** CAMPOS INDIVIDUALES PARTICULARES *******
 			if (campos.includes("anoEstreno"))
 				errores.anoEstreno = !datos.anoEstreno
-					? variables.inputVacio
+					? inputVacio
 					: formatoAno(datos.anoEstreno)
 					? "Debe ser un número de 4 dígitos"
 					: datos.anoEstreno < 1900
@@ -86,7 +86,7 @@ module.exports = {
 					: "";
 			if (campos.includes("anoFin"))
 				errores.anoFin = !datos.anoFin
-					? variables.inputVacio
+					? inputVacio
 					: formatoAno(datos.anoFin)
 					? "Debe ser un número de 4 dígitos"
 					: datos.anoFin < 1900
@@ -96,7 +96,7 @@ module.exports = {
 					: "";
 			if (campos.includes("duracion"))
 				errores.duracion = !datos.duracion
-					? variables.inputVacio
+					? inputVacio
 					: formatoNumero(datos.duracion, 20)
 					? formatoNumero(datos.duracion, 20)
 					: datos.duracion > 600
@@ -104,12 +104,12 @@ module.exports = {
 					: "";
 			if (campos.includes("paises_id"))
 				errores.paises_id = !datos.paises_id
-					? variables.inputVacio
+					? inputVacio
 					: datos.paises_id.length > 2 * 1 + 3 * 4
 					? "Se aceptan hasta 4 países."
 					: "";
 			if (campos.includes("idiomaOriginal_id"))
-				errores.idiomaOriginal_id = !datos.idiomaOriginal_id ? variables.inputVacio : "";
+				errores.idiomaOriginal_id = !datos.idiomaOriginal_id ? inputVacio : "";
 
 			// Personas
 			if (campos.includes("avatar")) errores.avatar = comp.validacs.avatar(datos);
@@ -151,13 +151,13 @@ module.exports = {
 			let camposPosibles = ["cfc", "bhr", "tipoActuacion_id"];
 			// Datos generales
 			for (let campo of camposPosibles)
-				if (campos.includes(campo)) errores[campo] = !datos[campo] && datos[campo] !== false ? variables.inputVacio : ""; // Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
+				if (campos.includes(campo)) errores[campo] = !datos[campo] && datos[campo] !== false ? inputVacio : ""; // Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
 
 			// RCLVs
 			const rclvs_id = [...variables.entidades.rclvs_id, "sinRCLV"];
 			if (campos.some((n) => rclvs_id.includes(n)))
 				errores.RCLV = rclvs_id.every((n) => !datos[n] || datos[n] == 1) // ningún campo tiene un valor distinto de 1
-					? variables.rclvSinElegir
+					? rclvSinElegir
 					: "";
 
 			// Consolida la información
