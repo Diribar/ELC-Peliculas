@@ -11,12 +11,13 @@ const linksSemsEstrRec = 5;
 const linksSemsEstandar = 26;
 
 module.exports = {
-	// Tiempo
-	rutinasDeInicio: Date.now(),
-	...{unaHora, unDia, unaSemana, unAno},
-	diasSemana: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
-	hoy: new Date().toISOString().slice(0, 10),
-	...{primerLunesDelAno: null, semanaUTC: null, lunesDeEstaSemana: null, fechaDelAnoHoy_id: null, anoHoy: null},
+	// Productos
+	dibujosAnimados: "Dibujos Animados",
+	documental: "Documental",
+
+	// RCLV
+	prefijosSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
+	idMinRclv: 10,
 
 	// Links
 	...{linkSemInicial, linksSemsPrimRev, linksSemsEstrRec, linksSemsEstandar},
@@ -30,15 +31,19 @@ module.exports = {
 	// Usuario
 	...{maxIntentosCookies: 3, maxIntentosBD: 3, usAutom_id: 2},
 
+	// Tiempo
+	rutinasDeInicio: Date.now(),
+	...{unaHora, unDia, unaSemana, unAno},
+	diasSemana: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+	hoy: new Date().toISOString().slice(0, 10),
+	...{primerLunesDelAno: null, semanaUTC: null, lunesDeEstaSemana: null, fechaDelAnoHoy_id: null, anoHoy: null},
+	setTimeOutStd: 1000,
+
 	// Otras
 	tamMaxImagen: 1024000, // 1Mb
 	imgInstitucional: "/publico/imagenes/Varios/Institucional.jpg",
-	setTimeOutStd: 1000,
 	largoComentario: 150,
 	statusErrores: [],
-	idMinRclv: 10,
-	dibujosAnimados: "Dibujos Animados",
-	documental: "Documental",
 	iconos: {
 		// Uso general
 		faSolid: "fa-solid",

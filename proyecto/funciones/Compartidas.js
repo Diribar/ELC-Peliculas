@@ -732,7 +732,7 @@ module.exports = {
 				const primerNombre = rclv.nombre.split(" ")[0];
 
 				// Si el primer nombre no es "especial", cambia el prefijo por "San"
-				if (!variables.prefijosSanto.includes(primerNombre)) canonNombre = "San ";
+				if (!prefijosSanto.includes(primerNombre)) canonNombre = "San ";
 			}
 		}
 

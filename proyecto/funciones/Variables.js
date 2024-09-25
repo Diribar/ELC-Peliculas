@@ -268,7 +268,6 @@ module.exports = {
 		...["Padre", "Obispo", "Cardenal", "Papa", "Don"],
 		...["Madre", "Hna", "Sor"],
 	],
-	prefijosSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
 
 	// Links
 	provsQueNoRespetanCopyright: [
