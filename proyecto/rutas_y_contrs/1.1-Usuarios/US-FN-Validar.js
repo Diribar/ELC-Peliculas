@@ -110,13 +110,13 @@ module.exports = {
 				if (!respuesta) respuesta = comp.validacs.castellano.basico(dato);
 				if (!respuesta) respuesta = comp.validacs.inicial.basico(dato);
 				if (!respuesta) respuesta = comp.validacs.longitud(dato, 2, 30);
-			} else respuesta = variables.inputVacio;
+			} else respuesta = inputVacio;
 
 			// Fin
 			errores.apodo = respuesta;
 		}
-		if (campos.includes("genero_id")) errores.genero_id = !datos.genero_id ? variables.selectVacio : "";
-		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? variables.selectVacio : "";
+		if (campos.includes("genero_id")) errores.genero_id = !datos.genero_id ? selectVacio : "";
+		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? selectVacio : "";
 		if (campos.includes("avatar")) errores.avatar = comp.validacs.avatar(datos);
 
 		// Fin
@@ -169,7 +169,7 @@ let perennesFE = (datos) => {
 		let dato = datos.nombre;
 
 		// Validaciones
-		if (!dato) respuesta = variables.inputVacio;
+		if (!dato) respuesta = inputVacio;
 		if (!respuesta) respuesta = comp.validacs.castellano.basico(dato);
 		if (!respuesta) respuesta = comp.validacs.inicial.basico(dato);
 		if (!respuesta) respuesta = comp.validacs.longitud(dato, 2, 30);
@@ -183,7 +183,7 @@ let perennesFE = (datos) => {
 		let dato = datos.apellido;
 
 		// Validaciones
-		if (!dato) respuesta = variables.inputVacio;
+		if (!dato) respuesta = inputVacio;
 		if (!respuesta) respuesta = comp.validacs.castellano.basico(dato);
 		if (!respuesta) respuesta = comp.validacs.inicial.basico(dato);
 		if (!respuesta) comp.validacs.longitud(dato, 2, 30);

@@ -118,8 +118,8 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
-	genero: (datos) => (!datos.genero_id ? variables.radioVacio : ""),
-	prioridad: (datos) => (!datos.prioridad_id && datos.revisorPERL ? variables.selectVacio : ""),
+	genero: (datos) => (!datos.genero_id ? radioVacio : ""),
+	prioridad: (datos) => (!datos.prioridad_id && datos.revisorPERL ? selectVacio : ""),
 	avatar: (datos) => comp.validacs.avatar(datos),
 
 	// Entidades distintas a 'epocasDelAno'
@@ -132,7 +132,7 @@ module.exports = {
 		let anoNecesario = false;
 
 		// Averigua si no fue respondido
-		if (!datos.epocaOcurrencia_id) respuesta = variables.radioVacio;
+		if (!datos.epocaOcurrencia_id) respuesta = radioVacio;
 		// Averigua si hace falta el año
 		else if (datos.epocaOcurrencia_id == "pst") anoNecesario = true;
 
@@ -205,7 +205,7 @@ module.exports = {
 			.map((n) => campos.push(n.nombre));
 
 		// Validaciones
-		for (let campo of campos) if (!datos[campo]) mensaje = variables.selectVacio;
+		for (let campo of campos) if (!datos[campo]) mensaje = selectVacio;
 
 		// Fin
 		return mensaje;
@@ -213,7 +213,7 @@ module.exports = {
 
 	// Épocas del año
 	carpetaAvatars: (datos) => {
-		return !datos.carpetaAvatars ? variables.selectVacio : "";
+		return !datos.carpetaAvatars ? selectVacio : "";
 	},
 };
 
@@ -234,7 +234,7 @@ let nombreApodo = async ({datos, campo}) => {
 	let mensaje = "";
 
 	// Validación solamente para 'nombre'
-	if (!dato && campo == "nombre") mensaje = variables.inputVacio;
+	if (!dato && campo == "nombre") mensaje = inputVacio;
 
 	// Validaciones cuando existe un dato
 	if (!mensaje && dato) {
