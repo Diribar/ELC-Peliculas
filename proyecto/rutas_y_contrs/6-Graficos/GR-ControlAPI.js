@@ -4,8 +4,7 @@ module.exports = {
 	// Usuarios
 	navegsAcums: async (req, res) => {
 		const navegsAcums = await baseDeDatos.obtieneTodosConOrden("navegsAcums", "fecha");
-		const {colores} = variables;
-		return res.json({navegsAcums, colores});
+		return res.json({navegsAcums, coloresConfigs});
 	},
 
 	// Productos

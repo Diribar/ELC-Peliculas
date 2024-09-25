@@ -692,20 +692,23 @@ module.exports = {
 		if (!capitulos.length) return;
 
 		// Actualiza cada campo de la colección
-		const calidadesDeLink = variables.calidadesDeLink;
-		for (let calidadDeLink of calidadesDeLink) {
+		const tiposDeLink = [
+			...["linksTrailer", "linksGral", "linksGratis", "linksCast", "linksSubt"],
+			...["HD_Gral", "HD_Gratis", "HD_Cast", "HD_Subt"],
+		];
+		for (let tipoDeLink of tiposDeLink) {
 			// Variables
-			const capSinLink = capitulos.find((n) => n[calidadDeLink] == sinLinks); // busca un capítulo que no tenga link
-			const capTalVez = capitulos.find((n) => n[calidadDeLink] == linksTalVez);
-			const capConLinks = capitulos.find((n) => n[calidadDeLink] == conLinks);
+			const capSinLink = capitulos.find((n) => n[tipoDeLink] == sinLinks); // busca un capítulo que no tenga link
+			const capTalVez = capitulos.find((n) => n[tipoDeLink] == linksTalVez);
+			const capConLinks = capitulos.find((n) => n[tipoDeLink] == conLinks);
 
 			// Obtiene los resultados
 			const tieneLink = capSinLink ? sinLinks : capTalVez ? linksTalVez : capConLinks ? conLinks : null; // opción pesimista
 			const capID = capSinLink ? capSinLink.id : null; // capítulo sin link
 
-			// Actualiza cada 'calidadDeLink' en la colección
-			baseDeDatos.actualizaPorId("colecciones", colID, {[calidadDeLink]: tieneLink});
-			baseDeDatos.actualizaTodosPorCondicion("capsSinLink", {coleccion_id: colID}, {[calidadDeLink]: capID});
+			// Actualiza cada 'tipoDeLink' en la colección
+			baseDeDatos.actualizaPorId("colecciones", colID, {[tipoDeLink]: tieneLink});
+			baseDeDatos.actualizaTodosPorCondicion("capsSinLink", {coleccion_id: colID}, {[tipoDeLink]: capID});
 		}
 
 		// Fin

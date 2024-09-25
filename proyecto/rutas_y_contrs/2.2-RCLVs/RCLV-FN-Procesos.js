@@ -49,23 +49,23 @@ module.exports = {
 				: "";
 		},
 		prioridad_id: (dataEntry, entidad) => {
-			const prioridades = {menor: 1, estandar: 2, mayor: 3};
-			return false
-				? false
-				: entidad == "personajes"
-				? prioridades.estandar
+			let prioridad = {};
+			for (let elemento of prioridadesRclv) prioridad[elemento.codigo] = elemento.id;
+
+			return entidad == "personajes"
+				? prioridad.estandar
 				: entidad == "hechos"
 				? dataEntry.soloCfc
-					? prioridades.estandar
-					: prioridades.menor
+					? prioridad.estandar
+					: prioridad.menor
 				: entidad == "temas"
-				? prioridades.menor
+				? prioridad.menor
 				: entidad == "eventos"
 				? dataEntry.soloCfc
-					? prioridades.mayor
-					: prioridades.menor
+					? prioridad.mayor
+					: prioridad.menor
 				: entidad == "epocasDelAno"
-				? prioridades.menor
+				? prioridad.menor
 				: "";
 		},
 		opcsLeyNombre: (registro) => {

@@ -209,7 +209,6 @@ app.set("views", [
 	const procesos = require("./funciones/Rutinas/RT-Procesos");
 	global.rutinasJSON = procesos.lecturaRutinasJSON();
 	global.ImagenesDerecha = rutinasJSON.ImagenesDerecha;
-	global.vistasInstitucs = variables.vistasInstitucs;
 
 	// Filtros con 'default'
 	global.filtrosConDefault = {};

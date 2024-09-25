@@ -17,7 +17,7 @@
 		<div class="inputError">
 			<% aux = link.prov.calidad %>
 			<select name="calidad" class="input selectSinFlecha" <% if (aux) { %>disabled<% } %>>
-				<% for (let calidad of calidades) { %>
+				<% for (let calidad of calidadesDeLink) { %>
 					<option value="<%= calidad %>" <%- link.calidad==calidad ? "selected" : "" %>><%= calidad %></option>
 				<% } %>
 				<option value="1081" <%- link.calidad=="1081" ? "selected" : "" %>>>1080</option>

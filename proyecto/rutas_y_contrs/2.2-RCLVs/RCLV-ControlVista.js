@@ -140,7 +140,6 @@ module.exports = {
 			const statusCreado = tema == "revisionEnts" && dataEntry.statusRegistro_id == creado_id;
 			const ent = personajes ? "Pers" : hechos ? "Hecho" : "";
 			const originalUrl = req.originalUrl;
-			const prioridades = variables.prioridadesRCLV;
 			const opcsHoyEstamos =
 				dataEntry.genero_id && dataEntry.hoyEstamos_id
 					? hoyEstamos.filter((n) => n.entidad == entidad && n.genero_id == dataEntry.genero_id)
@@ -158,7 +157,7 @@ module.exports = {
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, origen, titulo},
 				...{entidad, id, prodEntidad, prodId, edicID, familia: "rclv", ent, familia},
-				...{personajes, hechos, temas, eventos, epocasDelAno, prioridades},
+				...{personajes, hechos, temas, eventos, epocasDelAno, prioridadesRclv},
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer, ayudas},
 				...{apMars, originalUrl, opcsHoyEstamos, opcsLeyNombre, statusAlineado},
 				...{cartelGenerico, cartelRechazo, estrucPers: true},

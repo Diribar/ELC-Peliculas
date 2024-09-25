@@ -263,7 +263,6 @@ let nombreApodo = async ({datos, campo}) => {
 };
 let prefijo = (nombre, campo) => {
 	// Variables
-	const {prefijos} = variables;
 	const campoNombre = campo == "nombre" ? campo : "nombre alternativo";
 	let respuesta = "";
 

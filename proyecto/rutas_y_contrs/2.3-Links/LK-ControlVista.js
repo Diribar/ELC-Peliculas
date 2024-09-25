@@ -53,7 +53,7 @@ module.exports = {
 			...{tema, codigo, titulo, ayudasTitulo},
 			...{entidad, familia: "producto", id, origen},
 			...{registro: producto, links, status_id},
-			...{linksProvs, linksTipos, calidades: variables.calidades, motivos},
+			...{linksProvs, linksTipos, calidadesDeLink, motivos},
 			...{usuario_id, imgDerPers, cartelGenerico: true, sigProd, grupo},
 			...{vista: req.baseUrl + req.path, anchorEncab},
 		});

@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 	let leyendaTitulo = "";
 
 	// Obtiene datos del BE
-	const {navegsAcums, colores} = await fetch("/graficos/api/usuarios-clientes-acums").then((n) => n.json());
+	const {navegsAcums, coloresConfigs: colores} = await fetch("/graficos/api/usuarios-clientes-acums").then((n) => n.json());
 
 	// Obtiene los colores
 	const color = {
