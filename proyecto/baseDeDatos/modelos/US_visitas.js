@@ -14,7 +14,6 @@ module.exports = (sequelize, dt) => {
 
 		// Carteles
 		mostrarCartelBienvenida: {type: dt.BOOLEAN}, // default 'true '
-		mostrarCartelCookies: {type: dt.BOOLEAN}, // default 'true '
 		recienCreado: {type: dt.BOOLEAN}, // default 'true '
 	};
 	const config = {

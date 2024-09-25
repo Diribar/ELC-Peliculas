@@ -1,5 +1,3 @@
--- c19353_elc.`aux_navegs_por hora` definition
-
 CREATE TABLE `aux_navegs_por hora` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
   `diaSem` varchar(3) NOT NULL,
@@ -7,3 +5,5 @@ CREATE TABLE `aux_navegs_por hora` (
   `cantClientes` smallint(5) unsigned DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE c19353_elc.us_visitas DROP COLUMN mostrarCartelCookies;
