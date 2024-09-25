@@ -6,8 +6,8 @@ module.exports = (req, res, next) => {
 	if (req.originalUrl.includes("/api/")) return next();
 
 	// Variables
-	let {usuario, cliente} = req.session;
-	let {cliente_id, fechaUltNaveg} = cliente;
+	const {usuario, cliente} = req.session;
+	const {cliente_id, fechaUltNaveg} = cliente;
 	const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
 
 	// Si no está recién creado y la fecha es igual a hoy, interrumpe la función
@@ -24,7 +24,7 @@ module.exports = (req, res, next) => {
 	// Se asegura de que el cliente ya no figure como 'recienCreado'
 	if (cliente.recienCreado) {
 		baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {recienCreado: false});
-		delete cliente.recienCreado
+		delete cliente.recienCreado;
 	}
 
 	// Actualiza cookies
@@ -33,10 +33,6 @@ module.exports = (req, res, next) => {
 
 	// Actualiza session
 	req.session.cliente = cliente;
-	if (usuario) {
-		req.session.usuario = usuario;
-		res.locals.usuario = usuario;
-	}
 
 	// Fin
 	return next();
