@@ -139,6 +139,6 @@ module.exports = {
 		rojo: ["#C9190B", "#A30000", "#7D1007", "#470000", "#2C0000"], // 7. Red
 		negro: ["#F0F0F0", "#D2D2D2", "#B8BBBE", "#8A8D90", "#6A6E73"], // 8. Black
 	},
-	tablasSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
+	eliminarCuandoSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
 
 };

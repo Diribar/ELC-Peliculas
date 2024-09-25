@@ -76,7 +76,7 @@ module.exports = {
 			await baseDeDatos.eliminaPorId(entidad, id);
 
 			// Elimina registros vinculados
-			for (let tabla of tablasSinEntidadId) baseDeDatos.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
+			for (let tabla of eliminarCuandoSinEntidadId) baseDeDatos.eliminaTodosPorCondicion(tabla, {entidad, entidad_id: id});
 
 			// Actualiza solapamiento y la variable 'fechasDelAno'
 			if (entidad == "epocasDelAno") comp.actualizaSolapam();
