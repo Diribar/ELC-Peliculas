@@ -10,8 +10,8 @@ module.exports = (req, res, next) => {
 	let {cliente_id, fechaUltNaveg} = cliente;
 	const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
 
-	// Si corresponde, interrumpe la función
-	if (!req.session.clienteRecienCreado || fechaUltNaveg == hoy) return next();
+	// Si no está recién creado y la fecha es igual a hoy, interrumpe la función
+	if (!req.session.clienteRecienCreado && fechaUltNaveg == hoy) return next();
 
 	// Actualiza 'fechaUltNaveg' en la tabla 'usuarios/visitas' y en la variable 'cliente'
 	baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
@@ -31,7 +31,7 @@ module.exports = (req, res, next) => {
 		req.session.usuario = usuario;
 		res.locals.usuario = usuario;
 	}
-	delete req.session.clienteRecienCreado;
+	if (req.session.clienteRecienCreado) delete req.session.clienteRecienCreado;
 
 	// Fin
 	return next();
@@ -39,13 +39,13 @@ module.exports = (req, res, next) => {
 
 let contadorDeClientes = async (usuario_id, cliente) => {
 	// Variables
-	const {cliente_id, diasNaveg, visitaCreadaEn} = cliente;
+	const {cliente_id, visitaCreadaEn} = cliente;
+	let {diasNaveg} = cliente;
+	diasNaveg++;
 
-	// Valida que no exista ya un registro del 'cliente_id' en esta fecha
+	// Si ya existe un registro del 'cliente_id' en esta fecha, interrumpe la función
 	const condicion = {fecha: hoy, cliente_id};
 	const existe = await baseDeDatos.obtienePorCondicion("navegsDelDia", condicion);
-
-	// Si ya existe, interrumpe la función
 	if (existe) return;
 
 	// Agrega un registro en la tabla 'navegsDelDia'
