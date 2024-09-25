@@ -18,6 +18,18 @@ module.exports = {
 	// RCLV
 	prefijosSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
 	idMinRclv: 10,
+	prioridadesRCLV: [
+		{id: 1, nombre: "Menor"},
+		{id: 2, nombre: "Estándar"},
+		{id: 3, nombre: "Mayor"},
+	],
+	prefijos: [
+		...["Ven", "Venerable"],
+		...["Beata", "Beato"],
+		...["San", "Santo", "Santa"],
+		...["Padre", "Obispo", "Cardenal", "Papa", "Don"],
+		...["Madre", "Hna", "Sor"],
+	],
 
 	// Links
 	...{linkSemInicial, linksSemsPrimRev, linksSemsEstrRec, linksSemsEstandar},
@@ -27,6 +39,12 @@ module.exports = {
 	...{sinLinks: 0, linksTalVez: 1, conLinks: 2},
 	linkAnoReciente: 2,
 	cantLinksVencPorSem: null,
+	provsListaNegra: ["gloria.tv"],
+	provsQueNoRespetanCopyright: [
+		{nombre: "Cuevana", url: "cuevana"},
+		{nombre: "Google Drive", url: "drive.google.com/"},
+	],
+	calidades: [240, 360, 480, 720, 1080],
 
 	// Usuario
 	...{maxIntentosCookies: 3, maxIntentosBD: 3, usAutom_id: 2},

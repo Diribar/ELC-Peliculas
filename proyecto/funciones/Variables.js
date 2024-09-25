@@ -242,10 +242,6 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	calidadesDeLink: [
-		...["linksTrailer", "linksGral", "linksGratis", "linksCast", "linksSubt"],
-		...["HD_Gral", "HD_Gratis", "HD_Cast", "HD_Subt"],
-	],
 	camposTransfCaps: {
 		sinDifs: [
 			...["tipoActuacion_id", "idiomaOriginal_id", "cfc", "bhr", "publico_id"],
@@ -254,28 +250,6 @@ module.exports = {
 		conDifs: ["paises_id", "direccion", "guion", "musica", "produccion", "epocaOcurrencia_id", ...rclvs_id],
 		actores: "actores",
 	},
-
-	// RCLV
-	prioridadesRCLV: [
-		{id: 1, nombre: "Menor"},
-		{id: 2, nombre: "Estándar"},
-		{id: 3, nombre: "Mayor"},
-	],
-	prefijos: [
-		...["Ven", "Venerable"],
-		...["Beata", "Beato"],
-		...["San", "Santo", "Santa"],
-		...["Padre", "Obispo", "Cardenal", "Papa", "Don"],
-		...["Madre", "Hna", "Sor"],
-	],
-
-	// Links
-	provsQueNoRespetanCopyright: [
-		{nombre: "Cuevana", url: "cuevana"},
-		{nombre: "Google Drive", url: "drive.google.com/"},
-	],
-	provsListaNegra: ["gloria.tv"],
-	calidades: [240, 360, 480, 720, 1080],
 
 	// Entorno Revisiones
 	camposRevisar: {
