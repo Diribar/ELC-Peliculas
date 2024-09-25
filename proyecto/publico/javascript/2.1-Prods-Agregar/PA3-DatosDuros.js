@@ -88,9 +88,9 @@ window.addEventListener("load", async () => {
 		},
 		actualizaBotonSubmit: () => {
 			// Detecta la cantidad de 'errores' ocultos
-			let hayErrores = Array.from(DOM.iconosOK)
+			let hayErrores = Array.from(DOM.iconosError)
 				.map((n) => n.className)
-				.some((n) => n.includes("ocultar"));
+				.some((n) => !n.includes("ocultar"));
 			// Consecuencias
 			hayErrores ? DOM.submit.classList.add("inactivo") : DOM.submit.classList.remove("inactivo");
 		},
