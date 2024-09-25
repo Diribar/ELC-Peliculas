@@ -1185,7 +1185,7 @@ let FN_edicion = {
 		// Casos especiales
 		if (casosEspeciales.includes(campo)) resultado = resultado == 1 ? "SI" : resultado == 0 ? "NO" : "";
 		// Prioridad
-		else if (campo == "prioridad_id") resultado = variables.prioridadesRCLV.find((n) => n.id == resultado).nombre;
+		else if (campo == "prioridad_id") resultado = prioridadesRclv.find((n) => n.id == resultado).nombre;
 		// Reemplaza 'Ninguno' por 'null'
 		else if (!esEdicion && variables.entidades.rclvs_id.includes(campo) && registro[campo] == 1) resultado = null;
 
