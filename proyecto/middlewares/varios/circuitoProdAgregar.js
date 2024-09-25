@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
 	// Variables
 	const {ruta} = comp.reqBasePathUrl(req);
 	const codigoUrl = ruta.slice(1);
-	const variables = [
+	const pasos = [
 		{url: "palabras-clave", codigo: "palabrasClave"},
 		{url: "desambiguar", codigo: "desambiguar"},
 		{url: "ingreso-manual", codigo: "IM"},
@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
 	];
 
 	// Obtiene el código que corresponde al 'url'
-	const codigo = variables.find((n) => codigoUrl.startsWith(n.url)).codigo;
+	const codigo = pasos.find((n) => codigoUrl.startsWith(n.url)).codigo;
 
 	// Averigua si está la session/cookie actual
 	const datos = req.session[codigo] ? req.session[codigo] : req.cookies[codigo];
@@ -28,8 +28,8 @@ module.exports = (req, res, next) => {
 
 	// Si no está, redirige a la url anterior
 	if (redirigir) {
-		const indice = variables.findIndex((n) => n.url == codigoUrl);
-		if (codigo != "datosDuros") return res.redirect(variables[indice - 1].url);
+		const indice = pasos.findIndex((n) => n.url == codigoUrl);
+		if (codigo != "datosDuros") return res.redirect(pasos[indice - 1].url);
 		else {
 			// Obtiene el origen
 			const origen =
