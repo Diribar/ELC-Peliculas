@@ -6,4 +6,4 @@ CREATE TABLE `aux_navegs_por hora` (
   `hora` smallint(2) unsigned NOT NULL,
   `cantClientes` smallint(5) unsigned DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB D
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
