@@ -1,70 +1,10 @@
-// Variable 'global' - Tiempo
-global.rutinasDeInicio = Date.now();
-global.unaHora = 60 * 60 * 1000;
-global.unDia = unaHora * 24;
-global.unaSemana = unDia * 7;
-global.unAno = unDia * 365;
-global.diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
-global.hoy = new Date().toISOString().slice(0, 10);
-
-// Variable 'global' - Links
-global.linkSemInicial = 1;
-global.linksSemsPrimRev = 4;
-global.linksSemsEstrRec = 5;
-global.linksSemsEstandar = 26;
-global.linksVU_primRev = unaSemana * linksSemsPrimRev;
-global.linksVU_estrRec = unaSemana * linksSemsEstrRec;
-global.linksVU_estandar = unaSemana * linksSemsEstandar;
-global.sinLinks = 0;
-global.linksTalVez = 1;
-global.conLinks = 2;
-global.linkAnoReciente = 2; // cantidad de años
-global.cantLinksVencPorSem = null;
-
-// Variable 'global' - Otras
-global.maxIntentosCookies = 3; // cantidad que se tolera
-global.maxIntentosBD = 3; // cantidad que se tolera
-global.usAutom_id = 2; // usuario 'automático'
-global.primerLunesDelAno = null;
-global.semanaUTC = null;
-global.lunesDeEstaSemana = null;
-global.fechaDelAnoHoy_id = null;
-global.anoHoy = null;
-global.tamMaxImagen = 1024000; // 1Mb
-global.imgInstitucional = "/publico/imagenes/Varios/Institucional.jpg";
-global.setTimeOutStd = 1000;
-global.largoComentario = 150;
-global.statusErrores = [];
-global.idMinRclv = 10;
-global.dibujosAnimados = "Dibujos Animados";
-global.documental = "Documental";
-global.iconos = {
-	// Uso general
-	faSolid: "fa-solid",
-	inicio: "fa-house",
-	ayuda: "fa-circle-question",
-
-	// Carteles / Formularios
-	izquierda: "fa-circle-left",
-	derecha: "fa-circle-right",
-	check: "fa-circle-check",
-	xMark: "fa-circle-xmark",
-	triangulo: "fa-triangle-exclamation",
-
-	// Ocasionales
-	entendido: "fa-thumbs-up",
-	edicion: "fa-pen",
-	calificar: "fa-chart-simple",
-	eliminar: "fa-trash-can",
-	detalle: "fa-circle-info",
-	edicionCambiada: "fa-arrow-right-long",
-	agregar: "fa-circle-plus",
-	rotar: "fa-rotate-90",
-};
+// Variable 'global'
+const constantes = require("./funciones/Constantes");
+for (let metodo in constantes) global[metodo] = constantes[metodo];
 
 // Require 'path'
 global.path = require("path");
-const carpeta = path.basename(path.resolve());
+const carpeta = global.path.basename(path.resolve());
 global.urlHost =
 	carpeta == "Proyecto"
 		? "http://localhost" // development
