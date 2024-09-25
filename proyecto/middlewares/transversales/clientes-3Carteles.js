@@ -12,9 +12,27 @@ module.exports = async (req, res, next) => {
 	let informacion;
 
 	// Cartel de bienvenida
+	if (!informacion && cliente.mostrarCartelBienvenida) {
+		informacion = {
+			mensajes: [
+				"¡Bienvenido/a a nuestro sitio de Recomendación de Películas!",
+				"Intentamos reunir todas las películas con valores afines a la Fe Católica.",
+				"Queremos resolver el clásico problema de:<ul><li><em>No sé qué ver</em></li><li><em>Quiero ver una película que me deje algo bueno</em></li></ul>",
+				"Si registrás un usuario y te logueás, podrás acceder a más beneficios.",
+				"Usamos cookies para que tengas una mejor experiencia de usuario.",
+			],
+			iconos: [variables.vistaEntendido(req.session.urlActual)],
+			titulo: "Te damos la Bienvenida",
+			check: true,
+		};
+
+		// Actualiza la tabla usuario y la variable usuario
+		baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {mostrarCartelBienvenida: false});
+		cliente.mostrarCartelBienvenida = false;
+	}
 
 	// Cartel de novedades
-	if (!informacion && cliente && cliente.versionElc != versionElc) {
+	if (!informacion && cliente.versionElc != versionElc) {
 		// Variables
 		const permisos = ["permInputs", "autTablEnts", "revisorPERL", "revisorLinks", "revisorEnts", "revisorUs"];
 		let novedades = novedadesELC.filter((n) => n.versionElc > cliente.versionElc && n.versionElc <= versionElc);
@@ -40,8 +58,6 @@ module.exports = async (req, res, next) => {
 		baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {versionElc});
 		cliente.versionElc = versionElc;
 	}
-
-	// Cartel de cookies
 
 	// Cartel de beneficios
 
