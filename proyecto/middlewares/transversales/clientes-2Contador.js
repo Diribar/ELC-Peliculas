@@ -22,7 +22,7 @@ module.exports = (req, res, next) => {
 	diasNaveg++;
 	if (!usuario) diasSinCartelBeneficios++;
 	const datos = {fechaUltNaveg, diasSinCartelBeneficios, diasNaveg};
-	cliente = {...cliente, ...datos};
+	for (let campo in datos) cliente[campo] = datos[campo];
 	baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, datos);
 
 	// Contador de clientes
