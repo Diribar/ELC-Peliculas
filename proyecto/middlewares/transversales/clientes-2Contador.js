@@ -23,7 +23,7 @@ module.exports = (req, res, next) => {
 
 	// Se asegura de que el cliente ya no figure como 'recienCreado'
 	if (cliente.recienCreado) {
-		baseDeDatos.actualizaPorId(tabla, id, {recienCreado: false});
+		baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {recienCreado: false});
 		delete cliente.recienCreado
 	}
 
