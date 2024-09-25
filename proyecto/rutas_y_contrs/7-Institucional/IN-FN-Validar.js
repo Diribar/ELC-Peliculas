@@ -10,7 +10,7 @@ module.exports = {
 		// Asunto
 		if (campos.includes("asunto"))
 			if (!datos.asunto) errores.asunto = "Necesitamos que elijas un asunto";
-			else if (!variables.asuntosContactanos.find((n) => n.codigo == datos.asunto))
+			else if (!asuntosContactanos.find((n) => n.codigo == datos.asunto))
 				errores.asunto = "Necesitamos que elijas un asunto válido";
 
 		// Comentario
