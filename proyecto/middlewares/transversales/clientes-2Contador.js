@@ -29,6 +29,10 @@ module.exports = (req, res, next) => {
 	const usuario_id = usuario ? usuario.id : null;
 	contadorDeClientes(usuario_id, cliente);
 
+	// Actualiza la tabla usuario y la variable usuario
+	baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {recienCreado: false});
+	cliente.recienCreado = false;
+
 	// Actualiza cookies
 	if (usuario) res.cookie("email", usuario.email, {maxAge: unDia * 30});
 	res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});

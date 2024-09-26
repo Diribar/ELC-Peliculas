@@ -12,25 +12,6 @@ module.exports = async (req, res, next) => {
 	const tabla = esUsuario ? "usuarios" : "visitas";
 	let informacion;
 
-	// Cartel de bienvenida
-	if (!informacion && cliente.recienCreado) {
-		informacion = {
-			mensajes: [
-				"¡Bienvenido/a a nuestro sitio de Recomendación de Películas!",
-				"Intentamos reunir todas las películas con valores afines a la Fe Católica.",
-				"Queremos resolver el clásico problema de:<ul><li><em>No sé qué ver</em></li><li><em>Quiero ver una película que me deje algo bueno</em></li></ul>",
-				"Usamos cookies para que tengas una mejor experiencia de usuario.",
-			],
-			iconos: [{...variables.vistaEntendido(req.session.urlActual), autofocus: true}],
-			titulo: "Te damos la Bienvenida",
-			check: true,
-		};
-
-		// Actualiza la tabla usuario y la variable usuario
-		baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {recienCreado: false});
-		cliente.recienCreado = false;
-	}
-
 	// Cartel de novedades
 	if (!informacion && cliente.versionElc != versionElc) {
 		// Variables
