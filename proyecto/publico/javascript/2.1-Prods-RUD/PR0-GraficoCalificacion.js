@@ -9,7 +9,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Obtiene las calificaciones
-	const ruta = "/producto/api/obtiene-calificaciones/";
+	const ruta = "/:entidad/api/obtiene-las-calificaciones/";
 	const calificaciones = await fetch(ruta + "?entidad=" + entidad + "&id=" + id).then((n) => n.json());
 
 	// Resultados de la calificación
