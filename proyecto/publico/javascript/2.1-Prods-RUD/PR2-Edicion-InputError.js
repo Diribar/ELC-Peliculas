@@ -352,7 +352,7 @@ window.addEventListener("load", async () => {
 				v.esImagen = true;
 
 				// Elimina Session y Cookies
-				fetch("/producto/api/edicion-nueva/eliminar");
+				fetch("/producto/api/edicion/eliminar-nueva");
 
 				// Vuelve al status de la versión anterior
 				version[!indice ? "edicN" : "edicG"] = {...version[!indice ? "edicG" : "orig"]};
@@ -402,7 +402,7 @@ const rutas = {
 	validar: "/producto/api/valida/?",
 	versiones: "/producto/api/obtiene-original-y-edicion/?entidad=" + entidad + "&id=" + id,
 	variablesBE: "/producto/api/edicion/obtiene-variables-prod/?entidad=" + entidad + "&id=" + id,
-	eliminaEdicG: "/producto/api/edicion-guardada/eliminar/?entidad=" + entidad + "&id=" + id,
+	eliminaEdicG: "/producto/api/edicion/eliminar-guardada/?entidad=" + entidad + "&id=" + id,
 	recargaLaVistaSinEdicion: location.pathname + "?entidad=" + entidad + "&id=" + id + origen,
 };
 
