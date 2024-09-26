@@ -4,7 +4,7 @@ const procesos = require("./FM-FN-Procesos");
 const validacs = require("./FM-FN-Validar");
 
 module.exports = {
-	form:{
+	form: {
 		motivos: async (req, res) => {
 			// Variables
 			const datos = await procesos.obtieneDatosForm(req);
@@ -48,7 +48,7 @@ module.exports = {
 		},
 		elimina: async (req, res) => {
 			// Variables
-			const {entidad, id, origen} = req.query;
+			const {entidad, id} = req.query;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const include = entidad == "colecciones" ? "capitulos" : "";
 			const original = await baseDeDatos.obtienePorId(entidad, id, include);
@@ -97,9 +97,9 @@ module.exports = {
 				mensajes: [
 					articInicial +
 						entidadNombre +
-						' <em>' +
+						" <em>" +
 						nombre +
-						'</em> ' +
+						"</em> " +
 						capitulos +
 						"fue" +
 						plural1 +
@@ -118,7 +118,8 @@ module.exports = {
 	inacRecupGuardar: async (req, res) => {
 		//  Variables
 		let datos = await procesos.obtieneDatosGuardar(req);
-		const {entidad, id, familia, motivo_id, codigo, usuario_id, ahora, campo_id, original, statusFinal_id, comentario} = datos;
+		const {entidad, id, familia, motivo_id, codigo, usuario_id, ahora, campo_id, original, statusFinal_id, comentario} =
+			datos;
 
 		// CONSECUENCIAS - Actualiza el status en el registro original
 		datos = {
@@ -277,5 +278,19 @@ module.exports = {
 			// Fin
 			return res.redirect("/" + familia + "/" + destino + cola);
 		},
+	},
+	redireccionar: (req, res) => {
+		// Variables
+		const {entidad, id} = req.query;
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		let {originalUrl} = req;
+
+		// Acciones si la familia está en el url
+		if (["/producto/", "/rclv/"].includes(originalUrl)) {
+			originalUrl = originalUrl.replace("/" + familia + "/", "/" + entidad + "/"); // Reemplaza la familia por la entidad
+			originalUrl = originalUrl.replace("entidad=" + entidad + "&", ""); // Quita la entidad de la url
+			return res.send(originalUrl)
+		} else {
+		}
 	},
 };
