@@ -212,6 +212,7 @@ module.exports = {
 			const {email} = req.body;
 			const {cliente} = req.session;
 			const {cliente_id} = cliente;
+			let espera = [];
 
 			// Actualiza cookies - no se actualiza 'session'', para que se ejecute el middleware 'clientesSession'
 			res.cookie("email", email, {maxAge: unDia});
@@ -222,21 +223,29 @@ module.exports = {
 
 			// Si corresponde, le cambia el status a 'mailValidado'
 			if (usuario.statusRegistro_id == mailPendValidar_id)
-				await procesos.actualizaElStatusDelUsuario(usuario, "mailValidado");
+				espera.push(procesos.actualizaElStatusDelUsuario(usuario, "mailValidado"));
 
-			// Actualiza datos en la BD - tabla 'usuarios' (await necesario para 'session')
+			// Actualiza datos en la BD - tabla 'usuarios'
 			const fechaUltNaveg = [usuario.fechaUltNaveg, cliente.fechaUltNaveg].sort((a, b) => (a > b ? -1 : 1))[0];
-			const datos = {diasSinCartelBenefs: 0, fechaUltNaveg};
-			await baseDeDatos.actualizaPorId("usuarios", usuario.id, datos);
+			const datos = {fechaUltNaveg, diasSinCartelBenefs: 0};
+			espera.push(baseDeDatos.actualizaPorId("usuarios", usuario.id, datos));
 
-			// Actualiza datos en la BD - tabla 'navegsDelDia' (await necesario para 'session')
-			await baseDeDatos
-				.actualizaPorCondicion(
-					"navegsDelDia",
-					{cliente_id, fecha: hoy}, // el 'cliente_id' puede diferir del 'usuario.cliente_id'
-					{usuario_id, cliente_id: usuario.cliente_id}
-				)
-				.then(() => procesos.eliminaDuplicados(usuario.id));
+			// Actualiza datos en la tabla 'navegsDelDia'
+			espera.push(
+				baseDeDatos
+					.actualizaPorCondicion(
+						"navegsDelDia",
+						{cliente_id, fecha: hoy}, // el 'cliente_id' puede diferir del 'usuario.cliente_id'
+						{usuario_id, cliente_id: usuario.cliente_id}
+					)
+					.then(() => procesos.eliminaDuplicados(usuario.id))
+			);
+
+			// Acciones si el cliente estaba como visita
+			if (!cliente_id.startsWith("U")) {
+				baseDeDatos.eliminaPorCondicion("visitas", {cliente_id}); // elimina el registro de la tabla
+				res.cookie("cliente_id", usuario.cliente_id, {maxAge: unDia * 30}); // actualiza la cookie
+			}
 
 			// Limpia la información obsoleta
 			res.clearCookie("intentosLogin");
@@ -244,6 +253,7 @@ module.exports = {
 			delete req.session.cliente;
 
 			// Redirecciona
+			await Promise.all(espera)
 			return res.redirect("/usuarios/garantiza-login-y-completo");
 		},
 		logout: (req, res) => {

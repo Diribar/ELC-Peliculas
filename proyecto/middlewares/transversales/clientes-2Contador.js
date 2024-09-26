@@ -14,15 +14,15 @@ module.exports = (req, res, next) => {
 	if (!cliente.recienCreado && fechaUltNaveg == hoy) return next();
 
 	// Más variables
-	let {diasSinCartelBeneficios, diasNaveg} = cliente;
+	let {diasSinCartelBenefs, diasNaveg} = cliente;
 	const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
 
 	// Actualiza la tabla 'usuarios/visitas' y la variable 'cliente'
 	fechaUltNaveg = hoy;
 	diasNaveg++;
-	if (!usuario) diasSinCartelBeneficios++;
-	const datos = {fechaUltNaveg, diasSinCartelBeneficios, diasNaveg};
-	cliente = {...cliente, ...datos};
+	if (!usuario) diasSinCartelBenefs++;
+	const datos = {fechaUltNaveg, diasSinCartelBenefs, diasNaveg};
+	for (let campo in datos) cliente[campo] = datos[campo];
 	baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, datos);
 
 	// Contador de clientes
@@ -53,14 +53,6 @@ let contadorDeClientes = async (usuario_id, cliente) => {
 	let datos = {...condicion, diasNaveg, visitaCreadaEn};
 	if (usuario_id) datos.usuario_id = usuario_id;
 	baseDeDatos.agregaRegistro("navegsDelDia", datos);
-
-	// Variables de usuario o visita
-	const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
-	const id = await baseDeDatos.obtienePorCondicion(tabla, {cliente_id}).then((n) => n.id); // obtiene el id
-
-	// Actualizaciones en el registro del cliente
-	baseDeDatos.aumentaElValorDeUnCampo(tabla, id, "diasNaveg"); // aumenta el valor del campo 'diasNaveg'
-	if (!usuario_id) baseDeDatos.aumentaElValorDeUnCampo(tabla, id, "diasSinCartelBenefs"); // si no está logueado, aumenta el valor del campo 'diasSinCartelBenefs'
 
 	// Fin
 	return;

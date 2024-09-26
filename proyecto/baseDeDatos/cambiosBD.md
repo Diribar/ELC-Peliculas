@@ -6,3 +6,4 @@ CREATE TABLE `aux_navegs_por hora` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+ALTER TABLE c19353_elc.us_usuarios CHANGE diasNaveg diasNaveg smallint(5) unsigned NOT NULL AFTER diasSinCartelBenefs;

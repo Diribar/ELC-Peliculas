@@ -86,9 +86,9 @@ module.exports = async (req, res, next) => {
 					titulo: "Beneficios de crear un usuario",
 				};
 			informacion.mensajes = [
-				"Marcar tus preferencias por película (la quiero ver, ya la vi, no me interesa)",
-				"Ver mis últimas películas consultadas",
-				"Tener tus mismas preferencias en distintos dispositivos (ej: mobil y laptop)",
+				"Te permite marcar tus preferencias por película:<ul><li><em>la quiero ver</em></li><li><em>ya la vi</em></li><li><em>no me interesa</em></li></ul>",
+				"Ver tus preferencias en distintos dispositivos (ej: celular y laptop)",
+				"Ver tus últimas películas consultadas",
 			];
 		}
 		// Usuario sin completar
@@ -104,8 +104,8 @@ module.exports = async (req, res, next) => {
 		informacion.trabajando = true;
 
 		// Actualiza la tabla usuario y la variable usuario
-		baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {diasSinCartelBeneficios: 0});
-		cliente.diasSinCartelBeneficios = 0;
+		baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {diasSinCartelBenefs: 0});
+		cliente.diasSinCartelBenefs = 0;
 	}
 
 	// Fin

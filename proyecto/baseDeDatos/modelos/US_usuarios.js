@@ -6,6 +6,7 @@ module.exports = (sequelize, dt) => {
 		fechaUltNaveg: {type: dt.DATE},
 		rolUsuario_id: {type: dt.INTEGER},
 		diasSinCartelBenefs: {type: dt.INTEGER}, // default '0' (similar a 'diasSinLogin', pero vuelve a cero cuando se muestra el cartel)
+		diasNaveg: {type: dt.INTEGER},
 
 		email: {type: dt.STRING(100)},
 		contrasena: {type: dt.STRING(50)},
@@ -47,7 +48,6 @@ module.exports = (sequelize, dt) => {
 		fechaContrasena: {type: dt.DATE},
 		fechaRevisores: {type: dt.DATE},
 
-		diasNaveg: {type: dt.INTEGER},
 		visitaCreadaEn: {type: dt.DATE},
 		creadoEn: {type: dt.DATE},
 		completadoEn: {type: dt.DATE},
