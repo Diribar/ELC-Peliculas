@@ -221,12 +221,13 @@ app.set("views", [
 
 	// Middlewares transversales
 	app.use(require("./middlewares/transversales/urlsUsadas")); // para tener los últimos url
-	app.use(require("./middlewares/transversales/clientes-0esPersona.js")); // para obtener el cliente
-	app.use(require("./middlewares/transversales/clientes-1Session.js")); // para obtener el cliente
-	app.use(require("./middlewares/transversales/clientes-2Contador.js")); // para obtener el usuario
+	app.use(require("./middlewares/transversales/clientes-0Bienvenido.js")); // para filtrar los 'bots'
+	app.use(require("./middlewares/transversales/clientes-1Session.js")); // para obtener el cliente y usuario
+	app.use(require("./middlewares/transversales/clientes-2Contador.js")); // para contar la cantidad de días de navegación
 	app.use(require("./middlewares/transversales/clientes-3Carteles.js")); // en función de las novedades, revisa si se debe mostrar algún cartel
 
 	// Urls que dependen de la variable 'global'
+	// app.use("/:uno/:dos", (req,res)=>{res.send(req.params)});
 	app.use("/", require("./rutas_y_contrs/2.0-Familias/FM-Rutas")); // incluye algunas de 'revisión' y corrección
 	app.use("/producto/agregar", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas"));
 	app.use("/producto", require("./rutas_y_contrs/2.1-Prods-RUD/PR-Rutas"));
