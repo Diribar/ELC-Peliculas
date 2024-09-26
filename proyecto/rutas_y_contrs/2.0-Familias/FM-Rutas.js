@@ -44,23 +44,20 @@ router.get("/crud/api/obtiene-capitulos", API.obtieneCapitulos);
 router.get("/crud/api/obtiene-info-del-be", API.obtieneInfo);
 router.get("/crud/api/obtiene-registro", API.obtieneRegistro);
 
-// Vistas form - Motivos
-router.get("/:entidad/inactivar", aptoCRUD, m.capturaActivar, vista.form.motivos);
-router.get("/revision/:entidad/rechazar", aptoCRUD, m.capturaActivar, vista.form.motivos);
-
-// Vistas form - Historial
-router.get("/:entidad/recuperar", aptoCRUD, m.capturaActivar, vista.form.historial);
-router.get("/revision/:entidad/inactivar", aptoCRUD, m.capturaActivar, vista.form.historial);
-router.get("/revision/:entidad/recuperar", aptoCRUD, m.capturaActivar, vista.form.historial);
+// Vistas - Historial
 router.get("/:entidad/historial", aptoDetalle, m.statusCompara, vista.form.historial);
 
-// Vistas -  CRUD: Eliminado
+// Vistas - Inactivar
+router.get("/:entidad/inactivar", aptoCRUD, m.capturaActivar, vista.form.motivos);
+router.post("/:entidad/inactivar", aptoCRUD, m.motivoNecesario, m.capturaInactivar, vista.inacRecupGuardar);
+
+// Vistas - Recuperar
+router.get("/:entidad/recuperar", aptoCRUD, m.capturaActivar, vista.form.historial);
+router.post("/:entidad/recuperar", aptoCRUD, m.comentNecesario, m.capturaInactivar, vista.inacRecupGuardar);
+
+// Vistas - Eliminar
 router.get("/:entidad/eliminadoPorCreador", eliminadoPorCreador, vista.form.elimina);
 router.get("/:entidad/eliminar", aptoEliminar, vista.form.elimina);
-
-// Vistas post
-router.post("/:entidad/inactivar", aptoCRUD, m.motivoNecesario, m.capturaInactivar, vista.inacRecupGuardar);
-router.post("/:entidad/recuperar", aptoCRUD, m.comentNecesario, m.capturaInactivar, vista.inacRecupGuardar);
 
 // Vistas - Correcciones
 router.get("/correccion/motivo", correcs, m.statusCorrecto, m.capturaActivar, vista.correcs.motivoForm);
