@@ -401,7 +401,7 @@ origen = origen ? "&origen=" + origen : "";
 const rutas = {
 	validar: "/producto/api/valida/?",
 	versiones: "/producto/api/obtiene-original-y-edicion/?entidad=" + entidad + "&id=" + id,
-	variablesBE: "/producto/api/edicion/obtiene-variables/?entidad=" + entidad + "&id=" + id,
+	variablesBE: "/producto/api/edicion/obtiene-variables-prod/?entidad=" + entidad + "&id=" + id,
 	eliminaEdicG: "/producto/api/edicion-guardada/eliminar/?entidad=" + entidad + "&id=" + id,
 	recargaLaVistaSinEdicion: location.pathname + "?entidad=" + entidad + "&id=" + id + origen,
 };
