@@ -56,8 +56,8 @@ router.get("/:entidad/rc/:id", aptoCRUD, m.capturaActivar, vista.form.historial)
 router.post("/:entidad/rc/:id", aptoCRUD, m.comentNecesario, m.capturaInactivar, vista.inacRecupGuardar);
 
 // Vistas - Eliminar
-router.get("/:entidad/epc/:id", eliminadoPorCreador, vista.form.elimina);
-router.get("/:entidad/el/:id", aptoEliminar, vista.form.elimina);
+router.get("/:entidad/ec:siglaFam/:id", eliminadoPorCreador, vista.form.elimina);
+router.get("/:entidad/el:siglaFam/:id", aptoEliminar, vista.form.elimina);
 
 // Vistas - Correcciones
 router.get("/:entidad/cm/:id", correcs, m.capturaActivar, m.statusCorrecto, vista.correcs.motivoForm);
