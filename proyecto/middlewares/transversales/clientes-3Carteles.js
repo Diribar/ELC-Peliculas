@@ -86,9 +86,9 @@ module.exports = async (req, res, next) => {
 					titulo: "Beneficios de crear un usuario",
 				};
 			informacion.mensajes = [
-				"Marcar tus preferencias por película<ul><li>la quiero ver</li><li>ya la vi</li><li>no me interesa</li></ul>",
-				"Ver mis últimas películas consultadas",
-				"Ver tus preferencias en distintos dispositivos (ej: mobil y laptop)",
+				"Te permite marcar tus preferencias por película:<ul><li><em>la quiero ver</em></li><li><em>ya la vi</em></li><li><em>no me interesa</em></li></ul>",
+				"Ver tus preferencias en distintos dispositivos (ej: celular y laptop)",
+				"Ver tus últimas películas consultadas",
 			];
 		}
 		// Usuario sin completar
