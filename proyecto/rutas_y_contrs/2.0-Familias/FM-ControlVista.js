@@ -299,6 +299,7 @@ module.exports = {
 		if (originalUrl.endsWith("/")) originalUrl = originalUrl.slice(0, -1);
 
 		// Reemplaza la ruta anterior por la actual
+		const rutasActualizadas = comp.rutasActualizadas(entidad);
 		const rutasAnts = Object.keys(rutasActualizadas);
 		const rutaAnt = rutasAnts.find((n) => originalUrl.includes(n));
 
