@@ -233,9 +233,8 @@ app.set("views", [
 	app.use("/producto", require("./rutas_y_contrs/2.1-Prods-RUD/PR-RutasAnt"));
 	app.use("/rclv", require("./rutas_y_contrs/2.2-RCLVs/RCLV-RutasAnt"));
 
-	app.use("/", require("./rutas_y_contrs/2.0-Familias/FM-Rutas")); // incluye algunas de 'revisión' y corrección
-	app.use("/producto/ap", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas")); // producto
-	app.use("/:entidad/ap", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas")); // producto
+	app.use("/:entidad", require("./rutas_y_contrs/2.0-Familias/FM-Rutas")); // incluye algunas de 'revisión' y corrección
+	app.use("/:entidad", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas")); // producto
 	app.use("/:entidad", require("./rutas_y_contrs/2.1-Prods-RUD/PR-Rutas")); // producto
 	app.use("/:entidad", require("./rutas_y_contrs/2.2-RCLVs/RCLV-Rutas")); // rclv
 	app.use("/links", require("./rutas_y_contrs/2.3-Links/LK-Rutas"));
