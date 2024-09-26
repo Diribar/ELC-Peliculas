@@ -11,7 +11,7 @@ const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
 
 // Middlewares - Específicos del registro
 const entValida = require("../../middlewares/porRegistro/entidadValida");
-const IDvalido = require("../../middlewares/porRegistro/IDvalido");
+const iDvalido = require("../../middlewares/porRegistro/iDvalido");
 const edicion = require("../../middlewares/porRegistro/edicionVista");
 const statusCorrecto = require("../../middlewares/porRegistro/statusCorrecto");
 const rclvNoEditable = require("../../middlewares/porRegistro/rclvNoEditable");
@@ -27,8 +27,8 @@ const multer = require("../../middlewares/varios/multer");
 // Middlewares - Consolidados
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 const aptoAgregar = [entValida, ...aptoUsuario];
-const aptoDetalle = [entValida, IDvalido, capturaInactivar];
-const aptoCRUD = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, permUserReg];
+const aptoDetalle = [entValida, iDvalido, capturaInactivar];
+const aptoCRUD = [entValida, iDvalido, statusCorrecto, ...aptoUsuario, permUserReg];
 const aptoEdicion = [...aptoCRUD, edicion, rclvNoEditable];
 
 // APIs - Detalle

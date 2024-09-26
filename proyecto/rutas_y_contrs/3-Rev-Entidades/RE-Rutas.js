@@ -17,7 +17,7 @@ const m = {
 
 	// Específicos del registro
 	entValida: require("../../middlewares/porRegistro/entidadValida"),
-	IDvalido: require("../../middlewares/porRegistro/IDvalido"),
+	iDvalido: require("../../middlewares/porRegistro/iDvalido"),
 	linkAltaBaja: require("../../middlewares/porRegistro/linkAltaBaja"),
 	rutaCRUD_ID: require("../../middlewares/varios/rutaCRUD_ID"),
 	statusCorrecto: require("../../middlewares/porRegistro/statusCorrecto"),
@@ -40,7 +40,7 @@ const m = {
 // Middlewares - Consolidados
 const usuarioBase = [m.usAltaTerm, m.usPenalizaciones];
 const aptoUsuario = [...usuarioBase, m.usAptoInput];
-const aptoCRUD = [m.entValida, m.IDvalido, m.statusCorrecto, ...usuarioBase, m.permUserReg];
+const aptoCRUD = [m.entValida, m.iDvalido, m.statusCorrecto, ...usuarioBase, m.permUserReg];
 const aptoEdicion = [...aptoCRUD, m.usRolRevPERL, m.edicionVista];
 
 // APIs - Tablero
