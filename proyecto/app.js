@@ -227,12 +227,12 @@ app.set("views", [
 	app.use(require("./middlewares/transversales/clientes-3Carteles.js")); // en función de las novedades, revisa si se debe mostrar algún cartel
 
 	// Urls que dependen de la variable 'global'
+	// app.use("/:uno/:dos", (req,res)=>{res.send(req.params)});
 	app.use("/", require("./rutas_y_contrs/2.0-Familias/FM-Rutas")); // incluye algunas de 'revisión' y corrección
 	app.use("/producto/agregar", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas"));
 	app.use("/producto", require("./rutas_y_contrs/2.1-Prods-RUD/PR-Rutas"));
 	app.use("/rclv", require("./rutas_y_contrs/2.2-RCLVs/RCLV-Rutas"));
 
-	// app.use("/:uno/:dos", (req,res)=>{res.send(req.params)});
 	app.use("/producto/ap", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas")); // producto
 	app.use("/:entidad/ap", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas")); // producto
 	app.use("/:entidad", require("./rutas_y_contrs/2.1-Prods-RUD/PR-Rutas")); // producto
