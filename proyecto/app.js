@@ -235,8 +235,8 @@ app.set("views", [
 	// app.use("/:uno/:dos", (req,res)=>{res.send(req.params)});
 	app.use("/producto/ap", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas")); // producto
 	app.use("/:entidad/ap", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas")); // producto
-	app.use("/:entidad", require("./rutas_y_contrs/2.1-Prods-RUD/PR-Rutas.js")); // producto
-	app.use("/:entidad", require("./rutas_y_contrs/2.2-RCLVs/RCLV-RutasViejo.js")); // rclv
+	app.use("/:entidad", require("./rutas_y_contrs/2.1-Prods-RUD/PR-Rutas")); // producto
+	app.use("/:entidad", require("./rutas_y_contrs/2.2-RCLVs/RCLV-Rutas")); // rclv
 	app.use("/links", require("./rutas_y_contrs/2.3-Links/LK-Rutas"));
 	app.use("/usuarios", require("./rutas_y_contrs/1.1-Usuarios/US-Rutas"));
 	app.use("/revision/usuarios", require("./rutas_y_contrs/1.2-Rev-Usuarios/RU-Rutas"));
