@@ -78,7 +78,7 @@ main {
 
 /* Formato del desperdicio */
 #datosLargos tbody :is(td.desperdicio, td:has(*:disabled)) {background: var(--verde-intermedio);}
-#datosLargos tbody#linksCRUD :is(td.desperdicio, td:has(*:disabled)) .inputError .fa-circle-check {display: none;}
+#datosLargos tbody#linksCrud :is(td.desperdicio, td:has(*:disabled)) .inputError .fa-circle-check {display: none;}
 #datosLargos tbody#revisionEnts :is(td:has(*:disabled)) .inputError .fa-circle-check {cursor: pointer;}
 #datosLargos tbody td:has(*:disabled) * {background: transparent; border-color: transparent;}
 

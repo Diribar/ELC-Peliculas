@@ -59,7 +59,7 @@ module.exports = {
 		let cond = {};
 		cond.propio = link.statusSugeridoPor_id == usuario_id;
 		cond.ajeno = !cond.propio;
-		cond.rud = tema == "linksCRUD";
+		cond.rud = tema == "linksCrud";
 		cond.revision = tema == "revisionEnts";
 
 		// Condiciones de status

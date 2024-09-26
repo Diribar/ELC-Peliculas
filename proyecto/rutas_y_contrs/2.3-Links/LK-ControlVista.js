@@ -7,7 +7,7 @@ const procesos = require("./LK-FN-Procesos");
 module.exports = {
 	abm: async (req, res) => {
 		// Variables
-		const tema = "linksCRUD";
+		const tema = "linksCrud";
 		const codigo = "abmLinks";
 		const {entidad, id, grupo, origen} = req.query;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -60,7 +60,7 @@ module.exports = {
 	},
 	visualizacion: async (req, res) => {
 		// Variables
-		const tema = "linksCRUD";
+		const tema = "linksCrud";
 		const codigo = "visualizacion";
 		const {link_id} = req.query;
 		const usuario = req.session.usuario ? req.session.usuario : null;
