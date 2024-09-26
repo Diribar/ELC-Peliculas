@@ -68,6 +68,15 @@ module.exports = {
 				? "edics"
 				: "";
 		},
+		siglaFam: (entidad) => {
+			return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
+				? "p"
+				: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
+				? "r"
+				: entidad == "usuarios"
+				? "u"
+				: "";
+		},
 		entidadNombre: (entidad) => FN.entidadNombre(entidad),
 		campo_id: (entidad) => {
 			return entidad == "peliculas"
