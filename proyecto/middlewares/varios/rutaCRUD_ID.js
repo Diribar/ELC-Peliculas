@@ -6,7 +6,7 @@ module.exports = async (req, res, next) => {
 	res.locals.rutaCRUD = encodeURIComponent(ruta);
 
 	// Averigua el id del primer capítulo de la colección
-	const {entidad, id} = req.query;
+	const {entidad, id} = req.params;
 	if (entidad == "colecciones") {
 		const condicion = {coleccion_id: id, temporada: 1, capitulo: 1};
 		res.locals.capID = await baseDeDatos.obtienePorCondicion("capitulos", condicion).then((n) => (n ? n.id : null));
