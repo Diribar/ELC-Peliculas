@@ -345,7 +345,7 @@ module.exports = {
 		form: async (req, res) => {
 			// Tema y Código
 			const tema = "revisionEnts";
-			const {ruta} = comp.reqBasePathUrl(req);
+			const {ruta} = comp.partesDelUrl(req);
 			let codigo = ruta.slice(1, -1); // No se puede poner 'const', porque más adelante puede cambiar
 
 			// Variables

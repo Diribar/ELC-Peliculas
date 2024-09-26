@@ -459,7 +459,7 @@ module.exports = {
 			// Variables
 			const {entidad, id, origen, desaprueba, prodEntidad, prodId} = req.query;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const {ruta} = comp.reqBasePathUrl(req);
+			const {ruta} = comp.partesDelUrl(req);
 			const codigo = procsFM.codigo({ruta, familia}); // 'alta', 'rechazar', 'revisionInactivar', 'revisionRecuperar'
 			const aprobado = !desaprueba || codigo == "alta";
 			const producto = familia == "producto";
@@ -486,7 +486,7 @@ module.exports = {
 			const ahora = comp.fechaHora.ahora();
 			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
-			const {baseUrl} = comp.reqBasePathUrl(req);
+			const {baseUrl} = comp.partesDelUrl(req);
 			const usuario_id = original.statusSugeridoPor_id;
 			const campoDecision = petitFamilias + (aprobado ? "Aprob" : "Rech");
 

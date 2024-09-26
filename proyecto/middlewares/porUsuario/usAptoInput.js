@@ -127,7 +127,7 @@ module.exports = async (req, res, next) => {
 	// VERIFICACION 4: Revisa si requiere el cartel de "responsabilidad"
 	if (!informacion) {
 		// Variables
-		const {baseUrl} = comp.reqBasePathUrl(req);
+		const {baseUrl} = comp.partesDelUrl(req);
 		const familia = baseUrl.startsWith("/producto")
 			? {campo: "prods", vista: "PA"}
 			: // : baseUrl.startsWith("/rclv")

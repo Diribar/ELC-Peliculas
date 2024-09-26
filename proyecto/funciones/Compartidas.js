@@ -1261,7 +1261,7 @@ module.exports = {
 		// Fin
 		return mailEnviado;
 	},
-	reqBasePathUrl: (req) => {
+	partesDelUrl: (req) => {
 		// Obtiene los resultados
 		const baseUrl = req.baseUrl
 			? req.baseUrl

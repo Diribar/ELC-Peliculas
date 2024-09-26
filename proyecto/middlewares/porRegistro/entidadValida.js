@@ -2,12 +2,23 @@
 
 module.exports = (req, res, next) => {
 	// Variables
-	const {entidad, siglaFam} = req.params;
+	const {entidad} = req.params;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
-	let informacion;
+	const {baseUrl, ruta} = comp.partesDelUrl(req);
+	let informacion, siglaFam;
 
 	// Verifica que existe la entidad
 	if (!entidad) informacion = {mensajes: ["Falta el dato de la 'entidad'"], iconos: [vistaAnterior]};
+
+	// Configura 'siglaFam'
+	if (!informacion) {
+		siglaFam =
+			req.params && req.params.siglaFam
+				? req.params.siglaFam //
+				:
+				?
+				: null;
+	}
 
 	// Verifica que se reconozca la 'siglaFam'
 	if (!informacion && siglaFam && !["p", "r"].includes(siglaFam))

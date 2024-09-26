@@ -21,7 +21,7 @@ module.exports = async (req, res, next) => {
 		usuario_id: req.session.usuario.id,
 		tipoUsuario: req.originalUrl.startsWith("/revision/") ? "revisores" : "usuarios",
 		include: ["statusRegistro"],
-		baseUrl: comp.reqBasePathUrl(req).baseUrl,
+		baseUrl: comp.partesDelUrl(req).baseUrl,
 
 		// Vistas
 		vistaSinCaptura: variables.vistaAnterior(req.session.urlSinCaptura),

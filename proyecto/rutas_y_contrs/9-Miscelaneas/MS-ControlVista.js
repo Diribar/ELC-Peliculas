@@ -21,7 +21,7 @@ module.exports = {
 		cookies: (req, res) => res.send(req.cookies), // cookies
 		rclvs: async (req, res) => {
 			// Variables
-			const {ruta} = comp.reqBasePathUrl(req);
+			const {ruta} = comp.partesDelUrl(req);
 			const indice = ruta.lastIndexOf("/");
 			const rclv = ruta.slice(indice + 1);
 			const condicion = {id: {[Op.ne]: 1}};

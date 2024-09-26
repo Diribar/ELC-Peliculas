@@ -5,7 +5,7 @@ module.exports = async (req, res, next) => {
 	const {entidad, id} = req.params;
 	const usuario_id = req.session.usuario.id;
 	const registro = await baseDeDatos.obtienePorId(entidad, id);
-	const {baseUrl} = comp.reqBasePathUrl(req);
+	const {baseUrl} = comp.partesDelUrl(req);
 	const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 
 	// Si está recién creado y se lo quiere usar en una vista distinta a 'revisión', no se captura
