@@ -7,15 +7,23 @@ module.exports = (req, res, next) => {
 
 	// Variables
 	const {usuario, cliente} = req.session;
-	const {cliente_id, fechaUltNaveg} = cliente;
-	const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
+	const {cliente_id} = cliente;
+	let {fechaUltNaveg} = cliente;
 
 	// Si no está recién creado y la fecha es igual a hoy, interrumpe la función
 	if (!cliente.recienCreado && fechaUltNaveg == hoy) return next();
 
-	// Actualiza 'fechaUltNaveg' en la tabla 'usuarios/visitas' y en la variable 'cliente'
-	baseDeDatos.actualizaTodosPorCondicion(tabla, {cliente_id}, {fechaUltNaveg: hoy});
-	cliente.fechaUltNaveg = hoy;
+	// Más variables
+	let {diasSinCartelBeneficios, diasNaveg} = cliente;
+	const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
+
+	// Actualiza la tabla 'usuarios/visitas' y la variable 'cliente'
+	fechaUltNaveg = hoy;
+	diasNaveg++;
+	if (!usuario) diasSinCartelBeneficios++;
+	const datos = {fechaUltNaveg, diasSinCartelBeneficios, diasNaveg};
+	cliente = {...cliente, ...datos};
+	baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, datos);
 
 	// Contador de clientes
 	const usuario_id = usuario ? usuario.id : null;
@@ -34,9 +42,7 @@ module.exports = (req, res, next) => {
 
 let contadorDeClientes = async (usuario_id, cliente) => {
 	// Variables
-	const {cliente_id, visitaCreadaEn} = cliente;
-	let {diasNaveg} = cliente;
-	diasNaveg++;
+	const {cliente_id, diasNaveg, visitaCreadaEn} = cliente;
 
 	// Si ya existe un registro del 'cliente_id' en esta fecha, interrumpe la función
 	const condicion = {fecha: hoy, cliente_id};

@@ -139,7 +139,7 @@ module.exports = {
 
 			// Elimina
 			const condics = {usuario_id: usuario_id, entidad, entidad_id};
-			await baseDeDatos.eliminaTodosPorCondicion("calRegistros", condics);
+			await baseDeDatos.eliminaPorCondicion("calRegistros", condics);
 
 			// Actualiza las calificaciones del producto
 			await procesos.actualizaCalifProd({entidad, entidad_id});

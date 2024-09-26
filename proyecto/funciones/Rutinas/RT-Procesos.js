@@ -506,10 +506,10 @@ module.exports = {
 				const comunicadoEn = new Date();
 
 				// Elimina los que corresponda
-				await baseDeDatos.eliminaTodosPorCondicion("statusHistorial", condicion);
+				await baseDeDatos.eliminaPorCondicion("statusHistorial", condicion);
 
 				// Agrega la fecha 'comunicadoEn'
-				await baseDeDatos.actualizaTodosPorCondicion("statusHistorial", {id: ids}, {comunicadoEn});
+				await baseDeDatos.actualizaPorCondicion("statusHistorial", {id: ids}, {comunicadoEn});
 
 				// Fin
 				return;

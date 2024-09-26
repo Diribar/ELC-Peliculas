@@ -74,7 +74,7 @@ module.exports = {
 			req.session.login = {datos: {email}};
 
 			// Elimina el registro de visita y su session
-			baseDeDatos.eliminaTodosPorCondicion("visitas", {cliente_id: cliente_idViejo});
+			baseDeDatos.eliminaPorCondicion("visitas", {cliente_id: cliente_idViejo});
 			delete req.session.cliente;
 
 			// Devuelve la info

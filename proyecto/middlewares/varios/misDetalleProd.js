@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
 
 	// Agrega el registro
 	baseDeDatos
-		.eliminaTodosPorCondicion("misConsultas", condicion) // Elimina el registro que tenga el usuario para el producto
+		.eliminaPorCondicion("misConsultas", condicion) // Elimina el registro que tenga el usuario para el producto
 		.then(() => baseDeDatos.agregaRegistro("misConsultas", condicion)); // Agrega un registro del usuario para el producto
 
 	// Fin

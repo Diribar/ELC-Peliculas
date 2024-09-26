@@ -211,7 +211,7 @@ module.exports = {
 		// 2. Actualiza el campo 'prodAprob' en los links
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const condicion = {[campo_id]: registro.id};
-		baseDeDatos.actualizaTodosPorCondicion("links", condicion, {prodAprob: true});
+		baseDeDatos.actualizaPorCondicion("links", condicion, {prodAprob: true});
 
 		// 3. Si es una colección, revisa si corresponde aprobar capítulos
 		if (entidad == "colecciones") await this.capsAprobs(registro.id);
@@ -234,7 +234,7 @@ module.exports = {
 			// Actualiza prodAprob en sus links
 			if (registro.links && registro.links.length) {
 				const campo_id = entidad == "colecciones" ? "grupoCol_id" : comp.obtieneDesdeEntidad.campo_id(entidad);
-				await baseDeDatos.actualizaTodosPorCondicion("links", {[campo_id]: registro.id}, {prodAprob});
+				await baseDeDatos.actualizaPorCondicion("links", {[campo_id]: registro.id}, {prodAprob});
 			}
 
 			// Rutina por entidad RCLV

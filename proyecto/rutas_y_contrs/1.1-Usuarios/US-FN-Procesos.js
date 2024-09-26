@@ -78,21 +78,17 @@ module.exports = {
 
 		// Fin
 		return {
-			mensajes: [
-				"El ingreso de información a compartir con nuestros usuarios, requiere responsabilidad y será revisada por nuestro equipo de revisores.",
-				"Te pedimos que cuides nuestra reputación.",
-				"Podés gestionar el permiso con la flecha hacia la derecha.",
-			],
+			mensajes: mensajeAptoInput,
 			iconos: [
 				variables.vistaAnterior(linkVolver),
 				{
 					clase: iconos.derecha,
 					link: "/usuarios/perennes",
-					titulo: "Ir a 'Solicitud de Autorización de Inputs'",
+					titulo: "Obtener el rol 'Apto Input'",
 					autofocus: true,
 				},
 			],
-			titulo: "Aviso",
+			titulo: "Rol 'Apto Input'",
 			trabajando: true,
 		};
 	},

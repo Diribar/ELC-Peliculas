@@ -135,7 +135,7 @@ module.exports = async (req, res, next) => {
 		// Acciones si no existe ese registro
 		if (!prodRclvCapturado) {
 			const {entidad, entidad_id} = captura;
-			await baseDeDatos.eliminaTodosPorCondicion("capturas", {entidad, entidad_id});
+			await baseDeDatos.eliminaPorCondicion("capturas", {entidad, entidad_id});
 			return res.redirect(req.originalUrl);
 		}
 		const mensajes = [

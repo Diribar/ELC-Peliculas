@@ -813,7 +813,7 @@ module.exports = {
 		const esActoresSiempre = campo == "actores" && [dibujosAnimados, documental].includes(edicion.actores);
 		if (camposTransfCaps.sinDifs.includes(campo) || esActoresSiempre) {
 			const condicion = {coleccion_id: original.id};
-			await baseDeDatos.actualizaTodosPorCondicion("capitulos", condicion, novedad);
+			await baseDeDatos.actualizaPorCondicion("capitulos", condicion, novedad);
 		}
 
 		// Campos para los que se puede preservar el valor según el caso
@@ -832,7 +832,7 @@ module.exports = {
 
 			// Reemplaza los valores
 			if (esOtroCampo || (esRclv_id && !noEsVarios) || (esEpocaOcurrencia && !noEsVarias))
-				await baseDeDatos.actualizaTodosPorCondicion("capitulos", condicion, novedad);
+				await baseDeDatos.actualizaPorCondicion("capitulos", condicion, novedad);
 		}
 
 		// Fin
@@ -882,7 +882,7 @@ module.exports = {
 					if (edicion.avatar) comp.gestionArchivos.elimina(carpetaExterna + carpeta + "/Revisar", edicion.avatar);
 
 				// Elimina las ediciones
-				await baseDeDatos.eliminaTodosPorCondicion(entidadEdic, condicion);
+				await baseDeDatos.eliminaPorCondicion(entidadEdic, condicion);
 			}
 
 			// Productos
@@ -892,12 +892,12 @@ module.exports = {
 
 				// Elimina los registros de las entidades dependientes, comunes a todos los productos
 				for (let entDepen of ["prodsComplem", "linksEdicion", "links"])
-					espera.push(baseDeDatos.eliminaTodosPorCondicion(entDepen, condicion));
+					espera.push(baseDeDatos.eliminaPorCondicion(entDepen, condicion));
 
 				// Elimina los registros de las entidades dependientes, específicos de las colecciones
 				if (entidad == "colecciones")
 					for (let entDepen of ["capitulos", "capsSinLink"])
-						espera.push(baseDeDatos.eliminaTodosPorCondicion(entDepen, {coleccion_id: id}));
+						espera.push(baseDeDatos.eliminaPorCondicion(entDepen, {coleccion_id: id}));
 
 				// Fin
 				espera = await Promise.all(espera);
@@ -914,7 +914,7 @@ module.exports = {
 			const ediciones = await baseDeDatos.obtieneTodosPorCondicion("prodsEdicion", {[rclv_id]: rclvID});
 			if (ediciones.length) {
 				// Les borra el vínculo
-				await baseDeDatos.actualizaTodosPorCondicion("prodsEdicion", {[rclv_id]: rclvID}, {[rclv_id]: null});
+				await baseDeDatos.actualizaPorCondicion("prodsEdicion", {[rclv_id]: rclvID}, {[rclv_id]: null});
 
 				// Revisa si tiene que eliminar alguna edición - la rutina no necesita este resultado
 				FN.eliminaEdicionesVacias(ediciones, rclv_id);
@@ -943,7 +943,7 @@ module.exports = {
 			if (prods.length) {
 				// Les actualiza el campo_idRCLV al valor 'Ninguno'
 				for (let entidad of entidades)
-					espera.push(baseDeDatos.actualizaTodosPorCondicion(entidad, {[campo_id]: rclvID}, {[campo_id]: 1}));
+					espera.push(baseDeDatos.actualizaPorCondicion(entidad, {[campo_id]: rclvID}, {[campo_id]: 1}));
 
 				//Revisa si se le debe cambiar el status a algún producto - la rutina no necesita este resultado
 				validacsFM.siHayErroresBajaElStatus(prodsPorEnts);

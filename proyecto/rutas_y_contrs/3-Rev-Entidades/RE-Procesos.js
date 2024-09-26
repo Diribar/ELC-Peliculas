@@ -530,7 +530,7 @@ module.exports = {
 					// Si es una colección en status creadoAprob_id, actualiza sus capítulos que tengan status aprobado
 					if (entidadProd == "colecciones" && errores.impideAprobado) {
 						const condicion = {coleccion_id: prodVinculado.id, statusRegistro_id: aprobado_id};
-						baseDeDatos.actualizaTodosPorCondicion("capitulos", condicion, statusCreadoAprob);
+						baseDeDatos.actualizaPorCondicion("capitulos", condicion, statusCreadoAprob);
 					}
 				}
 			}
@@ -543,7 +543,7 @@ module.exports = {
 				.then((n) => n.map((m) => m.id));
 
 			// Actualiza el campo 'prodAprob' a los links de la colección
-			await baseDeDatos.actualizaTodosPorCondicion("links", {capitulo_id: capsID}, {prodAprob});
+			await baseDeDatos.actualizaPorCondicion("links", {capitulo_id: capsID}, {prodAprob});
 
 			// Fin
 			return;
@@ -1240,7 +1240,7 @@ let FN = {
 		const datos = {[campo_id]: 1};
 
 		// Actualiza
-		await baseDeDatos.actualizaTodosPorCondicion(entidad, condicion, datos);
+		await baseDeDatos.actualizaPorCondicion(entidad, condicion, datos);
 
 		// Fin
 		return;
