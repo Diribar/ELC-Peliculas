@@ -8,21 +8,17 @@ const entValida = require("../../middlewares/porRegistro/entidadValida");
 const iDvalido = require("../../middlewares/porRegistro/iDvalido");
 const entId = [entValida, iDvalido];
 
-// Vistas form - Motivos
-router.get("/producto/inactivar", entId, vista.redireccionar);
-router.get("/rclv/inactivar", entId, vista.redireccionar);
-router.get("/revision/producto/rechazar", entId, vista.redireccionar);
-router.get("/revision/rclv/rechazar", entId, vista.redireccionar);
-
-// Vistas form - Historial
-router.get("/producto/recuperar", entId, vista.redireccionar);
-router.get("/rclv/recuperar", entId, vista.redireccionar);
-router.get("/revision/producto/inactivar", entId, vista.redireccionar);
-router.get("/revision/rclv/inactivar", entId, vista.redireccionar);
-router.get("/revision/producto/recuperar", entId, vista.redireccionar);
-router.get("/revision/rclv/recuperar", entId, vista.redireccionar);
+// Vistas - Historial
 router.get("/producto/historial", entId, vista.redireccionar);
 router.get("/rclv/historial", entId, vista.redireccionar);
+
+// Vistas - Inactivar
+router.get("/producto/inactivar", entId, vista.redireccionar);
+router.get("/rclv/inactivar", entId, vista.redireccionar);
+
+// Vistas - Recuperar
+router.get("/producto/recuperar", entId, vista.redireccionar);
+router.get("/rclv/recuperar", entId, vista.redireccionar);
 
 // Vistas -  CRUD: Eliminado
 router.get("/producto/eliminadoPorCreador", entId, vista.redireccionar);
