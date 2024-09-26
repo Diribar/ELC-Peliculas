@@ -8,28 +8,30 @@ const entValida = require("../../middlewares/porRegistro/entidadValida");
 const iDvalido = require("../../middlewares/porRegistro/iDvalido");
 
 // Vistas form - Motivos
-router.get("/:familia/inactivar", entValida, iDvalido, vista.form.motivos);
-router.get("/revision/:familia/rechazar", entValida, iDvalido, vista.form.motivos);
+router.get("/producto/inactivar", entValida, iDvalido, vista.form.motivos);
+router.get("/rclv/inactivar", entValida, iDvalido, vista.form.motivos);
+router.get("/revision/producto/rechazar", entValida, iDvalido, vista.form.motivos);
+router.get("/revision/rclv/rechazar", entValida, iDvalido, vista.form.motivos);
 
 // Vistas form - Historial
-router.get("/:familia/recuperar", entValida, iDvalido, vista.form.historial);
-router.get("/revision/:familia/inactivar", entValida, iDvalido, vista.form.historial);
-router.get("/revision/:familia/recuperar", entValida, iDvalido, vista.form.historial);
-router.get("/:familia/historial", entValida, iDvalido, vista.form.historial);
+router.get("/producto/recuperar", entValida, iDvalido, vista.form.historial);
+router.get("/rclv/recuperar", entValida, iDvalido, vista.form.historial);
+router.get("/revision/producto/inactivar", entValida, iDvalido, vista.form.historial);
+router.get("/revision/rclv/inactivar", entValida, iDvalido, vista.form.historial);
+router.get("/revision/producto/recuperar", entValida, iDvalido, vista.form.historial);
+router.get("/revision/rclv/recuperar", entValida, iDvalido, vista.form.historial);
+router.get("/producto/historial", entValida, iDvalido, vista.form.historial);
+router.get("/rclv/historial", entValida, iDvalido, vista.form.historial);
 
 // Vistas -  CRUD: Eliminado
-router.get("/:familia/eliminadoPorCreador", entValida, iDvalido, vista.form.elimina);
-router.get("/:familia/eliminar", entValida, iDvalido, vista.form.elimina);
-
-// Vistas post
-router.post("/:familia/inactivar", entValida, iDvalido, vista.inacRecupGuardar);
-router.post("/:familia/recuperar", entValida, iDvalido, vista.inacRecupGuardar);
+router.get("/producto/eliminadoPorCreador", entValida, iDvalido, vista.form.elimina);
+router.get("/rclv/eliminadoPorCreador", entValida, iDvalido, vista.form.elimina);
+router.get("/producto/eliminar", entValida, iDvalido, vista.form.elimina);
+router.get("/rclv/eliminar", entValida, iDvalido, vista.form.elimina);
 
 // Vistas - Correcciones
 router.get("/correccion/motivo", entValida, iDvalido, vista.correcs.motivoForm);
-router.post("/correccion/motivo", entValida, iDvalido, vista.correcs.motivoGuardar);
 router.get("/correccion/status", entValida, iDvalido, vista.correcs.statusForm);
-router.post("/correccion/status", entValida, iDvalido, vista.correcs.statusGuardar);
 
 // Fin
 module.exports = router;
