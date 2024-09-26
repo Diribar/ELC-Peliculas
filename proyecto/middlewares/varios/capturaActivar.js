@@ -2,10 +2,9 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const entidad = req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "";
-	const entId = req.query.id;
+	const {entidad, id} = req.params;
 	const usuario_id = req.session.usuario.id;
-	const registro = await baseDeDatos.obtienePorId(entidad, entId);
+	const registro = await baseDeDatos.obtienePorId(entidad, id);
 	const {baseUrl} = comp.reqBasePathUrl(req);
 	const haceUnaHora = comp.fechaHora.nuevoHorario(-1);
 
@@ -14,7 +13,7 @@ module.exports = async (req, res, next) => {
 
 	// Averigua si el usuario ya lo tiene capturado
 	const haceDosHoras = comp.fechaHora.nuevoHorario(-2);
-	const condicStd = {entidad, entidad_id: entId};
+	const condicStd = {entidad, entidad_id: id};
 	const condicion = {...condicStd, capturadoPor_id: usuario_id, capturadoEn: {[Op.gte]: haceDosHoras}}; // está capturado por el usuario desde hace menos de 2 horas
 	const captura = await baseDeDatos.obtienePorCondicion("capturas", condicion);
 
