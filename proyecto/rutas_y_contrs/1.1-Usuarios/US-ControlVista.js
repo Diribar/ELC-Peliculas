@@ -229,7 +229,7 @@ module.exports = {
 			const datos = {diasSinCartelBenefs: 0, fechaUltNaveg};
 			await baseDeDatos.actualizaPorId("usuarios", usuario.id, datos);
 
-			// Actualiza datos en la BD - tabla 'navegsDelDia' (await necesario para 'session')
+			// Actualiza datos en la tabla 'navegsDelDia' (await necesario para 'session')
 			await baseDeDatos
 				.actualizaPorCondicion(
 					"navegsDelDia",
@@ -237,6 +237,9 @@ module.exports = {
 					{usuario_id, cliente_id: usuario.cliente_id}
 				)
 				.then(() => procesos.eliminaDuplicados(usuario.id));
+
+			// Si el cliente estaba como visita, elimina el registro de la tabla
+			if (!cliente_id.startsWith("U")) baseDeDatos.eliminaPorCondicion("visitas",{cliente_id})
 
 			// Limpia la información obsoleta
 			res.clearCookie("intentosLogin");
