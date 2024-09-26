@@ -15,8 +15,8 @@ module.exports = (req, res, next) => {
 		siglaFam =
 			req.params && req.params.siglaFam
 				? req.params.siglaFam
-				: ruta.slice(3, 1) != "/" // la convención es que el 4° elemento sea la siglaFam
-				? ruta.slice(3, 1)
+				: ruta[3] != "/" // la convención es que el 4° elemento sea la siglaFam
+				? ruta[3]
 				: null;
 
 	// Verificaciones si existe la 'siglaFam'
