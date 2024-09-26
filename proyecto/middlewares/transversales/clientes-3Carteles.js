@@ -20,7 +20,6 @@ module.exports = async (req, res, next) => {
 				"Intentamos reunir todas las películas con valores afines a la Fe Católica.",
 				"Queremos resolver el clásico problema de:<ul><li><em>No sé qué ver</em></li><li><em>Quiero ver una película que me deje algo bueno</em></li></ul>",
 				"Usamos cookies para que tengas una mejor experiencia de usuario.",
-				"Con el ícono de la derecha podés crear un usuario, para acceder a más beneficios.",
 			],
 			iconos: [
 				{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
