@@ -67,7 +67,7 @@ module.exports = async (req, res, next) => {
 			// Actualiza el cliente con el 'cliente_id'
 			cliente_id = "V" + String(cliente.id).padStart(10, "0");
 			cliente.cliente_id = cliente_id;
-			baseDeDatos.actualizaPorId("visitas", cliente.id, {cliente_id});
+			await baseDeDatos.actualizaPorId("visitas", cliente.id, {cliente_id}); // es crítico el 'await'
 		}
 
 		// Acciones con cookies
@@ -98,7 +98,7 @@ module.exports = async (req, res, next) => {
 
 		// Crea el cliente_id y lo actualiza en la BD
 		const cliente_id = "V" + String(cliente.id).padStart(10, "0");
-		baseDeDatos.actualizaPorId("visitas", cliente.id, {cliente_id});
+		await baseDeDatos.actualizaPorId("visitas", cliente.id, {cliente_id}); // es crítico el 'await'
 
 		// Crea la cookie
 		res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
