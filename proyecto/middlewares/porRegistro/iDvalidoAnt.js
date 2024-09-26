@@ -12,8 +12,10 @@ module.exports = async (req, res, next) => {
 	if (!id) informacion = {mensajes: ["Falta el dato del 'ID'"], iconos: [vistaAnterior]};
 
 	// PROBLEMA 2: ID inválido
-	const registro = await baseDeDatos.obtienePorId(entidad, id);
-	if (!registro) informacion = {mensajes: ["Registro no encontrado"], iconos: [vistaEntendido]};
+	if (!informacion) {
+		const registro = await baseDeDatos.obtienePorId(entidad, id);
+		if (!registro) informacion = {mensajes: ["Registro no encontrado"], iconos: [vistaEntendido]};
+	}
 
 	// Si corresponde, muestra el mensaje
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
