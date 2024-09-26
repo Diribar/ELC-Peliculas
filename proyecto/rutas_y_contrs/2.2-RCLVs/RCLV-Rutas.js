@@ -35,7 +35,7 @@ const aptoEdicion = [...aptoCRUD, edicion, rclvNoEditable];
 router.get("/api/detalle/obtiene-variables", API.obtieneVars.detalle);
 
 // APIs - Agregar/Editar
-router.get("/api/edicion/obtiene-variables", API.obtieneVars.edicion);
+router.get("/api/edicion/obtiene-variables-rclv", API.obtieneVars.edicion);
 router.get("/api/edicion/valida-sector", API.validaSector);
 router.get("/api/edicion/registros-con-esa-fecha", API.registrosConEsaFecha);
 router.get("/api/edicion/prefijos", API.prefijos);
