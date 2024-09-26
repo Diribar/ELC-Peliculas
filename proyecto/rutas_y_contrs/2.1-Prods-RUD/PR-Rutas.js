@@ -32,9 +32,9 @@ const aptoCalificar = [...aptoDetalle, statusCorrecto, ...aptoUsuario];
 const aptoEdicion = [...aptoCalificar, permUserReg, edicion];
 
 // API - Calificaciones
-router.get("/api/obtiene-calificaciones", API.califics.delProducto);
-router.get("/api/calificacion-guardada", API.califics.delUsuarioProducto);
-router.get("/api/elimina-calif-propia", API.califics.elimina);
+router.get("/api/obtiene-las-calificaciones", API.califics.delProducto);
+router.get("/api/obtiene-la-calificacion-del-usuario", API.califics.delUsuarioProducto);
+router.get("/api/elimina-la-calificacion-propia", API.califics.elimina);
 
 // API - Preferencias por producto
 router.get("/api/obtiene-opciones-de-preferencia", API.prefsDeCampo.obtieneOpciones);
@@ -43,10 +43,10 @@ router.get("/api/guarda-la-preferencia-del-usuario", API.prefsDeCampo.guardaLaPr
 // API - Edición
 router.get("/api/valida", API.edicion.valida);
 router.get("/api/obtiene-original-y-edicion", API.edicion.obtieneVersionesProd);
-router.get("/api/edicion/obtiene-variables", API.edicion.variables);
+router.get("/api/edicion/obtiene-variables-prod", API.edicion.variables);
 router.get("/api/envia-a-req-session", API.edicion.envioParaSession);
-router.get("/api/edicion-nueva/eliminar", API.edicion.eliminaNueva);
-router.get("/api/edicion-guardada/eliminar", API.edicion.eliminaGuardada);
+router.get("/api/edicion/eliminar-nueva", API.edicion.eliminaNueva);
+router.get("/api/edicion/eliminar-guardada", API.edicion.eliminaGuardada);
 
 // Vistas
 router.get("/detalle", aptoDetalle, misDetalleProd, capturaInactivar, vista.detalle);
