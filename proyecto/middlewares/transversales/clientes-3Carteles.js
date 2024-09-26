@@ -104,8 +104,8 @@ module.exports = async (req, res, next) => {
 		informacion.trabajando = true;
 
 		// Actualiza la tabla usuario y la variable usuario
-		baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {diasSinCartelBeneficios: 0});
-		cliente.diasSinCartelBeneficios = 0;
+		baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {diasSinCartelBenefs: 0});
+		cliente.diasSinCartelBenefs = 0;
 	}
 
 	// Fin

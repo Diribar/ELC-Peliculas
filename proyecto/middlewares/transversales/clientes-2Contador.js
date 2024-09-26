@@ -14,14 +14,14 @@ module.exports = (req, res, next) => {
 	if (!cliente.recienCreado && fechaUltNaveg == hoy) return next();
 
 	// Más variables
-	let {diasSinCartelBeneficios, diasNaveg} = cliente;
+	let {diasSinCartelBenefs, diasNaveg} = cliente;
 	const tabla = cliente_id.startsWith("U") ? "usuarios" : "visitas";
 
 	// Actualiza la tabla 'usuarios/visitas' y la variable 'cliente'
 	fechaUltNaveg = hoy;
 	diasNaveg++;
-	if (!usuario) diasSinCartelBeneficios++;
-	const datos = {fechaUltNaveg, diasSinCartelBeneficios, diasNaveg};
+	if (!usuario) diasSinCartelBenefs++;
+	const datos = {fechaUltNaveg, diasSinCartelBenefs, diasNaveg};
 	for (let campo in datos) cliente[campo] = datos[campo];
 	baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, datos);
 
