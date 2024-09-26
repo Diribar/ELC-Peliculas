@@ -48,7 +48,7 @@ module.exports = {
 		},
 		elimina: async (req, res) => {
 			// Variables
-			const {entidad, id} = req.query;
+			const {entidad, id} = req.params;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const include = entidad == "colecciones" ? "capitulos" : "";
 			const original = await baseDeDatos.obtienePorId(entidad, id, include);
@@ -191,7 +191,7 @@ module.exports = {
 			const tema = "correccion";
 			const codigo = "cambiarMotivo";
 			const titulo = "Cambiar el Motivo";
-			const {entidad, id, origen, prodRclv, ultHist} = {...req.query, ...req.body};
+			const {entidad, id, origen, prodRclv, ultHist} = {...req.params, ...req.query, ...req.body};
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 
 			// Datos para la vista
@@ -212,7 +212,7 @@ module.exports = {
 		},
 		motivoGuardar: async (req, res) => {
 			// Variables
-			const {entidad, id, motivo_id, entDupl, idDupl, ultHist, origen} = {...req.query, ...req.body};
+			const {entidad, id, motivo_id, entDupl, idDupl, ultHist, origen} = {...req.params, ...req.query, ...req.body};
 			const {statusFinal_id} = ultHist;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
@@ -235,7 +235,7 @@ module.exports = {
 			const tema = "correccion";
 			const codigo = "corregirStatus";
 			const titulo = "Corregir el Status";
-			const {entidad, id, origen, prodRclv} = {...req.query, ...req.body};
+			const {entidad, id, origen, prodRclv} = {...req.params, ...req.query, ...req.body};
 
 			// Obtiene el historial
 			const historialStatus = await procesos.historialDeStatus.obtiene({entidad, ...prodRclv});
@@ -254,7 +254,7 @@ module.exports = {
 		},
 		statusGuardar: async (req, res) => {
 			// Variables
-			const {entidad, id, origen, opcion, prodRclv, ultHist} = {...req.query, ...req.body};
+			const {entidad, id, origen, opcion, prodRclv, ultHist} = {...req.params,...req.query, ...req.body};
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 			let destino;
