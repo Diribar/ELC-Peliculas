@@ -274,6 +274,7 @@ module.exports = {
 		oa: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : "o"),
 		a: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : ""),
 	},
+	//obtieneFamiliaDesdeSiglaFam: (siglaFam) => (siglaFam == "p" ? "productos" : siglaFam == "r" ? "rclv" : null),
 
 	// Productos y RCLVs
 	puleEdicion: async function (entidad, original, edicion) {
