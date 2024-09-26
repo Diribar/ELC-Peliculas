@@ -20,12 +20,8 @@ module.exports = async (req, res, next) => {
 				"Intentamos reunir todas las películas con valores afines a la Fe Católica.",
 				"Queremos resolver el clásico problema de:<ul><li><em>No sé qué ver</em></li><li><em>Quiero ver una película que me deje algo bueno</em></li></ul>",
 				"Usamos cookies para que tengas una mejor experiencia de usuario.",
-				"Con el ícono de la derecha podés crear un usuario, para acceder a más beneficios.",
 			],
-			iconos: [
-				{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
-				{clase: "fa-user-plus amarillo", link: "/usuarios/alta-mail", titulo: "Crear un usuario"},
-			],
+			iconos: [{...variables.vistaEntendido(req.session.urlActual), autofocus: true}],
 			titulo: "Te damos la Bienvenida",
 			check: true,
 		};
@@ -63,47 +59,34 @@ module.exports = async (req, res, next) => {
 		cliente.versionElc = versionElc;
 	}
 
-	// Cartel de beneficios
-	if (!informacion && cliente.diasSinCartelBenefs >= 10) {
-		// Cliente sin login
-		if (!usuario) {
-			// Opciones si es un usuario
-			if (esUsuario)
-				informacion = {
-					iconos: [
-						{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
-						{clase: "fa-circle-user amarillo", link: "/usuarios/login", titulo: "Ir a login"},
-					],
-					titulo: "Beneficios de loguearte",
-				};
-			// Opciones si es una visita
-			else
-				informacion = {
-					iconos: [
-						{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
-						{clase: "fa-user-plus amarillo", link: "/usuarios/alta-mail", titulo: "Crear un usuario"},
-					],
-					titulo: "Beneficios de crear un usuario",
-				};
-			informacion.mensajes = [
-				"Te permite marcar tus preferencias por película:<ul><li><em>la quiero ver</em></li><li><em>ya la vi</em></li><li><em>no me interesa</em></li></ul>",
-				"Ver tus preferencias en distintos dispositivos (ej: celular y laptop)",
-				"Ver tus últimas películas consultadas",
-			];
-		}
-		// Usuario sin completar
-		else
+	// Cartel de beneficios para clientes sin login
+	if (!informacion && cliente.diasSinCartelBenefs >= 10 && !usuario) {
+		// Opciones si es un usuario
+		if (esUsuario)
 			informacion = {
-				mensajes: mensajeAptoInput,
 				iconos: [
 					{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
-					{clase: "fa-circle-user amarillo", link: "/usuarios/perennes", titulo: "Obtener el rol 'Apto Input'"},
+					{clase: "fa-circle-user amarillo", link: "/usuarios/login", titulo: "Ir a login"},
 				],
-				titulo: "Beneficios del rol 'Apto Input'",
+				titulo: "Beneficios de loguearte",
 			};
+		// Opciones si es una visita
+		else
+			informacion = {
+				iconos: [
+					{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
+					{clase: "fa-user-plus amarillo", link: "/usuarios/alta-mail", titulo: "Crear un usuario"},
+				],
+				titulo: "Beneficios de crear un usuario",
+			};
+		informacion.mensajes = [
+			"Te permite marcar tus preferencias por película:<ul><li><em>la quiero ver</em></li><li><em>ya la vi</em></li><li><em>no me interesa</em></li></ul>",
+			"Ver tus preferencias en distintos dispositivos (ej: celular y laptop)",
+			"Ver tus últimas películas consultadas",
+		];
 		informacion.trabajando = true;
 
-		// Actualiza la tabla usuario y la variable usuario
+		// Actualiza la tabla usuario/visita y la variable cliente
 		baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {diasSinCartelBenefs: 0});
 		cliente.diasSinCartelBenefs = 0;
 	}

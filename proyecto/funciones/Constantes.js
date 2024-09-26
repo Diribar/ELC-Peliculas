@@ -96,14 +96,6 @@ module.exports = {
 			"<i class='" + iconos.faSolid + " fa-circle elegi'></i> <b>elegí</b> el idioma",
 		],
 	},
-	mensajeAptoInput:[
-		"Vemos con agrado que nuestros usuarios colaboren con el ingreso de información.",
-		"Para obtener ese permiso, debés gestionar el rol 'Apto Input'",
-		"Ese rol te permitirá aportar películas a nuestra base de datos, calificarlas, y contactarnos",
-		"Es un rol que requiere responsabilidad, y por eso te vamos a pedir algunos datos.",
-		"Para hacer la gestión, elegí el ícono de abajo de la flecha hacia la derecha.",
-
-	],
 
 	// Otras
 	tamMaxImagen: 1024000, // 1Mb
@@ -148,5 +140,4 @@ module.exports = {
 		negro: ["#F0F0F0", "#D2D2D2", "#B8BBBE", "#8A8D90", "#6A6E73"], // 8. Black
 	},
 	eliminarCuandoSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
-
 };

@@ -78,7 +78,12 @@ module.exports = {
 
 		// Fin
 		return {
-			mensajes: mensajeAptoInput,
+			mensajes: [
+				"Nos agrada que nuestros usuarios nos aporten información.",
+				"Podrás aportarnos películas, calificarlas, y contactarnos",
+				"Requiere responsabilidad, y por eso te vamos a pedir algunos datos.",
+				"Para avanzar, elegí el ícono de la flecha hacia la derecha.",
+			],
 			iconos: [
 				variables.vistaAnterior(linkVolver),
 				{
