@@ -96,12 +96,6 @@ module.exports = {
 			"<i class='" + iconos.faSolid + " fa-circle elegi'></i> <b>elegí</b> el idioma",
 		],
 	},
-	mensajeAptoInput: [
-		"Nos agrada que nuestros usuarios nos aporten información.",
-		"Podrás aportarnos películas, calificarlas, y contactarnos",
-		"Requiere responsabilidad, y por eso te vamos a pedir algunos datos.",
-		"Para avanzar, elegí el ícono de la flecha hacia la derecha.",
-	],
 
 	// Otras
 	tamMaxImagen: 1024000, // 1Mb
