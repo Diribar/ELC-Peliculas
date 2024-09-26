@@ -229,7 +229,7 @@ app.set("views", [
 	// Urls que dependen de la variable 'global'
 	app.use("/producto/agregar", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas"));
 	app.use("/producto", require("./rutas_y_contrs/2.1-Prods-RUD/PR-Rutas"));
-	app.use("/rclv", require("./rutas_y_contrs/2.2-RCLVs/RCLV-RutasViejo.js"));
+	app.use("/rclv", require("./rutas_y_contrs/2.2-RCLVs/RCLV-Rutas.js"));
 
 	// app.use("/:uno/:dos", (req,res)=>{res.send(req.params)});
 	app.use("/", require("./rutas_y_contrs/2.0-Familias/FM-Rutas")); // incluye algunas de 'revisión' y corrección
