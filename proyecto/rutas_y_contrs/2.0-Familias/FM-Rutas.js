@@ -14,7 +14,7 @@ const m = {
 
 	// Middlewares - Específicos del registro
 	entValida: require("../../middlewares/porRegistro/entidadValida"),
-	IDvalido: require("../../middlewares/porRegistro/IDvalido"),
+	iDvalido: require("../../middlewares/porRegistro/iDvalido"),
 	statusCorrecto: require("../../middlewares/porRegistro/statusCorrecto"),
 	creadoPorUsuario: require("../../middlewares/porRegistro/creadoPorUsuario"),
 	motivoNecesario: require("../../middlewares/porRegistro/motivoNecesario"),
@@ -30,11 +30,11 @@ const m = {
 
 // Middlewares - Consolidados
 const aptoUsuario = [m.usAltaTerm, m.usPenalizaciones, m.usAptoInput];
-const eliminadoPorCreador = [...aptoUsuario, m.entValida, m.IDvalido, m.statusCorrecto, m.creadoPorUsuario];
-const aptoDetalle = [m.entValida, m.IDvalido, m.rutaCRUD_ID];
+const eliminadoPorCreador = [...aptoUsuario, m.entValida, m.iDvalido, m.statusCorrecto, m.creadoPorUsuario];
+const aptoDetalle = [m.entValida, m.iDvalido, m.rutaCRUD_ID];
 const aptoCRUD = [...aptoDetalle, m.statusCorrecto, m.statusCompara, ...aptoUsuario, m.permUserReg];
 const aptoEliminar = [...aptoCRUD, m.usRolRevPERL];
-const correcs = [m.entValida, m.IDvalido, m.statusCompara, aptoUsuario, m.permUserReg, m.usRolRevPERL];
+const correcs = [m.entValida, m.iDvalido, m.statusCompara, aptoUsuario, m.permUserReg, m.usRolRevPERL];
 
 // APIs
 router.get("/crud/api/obtiene-col-cap", API.obtieneColCap);

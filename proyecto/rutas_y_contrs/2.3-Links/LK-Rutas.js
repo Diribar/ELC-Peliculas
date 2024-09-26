@@ -11,7 +11,7 @@ const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
 
 // Middlewares - Específicos del registro
 const entValida = require("../../middlewares/porRegistro/entidadValida");
-const IDvalido = require("../../middlewares/porRegistro/IDvalido");
+const iDvalido = require("../../middlewares/porRegistro/iDvalido");
 const linkIDvalido = require("../../middlewares/porRegistro/linkIDvalido");
 const statusCorrecto = require("../../middlewares/porRegistro/statusCorrecto");
 
@@ -24,7 +24,7 @@ const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 
 // Middlewares - Consolidados
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
-const aptoABM = [...aptoUsuario, entValida, IDvalido, statusCorrecto, permUserReg, rutaCRUD_ID];
+const aptoABM = [...aptoUsuario, entValida, iDvalido, statusCorrecto, permUserReg, rutaCRUD_ID];
 
 // APIs - Links
 router.get("/api/valida", API.valida);
