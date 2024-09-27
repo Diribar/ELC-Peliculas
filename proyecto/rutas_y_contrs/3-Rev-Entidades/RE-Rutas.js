@@ -89,7 +89,7 @@ router.get("/ed:siglaFam/:entidad/:id", aptoEdicion, m.rutaCRUD_ID, m.capturaAct
 router.post("/ed:siglaFam/:entidad/:id", aptoEdicion, m.motivoOpcional, m.capturaInactivar, vista.edic.avatar);
 
 // Vistas - Links
-router.get("/lkp", aptoCRUD, m.rutaCRUD_ID, m.linksEnSemana, m.usRolRevLinks, m.capturaActivar, vista.links);
+router.get("/lkp/:entidad/:id", aptoCRUD, m.rutaCRUD_ID, m.linksEnSemana, m.usRolRevLinks, m.capturaActivar, vista.links);
 
 // Fin
 module.exports = router;
