@@ -1289,30 +1289,26 @@ module.exports = {
 	deRutasAntArutasAct: function (req, res) {
 		// Variables
 		const {entidad, id} = req.query;
+		const rutasAntsActs = this.rutasAntsActs(entidad);
 		let {originalUrl} = req;
+		let nuevoUrl, nuevaCola;
 
-		// Reemplaza la familia por la entidad
-		if (["/producto/", "/rclv/"].some((n) => originalUrl.includes(n)))
-			originalUrl = originalUrl.replace("/" + familia + "/", "/" + entidad + "/"); // /peliculas/
-		// Si no existía la familia, le agrega la entidad
-		else originalUrl = "/" + entidad + originalUrl; // /peliculas/cm - /personaje/cs
+		// Obtiene el reqBase y el path
+		const rutaAntAct = rutasAntsActs.find((n) => originalUrl.startsWith(n.ant));
+		nuevoUrl = rutaAntAct.act;
 
-		// Quita la entidad y el id del url
-		originalUrl = originalUrl.replace("entidad=" + entidad + "&", "");
-		originalUrl = originalUrl.replace("/?id=" + id, "/" + id + "/?");
-		originalUrl = originalUrl.replace("?&", "?");
-		if (originalUrl.endsWith("?")) originalUrl = originalUrl.slice(0, -1);
-		if (originalUrl.endsWith("/")) originalUrl = originalUrl.slice(0, -1);
-
-		// Reemplaza la ruta anterior por la actual
-		const rutasAnts = this.rutasAnts(entidad);
-		const ruta = rutasAnts.find((n) => originalUrl.includes(n.ant));
-		if (ruta) originalUrl = originalUrl.replace(ruta.ant, ruta.act);
+		// Obtiene la 'cola'
+		const colaActual = originalUrl.replace(rutaAntAct.ant, "");
+		nuevaCola = colaActual.replace("entidad=" + entidad + "&", "");
+		nuevaCola = nuevaCola.replace("/?id=" + id, "/" + id + "/?");
+		nuevaCola = nuevaCola.replace("?&", "?");
+		if (nuevaCola.endsWith("?")) nuevaCola = nuevaCola.slice(0, -1);
+		if (nuevaCola.endsWith("/")) nuevaCola = nuevaCola.slice(0, -1);
 
 		// Fin
-		return res.redirect(originalUrl);
+		return res.redirect(nuevoUrl + nuevaCola);
 	},
-	rutasAnts: function (entidad) {
+	rutasAntsActs: function (entidad) {
 		// Variables
 		const siglaFam = this.obtieneDesdeEntidad.siglaFam(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -1320,22 +1316,22 @@ module.exports = {
 		// Rutas
 		const rutas = [
 			// Familia - ant: familia + rutaAnt (salvo correccion) / act: entidad + rutaAct
-			{ant: familia + "/historial", act: entidad + "/hs"},
-			{ant: familia + "/inactivar", act: entidad + "/in"},
-			{ant: familia + "/recuperar", act: entidad + "/rc"},
-			{ant: familia + "/eliminadoPorCreador", act: entidad + "/ec"},
-			{ant: familia + "/eliminar", act: entidad + "/el"},
-			{ant: "/correccion/motivo", act: entidad + "/cm"},
-			{ant: "/correccion/status", act: entidad + "/cs"},
+			{ant: "/" + familia + "/historial", act: "/" + entidad + "/hs"},
+			{ant: "/" + familia + "/inactivar", act: "/" + entidad + "/in"},
+			{ant: "/" + familia + "/recuperar", act: "/" + entidad + "/rc"},
+			{ant: "/" + familia + "/eliminadoPorCreador", act: "/" + entidad + "/ec"},
+			{ant: "/" + familia + "/eliminar", act: "/" + entidad + "/el"},
+			{ant: "/correccion/motivo", act: "/" + entidad + "/cm"},
+			{ant: "/correccion/status", act: "/" + entidad + "/cs"},
 
 			// Revisión de Entidades - ant: revision + familia + ant (salvo links) / act:
-			{ant: "/revision/" + familia + "alta", act: "/revision/" + "al" + siglaFam + "/" + entidad},
-			{ant: "/revision/" + familia + "edicion", act: "/revision/" + "ed" + "/" + entidad},
-			{ant: "/revision/" + familia + "rechazar", act: "/revision/" + "ch" + "/" + entidad},
-			{ant: "/revision/" + familia + "inactivar", act: "/revision/" + "in" + "/" + entidad},
-			{ant: "/revision/" + familia + "recuperar", act: "/revision/" + "rc" + "/" + entidad},
-			{ant: "/revision/rclv/solapamiento", act: "/revision/" + "slr" + "/" + entidad},
-			{ant: "/revision/links", act: "/revision/" + "lkp" + "/" + entidad},
+			{ant: "/revision/" + familia + "alta", act: "/revision/al" + siglaFam + "/" + entidad},
+			{ant: "/revision/" + familia + "edicion", act: "/revision/ed/" + entidad},
+			{ant: "/revision/" + familia + "rechazar", act: "/revision/ch/" + entidad},
+			{ant: "/revision/" + familia + "inactivar", act: "/revision/in/" + entidad},
+			{ant: "/revision/" + familia + "recuperar", act: "/revision/rc/" + entidad},
+			{ant: "/revision/rclv/solapamiento", act: "/revision/slr/" + entidad},
+			{ant: "/revision/links", act: "/revision/lkp/" + entidad},
 		];
 
 		// Fin
