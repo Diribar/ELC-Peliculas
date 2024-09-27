@@ -5,8 +5,7 @@ module.exports = async (req, res, next) => {
 	const {entidad, id} = req.params;
 	const familia = comp.obtieneDesdeEntidad.familia(entidad);
 	const entidades = variables.entidades.todos;
-	let statusEsperados_id = [];
-	let informacion;
+	let statusEsperado_ids, informacion;
 
 	// Obtiene la 'baseUrl' y la 'ruta'
 	let {baseUrl, ruta} = comp.partesDelUrl(req);
@@ -15,8 +14,8 @@ module.exports = async (req, res, next) => {
 	console.log(7, {baseUrl, ruta});
 
 	// Obtiene el status esperado - CRUD
-	if (!statusEsperados_id && entidades.includes(baseUrl)) {
-		statusEsperados_id = ruta.startsWith("ed") // edición
+	if (!statusEsperado_ids && entidades.includes(baseUrl)) {
+		statusEsperado_ids = ruta.startsWith("ed") // edición
 			? activos_ids
 			: ruta.startsWith("in") // inactivar
 			? aprobados_ids
@@ -30,12 +29,12 @@ module.exports = async (req, res, next) => {
 			? activos_ids
 			: ["cm", "cs"].some((n) => ruta.startsWith(n)) // correcciones
 			? [inactivo_id]
-			: [];
+			: null;
 	}
 
 	// Obtiene el status esperado - Revisión de Entidades
-	if (!statusEsperados_id && baseUrl == "revision") {
-		statusEsperados_id = ["ag", "ch"].some((n) => ruta.startsWith(n)) // revisar alta y rechazar
+	if (!statusEsperado_ids && baseUrl == "revision") {
+		statusEsperado_ids = ["ag", "ch"].some((n) => ruta.startsWith(n)) // revisar alta y rechazar
 			? [creado_id]
 			: ruta.startsWith("ed") // edición
 			? aprobados_ids
@@ -47,15 +46,17 @@ module.exports = async (req, res, next) => {
 			? activos_ids
 			: ruta == "rsr" // solapamiento
 			? activos_ids
-			: [];
+			: null;
 	}
+
+	if (!statusEsperado_ids) statusEsperado_ids = [];
 
 	// Obtiene el statusActual
 	const registro = await baseDeDatos.obtienePorId(entidad, id);
 	const {statusRegistro_id} = registro;
 
 	// Acciones si el status del registro no es el esperado
-	if (!statusEsperados_id.includes(statusRegistro_id)) {
+	if (!statusEsperado_ids.includes(statusRegistro_id)) {
 		// Si el status es mayor que 'aprobado' y no existe un historial, interrumpe la función
 		if (statusRegistro_id > aprobado_id) {
 			const regHistorial = await baseDeDatos.obtienePorCondicion("statusHistorial", {entidad, entidad_id: id});
