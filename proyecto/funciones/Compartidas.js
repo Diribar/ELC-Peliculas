@@ -274,6 +274,7 @@ module.exports = {
 		oa: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : "o"),
 		a: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : ""),
 	},
+	//obtieneFamiliaDesdeSiglaFam: (siglaFam) => (siglaFam == "p" ? "productos" : siglaFam == "r" ? "rclv" : null),
 
 	// Productos y RCLVs
 	puleEdicion: async function (entidad, original, edicion) {
@@ -1284,6 +1285,25 @@ module.exports = {
 
 		// Fin
 		return;
+	},
+	rutasActualizadas: function (entidad) {
+		// Variables
+		const siglaFam = this.obtieneDesdeEntidad.siglaFam(entidad);
+
+		// Rutas
+		const rutas = {
+			// Familia
+			"/historial": "/hs",
+			"/inactivar": "/in",
+			"/recuperar": "/rc",
+			"/eliminadoPorCreador": "/ec" + siglaFam,
+			"/eliminar": "/el" + siglaFam,
+			"/correccion/motivo": "/cm",
+			"/correccion/status": "/cs",
+		};
+
+		// Fin
+		return rutas;
 	},
 };
 

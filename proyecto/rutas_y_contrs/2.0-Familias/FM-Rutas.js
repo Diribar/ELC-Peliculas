@@ -45,25 +45,25 @@ router.get("/crud/api/obtiene-info-del-be", API.obtieneInfo);
 router.get("/crud/api/obtiene-registro", API.obtieneRegistro);
 
 // Vistas - Historial
-router.get("/:entidad/historial", aptoDetalle, m.statusCompara, vista.form.historial);
+router.get("/:entidad/hs/:id", aptoDetalle, m.statusCompara, vista.form.historial);
 
 // Vistas - Inactivar
-router.get("/:entidad/inactivar", aptoCRUD, m.capturaActivar, vista.form.motivos);
-router.post("/:entidad/inactivar", aptoCRUD, m.motivoNecesario, m.capturaInactivar, vista.inacRecupGuardar);
+router.get("/:entidad/in/:id", aptoCRUD, m.capturaActivar, vista.form.motivos);
+router.post("/:entidad/in/:id", aptoCRUD, m.motivoNecesario, m.capturaInactivar, vista.inacRecupGuardar);
 
 // Vistas - Recuperar
-router.get("/:entidad/recuperar", aptoCRUD, m.capturaActivar, vista.form.historial);
-router.post("/:entidad/recuperar", aptoCRUD, m.comentNecesario, m.capturaInactivar, vista.inacRecupGuardar);
+router.get("/:entidad/rc/:id", aptoCRUD, m.capturaActivar, vista.form.historial);
+router.post("/:entidad/rc/:id", aptoCRUD, m.comentNecesario, m.capturaInactivar, vista.inacRecupGuardar);
 
 // Vistas - Eliminar
-router.get("/:entidad/eliminadoPorCreador", eliminadoPorCreador, vista.form.elimina);
-router.get("/:entidad/eliminar", aptoEliminar, vista.form.elimina);
+router.get("/:entidad/ec:siglaFam/:id", eliminadoPorCreador, vista.form.elimina);
+router.get("/:entidad/el:siglaFam/:id", aptoEliminar, vista.form.elimina);
 
 // Vistas - Correcciones
-router.get("/correccion/motivo", correcs, m.statusCorrecto, m.capturaActivar, vista.correcs.motivoForm);
-router.post("/correccion/motivo", correcs, m.statusCorrecto, m.motivoNecesario, m.capturaInactivar, vista.correcs.motivoGuardar);
-router.get("/correccion/status", correcs, m.capturaActivar, vista.correcs.statusForm);
-router.post("/correccion/status", correcs, m.capturaInactivar, vista.correcs.statusGuardar);
+router.get("/:entidad/cm/:id", correcs, m.capturaActivar, m.statusCorrecto, vista.correcs.motivoForm);
+router.post("/:entidad/cm/:id", correcs, m.capturaInactivar, m.statusCorrecto, m.motivoNecesario, vista.correcs.motivoGuardar);
+router.get("/:entidad/cs/:id", correcs, m.capturaActivar, vista.correcs.statusForm);
+router.post("/:entidad/cs/:id", correcs, m.capturaInactivar, vista.correcs.statusGuardar);
 
 // Fin
 module.exports = router;

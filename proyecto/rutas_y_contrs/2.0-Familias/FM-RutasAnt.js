@@ -4,27 +4,16 @@ const router = express.Router();
 const vista = require("./FM-ControlVista");
 
 // Middlewares - Específicos del registro
-const entValida = require("../../middlewares/porRegistro/entidadValida");
-const iDvalido = require("../../middlewares/porRegistro/iDvalido");
-const entId = [entValida, iDvalido];
+const entValidaAnt = require("../../middlewares/porRegistro/entValidaAnt");
+const iDvalidoAnt = require("../../middlewares/porRegistro/iDvalidoAnt");
+const entId = [entValidaAnt, iDvalidoAnt];
 
-// Vistas - Historial
-router.get("/producto/historial", entId, vista.redireccionar);
-router.get("/rclv/historial", entId, vista.redireccionar);
-
-// Vistas - Inactivar
-router.get("/producto/inactivar", entId, vista.redireccionar);
-router.get("/rclv/inactivar", entId, vista.redireccionar);
-
-// Vistas - Recuperar
-router.get("/producto/recuperar", entId, vista.redireccionar);
-router.get("/rclv/recuperar", entId, vista.redireccionar);
-
-// Vistas -  CRUD: Eliminado
-router.get("/producto/eliminadoPorCreador", entId, vista.redireccionar);
-router.get("/rclv/eliminadoPorCreador", entId, vista.redireccionar);
-router.get("/producto/eliminar", entId, vista.redireccionar);
-router.get("/rclv/eliminar", entId, vista.redireccionar);
+// Vistas
+router.get("/:familia/historial", entId, vista.redireccionar); // Historial
+router.get("/:familia/inactivar", entId, vista.redireccionar); // Inactivar
+router.get("/:familia/recuperar", entId, vista.redireccionar); // Recuperar
+router.get("/:familia/eliminadoPorCreador", entId, vista.redireccionar); // Eliminado por creador
+router.get("/:familia/eliminar", entId, vista.redireccionar); // Eliminado
 
 // Vistas - Correcciones
 router.get("/correccion/motivo", entId, vista.redireccionar);

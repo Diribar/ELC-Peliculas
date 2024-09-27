@@ -140,14 +140,4 @@ module.exports = {
 		negro: ["#F0F0F0", "#D2D2D2", "#B8BBBE", "#8A8D90", "#6A6E73"], // 8. Black
 	},
 	eliminarCuandoSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
-	rutasActualizadas: {
-		// Familia
-		"/historial": "/hs",
-		"/inactivar": "/in",
-		"/recuperar": "/rc",
-		"/eliminadoPorCreador": "/epc",
-		"/eliminar": "/el",
-		"/correccion/motivo": "/cm",
-		"/correccion/status": "/cs",
-	},
 };
