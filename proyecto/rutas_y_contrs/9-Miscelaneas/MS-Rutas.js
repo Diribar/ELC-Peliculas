@@ -20,7 +20,7 @@ router.get("/inactivar-captura/ms/:entidad/:id", capturaInactivar, vista.redirec
 // Información para mostrar en el explorador
 router.get("/session", vista.listados.session);
 router.get("/cookies", vista.listados.cookies);
-router.get("/listados/rclvs", entidadRclv, vista.listados.rclvs);
+router.get("/listados/rclvs", entidadRclv, vista.listados.rclvs);// busca los rclvs con más cantidad de películas
 router.get("/listados/links", vista.listados.links); // busca las películas con más cantidad de links
 
 // Fin
