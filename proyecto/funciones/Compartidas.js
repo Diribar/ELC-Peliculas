@@ -1262,10 +1262,14 @@ module.exports = {
 		return mailEnviado;
 	},
 	partesDelUrl: (req) => {
-		// Obtiene los datos
+		// Obtiene la base y el url (sin la base)
 		const baseUrl = req.baseUrl ? req.baseUrl : req.path.slice(0, req.path.indexOf("/", 1));
-		const ruta = (req.path.startsWith(baseUrl) ? req.path.replace(baseUrl, "") : req.path).slice(0, 4);
 		const url = req.url.startsWith(baseUrl) ? req.url.replace(baseUrl, "") : req.url;
+
+		// Obtiene la ruta
+		let ruta = req.path.startsWith(baseUrl) ? req.path.replace(baseUrl, "") : req.path;
+		const indice = ruta.indexOf("/", 1);
+		if (indice >= 0) ruta = ruta.slice(0, indice);
 
 		// Fin
 		return {baseUrl, ruta, url};
@@ -1282,29 +1286,9 @@ module.exports = {
 	},
 
 	// Rutas antiguas
-	rutasAnts: function (entidad) {
-		// Variables
-		const siglaFam = this.obtieneDesdeEntidad.siglaFam(entidad);
-
-		// Rutas
-		const rutas = [
-			// Familia
-			{ant: "/historial", act: "/hs"},
-			{ant: "/inactivar", act: "/in"},
-			{ant: "/recuperar", act: "/rc"},
-			{ant: "/eliminadoPorCreador", act: "/ec" + siglaFam},
-			{ant: "/eliminar", act: "/el" + siglaFam},
-			{ant: "/correccion/motivo", act: "/cm"},
-			{ant: "/correccion/status", act: "/cs"},
-		];
-
-		// Fin
-		return rutas;
-	},
-	deRutasAntArutasAct:function (req, res)  {
+	deRutasAntArutasAct: function (req, res) {
 		// Variables
 		const {entidad, id} = req.query;
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		let {originalUrl} = req;
 
 		// Reemplaza la familia por la entidad
@@ -1327,6 +1311,35 @@ module.exports = {
 
 		// Fin
 		return res.redirect(originalUrl);
+	},
+	rutasAnts: function (entidad) {
+		// Variables
+		const siglaFam = this.obtieneDesdeEntidad.siglaFam(entidad);
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+
+		// Rutas
+		const rutas = [
+			// Familia - ant: familia + rutaAnt (salvo correccion) / act: entidad + rutaAct
+			{ant: familia + "/historial", act: entidad + "/hs"},
+			{ant: familia + "/inactivar", act: entidad + "/in"},
+			{ant: familia + "/recuperar", act: entidad + "/rc"},
+			{ant: familia + "/eliminadoPorCreador", act: entidad + "/ec"},
+			{ant: familia + "/eliminar", act: entidad + "/el"},
+			{ant: "/correccion/motivo", act: entidad + "/cm"},
+			{ant: "/correccion/status", act: entidad + "/cs"},
+
+			// Revisión de Entidades - ant: revision + familia + ant (salvo links) / act:
+			{ant: "/revision/" + familia + "alta", act: "/revision/" + "al" + siglaFam + "/" + entidad},
+			{ant: "/revision/" + familia + "edicion", act: "/revision/" + "ed" + "/" + entidad},
+			{ant: "/revision/" + familia + "rechazar", act: "/revision/" + "ch" + "/" + entidad},
+			{ant: "/revision/" + familia + "inactivar", act: "/revision/" + "in" + "/" + entidad},
+			{ant: "/revision/" + familia + "recuperar", act: "/revision/" + "rc" + "/" + entidad},
+			{ant: "/revision/rclv/solapamiento", act: "/revision/" + "slr" + "/" + entidad},
+			{ant: "/revision/links", act: "/revision/" + "lkp" + "/" + entidad},
+		];
+
+		// Fin
+		return rutas;
 	},
 };
 
