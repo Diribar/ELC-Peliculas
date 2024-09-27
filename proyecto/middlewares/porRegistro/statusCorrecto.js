@@ -56,7 +56,7 @@ module.exports = async (req, res, next) => {
 
 	// Acciones si el status del registro no es el esperado
 	if (!statusEsperados_id.includes(statusRegistro_id)) {
-		// Si no existe un historial, saltea el mensaje
+		// Si el status es mayor que 'aprobado' y no existe un historial, interrumpe la función
 		if (statusRegistro_id > aprobado_id) {
 			const regHistorial = await baseDeDatos.obtienePorCondicion("statusHistorial", {entidad, entidad_id: id});
 			if (!regHistorial) return next();
