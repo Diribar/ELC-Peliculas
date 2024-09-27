@@ -50,7 +50,7 @@ module.exports = {
 			// Variables
 			const entidades = variables.entidades.prods;
 			let productos = [];
-			let TR, GR, CC, cantLinks;
+			let Trailer, Gratis, ConCosto, cantLinks;
 
 			// Busca las películas y filtra por las que tienen más de un link
 			for (let entidad of entidades)
@@ -58,23 +58,23 @@ module.exports = {
 					...(await baseDeDatos.obtieneTodos(entidad, "links").then((n) => n.filter((m) => m.links.length > 1)))
 				);
 
-			// Separa entre links TR (trailer), GR (gratis) y CC
+			// Separa entre links Trailer, Gratis y ConCosto
 			for (let producto of productos) {
 				// Trailer
 				cantLinks = producto.links.filter((n) => n.tipo_id == linkTrailer_id).length;
-				if (!TR || TR.cantLinks < cantLinks) TR = {nombre: producto.nombreCastellano, cantLinks};
+				if (!Trailer || Trailer.cantLinks < cantLinks) Trailer = {nombre: producto.nombreCastellano, cantLinks};
 
 				// Gratis
 				cantLinks = producto.links.filter((n) => n.tipo_id == linkPelicula_id && n.gratuito).length;
-				if (!GR || GR.cantLinks < cantLinks) GR = {nombre: producto.nombreCastellano, cantLinks};
+				if (!Gratis || Gratis.cantLinks < cantLinks) Gratis = {nombre: producto.nombreCastellano, cantLinks};
 
 				// Gratis
 				cantLinks = producto.links.filter((n) => n.tipo_id == linkPelicula_id && !n.gratuito).length;
-				if (!CC || CC.cantLinks < cantLinks) CC = {nombre: producto.nombreCastellano, cantLinks};
+				if (!ConCosto || ConCosto.cantLinks < cantLinks) ConCosto = {nombre: producto.nombreCastellano, cantLinks};
 			}
 
 			// Devuelve la info
-			return res.send({TR, GR, CC});
+			return res.send({Trailer, Gratis, ConCosto});
 		},
 	},
 
