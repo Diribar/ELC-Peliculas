@@ -69,8 +69,8 @@ router.get("/agr/:entidad/:id", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vist
 router.post("/agr/:entidad/:id", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.multer.single("avatar"), vista.cambioStatusGuardar); // Cambios de status
 
 // Vistas - Rechazar
-router.get("/ch/:entidad/:id", aptoCRUD, m.capturaActivar, vistaFM.form.motivos);
-router.post("/ch/:entidad/:id", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.motivoNecesario, vista.cambioStatusGuardar);
+router.get("/ch:siglaFam/:entidad/:id", aptoCRUD, m.capturaActivar, vistaFM.form.motivos);
+router.post("/ch:siglaFam/:entidad/:id", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.motivoNecesario, vista.cambioStatusGuardar);
 
 // Vistas - Revisar Inactivar
 router.get("/in:siglaFam/:entidad/:id", aptoCRUD, m.capturaActivar, vistaFM.form.historial);
