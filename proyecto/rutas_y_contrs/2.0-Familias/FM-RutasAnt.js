@@ -3,7 +3,7 @@
 const router = express.Router();
 
 // Funciones
-let redireccionar = (req, res) => {
+let redirecciona = (req, res) => {
 	// Variables
 	const {entidad, id} = req.query;
 	const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -32,15 +32,15 @@ let redireccionar = (req, res) => {
 };
 
 // Vistas
-router.get("/:familia/historial", redireccionar); // Historial
-router.get("/:familia/inactivar", redireccionar); // Inactivar
-router.get("/:familia/recuperar", redireccionar); // Recuperar
-router.get("/:familia/eliminadoPorCreador", redireccionar); // Eliminado por creador
-router.get("/:familia/eliminar", redireccionar); // Eliminado
+router.get("/:familia/historial", redirecciona); // Historial
+router.get("/:familia/inactivar", redirecciona); // Inactivar
+router.get("/:familia/recuperar", redirecciona); // Recuperar
+router.get("/:familia/eliminadoPorCreador", redirecciona); // Eliminado por creador
+router.get("/:familia/eliminar", redirecciona); // Eliminado
 
 // Vistas - Correcciones
-router.get("/correccion/motivo", redireccionar);
-router.get("/correccion/status", redireccionar);
+router.get("/correccion/motivo", redirecciona);
+router.get("/correccion/status", redirecciona);
 
 // Fin
 module.exports = router;

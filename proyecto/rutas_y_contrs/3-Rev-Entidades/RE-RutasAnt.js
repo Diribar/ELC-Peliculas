@@ -1,50 +1,45 @@
 "use strict";
 // Variables
 const router = express.Router();
-const vista = require("./RE-ControlVista");
-const vistaRCLV = require("../2.2-RCLVs/RCLV-ControlVista");
-const vistaFM = require("../2.0-Familias/FM-ControlVista");
 
-// Vistas - Tablero de Control
-router.get("/tablero-de-entidades", usuarioBase, m.usRolAutTablEnts, vista.tableroEntidades);
-router.get("/tablero-de-mantenimiento", aptoUsuario, vista.tableroMantenim);
+// Funciones
+let redirecciona = (req, res) => {
+	// Variables
+	const {entidad, id} = req.query;
+	const familia = comp.obtieneDesdeEntidad.familia(entidad);
+	let {originalUrl} = req;
 
-// Vistas - Altas
-router.get("/producto/alta", aptoCRUD, m.prodSinRclvAprob, m.capturaActivar, m.rutaCRUD_ID, vista.altaProdForm);
-router.post("/producto/alta", aptoCRUD, m.usRolRevPERL, m.prodSinRclvAprob, m.capturaInactivar, vista.cambioStatusGuardar); // Cambios de status
-router.get("/rclv/alta", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
-router.post("/rclv/alta", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.multer.single("avatar"), vista.cambioStatusGuardar); // Cambios de status
+	// Reemplaza la familia por la entidad
+	if (["/producto/", "/rclv/"].some((n) => originalUrl.includes(n)))
+		originalUrl = originalUrl.replace("/" + familia + "/", "/" + entidad + "/"); // /peliculas/
+	// Si no existía la familia, le agrega la entidad
+	else originalUrl = "/" + entidad + originalUrl; // /peliculas/cm - /personaje/cs
 
-// Vistas - Rechazar
-router.get("/:entidad/rechazar", aptoCRUD, m.capturaActivar, vistaFM.form.motivos);
-router.post("/:familia/rechazar", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.motivoNecesario, vista.cambioStatusGuardar);
+	// Quita la entidad y el id del url
+	originalUrl = originalUrl.replace("entidad=" + entidad + "&", "");
+	originalUrl = originalUrl.replace("/?id=" + id, "/" + id + "/?");
+	originalUrl = originalUrl.replace("?&", "?");
+	if (originalUrl.endsWith("?")) originalUrl = originalUrl.slice(0, -1);
+	if (originalUrl.endsWith("/")) originalUrl = originalUrl.slice(0, -1);
 
-// Vistas - Revisar Inactivar
-router.get("/:entidad/inactivar", aptoCRUD, m.capturaActivar, vistaFM.form.historial);
-router.post("/:familia/inactivar", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
+	// Reemplaza la ruta anterior por la actual
+	const rutasActualizadas = comp.rutasActualizadas(entidad);
+	const ruta = rutasActualizadas.find((n) => originalUrl.includes(n.ant));
+	if (ruta) originalUrl = originalUrl.replace(ruta.ant, ruta.act);
 
-// Vistas - Revisar Recuperar
-router.get("/:entidad/recuperar", aptoCRUD, m.capturaActivar, vistaFM.form.historial);
-router.post("/:familia/recuperar", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
+	// Fin
+	return res.redirect(originalUrl);
+};
 
-// Vistas - Solapamiento
-router.get("/rclv/solapamiento", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
-router.post("/rclv/solapamiento", aptoCRUD, m.usRolRevPERL, m.multer.single("avatar"), m.capturaInactivar, vista.edic.solapam);
-
-// Vistas - Edición
-router.get("/:familia/edicion", aptoEdicion, m.rutaCRUD_ID, m.capturaActivar, vista.edic.form);
-router.post("/:familia/edicion", aptoEdicion, m.motivoOpcional, m.capturaInactivar, vista.edic.avatar);
-
-// Vistas - Links
-router.get("/links", aptoCRUD, m.rutaCRUD_ID, m.linksEnSemana, m.usRolRevLinks, m.capturaActivar, vista.links);
-
-const entId = [m.entValida, m.iDvalido];
-router.get("/producto/rechazar", entId, vistaFM.redireccionar);
-router.get("/rclv/rechazar", entId, vistaFM.redireccionar);
-router.get("/producto/inactivar", entId, vistaFM.redireccionar);
-router.get("/rclv/inactivar", entId, vistaFM.redireccionar);
-router.get("/producto/recuperar", entId, vistaFM.redireccionar);
-router.get("/rclv/recuperar", entId, vistaFM.redireccionar);
+router.get("/tablero-de-entidades", redirecciona);
+router.get("/tablero-de-mantenimiento", redirecciona);
+router.get("/:familia/alta", redirecciona); // Altas
+router.get("/:familia/rechazar", redirecciona); // Rechazar
+router.get("/:familia/edicion", redirecciona); // Edición
+router.get("/:familia/inactivar", redirecciona); // Revisar Inactivar
+router.get("/:familia/recuperar", redirecciona); // Revisar Recuperar
+router.get("/rclv/solapamiento", redirecciona); // Solapamiento
+router.get("/links", redirecciona); // Links
 
 // Fin
 module.exports = router;
