@@ -2,20 +2,6 @@
 // Variables
 const router = express.Router();
 
-// Vistas
-router.get("/:familia/historial", redireccionar); // Historial
-router.get("/:familia/inactivar", redireccionar); // Inactivar
-router.get("/:familia/recuperar", redireccionar); // Recuperar
-router.get("/:familia/eliminadoPorCreador", redireccionar); // Eliminado por creador
-router.get("/:familia/eliminar", redireccionar); // Eliminado
-
-// Vistas - Correcciones
-router.get("/correccion/motivo", redireccionar);
-router.get("/correccion/status", redireccionar);
-
-// Fin
-module.exports = router;
-
 // Funciones
 let redireccionar = (req, res) => {
 	// Variables
@@ -44,3 +30,18 @@ let redireccionar = (req, res) => {
 	// Fin
 	return res.redirect(originalUrl);
 };
+
+// Vistas
+router.get("/:familia/historial", redireccionar); // Historial
+router.get("/:familia/inactivar", redireccionar); // Inactivar
+router.get("/:familia/recuperar", redireccionar); // Recuperar
+router.get("/:familia/eliminadoPorCreador", redireccionar); // Eliminado por creador
+router.get("/:familia/eliminar", redireccionar); // Eliminado
+
+// Vistas - Correcciones
+router.get("/correccion/motivo", redireccionar);
+router.get("/correccion/status", redireccionar);
+
+// Fin
+module.exports = router;
+
