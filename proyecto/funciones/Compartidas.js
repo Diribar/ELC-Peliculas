@@ -1301,7 +1301,7 @@ module.exports = {
 		// Fin
 		return rutas;
 	},
-	redireccionaRutasAnts: (req, res) => {
+	deRutasAntArutasAct:function (req, res)  {
 		// Variables
 		const {entidad, id} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -1321,7 +1321,7 @@ module.exports = {
 		if (originalUrl.endsWith("/")) originalUrl = originalUrl.slice(0, -1);
 
 		// Reemplaza la ruta anterior por la actual
-		const rutasAnts = comp.rutasAnts(entidad);
+		const rutasAnts = this.rutasAnts(entidad);
 		const ruta = rutasAnts.find((n) => originalUrl.includes(n.ant));
 		if (ruta) originalUrl = originalUrl.replace(ruta.ant, ruta.act);
 
