@@ -254,7 +254,7 @@ module.exports = {
 		},
 		statusGuardar: async (req, res) => {
 			// Variables
-			const {entidad, id, origen, opcion, prodRclv, ultHist} = {...req.params,...req.query, ...req.body};
+			const {entidad, id, origen, opcion, prodRclv, ultHist} = {...req.params, ...req.query, ...req.body};
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 			let destino;
@@ -300,13 +300,8 @@ module.exports = {
 
 		// Reemplaza la ruta anterior por la actual
 		const rutasActualizadas = comp.rutasActualizadas(entidad);
-		const rutasAnts = Object.keys(rutasActualizadas);
-		const rutaAnt = rutasAnts.find((n) => originalUrl.includes(n));
-
-		if (rutaAnt) {
-			const rutaAct = rutasActualizadas[rutaAnt];
-			originalUrl = originalUrl.replace(rutaAnt, rutaAct);
-		}
+		const ruta = rutasActualizadas.find((n) => originalUrl.includes(n.ant));
+		if (ruta) originalUrl = originalUrl.replace(ruta.ant, ruta.act);
 
 		// Fin
 		return res.redirect(originalUrl);
