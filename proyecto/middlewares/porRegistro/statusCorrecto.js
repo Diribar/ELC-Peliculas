@@ -49,6 +49,7 @@ module.exports = async (req, res, next) => {
 			: null;
 	}
 
+	// Obtiene el status esperado - Solución trivial
 	if (!statusEsperado_ids) statusEsperado_ids = [];
 
 	// Obtiene el statusActual
@@ -73,7 +74,7 @@ module.exports = async (req, res, next) => {
 		// Variables para el ícono
 		const origen = req.query.origen
 			? req.query.origen
-			: baseUrl == "/revision"
+			: baseUrl == "revision"
 			? familia
 				? "TE"
 				: "TU"
