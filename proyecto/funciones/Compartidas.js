@@ -1261,15 +1261,9 @@ module.exports = {
 		// Fin
 		return mailEnviado;
 	},
-	reqBasePathUrl: (req) => {
-		// Obtiene los resultados
-		const baseUrl = req.baseUrl
-			? req.baseUrl
-			: req.path.startsWith("/revision/usuarios")
-			? "/revision/usuarios"
-			: req.path.startsWith("/producto/agregar")
-			? "/producto/agregar"
-			: req.path.slice(0, req.path.indexOf("/", 1));
+	partesDelUrl: (req) => {
+		// Obtiene los datos
+		const baseUrl = req.baseUrl ? req.baseUrl : req.path.slice(0, req.path.indexOf("/", 1));
 		const ruta = req.path.startsWith(baseUrl) ? req.path.replace(baseUrl, "") : req.path;
 		const url = req.url.startsWith(baseUrl) ? req.url.replace(baseUrl, "") : req.url;
 

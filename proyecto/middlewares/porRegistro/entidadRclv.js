@@ -3,7 +3,7 @@
 module.exports = async (req, res, next) => {
 	// Variables
 	const rclvs = variables.entidades.rclvs;
-	const {ruta} = comp.reqBasePathUrl(req);
+	const {ruta} = comp.partesDelUrl(req);
 	const indice = ruta.lastIndexOf("/");
 	const rclv = ruta.slice(indice + 1);
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);

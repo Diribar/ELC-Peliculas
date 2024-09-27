@@ -106,8 +106,8 @@ module.exports = {
 	// CRUD
 	obtieneDatosForm: async function (req) {
 		// Variables
-		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
-		const {entidad, id} = req.query;
+		const {baseUrl, ruta} = comp.partesDelUrl(req);
+		const {entidad, id} = req.params;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const origen = req.query.origen;
@@ -190,10 +190,10 @@ module.exports = {
 	},
 	obtieneDatosGuardar: async function (req) {
 		// Variables
-		const {entidad, id, motivo_id, entDupl, idDupl} = {...req.query, ...req.body};
+		const {entidad, id, motivo_id, entDupl, idDupl} = {...req.params, ...req.body};
 		let {comentario} = req.body;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const {ruta} = comp.reqBasePathUrl(req);
+		const {ruta} = comp.partesDelUrl(req);
 		const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
 		const usuario_id = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();

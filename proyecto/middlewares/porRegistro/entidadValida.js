@@ -2,25 +2,43 @@
 
 module.exports = (req, res, next) => {
 	// Variables
-	const {entidad, siglaFam} = req.params;
+	const {entidad} = req.params;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
-	let informacion;
+	const {baseUrl, ruta} = comp.partesDelUrl(req);
+	let informacion, siglaFam;
 
 	// Verifica que existe la entidad
 	if (!entidad) informacion = {mensajes: ["Falta el dato de la 'entidad'"], iconos: [vistaAnterior]};
 
-	// Verifica que se reconozca la 'siglaFam'
-	if (!informacion && siglaFam && !["p", "r"].includes(siglaFam))
-		informacion = {
-			mensajes: ["No tenemos esa dirección en nuestro sistema"],
-			iconos: [vistaAnterior, variables.vistaInicio], // se usa actual porque no llegó a cambiar el session
-		};
+	// Configura 'siglaFam'
+	if (!informacion)
+		siglaFam =
+			req.params && req.params.siglaFam
+				? req.params.siglaFam
+				: ruta[3] != "/" // la convención es que el 4° elemento sea la siglaFam
+				? ruta[3]
+				: null;
 
-	// Verifica la coherencia entre la siglaFam y la entidad
+	// Verificaciones si existe la 'siglaFam'
 	if (!informacion && siglaFam) {
-		// Obtiene la siglaFam a partir de la entidad, y las compara
-		const siglaFamEnt = comp.obtieneDesdeEntidad.siglaFam(entidad);
-		if (siglaFam != siglaFamEnt) informacion = {mensajes: ["La entidad ingresada es inválida."], iconos: [vistaAnterior]};
+		// Verifica que se reconozca la 'siglaFam'
+		if (!["p", "r"].includes(siglaFam))
+			informacion = {
+				mensajes: ["No tenemos esa dirección en nuestro sistema"],
+				iconos: [vistaAnterior, variables.vistaInicio], // se usa actual porque no llegó a cambiar el session
+			};
+		// Verifica la coherencia entre la siglaFam y la entidad
+		else {
+			// Obtiene la siglaFam a partir de la entidad, y las compara
+			const siglaFamEnt = comp.obtieneDesdeEntidad.siglaFam(entidad);
+			if (siglaFam != siglaFamEnt) informacion = {mensajes: ["La entidad ingresada es inválida."], iconos: [vistaAnterior]};
+		}
+	}
+
+	if (!informacion && !siglaFam) {
+		const entidades = variables.entidades.prodsRclvs;
+		if (!entidades.includes(entidad))
+			informacion = {mensajes: ["La entidad ingresada es inválida."], iconos: [vistaAnterior]};
 	}
 
 	// Si corresponde, muestra el mensaje

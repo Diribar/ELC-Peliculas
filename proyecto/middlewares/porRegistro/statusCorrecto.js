@@ -2,9 +2,10 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const entidad = req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "";
-	const id = req.query.id;
-	const {baseUrl, ruta} = comp.reqBasePathUrl(req);
+	const {entidad, id} = req.params;
+	const {baseUrl, ruta} = comp.partesDelUrl(req);
+	console.log(7,{baseUrl, ruta});
+
 	const statusEsperados_id = FN_statusEsperados_id(baseUrl, ruta);
 	let informacion;
 
@@ -54,10 +55,8 @@ module.exports = async (req, res, next) => {
 
 // Funciones
 let FN_statusEsperados_id = (baseUrl, ruta) => {
-	return false
-		? false
-		: baseUrl == "/producto" || baseUrl == "/rclv" // Preguntas para 'CRUD'
-		? ruta == "/edicion/"
+	return  ["e"]
+	ruta == "/edicion/"
 			? activos_ids
 			: ruta == "/inactivar/"
 			? aprobados_ids
