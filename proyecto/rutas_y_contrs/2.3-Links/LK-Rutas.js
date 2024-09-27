@@ -37,8 +37,8 @@ router.get("/api/recuperar", API.recupera);
 router.get("/api/deshacer", API.deshace);
 
 // Vistas
-router.get("/abm", aptoABM, capturaActivar, vista.abm);
-router.get("/visualizacion",linkIDvalido, vista.visualizacion);
+router.get("/abp", aptoABM, capturaActivar, vista.abm);
+router.get("/vsp",linkIDvalido, vista.visualizacion);
 
 // Fin
 module.exports = router;

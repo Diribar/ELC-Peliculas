@@ -31,17 +31,15 @@ let redirecciona = (req, res) => {
 	return res.redirect(originalUrl);
 };
 
-// Vistas
-router.get("/:familia/historial", redirecciona); // Historial
-router.get("/:familia/inactivar", redirecciona); // Inactivar
-router.get("/:familia/recuperar", redirecciona); // Recuperar
-router.get("/:familia/eliminadoPorCreador", redirecciona); // Eliminado por creador
-router.get("/:familia/eliminar", redirecciona); // Eliminado
-
-// Vistas - Correcciones
-router.get("/correccion/motivo", redirecciona);
-router.get("/correccion/status", redirecciona);
+router.get("/tablero-de-entidades", redirecciona);
+router.get("/tablero-de-mantenimiento", redirecciona);
+router.get("/:familia/alta", redirecciona); // Altas
+router.get("/:familia/rechazar", redirecciona); // Rechazar
+router.get("/:familia/edicion", redirecciona); // Edición
+router.get("/:familia/inactivar", redirecciona); // Revisar Inactivar
+router.get("/:familia/recuperar", redirecciona); // Revisar Recuperar
+router.get("/rclv/solapamiento", redirecciona); // Solapamiento
+router.get("/links", redirecciona); // Links
 
 // Fin
 module.exports = router;
-

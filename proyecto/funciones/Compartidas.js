@@ -1264,7 +1264,7 @@ module.exports = {
 	partesDelUrl: (req) => {
 		// Obtiene los datos
 		const baseUrl = req.baseUrl ? req.baseUrl : req.path.slice(0, req.path.indexOf("/", 1));
-		const ruta = req.path.startsWith(baseUrl) ? req.path.replace(baseUrl, "") : req.path;
+		const ruta = (req.path.startsWith(baseUrl) ? req.path.replace(baseUrl, "") : req.path).slice(0, 4);
 		const url = req.url.startsWith(baseUrl) ? req.url.replace(baseUrl, "") : req.url;
 
 		// Fin
@@ -1285,16 +1285,16 @@ module.exports = {
 		const siglaFam = this.obtieneDesdeEntidad.siglaFam(entidad);
 
 		// Rutas
-		const rutas = {
+		const rutas = [
 			// Familia
-			"/historial": "/hs",
-			"/inactivar": "/in",
-			"/recuperar": "/rc",
-			"/eliminadoPorCreador": "/ec" + siglaFam,
-			"/eliminar": "/el" + siglaFam,
-			"/correccion/motivo": "/cm",
-			"/correccion/status": "/cs",
-		};
+			{ant: "/historial", act: "/hs"},
+			{ant: "/inactivar", act: "/in"},
+			{ant: "/recuperar", act: "/rc"},
+			{ant: "/eliminadoPorCreador", act: "/ec" + siglaFam},
+			{ant: "/eliminar", act: "/el" + siglaFam},
+			{ant: "/correccion/motivo", act: "/cm"},
+			{ant: "/correccion/status", act: "/cs"},
+		];
 
 		// Fin
 		return rutas;

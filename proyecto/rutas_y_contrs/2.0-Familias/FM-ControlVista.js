@@ -254,7 +254,7 @@ module.exports = {
 		},
 		statusGuardar: async (req, res) => {
 			// Variables
-			const {entidad, id, origen, opcion, prodRclv, ultHist} = {...req.params,...req.query, ...req.body};
+			const {entidad, id, origen, opcion, prodRclv, ultHist} = {...req.params, ...req.query, ...req.body};
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 			let destino;
@@ -278,37 +278,5 @@ module.exports = {
 			// Fin
 			return res.redirect("/" + familia + "/" + destino + cola);
 		},
-	},
-	redireccionar: (req, res) => {
-		// Variables
-		const {entidad, id} = req.query;
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		let {originalUrl} = req;
-
-		// Reemplaza la familia por la entidad
-		if (["/producto/", "/rclv/"].some((n) => originalUrl.includes(n)))
-			originalUrl = originalUrl.replace("/" + familia + "/", "/" + entidad + "/"); // /peliculas/
-		// Si no existía la familia, le agrega la entidad
-		else originalUrl = "/" + entidad + originalUrl; // /peliculas/cm - /personaje/cs
-
-		// Quita la entidad y el id del url
-		originalUrl = originalUrl.replace("entidad=" + entidad + "&", "");
-		originalUrl = originalUrl.replace("/?id=" + id, "/" + id + "/?");
-		originalUrl = originalUrl.replace("?&", "?");
-		if (originalUrl.endsWith("?")) originalUrl = originalUrl.slice(0, -1);
-		if (originalUrl.endsWith("/")) originalUrl = originalUrl.slice(0, -1);
-
-		// Reemplaza la ruta anterior por la actual
-		const rutasActualizadas = comp.rutasActualizadas(entidad);
-		const rutasAnts = Object.keys(rutasActualizadas);
-		const rutaAnt = rutasAnts.find((n) => originalUrl.includes(n));
-
-		if (rutaAnt) {
-			const rutaAct = rutasActualizadas[rutaAnt];
-			originalUrl = originalUrl.replace(rutaAnt, rutaAct);
-		}
-
-		// Fin
-		return res.redirect(originalUrl);
 	},
 };
