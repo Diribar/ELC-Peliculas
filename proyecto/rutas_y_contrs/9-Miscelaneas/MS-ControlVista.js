@@ -3,16 +3,12 @@
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
-	// Redirecciona después de inactivar una captura
-	redirecciona: {
-		redireccionaInicio: (req, res) => res.redirect("/"), // redirecciona a Inicio
-		inicio: (req, res) => {
-			const vistaActual = vistasInstitucs.inicio;
-			return res.render("CMP-0Estructura", {
-				tema: "institucional",
-				...vistaActual,
-			});
-		},
+	inicio: (req, res) => {
+		const vistaActual = vistasInstitucs.inicio;
+		return res.render("CMP-0Estructura", {
+			tema: "institucional",
+			...vistaActual,
+		});
 	},
 
 	// Listados
@@ -62,23 +58,61 @@ module.exports = {
 					...(await baseDeDatos.obtieneTodos(entidad, "links").then((n) => n.filter((m) => m.links.length > 1)))
 				);
 
-			// Separa entre links TR, GR y CC
+			// Separa entre links TR (trailer), GR (gratis) y CC
 			for (let producto of productos) {
 				// Trailer
-				cantLinks = producto.links.filter((n) => n.tipo_id == 1).length;
+				cantLinks = producto.links.filter((n) => n.tipo_id == linkTrailer_id).length;
 				if (!TR || TR.cantLinks < cantLinks) TR = {nombre: producto.nombreCastellano, cantLinks};
 
 				// Gratis
-				cantLinks = producto.links.filter((n) => n.tipo_id == 2 && n.gratuito).length;
+				cantLinks = producto.links.filter((n) => n.tipo_id == linkPelicula_id && n.gratuito).length;
 				if (!GR || GR.cantLinks < cantLinks) GR = {nombre: producto.nombreCastellano, cantLinks};
 
 				// Gratis
-				cantLinks = producto.links.filter((n) => n.tipo_id == 2 && !n.gratuito).length;
+				cantLinks = producto.links.filter((n) => n.tipo_id == linkPelicula_id && !n.gratuito).length;
 				if (!CC || CC.cantLinks < cantLinks) CC = {nombre: producto.nombreCastellano, cantLinks};
 			}
 
 			// Devuelve la info
 			return res.send({TR, GR, CC});
+		},
+	},
+
+	// Redirecciona después de inactivar una captura
+	redirecciona: {
+		inicio: (req, res) => res.redirect("/"), // redirecciona a Inicio
+		// Redirecciona después de inactivar una captura
+		urlDeOrigen: async (req, res) => {
+			// Variables
+			const {origen: origenCodigo, origenUrl, prodEntidad, prodId, entidad, id, urlDestino, grupo} = req.query;
+			let destino;
+
+			// Casos particulares
+			if (urlDestino) return res.redirect(urlDestino);
+			if (!origenCodigo && !origenUrl) return res.redirect("/");
+
+			// Rutina para encontrar el destino
+			for (let origen of origenDeUrls)
+				if ((origenCodigo && origenCodigo == origen.codigo) || (origenUrl && origenUrl == origen.url)) {
+					destino = origen.url;
+					if (origen.cola)
+						destino += "/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodId ? prodId : id);
+					break;
+				}
+
+			// Links
+			if (!destino && ["LK", "LKM"].includes(origenCodigo))
+				destino =
+					"/links/abm/?entidad=" +
+					(prodEntidad ? prodEntidad : entidad) +
+					"&id=" +
+					(prodId ? prodId : id) +
+					(origenCodigo == "LKM" ? "&origen=TM" : "") +
+					(grupo ? "&grupo=inactivo" : "");
+
+			// Redirecciona a la vista que corresponda
+			if (!destino) destino = "/";
+			return res.redirect(destino);
 		},
 	},
 };
