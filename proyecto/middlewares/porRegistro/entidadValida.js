@@ -2,7 +2,7 @@
 
 module.exports = (req, res, next) => {
 	// Variables
-	const {entidad} = req.params;
+	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const {baseUrl, ruta} = comp.partesDelUrl(req);
 	let informacion, siglaFam;
