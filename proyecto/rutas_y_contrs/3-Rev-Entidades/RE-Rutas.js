@@ -59,8 +59,8 @@ router.get("/api/link/siguiente-producto", API.links.sigProd);
 router.get("/api/link/obtiene-embeded-link", API.links.obtieneEmbededLink);
 
 // Vistas - Tablero de Control
-router.get("/te", usuarioBase, m.usRolAutTablEnts, vista.tableroEntidades);
-router.get("/tm", aptoUsuario, vista.tableroMantenim);
+router.get("/tablero-de-entidades", usuarioBase, m.usRolAutTablEnts, vista.tableroEntidades);
+router.get("/tablero-de-mantenimiento", aptoUsuario, vista.tableroMantenim);
 
 // Vistas - Altas
 router.get("/agp/:entidad/:id", aptoCRUD, m.prodSinRclvAprob, m.capturaActivar, m.rutaCRUD_ID, vista.altaProdForm);
@@ -81,8 +81,8 @@ router.get("/rc:siglaFam/:entidad/:id", aptoCRUD, m.capturaActivar, vistaFM.form
 router.post("/rc:siglaFam/:entidad/:id", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
 
 // Vistas - Solapamiento
-router.get("/rsr/:entidad/:id", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
-router.post("/rsr/:entidad/:id", aptoCRUD, m.usRolRevPERL, m.multer.single("avatar"), m.capturaInactivar, vista.edic.solapam);
+router.get("/slr/:entidad/:id", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
+router.post("/slr/:entidad/:id", aptoCRUD, m.usRolRevPERL, m.multer.single("avatar"), m.capturaInactivar, vista.edic.solapam);
 
 // Vistas - Edición
 router.get("/ed:siglaFam/:entidad/:id", aptoEdicion, m.rutaCRUD_ID, m.capturaActivar, vista.edic.form);
