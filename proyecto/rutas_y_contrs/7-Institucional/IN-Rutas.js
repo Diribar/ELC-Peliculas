@@ -22,7 +22,7 @@ router.get("/contactanos/envio-exitoso", aptoUsuario, vista.contactanos.envioExi
 router.get("/contactanos/envio-fallido", aptoUsuario, vista.contactanos.envioFallido);
 
 router.get("/inicio", vista.redireccionaInicio);
-router.get("/:id", vista.institucional); // institucional
+router.get("/:codigo", vista.institucional); // institucional
 
 // Fin
 module.exports = router;

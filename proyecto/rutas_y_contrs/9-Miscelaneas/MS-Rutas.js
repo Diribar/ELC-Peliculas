@@ -15,7 +15,7 @@ router.get("/api/busqueda-rapida/", API.busquedaRapida);
 // Redireciona
 router.get("/", vista.inicio);
 router.get("/inicio", vista.redirecciona.inicio);
-router.get("/inactivar-captura/ms/:entidad/:id", capturaInactivar, vista.redirecciona.urlDeOrigen);
+router.get("/inactivar-captura/ms/:entidad", capturaInactivar, vista.redirecciona.urlDeOrigen);
 
 // Información para mostrar en el explorador
 router.get("/session", vista.listados.session);

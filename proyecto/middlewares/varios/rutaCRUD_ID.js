@@ -6,7 +6,7 @@ module.exports = async (req, res, next) => {
 	res.locals.rutaCRUD = encodeURIComponent(ruta);
 
 	// Averigua el id del primer capítulo de la colección
-	const {id} = req.params;
+	const {id} = req.query;
 	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
 	if (entidad == "colecciones") {
 		const condicion = {coleccion_id: id, temporada: 1, capitulo: 1};

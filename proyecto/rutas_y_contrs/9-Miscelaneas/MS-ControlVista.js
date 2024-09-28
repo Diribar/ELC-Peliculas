@@ -124,13 +124,12 @@ module.exports = {
 			const rutaAntAct = rutasAntsActs.find((n) => originalUrl.startsWith(n.ant));
 			nuevoUrl = rutaAntAct.act;
 
-			// Obtiene la 'cola'
+			// Quita la entidad de la 'cola'
 			const colaActual = originalUrl.replace(rutaAntAct.ant, "");
-			nuevaCola = colaActual.replace("entidad=" + entidad + "&", "");
-			nuevaCola = nuevaCola.replace("/?id=" + id, "/" + id + "/?");
+			nuevaCola = colaActual.replace("?entidad=" + entidad, "");
 
 			// Terminación de la 'cola'
-			nuevaCola = nuevaCola.replace("?&", "?");
+			nuevaCola = nuevaCola.replace("/&", "/?");
 			if (nuevaCola.endsWith("?")) nuevaCola = nuevaCola.slice(0, -1);
 			if (nuevaCola.endsWith("/")) nuevaCola = nuevaCola.slice(0, -1);
 

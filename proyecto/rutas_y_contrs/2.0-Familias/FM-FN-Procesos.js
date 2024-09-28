@@ -107,7 +107,7 @@ module.exports = {
 	obtieneDatosForm: async function (req) {
 		// Variables
 		const {baseUrl, ruta} = comp.partesDelUrl(req);
-		const {id} = req.params;
+		const {id} = req.query;
 		const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
@@ -191,7 +191,7 @@ module.exports = {
 	},
 	obtieneDatosGuardar: async function (req) {
 		// Variables
-		const {id} = req.params;
+		const {id} = req.query;
 		const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
 		const {motivo_id, entDupl, idDupl} = req.body;
 		let {comentario} = req.body;
