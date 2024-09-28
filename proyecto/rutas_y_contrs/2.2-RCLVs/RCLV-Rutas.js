@@ -44,9 +44,9 @@ router.get("/api/edicion/obtiene-leyenda-nombre", API.obtieneLeyNombre);
 // Vistas - Relación con la vida
 router.get("/agr", aptoAgregar, vista.altaEdic.form);
 router.post("/agr", aptoAgregar, multer.single("avatar"), vista.altaEdic.guardar);
-router.get("/dtr/:id", aptoDetalle, vista.detalle);
-router.get("/edr/:id", aptoEdicion, capturaActivar, vista.altaEdic.form);
-router.post("/edr/:id", aptoEdicion, multer.single("avatar"), capturaInactivar, vista.altaEdic.guardar);
+router.get("/dtr", aptoDetalle, vista.detalle);
+router.get("/edr", aptoEdicion, capturaActivar, vista.altaEdic.form);
+router.post("/edr", aptoEdicion, multer.single("avatar"), capturaInactivar, vista.altaEdic.guardar);
 
 // Fin
 module.exports = router;
