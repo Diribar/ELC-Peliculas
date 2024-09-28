@@ -2,6 +2,9 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
+	const {id} = req.params;
+	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const familia = comp.obtieneDesdeEntidad.familia(entidad);
 	const rubro = req.originalUrl.startsWith("/revision/")
 		? "revision"
 		: req.originalUrl.startsWith("/producto/") || req.originalUrl.startsWith("/links/abm/")
@@ -9,8 +12,6 @@ module.exports = async (req, res, next) => {
 		: req.originalUrl.startsWith("/rclv/")
 		? "rclv"
 		: null;
-	const {entidad, id} = req.params;
-	const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 	let v = {
 		// Generales
@@ -149,8 +150,7 @@ module.exports = async (req, res, next) => {
 
 		// Datos para el link
 		const originalUrl = encodeURIComponent(req.originalUrl);
-		const linkInactivar =
-			"/inactivar-captura/?entidad=" + capturaEnt + "&id=" + capturaEnt_id + "&urlDestino=" + originalUrl;
+		const linkInactivar = "/inactivar-captura/?entidad=" + capturaEnt + "&id=" + capturaEnt_id + "&urlDestino=" + originalUrl;
 		const liberar = {
 			clase: iconos.check,
 			link: linkInactivar,

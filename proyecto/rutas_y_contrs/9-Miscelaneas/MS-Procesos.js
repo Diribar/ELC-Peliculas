@@ -8,7 +8,7 @@ module.exports = {
 
 		// Rutas
 		const rutas = [
-			// Familia - ant: familia + rutaAnt (salvo correccion) / act: entidad + rutaAct
+			// Familia - ant: familia + rutaAnt (salvo correccion) - act: entidad + rutaAct
 			{ant: "/" + familia + "/historial", act: "/" + entidad + "/hs"},
 			{ant: "/" + familia + "/inactivar", act: "/" + entidad + "/in"},
 			{ant: "/" + familia + "/recuperar", act: "/" + entidad + "/rc"},
@@ -17,7 +17,15 @@ module.exports = {
 			{ant: "/correccion/motivo", act: "/" + entidad + "/cm"},
 			{ant: "/correccion/status", act: "/" + entidad + "/cs"},
 
-			// Revisión de Entidades - ant: revision + familia + ant (salvo links) / act:
+			// Producto Agregar - ant: '/producto/agregar' + rutaAnt - act: '/producto' + rutaAnt
+			{ant: "/producto/agregar/palabras-clave", act: "/producto/palabras-clave"},
+			{ant: "/producto/agregar/desambiguar", act: "/producto/desambiguar"},
+			{ant: "/producto/agregar/ingreso-manual", act: "/producto/ingreso-manual"},
+
+			// Producto Agregar - ant: '/producto/agregar' - act: entidad
+			{ant: "/producto/agregar", act: entidad + "/"},
+
+			// Revisión de Entidades - ant: revision + familia + ant (salvo links) - act: rutaAct + entidad
 			{ant: "/revision/" + familia + "alta", act: "/revision/al" + siglaFam + "/" + entidad},
 			{ant: "/revision/" + familia + "edicion", act: "/revision/ed/" + entidad},
 			{ant: "/revision/" + familia + "rechazar", act: "/revision/ch/" + entidad},
