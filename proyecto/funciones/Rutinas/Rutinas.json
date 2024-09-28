@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 27/sep",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Sáb. 28/sep",
+	"HoraUTC": "1:59",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 23/sep",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"25-sep-24": {},
 		"26-sep-24": {},
 		"27-sep-24": {"leyenda": "Hoy recordamos a san Vicente de Paul", "entidad": "personajes", "id": 103},
 		"28-sep-24": {},
-		"29-sep-24": {}
+		"29-sep-24": {},
+		"30-sep-24": {}
 	}
 }
