@@ -225,10 +225,12 @@ module.exports = {
 			if (usuario.statusRegistro_id == mailPendValidar_id)
 				espera.push(procesos.actualizaElStatusDelUsuario(usuario, "mailValidado"));
 
-			// Actualiza datos en la BD - tabla 'usuarios'
-			const fechaUltNaveg = [usuario.fechaUltNaveg, cliente.fechaUltNaveg].sort((a, b) => (a > b ? -1 : 1))[0];
-			const datos = {fechaUltNaveg, diasSinCartelBenefs: 0};
-			espera.push(baseDeDatos.actualizaPorId("usuarios", usuario.id, datos));
+			// Actualiza los datos del usuario
+			const {fechaUltNaveg} = cliente; // estos datos del cliente son siempre los más actuales
+			const diasNaveg = !cliente_id.startsWith("U") ? usuario.diasNaveg + cliente.diasNaveg : usuario.diasNaveg; // si se llevaban registros paralelos, se suman
+			const {visitaCreadaEn} = usuario.visitaCreadaEn ? usuario : cliente; // si existe la del usuario, se conserva
+			const datos = {fechaUltNaveg, diasNaveg, visitaCreadaEn, diasSinCartelBenefs: 0};
+			espera.push(baseDeDatos.actualizaPorId("usuarios", usuario.id, datos)); // no es necesario actualizar la variable 'usuario'
 
 			// Actualiza datos en la tabla 'navegsDelDia'
 			espera.push(
@@ -236,7 +238,7 @@ module.exports = {
 					.actualizaPorCondicion(
 						"navegsDelDia",
 						{cliente_id, fecha: hoy}, // el 'cliente_id' puede diferir del 'usuario.cliente_id'
-						{usuario_id, cliente_id: usuario.cliente_id}
+						{cliente_id: usuario.cliente_id, usuario_id, visitaCreadaEn, diasNaveg}
 					)
 					.then(() => procesos.eliminaDuplicados(usuario.id))
 			);
@@ -253,7 +255,7 @@ module.exports = {
 			delete req.session.cliente;
 
 			// Redirecciona
-			await Promise.all(espera)
+			await Promise.all(espera);
 			return res.redirect("/usuarios/garantiza-login-y-completo");
 		},
 		logout: (req, res) => {
