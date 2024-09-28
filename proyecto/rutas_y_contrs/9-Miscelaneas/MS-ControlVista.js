@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const procsFM = require("../2.0-Familias/FM-FN-Procesos");
+const procesos = require("./MS-Procesos");
 
 module.exports = {
 	inicio: (req, res) => {
@@ -80,8 +80,7 @@ module.exports = {
 
 	// Redirecciona después de inactivar una captura
 	redirecciona: {
-		inicio: (req, res) => res.redirect("/"), // redirecciona a Inicio
-		// Redirecciona después de inactivar una captura
+		inicio: (req, res) => res.redirect("/"),
 		urlDeOrigen: async (req, res) => {
 			// Variables
 			const {origen: origenCodigo, origenUrl, prodEntidad, prodId, entidad, id, urlDestino, grupo} = req.query;
@@ -113,6 +112,30 @@ module.exports = {
 			// Redirecciona a la vista que corresponda
 			if (!destino) destino = "/";
 			return res.redirect(destino);
+		},
+		rutasAntiguas: function (req, res) {
+			// Variables
+			const {entidad, id} = req.query;
+			const rutasAntsActs = procesos.rutas(entidad);
+			let {originalUrl} = req;
+			let nuevoUrl, nuevaCola;
+
+			// Obtiene el reqBase y el path
+			const rutaAntAct = rutasAntsActs.find((n) => originalUrl.startsWith(n.ant));
+			nuevoUrl = rutaAntAct.act;
+
+			// Obtiene la 'cola'
+			const colaActual = originalUrl.replace(rutaAntAct.ant, "");
+			nuevaCola = colaActual.replace("entidad=" + entidad + "&", "");
+			nuevaCola = nuevaCola.replace("/?id=" + id, "/" + id + "/?");
+
+			// Terminación de la 'cola'
+			nuevaCola = nuevaCola.replace("?&", "?");
+			if (nuevaCola.endsWith("?")) nuevaCola = nuevaCola.slice(0, -1);
+			if (nuevaCola.endsWith("/")) nuevaCola = nuevaCola.slice(0, -1);
+
+			// Fin
+			return res.redirect(nuevoUrl + nuevaCola);
 		},
 	},
 };

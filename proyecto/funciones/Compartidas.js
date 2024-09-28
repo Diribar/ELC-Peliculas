@@ -274,8 +274,6 @@ module.exports = {
 		oa: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : "o"),
 		a: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : ""),
 	},
-	//obtieneFamiliaDesdeSiglaFam: (siglaFam) => (siglaFam == "p" ? "productos" : siglaFam == "r" ? "rclv" : null),
-
 	// Productos y RCLVs
 	puleEdicion: async function (entidad, original, edicion) {
 		// Variables
@@ -1262,10 +1260,14 @@ module.exports = {
 		return mailEnviado;
 	},
 	partesDelUrl: (req) => {
-		// Obtiene los datos
+		// Obtiene la base y el url (sin la base)
 		const baseUrl = req.baseUrl ? req.baseUrl : req.path.slice(0, req.path.indexOf("/", 1));
-		const ruta = (req.path.startsWith(baseUrl) ? req.path.replace(baseUrl, "") : req.path).slice(0, 4);
 		const url = req.url.startsWith(baseUrl) ? req.url.replace(baseUrl, "") : req.url;
+
+		// Obtiene la ruta
+		let ruta = req.path.startsWith(baseUrl) ? req.path.replace(baseUrl, "") : req.path;
+		const indice = ruta.indexOf("/", 1);
+		if (indice >= 0) ruta = ruta.slice(0, indice);
 
 		// Fin
 		return {baseUrl, ruta, url};
@@ -1279,54 +1281,6 @@ module.exports = {
 
 		// Fin
 		return;
-	},
-
-	// Rutas antiguas
-	rutasAnts: function (entidad) {
-		// Variables
-		const siglaFam = this.obtieneDesdeEntidad.siglaFam(entidad);
-
-		// Rutas
-		const rutas = [
-			// Familia
-			{ant: "/historial", act: "/hs"},
-			{ant: "/inactivar", act: "/in"},
-			{ant: "/recuperar", act: "/rc"},
-			{ant: "/eliminadoPorCreador", act: "/ec" + siglaFam},
-			{ant: "/eliminar", act: "/el" + siglaFam},
-			{ant: "/correccion/motivo", act: "/cm"},
-			{ant: "/correccion/status", act: "/cs"},
-		];
-
-		// Fin
-		return rutas;
-	},
-	deRutasAntArutasAct:function (req, res)  {
-		// Variables
-		const {entidad, id} = req.query;
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		let {originalUrl} = req;
-
-		// Reemplaza la familia por la entidad
-		if (["/producto/", "/rclv/"].some((n) => originalUrl.includes(n)))
-			originalUrl = originalUrl.replace("/" + familia + "/", "/" + entidad + "/"); // /peliculas/
-		// Si no existía la familia, le agrega la entidad
-		else originalUrl = "/" + entidad + originalUrl; // /peliculas/cm - /personaje/cs
-
-		// Quita la entidad y el id del url
-		originalUrl = originalUrl.replace("entidad=" + entidad + "&", "");
-		originalUrl = originalUrl.replace("/?id=" + id, "/" + id + "/?");
-		originalUrl = originalUrl.replace("?&", "?");
-		if (originalUrl.endsWith("?")) originalUrl = originalUrl.slice(0, -1);
-		if (originalUrl.endsWith("/")) originalUrl = originalUrl.slice(0, -1);
-
-		// Reemplaza la ruta anterior por la actual
-		const rutasAnts = this.rutasAnts(entidad);
-		const ruta = rutasAnts.find((n) => originalUrl.includes(n.ant));
-		if (ruta) originalUrl = originalUrl.replace(ruta.ant, ruta.act);
-
-		// Fin
-		return res.redirect(originalUrl);
 	},
 };
 

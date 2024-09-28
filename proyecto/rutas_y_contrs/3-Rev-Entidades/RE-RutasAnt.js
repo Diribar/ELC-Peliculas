@@ -1,15 +1,16 @@
 "use strict";
 // Variables
 const router = express.Router();
+const vistaMS = require("../9-Miscelaneas/MS-ControlVista");
 
 // Vistas
-router.get("/:familia/alta", comp.deRutasAntArutasAct); // Altas
-router.get("/:familia/rechazar", comp.deRutasAntArutasAct); // Rechazar
-router.get("/:familia/edicion", comp.deRutasAntArutasAct); // Edición
-router.get("/:familia/inactivar", comp.deRutasAntArutasAct); // Inactivar
-router.get("/:familia/recuperar", comp.deRutasAntArutasAct); // Recuperar
-router.get("/rclv/solapamiento", comp.deRutasAntArutasAct); // Solapamiento
-router.get("/links", comp.deRutasAntArutasAct); // Links
+router.get("/:familia/alta", vistaMS.redirecciona.rutasAntiguas); // Altas
+router.get("/:familia/edicion", vistaMS.redirecciona.rutasAntiguas); // Edición
+router.get("/:familia/rechazar", vistaMS.redirecciona.rutasAntiguas); // Rechazar
+router.get("/:familia/inactivar", vistaMS.redirecciona.rutasAntiguas); // Inactivar
+router.get("/:familia/recuperar", vistaMS.redirecciona.rutasAntiguas); // Recuperar
+router.get("/rclv/solapamiento", vistaMS.redirecciona.rutasAntiguas); // Solapamiento
+router.get("/links", vistaMS.redirecciona.rutasAntiguas); // Links
 
 // Fin
 module.exports = router;

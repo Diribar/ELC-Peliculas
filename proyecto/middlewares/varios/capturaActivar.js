@@ -2,7 +2,8 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const {entidad, id} = req.params;
+	const {id} = req.params;
+	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
 	const usuario_id = req.session.usuario.id;
 	const registro = await baseDeDatos.obtienePorId(entidad, id);
 	const {baseUrl} = comp.partesDelUrl(req);

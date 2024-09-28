@@ -279,7 +279,7 @@ module.exports = {
 	miscelaneas: {
 		accesosSuspendidos: (req, res) => {
 			// Variables
-			const codigo = req.params.id;
+			const {codigo} = req.params;
 			const mensajeCola = "Con el ícono de entendido salís del circuito de usuario.";
 			let mensajes, titulo, iconosInfo; // la variable 'iconos' está definida en 'app'
 
