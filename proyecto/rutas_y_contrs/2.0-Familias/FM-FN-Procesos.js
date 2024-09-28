@@ -107,7 +107,8 @@ module.exports = {
 	obtieneDatosForm: async function (req) {
 		// Variables
 		const {baseUrl, ruta} = comp.partesDelUrl(req);
-		const {entidad, id} = req.params;
+		const {id} = req.params;
+		const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const origen = req.query.origen;
