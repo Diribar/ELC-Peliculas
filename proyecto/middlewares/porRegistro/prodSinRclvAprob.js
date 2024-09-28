@@ -2,7 +2,8 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const {entidad, id: entId, origen} = req.query;
+	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const {id: entId, origen} = req.query;
 	const asocRclvs = variables.entidades.asocRclvs;
 	const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 	const condicion = {[campo_id]: entId};

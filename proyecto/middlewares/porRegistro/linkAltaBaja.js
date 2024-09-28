@@ -2,7 +2,7 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const {url, IN} = req.query;
+	const {url} = req.query;
 	let respuesta;
 
 	// Valida que exista el dato del 'url'

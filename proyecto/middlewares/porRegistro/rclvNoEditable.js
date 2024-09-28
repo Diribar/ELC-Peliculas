@@ -2,7 +2,7 @@
 
 module.exports = (req, res, next) => {
 	// Variables
-	const id = req.query.id;
+	const {id} = req.query;
 	const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 

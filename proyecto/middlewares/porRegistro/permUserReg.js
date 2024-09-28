@@ -2,8 +2,8 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const {id} = req.query;
 	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const {id} = req.query;
 	const familia = comp.obtieneDesdeEntidad.familia(entidad);
 	const rubro = req.originalUrl.startsWith("/revision/")
 		? "revision"

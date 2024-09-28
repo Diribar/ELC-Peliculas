@@ -2,7 +2,8 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const {entidad, id, edicID} = req.query;
+	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const {id, edicID} = req.query;
 	const {baseUrl} = comp.partesDelUrl(req);
 	let origen = req.query.origen;
 	let entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
