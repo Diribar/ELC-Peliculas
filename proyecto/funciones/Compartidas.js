@@ -274,8 +274,6 @@ module.exports = {
 		oa: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : "o"),
 		a: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : ""),
 	},
-	//obtieneFamiliaDesdeSiglaFam: (siglaFam) => (siglaFam == "p" ? "productos" : siglaFam == "r" ? "rclv" : null),
-
 	// Productos y RCLVs
 	puleEdicion: async function (entidad, original, edicion) {
 		// Variables
@@ -1283,59 +1281,6 @@ module.exports = {
 
 		// Fin
 		return;
-	},
-
-	// Rutas antiguas
-	deRutasAntArutasAct: function (req, res) {
-		// Variables
-		const {entidad, id} = req.query;
-		const rutasAntsActs = this.rutasAntsActs(entidad);
-		let {originalUrl} = req;
-		let nuevoUrl, nuevaCola;
-
-		// Obtiene el reqBase y el path
-		const rutaAntAct = rutasAntsActs.find((n) => originalUrl.startsWith(n.ant));
-		nuevoUrl = rutaAntAct.act;
-
-		// Obtiene la 'cola'
-		const colaActual = originalUrl.replace(rutaAntAct.ant, "");
-		nuevaCola = colaActual.replace("entidad=" + entidad + "&", "");
-		nuevaCola = nuevaCola.replace("/?id=" + id, "/" + id + "/?");
-		nuevaCola = nuevaCola.replace("?&", "?");
-		if (nuevaCola.endsWith("?")) nuevaCola = nuevaCola.slice(0, -1);
-		if (nuevaCola.endsWith("/")) nuevaCola = nuevaCola.slice(0, -1);
-
-		// Fin
-		return res.redirect(nuevoUrl + nuevaCola);
-	},
-	rutasAntsActs: function (entidad) {
-		// Variables
-		const siglaFam = this.obtieneDesdeEntidad.siglaFam(entidad);
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-
-		// Rutas
-		const rutas = [
-			// Familia - ant: familia + rutaAnt (salvo correccion) / act: entidad + rutaAct
-			{ant: "/" + familia + "/historial", act: "/" + entidad + "/hs"},
-			{ant: "/" + familia + "/inactivar", act: "/" + entidad + "/in"},
-			{ant: "/" + familia + "/recuperar", act: "/" + entidad + "/rc"},
-			{ant: "/" + familia + "/eliminadoPorCreador", act: "/" + entidad + "/ec"},
-			{ant: "/" + familia + "/eliminar", act: "/" + entidad + "/el"},
-			{ant: "/correccion/motivo", act: "/" + entidad + "/cm"},
-			{ant: "/correccion/status", act: "/" + entidad + "/cs"},
-
-			// Revisión de Entidades - ant: revision + familia + ant (salvo links) / act:
-			{ant: "/revision/" + familia + "alta", act: "/revision/al" + siglaFam + "/" + entidad},
-			{ant: "/revision/" + familia + "edicion", act: "/revision/ed/" + entidad},
-			{ant: "/revision/" + familia + "rechazar", act: "/revision/ch/" + entidad},
-			{ant: "/revision/" + familia + "inactivar", act: "/revision/in/" + entidad},
-			{ant: "/revision/" + familia + "recuperar", act: "/revision/rc/" + entidad},
-			{ant: "/revision/rclv/solapamiento", act: "/revision/slr/" + entidad},
-			{ant: "/revision/links", act: "/revision/lkp/" + entidad},
-		];
-
-		// Fin
-		return rutas;
 	},
 };
 
