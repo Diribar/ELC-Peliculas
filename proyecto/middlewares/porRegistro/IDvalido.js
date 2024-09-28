@@ -2,7 +2,9 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const {entidad, id} = req.params;
+	const {id} = req.params;
+	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const vistaEntendido = variables.vistaEntendido(req.session.urlSinParametros);
 	let informacion;
@@ -11,7 +13,7 @@ module.exports = async (req, res, next) => {
 	if (!id) informacion = {mensajes: ["Falta el dato del 'ID'"], iconos: [vistaAnterior]};
 
 	// PROBLEMA 2: ID inválido
-	if (!informacion){
+	if (!informacion) {
 		const registro = await baseDeDatos.obtienePorId(entidad, id);
 		if (!registro) informacion = {mensajes: ["Registro no encontrado"], iconos: [vistaEntendido]};
 	}
