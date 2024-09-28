@@ -127,9 +127,9 @@ module.exports = {
 			// Quita la entidad de la 'cola'
 			const colaActual = originalUrl.replace(rutaAntAct.ant, "");
 			nuevaCola = colaActual.replace("?entidad=" + entidad, "");
-			nuevaCola = nuevaCola.replace("/&", "/?");
 
 			// Terminación de la 'cola'
+			nuevaCola = nuevaCola.replace("/&", "/?");
 			if (nuevaCola.endsWith("?")) nuevaCola = nuevaCola.slice(0, -1);
 			if (nuevaCola.endsWith("/")) nuevaCola = nuevaCola.slice(0, -1);
 
