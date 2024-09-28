@@ -12,7 +12,6 @@ module.exports = async (req, res, next) => {
 	let {baseUrl, ruta} = comp.partesDelUrl(req);
 	baseUrl = baseUrl.slice(1);
 	ruta = ruta.slice(1);
-	console.log(7, {baseUrl, ruta});
 
 	// Obtiene el status esperado - CRUD
 	if (!statusEsperado_ids && entidades.includes(baseUrl)) {
@@ -35,7 +34,7 @@ module.exports = async (req, res, next) => {
 
 	// Obtiene el status esperado - Revisión de Entidades
 	if (!statusEsperado_ids && baseUrl == "revision") {
-		statusEsperado_ids = ["ag", "ch"].some((n) => ruta.startsWith(n)) // revisar alta y rechazar
+		statusEsperado_ids = ["al", "ch"].some((n) => ruta.startsWith(n)) // revisar alta y rechazar
 			? [creado_id]
 			: ruta.startsWith("ed") // edición
 			? aprobados_ids
