@@ -7,10 +7,10 @@ module.exports = {
 	redireccionaInicio: (req, res) => res.redirect("/"), // redirecciona a Inicio
 	institucional: (req, res) => {
 		// Variables
-		const url = req.path.slice(1);
+		const {codigo} = req.params;
 		const vistas = Object.keys(vistasInstitucs);
-		const vistaActual = vistasInstitucs[url];
-		const indice = vistas.indexOf(url);
+		const indice = vistas.indexOf(codigo);
+		const vistaActual = vistasInstitucs[codigo];
 
 		// Vistas anterior y posterior
 		const urlAnt = indice ? vistas[indice - 1] : null;
