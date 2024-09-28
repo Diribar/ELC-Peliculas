@@ -457,7 +457,8 @@ module.exports = {
 	guardar: {
 		obtieneDatos: async function (req) {
 			// Variables
-			const {entidad, id, origen, desaprueba, prodEntidad, prodId} = req.query;
+			const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+			const {id, origen, desaprueba, prodEntidad, prodId} = req.query;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const {ruta} = comp.partesDelUrl(req);
 			const codigo = procsFM.codigo({ruta, familia}); // 'alta', 'rechazar', 'revisionInactivar', 'revisionRecuperar'

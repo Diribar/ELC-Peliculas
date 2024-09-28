@@ -70,7 +70,8 @@ module.exports = {
 	},
 	infoNoPerenne: (req) => {
 		// Variables
-		const {entidad, id, origen} = req.query;
+		const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+		const {id, origen} = req.query;
 		const linkVolver =
 			entidad && id
 				? "/inactivar-captura/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "")
