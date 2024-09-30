@@ -18,7 +18,7 @@ router.get("/", vista.inicio);
 
 // Redireciona
 router.get("/inicio", vista.redirecciona.inicio);
-router.get("/miscelaneas/ic/:entidad", entValida, capturaInactivar, vista.redirecciona.urlDeOrigen);
+router.get("/miscelaneas/ic/:entidad", entValida, capturaInactivar, vista.redirecciona.urlDeOrigen); // inactivar captura
 
 // Información para mostrar en el explorador
 router.get("/session", vista.listados.session);
