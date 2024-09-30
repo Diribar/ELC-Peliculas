@@ -4,7 +4,6 @@ const valida = require("./IN-FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
-	redireccionaInicio: (req, res) => res.redirect("/"), // redirecciona a Inicio
 	institucional: (req, res) => {
 		// Variables
 		const {codigo} = req.params;
