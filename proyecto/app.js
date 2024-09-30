@@ -128,8 +128,8 @@ app.set("views", [
 	app.use("/revision", require("./rutas_y_contrs/3-Rev-Entidades/RE-Rutas"));
 	app.use("/revision", require("./rutas_y_contrs/1.2-Rev-Usuarios/RU-Rutas"));
 	app.use("/consultas", require("./rutas_y_contrs/5-Consultas/CN-Rutas"));
-	app.use("/institucional", require("./rutas_y_contrs/7-Institucional/IN-Rutas"));
 	app.use("/graficos", require("./rutas_y_contrs/6-Graficos/GR-Rutas"));
+	app.use("/institucional", require("./rutas_y_contrs/7-Institucional/IN-Rutas"));
 	app.use("/", require("./rutas_y_contrs/9-Miscelaneas/MS-Rutas"));
 
 	// Middlewares transversales
