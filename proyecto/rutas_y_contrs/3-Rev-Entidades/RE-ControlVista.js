@@ -10,7 +10,7 @@ const procesos = require("./RE-Procesos");
 
 module.exports = {
 	// Tablero
-	tableroEntidades: async (req, res) => {
+	tableroControl: async (req, res) => {
 		// Variables
 		const tema = "revisionEnts";
 		const codigo = "tableroControl";
@@ -304,7 +304,7 @@ module.exports = {
 		// Opciones de redireccionamiento
 		if (producto && codigo == "alta") destino = baseUrl + "/producto/edicion" + cola; // producto creado y aprobado
 		else if (origen) destino = "/miscelaneas/ic/" + cola; // otros casos con origen
-		else destino = "/revision/tablero-de-entidades"; // sin origen
+		else destino = "/revision/tablero"; // sin origen
 
 		// Fin
 		return res.redirect(destino);
@@ -453,7 +453,7 @@ module.exports = {
 
 			// Fin
 			if (edicion) return res.redirect(req.originalUrl);
-			else return res.redirect("/revision/tablero-de-entidades");
+			else return res.redirect("/revision/tablero");
 		},
 		solapam: async (req, res) => {
 			// Variables
@@ -485,7 +485,7 @@ module.exports = {
 			comp.actualizaSolapam();
 
 			// Fin
-			return res.redirect("/revision/tablero-de-entidades");
+			return res.redirect("/revision/tablero");
 		},
 	},
 

@@ -52,7 +52,7 @@ module.exports = async (req, res, next) => {
 	// Corrige el link de 'entendido'
 	if (req.originalUrl.startsWith("/" + familia + "/edicion"))
 		v.vistaEntendido.link =
-			v.origen == "TE" ? "/revision/tablero-de-entidades" : "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
+			v.origen == "TE" ? "/revision/tablero" : "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
 
 	// CRITERIO: registro en status 'creado' y otro usuario quiere acceder
 	const creadoPorElUsuario1 = v.registro.creadoPor_id == v.usuario_id;
