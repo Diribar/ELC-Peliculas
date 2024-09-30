@@ -30,7 +30,7 @@ module.exports = async (req, res, next) => {
 		const FN = {
 			entidades: () => {
 				// Variables
-				const {entidad} = req.query;
+				const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
 				const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 				// Resultados

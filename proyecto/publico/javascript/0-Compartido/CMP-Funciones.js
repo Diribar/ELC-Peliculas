@@ -303,7 +303,12 @@ let contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
 
 // Variables del url
 const {pathname} = location;
-const entidad = new URL(location.href).searchParams.get("entidad");
+const entidades = [
+	...["peliculas", "colecciones", "capitulos"],
+	...["personajes", "hechos", "temas", "eventos", "epocasDelAno"],
+	...["links", "usuarios"],
+];
+const entidad = entidades.find(n=>pathname.includes(n))
 const id = new URL(location.href).searchParams.get("id");
 
 // Variables fijas
