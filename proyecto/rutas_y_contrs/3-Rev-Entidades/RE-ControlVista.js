@@ -525,7 +525,8 @@ module.exports = {
 		// Variables
 		const tema = "revisionEnts";
 		const codigo = "abmLinks";
-		const {entidad, id} = req.query;
+		const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+		const {id} = req.query;
 		const revId = req.session.usuario.id;
 		const origen = req.query.origen ? req.query.origen : "TE";
 
