@@ -8,17 +8,6 @@ module.exports = {
 
 		// Rutas
 		const rutas = [
-			// Familia - ant: familia + rutaAnt (salvo correccion) - act: entidad + rutaAct
-			...[
-				{ant: "/" + familia + "/historial", act: "/" + entidad + "/hs", codigo: "historial"},
-				{ant: "/" + familia + "/inactivar", act: "/" + entidad + "/in", codigo: "inactivar"},
-				{ant: "/" + familia + "/recuperar", act: "/" + entidad + "/rc", codigo: "recuperar"},
-				{ant: "/" + familia + "/eliminadoPorCreador", act: "/" + entidad + "/ec"},
-				{ant: "/" + familia + "/eliminar", act: "/" + entidad + "/el"},
-				{ant: "/correccion/motivo", act: "/" + entidad + "/cm"},
-				{ant: "/correccion/status", act: "/" + entidad + "/cs"},
-			],
-
 			// Producto Agregar
 			...[
 				// ant: '/producto/agregar' + rutaAnt - act: '/producto' + rutaAnt
@@ -28,6 +17,17 @@ module.exports = {
 
 				// ant: '/producto/agregar' - act: entidad
 				{ant: "/producto/agregar", act: "/" + entidad},
+			],
+
+			// Familia - ant: familia + rutaAnt (salvo correccion) - act: entidad + rutaAct
+			...[
+				{ant: "/" + familia + "/historial", act: "/" + entidad + "/hs", codigo: "historial"},
+				{ant: "/" + familia + "/inactivar", act: "/" + entidad + "/in", codigo: "inactivar"},
+				{ant: "/" + familia + "/recuperar", act: "/" + entidad + "/rc", codigo: "recuperar"},
+				{ant: "/" + familia + "/eliminadoPorCreador", act: "/" + entidad + "/ec"},
+				{ant: "/" + familia + "/eliminar", act: "/" + entidad + "/el"},
+				{ant: "/correccion/motivo", act: "/" + entidad + "/cm"},
+				{ant: "/correccion/status", act: "/" + entidad + "/cs"},
 			],
 
 			// Revisión de Entidades - ant: revision + familia + ant (salvo links) - act: rutaAct + entidad
