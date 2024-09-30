@@ -1,6 +1,4 @@
 "use strict";
-// Variables
-const procesos = require("./MS-Procesos");
 
 module.exports = {
 	inicio: (req, res) => {
@@ -116,7 +114,7 @@ module.exports = {
 		rutasAntiguas: function (req, res) {
 			// Variables
 			const {entidad, id} = req.query;
-			const rutasAntsActs = procesos.rutas(entidad);
+			const rutasAntsActs = comp.rutas(entidad);
 			let {originalUrl} = req;
 			let nuevoUrl, nuevaCola;
 

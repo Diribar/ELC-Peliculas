@@ -1282,6 +1282,65 @@ module.exports = {
 		// Fin
 		return;
 	},
+	rutas: (entidad) => {
+		// Variables
+		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+
+		// Rutas
+		const rutas = [
+			// Producto Agregar
+			...[
+				// ant: '/producto/agregar' + rutaAnt - act: '/producto' + rutaAnt
+				{ant: "/producto/agregar/palabras-clave", act: "/producto/palabras-clave"},
+				{ant: "/producto/agregar/desambiguar", act: "/producto/desambiguar"},
+				{ant: "/producto/agregar/ingreso-manual", act: "/producto/ingreso-manual"},
+
+				// ant: '/producto/agregar' - act: entidad
+				{ant: "/producto/agregar", act: "/" + entidad},
+			],
+
+			// Familia - ant: familia + rutaAnt (salvo correccion) - act: entidad + rutaAct
+			...[
+				{ant: "/" + familia + "/historial", act: "/" + entidad + "/hs", codigo: "historial", titulo: "Historial de"},
+				{ant: "/" + familia + "/inactivar", act: "/" + entidad + "/in", codigo: "inactivar", titulo: "Inactivar"},
+				{ant: "/" + familia + "/recuperar", act: "/" + entidad + "/rc", codigo: "recuperar", titulo: "Recuperar"},
+				{ant: "/" + familia + "/eliminadoPorCreador", act: "/" + entidad + "/ec", titulo: "Eliminar"},
+				{ant: "/" + familia + "/eliminar", act: "/" + entidad + "/el", titulo: "Eliminar"},
+				{ant: "/correccion/motivo", act: "/" + entidad + "/cm"},
+				{ant: "/correccion/status", act: "/" + entidad + "/cs"},
+			],
+
+			// Revisión de Entidades - ant: revision + familia + ant (salvo links) - act: rutaAct + entidad
+			...[
+				{ant: "/revision/" + familia + "/alta", act: "/revision/al" + siglaFam + "/" + entidad},
+				{ant: "/revision/" + familia + "/edicion", act: "/revision/ed/" + entidad},
+				{
+					ant: "/revision/" + familia + "/inactivar",
+					act: "/revision/in/" + entidad,
+					codigo: "inactivar",
+					titulo: "Revisión de Inactivar",
+				},
+				{
+					ant: "/revision/" + familia + "/recuperar",
+					act: "/revision/rc/" + entidad,
+					codigo: "recuperar",
+					titulo: "Revisión de Recuperar",
+				},
+				{
+					ant: "/revision/" + familia + "/rechazar",
+					act: "/revision/ch/" + entidad,
+					codigo: "rechazar",
+					rechazar: "Rechazar",
+				},
+				{ant: "/revision/rclv/solapamiento", act: "/revision/slr/" + entidad},
+				{ant: "/revision/links", act: "/revision/lkp/" + entidad},
+			],
+		];
+
+		// Fin
+		return rutas;
+	},
 };
 
 // Funciones

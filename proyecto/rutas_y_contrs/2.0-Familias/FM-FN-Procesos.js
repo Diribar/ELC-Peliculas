@@ -106,9 +106,10 @@ module.exports = {
 	// CRUD
 	obtieneDatosForm: async function (req) {
 		// Variables
-		const {baseUrl, ruta} = comp.partesDelUrl(req);
-		const {id} = req.query;
+		const {baseUrl} = comp.partesDelUrl(req);
 		const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+		const {id} = req.query;
+		const {originalUrl} = req;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const origen = req.query.origen;
@@ -117,7 +118,7 @@ module.exports = {
 
 		// Obtiene el tema y código
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
-		const codigo = this.codigo({ruta, familia});
+		const codigo = this.codigo(originalUrl);
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -154,35 +155,23 @@ module.exports = {
 			...{entsNombre, urlActual, cartelGenerico},
 		};
 	},
-	codigo: ({ruta, familia}) => {
-		// Obtiene el código a partir de la familia
-		let codigo = ruta.replaceAll("/", "");
+	codigo: (originalUrl) => {
+		// Variables
+		const {rutas} = comp;
+		const ruta = rutas.find((n) => originalUrl.startsWith(n.act));
+		const {codigo} = ruta;
 
-		// Pule el código
-		const esRevision = codigo.includes(familia);
-		codigo = codigo.replace(familia, "");
-
-		// Actualiza el código
-		if (esRevision && ["inactivar", "recuperar"].includes(codigo)) codigo = "revision" + comp.letras.inicialMayus(codigo);
-
-		// Fin - revisionInactivar - revisionRecuperar - recuperar - historial
+		// Fin - historial - inactivar - recuperar - revisionInactivar - revisionRecuperar - rechazar
 		return codigo;
 	},
 	titulo: ({entidad, codigo}) => {
 		// Variables
-		const opcionesDeTitulo = {
-			inactivar: "Inactivar",
-			rechazar: "Rechazar",
-			recuperar: "Recuperar",
-			eliminar: "Eliminar",
-			revisionInactivar: "Revisión de Inactivar",
-			revisionRecuperar: "Revisión de Recuperar",
-			historial: "Historial de",
-		};
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const {rutas} = comp;
+		const ruta = rutas.find((n) => n.codigo == codigo);
 
 		// Título
-		let titulo = opcionesDeTitulo[codigo] + " ";
+		let titulo = ruta.titulo + " ";
 		titulo += comp.obtieneDesdeEntidad.unaUn(entidad) + " ";
 		titulo += entidadNombre;
 
@@ -191,19 +180,22 @@ module.exports = {
 	},
 	obtieneDatosGuardar: async function (req) {
 		// Variables
-		const {id} = req.query;
+		const codigo = this.codigo(req.originalUrl); // 'inactivar' o 'recuperar'
 		const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+		const {id} = req.query;
 		const {motivo_id, entDupl, idDupl} = req.body;
-		let {comentario} = req.body;
+
+		// Más variables
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const {ruta} = comp.partesDelUrl(req);
-		const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
 		const usuario_id = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await baseDeDatos.obtienePorId(entidad, id, include);
 		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
+
+		// Comentario
+		let {comentario} = req.body;
 		comentario = await this.comentario({entidad, id, codigo, motivo_id, entDupl, idDupl, comentario, statusFinal_id});
 
 		// Fin
