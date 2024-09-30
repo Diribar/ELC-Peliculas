@@ -2,8 +2,8 @@
 
 module.exports = (req, res, next) => {
 	// Variables
-	const {baseUrl, ruta} = comp.partesDelUrl(req);
-	const entidad = req.params.entidad ? req.params.entidad : baseUrl.slice(1);
+	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const {ruta} = comp.partesDelUrl(req);
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	let informacion, siglaFam;
 
@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
 		siglaFam =
 			req.params && req.params.siglaFam
 				? req.params.siglaFam
-				: ruta[3] // la convención es que el 4° elemento sea la siglaFam
+				: ruta[3] && ruta[3] != "/" // la convención es que el 4° elemento sea la siglaFam
 				? ruta[3]
 				: null;
 
