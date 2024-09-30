@@ -74,7 +74,7 @@ module.exports = {
 		const {id, origen} = req.query;
 		const linkVolver =
 			entidad && id
-				? "/inactivar-captura/ms/" + entidad + "/?id=" + id + (origen ? "&origen=" + origen : "")
+				? "/miscelaneas/ic/" + entidad + "/?id=" + id + (origen ? "&origen=" + origen : "")
 				: req.session.urlSinLogin;
 
 		// Fin
