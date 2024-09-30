@@ -5,7 +5,6 @@ const unDia = unaHora * 24;
 const unaSemana = unDia * 7;
 const unAno = unDia * 365;
 
-const linkSemInicial = 1;
 const linksSemsPrimRev = 4;
 const linksSemsEstrRec = 5;
 const linksSemsEstandar = 26;
@@ -57,7 +56,8 @@ module.exports = {
 	],
 
 	// Links
-	...{linkSemInicial, linksSemsPrimRev, linksSemsEstrRec, linksSemsEstandar},
+	linkSemInicial: 1,
+	...{linksSemsPrimRev, linksSemsEstrRec, linksSemsEstandar},
 	linksVU_primRev: unaSemana * linksSemsPrimRev,
 	linksVU_estrRec: unaSemana * linksSemsEstrRec,
 	linksVU_estandar: unaSemana * linksSemsEstandar,
