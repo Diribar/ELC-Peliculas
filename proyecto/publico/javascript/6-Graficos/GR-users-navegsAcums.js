@@ -45,8 +45,9 @@ window.addEventListener("load", async () => {
 		}
 
 		// Obtiene los promedios
-		for (let metodo of Object.keys(cantidades)) promedio[metodo] = Math.round(cantidades[metodo] / navegsAcums.length);
-		promedio.total = Object.values(promedio).reduce((acum, n) => Math.round(acum + n));
+		for (let metodo of Object.keys(cantidades))
+			promedio[metodo] = Math.round((cantidades[metodo] / navegsAcums.length) * 10) / 10;
+		promedio.total = Object.values(promedio).reduce((acum, n) => acum + n);
 		resultado[0].push("Promedio");
 		for (let i = 1; i < resultado.length; i++) resultado[i].push(promedio.total);
 
