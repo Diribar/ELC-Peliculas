@@ -184,6 +184,7 @@ window.addEventListener("load", async () => {
 
 // Datos del registro
 const edicID = new URL(location.href).searchParams.get("edicID");
+const origen = new URL(location.href).searchParams.get("origen");
 
 // Rutas
 const rutaEdicion = "/revision/api/edicion/aprob-rech/?entidad=" + entidad + "&id=" + id + "&edicID=" + edicID;

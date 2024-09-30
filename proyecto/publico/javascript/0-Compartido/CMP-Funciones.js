@@ -310,7 +310,6 @@ const entidades = [
 ];
 const entidad = entidades.find((n) => pathname.includes(n));
 const id = new URL(location.href).searchParams.get("id");
-const origen = new URL(location.href).searchParams.get("origen");
 
 // Variables fijas
 const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
