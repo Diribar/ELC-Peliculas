@@ -212,6 +212,7 @@ module.exports = {
 			const {email} = req.body;
 			const {cliente} = req.session;
 			const {cliente_id} = cliente;
+			const esVisita = !cliente_id.startsWith("U");
 			let espera = [];
 
 			// Actualiza cookies - no se actualiza 'session'', para que se ejecute el middleware 'clientesSession'
@@ -226,8 +227,8 @@ module.exports = {
 				espera.push(procesos.actualizaElStatusDelUsuario(usuario, "mailValidado"));
 
 			// Actualiza los datos del usuario
-			const {fechaUltNaveg} = cliente; // estos datos del cliente son siempre los más actuales
-			const diasNaveg = !cliente_id.startsWith("U") ? usuario.diasNaveg + cliente.diasNaveg : usuario.diasNaveg; // si se llevaban registros paralelos, se suman
+			const {fechaUltNaveg} = esVisita ? cliente : usuario;
+			const diasNaveg = esVisita ? usuario.diasNaveg + cliente.diasNaveg : usuario.diasNaveg; // si se llevaban registros paralelos, se suman
 			const {visitaCreadaEn} = usuario.visitaCreadaEn ? usuario : cliente; // si existe la del usuario, se conserva
 			const datos = {fechaUltNaveg, diasNaveg, visitaCreadaEn, diasSinCartelBenefs: 0};
 			espera.push(baseDeDatos.actualizaPorId("usuarios", usuario.id, datos)); // no es necesario actualizar la variable 'usuario'
@@ -244,7 +245,7 @@ module.exports = {
 			);
 
 			// Acciones si el cliente estaba como visita
-			if (!cliente_id.startsWith("U")) {
+			if (esVisita) {
 				baseDeDatos.eliminaPorCondicion("visitas", {cliente_id}); // elimina el registro de la tabla
 				res.cookie("cliente_id", usuario.cliente_id, {maxAge: unDia * 30}); // actualiza la cookie
 			}
