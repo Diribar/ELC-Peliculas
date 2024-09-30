@@ -125,7 +125,7 @@ module.exports = {
 		{codigo: "RL", url: "/revision/links", cola: true},
 		// Tableros
 		{codigo: "TE", url: "/revision/tablero-de-entidades"},
-		{codigo: "TM", url: "/revision/tablero-de-mantenimiento"},
+		{codigo: "TM", url: "/tablero-de-mantenimiento"},
 		{codigo: "TU", url: "/revision/usuarios/tablero-de-usuarios"},
 		{codigo: "CN", url: "/consultas"},
 	],

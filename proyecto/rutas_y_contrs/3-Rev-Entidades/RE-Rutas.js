@@ -40,7 +40,6 @@ const m = {
 
 // Middlewares - Consolidados
 const usuarioBase = [m.usAltaTerm, m.usPenalizaciones];
-const aptoUsuario = [...usuarioBase, m.usAptoInput];
 const aptoCRUD = [m.entValida, m.iDvalido, m.statusCorrecto, ...usuarioBase, m.permUserReg];
 const aptoEdicion = [...aptoCRUD, m.usRolRevPERL, m.edicionVista];
 
@@ -59,7 +58,6 @@ router.get("/api/link/obtiene-embeded-link", API.links.obtieneEmbededLink);
 
 // Vistas - Tablero de Control
 router.get("/tablero-de-entidades", usuarioBase, m.usRolAutTablEnts, vista.tableroEntidades);
-router.get("/tablero-de-mantenimiento", aptoUsuario, vista.tableroMantenim);
 
 // Vistas - Altas
 router.get("/alp/:entidad", aptoCRUD, m.prodSinRclvAprob, m.capturaActivar, m.rutaCRUD_ID, vista.altaProdForm);

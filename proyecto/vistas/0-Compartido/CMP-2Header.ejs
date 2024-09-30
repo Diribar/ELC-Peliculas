@@ -38,7 +38,7 @@
 
 	<!-- Tablero de Mantenimiento (sólo rol 'permInputs') -->
 	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.permInputs) { %>
-		<a href="/revision/tablero-de-mantenimiento" tabindex="-1" class="grupos ocultoMobile">
+		<a href="/tablero-de-mantenimiento" tabindex="-1" class="grupos ocultoMobile">
 			<i class="<%= iconos.faSolid %> fa-tools scale iconoHeader revision" title="Tablero de Mantenimiento"></i>
 		</a>
 	<% } %>
