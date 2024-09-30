@@ -25,12 +25,9 @@ window.addEventListener("load", async () => {
 
 			// Actualiza la vista
 			location.href =
-				"/inactivar-captura/?entidad=capitulos&id=" +
-				id +
-				"&prodEntidad=capitulos&prodId=" +
-				capID +
-				"&origenUrl=" +
-				encodeURIComponent(origenUrl);
+				"/inactivar-captura/ms/capitulos/?id=".concat(id) +
+				"&prodEntidad=capitulos&prodId=".concat(capID) +
+				"&origenUrl=".concat(encodeURIComponent(origenUrl));
 		});
 
 	// CAMBIOS EN EL CAPÍTULO --> cambiar el url
@@ -47,11 +44,8 @@ window.addEventListener("load", async () => {
 
 		// Actualiza la vista
 		location.href =
-			"/inactivar-captura/?entidad=capitulos&id=" +
-			id +
-			"&prodEntidad=capitulos&prodId=" +
-			capID +
-			"&origenUrl=" +
-			encodeURIComponent(origenUrl);
+			"/inactivar-captura/ms/capitulos/?id=".concat(id) +
+			"&prodEntidad=capitulos&prodId=".concat(capID) +
+			"&origenUrl=".concat(encodeURIComponent(origenUrl));
 	});
 });

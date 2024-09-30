@@ -12,12 +12,9 @@ window.addEventListener("load", async () => {
 		botonCapAnt.classList.remove("inactivo");
 		botonCapAnt.addEventListener("click", () => {
 			location.href =
-				"/inactivar-captura/?entidad=capitulos&id=" +
-				id +
-				"&prodEntidad=capitulos&prodId=" +
-				capAntID +
-				"&origenUrl=" +
-				encodeURIComponent(origenUrl);
+				"/inactivar-captura/ms/capitulos/?id=".concat(id) +
+				"&prodEntidad=capitulos&prodId=".concat(capAntID) +
+				"&origenUrl=".concat(encodeURIComponent(origenUrl));
 		});
 	} else botonCapAnt.classList.add("inactivo");
 
@@ -26,15 +23,12 @@ window.addEventListener("load", async () => {
 		botonCapPost.classList.remove("inactivo");
 		botonCapPost.addEventListener("click", () => {
 			location.href =
-				"/inactivar-captura/?entidad=capitulos&id=" +
-				id +
-				"&prodEntidad=capitulos&prodId=" +
-				capPostID +
-				"&origenUrl=" +
-				encodeURIComponent(origenUrl);
+				"/inactivar-captura/ms/capitulos/?id=".concat(id) +
+				"&prodEntidad=capitulos&prodId=".concat(capPostID) +
+				"&origenUrl=".concat(encodeURIComponent(origenUrl));
 		});
 	} else botonCapPost.classList.add("inactivo");
 
 	// Fin
-	return
+	return;
 });
