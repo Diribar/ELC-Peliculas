@@ -1057,21 +1057,25 @@ let FN_links = {
 
 		// Resultado para 'creado'
 		const ahoraTiempo = ahora.getTime();
+		console.log(1062, comp.linksVencPorSem.condicCreado(link));
 		if (comp.linksVencPorSem.condicCreado(link)) return new Date(ahoraTiempo + linksVU_primRev);
 
 		// Variables - si es una categoría estándar, averigua su semana
 		const entidad = comp.linksVencPorSem.condicEstrRec(link) ? "estrRec" : link.capitulo_id ? "capitulos" : "pelisColes";
+		console.log(1067, entidad);
 
 		// Obtiene la cantidad de links que vence cada semana
 		const cantLinksVencsPorSemMayorCorte = Object.values(cantLinksVencPorSem)
-			.slice(0, -2) // descarta los registros que no pertenecen a semanas
+			.slice(0, -1) // descarta los registros que no pertenecen a semanas
 			.slice(linkSemInicial) // descarta los registros de las semanas anteriores a linkSemInicial
 			.map((n) => n[entidad]);
+		console.log(1074, cantLinksVencsPorSemMayorCorte);
 
 		// Obtiene la semana a la cual agregarle una fecha de vencimiento, comenzando desde la más reciente
 		const semana = cantLinksVencsPorSemMayorCorte.findIndex((n) => n < cantLinksVencPorSem.promSem[entidad]) + linkSemInicial;
 
 		// Fin
+		console.log(1080, semana);
 		return new Date(ahoraTiempo + semana * unaSemana);
 	},
 };
