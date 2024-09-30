@@ -361,7 +361,7 @@ module.exports = {
 	vistaInactivar: {
 		revision: (entidad, id) => ({
 			clase: "fa-spell-check",
-			link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TE",
+			link: "/inactivar-captura/ms/" + entidad + "/?id=" + id + "&origen=TE",
 			titulo: "Ir al 'Tablero de Control' de Entidades",
 			autofocus: true,
 		}),
