@@ -943,20 +943,6 @@ module.exports = {
 			FN_links.obtieneCantPorSem(links);
 			FN_links.obtienePromedios(links);
 			FN_links.obtienePendientes(links, edics);
-			// const {capitulosPosibles, pelisColesPosibles, estrRecPosibles} = FN_links.obtienePosibles(links);
-
-			// Averigua la combinación entre 'posibles' y 'pendientes'
-			// const {capitulos: capitulosPends, pelisColes: pelisColesPends, estrRec: estrRecPends} = cantLinksVencPorSem["0"];
-			// const capitulos = Math.min(capitulosPosibles, capitulosPends);
-			// const pelisColes = Math.min(pelisColesPosibles, pelisColesPends);
-			// const estrRec = Math.min(estrRecPosibles, siestrRecnds);
-
-			// Agrega la información
-			// cantLinksVencPorSem.paraRevisar = {
-			// 	capitulos,
-			// 	pelisColes,
-			// 	prods: capitulos + pelisColes + estrRec,
-			// };
 
 			// Fin
 			return;
