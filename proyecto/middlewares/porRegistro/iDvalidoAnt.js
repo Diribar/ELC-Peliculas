@@ -3,7 +3,7 @@
 module.exports = async (req, res, next) => {
 	// Variables
 	const entidad = req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "";
-	const id = req.query.id;
+	const {id} = req.query;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const vistaEntendido = variables.vistaEntendido(req.session.urlSinParametros);
 	let informacion;
