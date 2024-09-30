@@ -126,7 +126,7 @@ app.set("views", [
 	app.use("/links", require("./rutas_y_contrs/2.3-Links/LK-Rutas"));
 	app.use("/usuarios", require("./rutas_y_contrs/1.1-Usuarios/US-Rutas"));
 	app.use("/revision", require("./rutas_y_contrs/3-Rev-Entidades/RE-Rutas"));
-	app.use("/revision", require("./rutas_y_contrs/1.2-Rev-Usuarios/RU-Rutas"));
+	app.use("/revision", require("./rutas_y_contrs/1.2-Rev-Usuarios/RU-Rutas")); // revisarlo el día que se use
 	app.use("/consultas", require("./rutas_y_contrs/5-Consultas/CN-Rutas"));
 	app.use("/graficos", require("./rutas_y_contrs/6-Graficos/GR-Rutas"));
 	app.use("/institucional", require("./rutas_y_contrs/7-Institucional/IN-Rutas"));
