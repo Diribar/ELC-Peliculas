@@ -478,8 +478,7 @@ module.exports = {
 			// Más variables
 			const statusOriginal_id = original.statusRegistro_id;
 			const cola =
-				"/?entidad=" +
-				(entidad + "&id=" + id) +
+				entidad.concat("/?id=", id) +
 				(prodEntidad ? "&prodEntidad=" + prodEntidad : "") +
 				(prodId ? "&prodId=" + prodId : "") +
 				(origen ? "&origen=" + origen : "");

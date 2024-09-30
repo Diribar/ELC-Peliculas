@@ -94,7 +94,7 @@ window.addEventListener("load", async () => {
 
 			// Acciones si quedan campos
 			if (resultado.quedanCampos) this.cartelHayInconsistencias();
-			else location.href = (resultado.statusAprob ? "/inactivar-captura/" : "/" + familia + "/edicion/") + cola;
+			else location.href = (resultado.statusAprob ? "/miscelaneas/ic/" : "/" + familia + "/edicion/") + cola;
 
 			// Fin
 			return;
@@ -188,7 +188,7 @@ const origen = new URL(location.href).searchParams.get("origen");
 
 // Rutas
 const rutaEdicion = "/revision/api/edicion/aprob-rech/?entidad=" + entidad + "&id=" + id + "&edicID=" + edicID;
-const cola = "?entidad=" + entidad + "&id=" + id + "&origen=" + (origen ? origen : "TE");
+const cola = entidad + "&id=" + id + "&origen=" + (origen ? origen : "TE");
 
 // Otras variables
 const url = location.pathname.replace("/revision/", "");

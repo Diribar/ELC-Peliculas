@@ -12,10 +12,12 @@ const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 router.get("/api/horario-inicial/", API.horarioInicial);
 router.get("/api/busqueda-rapida/", API.busquedaRapida);
 
-// Redireciona
+// Vista
 router.get("/", vista.inicio);
+
+// Redireciona
 router.get("/inicio", vista.redirecciona.inicio);
-router.get("/inactivar-captura/ms/:entidad", capturaInactivar, vista.redirecciona.urlDeOrigen);
+router.get("/miscelaneas/ic/:entidad", capturaInactivar, vista.redirecciona.urlDeOrigen);
 
 // Información para mostrar en el explorador
 router.get("/session", vista.listados.session);

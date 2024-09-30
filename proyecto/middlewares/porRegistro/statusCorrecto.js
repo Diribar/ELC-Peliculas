@@ -81,7 +81,7 @@ module.exports = async (req, res, next) => {
 			: familia == "rclv"
 			? "RDT"
 			: "PDT";
-		const link = "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
+		const link = "/miscelaneas/ic/" + entidad + "/?id=" + id + "&origen=" + origen;
 		const vistaEntendido = variables.vistaEntendido(link);
 
 		// Información a mostrar

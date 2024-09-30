@@ -157,7 +157,7 @@ module.exports = {
 			const usuario = req.session.usuario;
 			const usuario_id = usuario.id;
 			const revisorPERL = usuario.rolUsuario.revisorPERL;
-			const entidadIdOrigen = "?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
+			const entidadIdOrigen = entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 
 			// Reemplaza valores
 			for (let prop in req.body)
@@ -259,7 +259,7 @@ module.exports = {
 
 			// Fin
 			return origen == "TE"
-				? res.redirect("/inactivar-captura/" + entidadIdOrigen) // Regresa a Revisión
+				? res.redirect("/miscelaneas/ic/" + entidadIdOrigen) // Regresa a Revisión
 				: res.redirect("/producto/detalle/" + entidadIdOrigen); // Redirige a detalle
 		},
 	},

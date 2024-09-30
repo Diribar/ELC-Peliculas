@@ -334,7 +334,7 @@ module.exports = {
 
 		// Opciones de redireccionamiento
 		if (producto && codigo == "alta") destino = baseUrl + "/producto/edicion" + cola; // producto creado y aprobado
-		else if (origen) destino = "/inactivar-captura" + cola; // otros casos con origen
+		else if (origen) destino = "/miscelaneas/ic/" + cola; // otros casos con origen
 		else destino = "/revision/tablero-de-entidades"; // sin origen
 
 		// Fin
@@ -563,7 +563,7 @@ module.exports = {
 					: await procesos.links.obtieneSigProd({entidad, id, revId})
 				: null;
 		const linkSigProd = sigProd
-			? "/inactivar-captura/?entidad=".concat(entidad, "&id=", id) +
+			? "/miscelaneas/ic/".concat(entidad, "/?id=", id) +
 			  "&prodEntidad=".concat(sigProd.entidad, "&prodId=", sigProd.id, "&origen=RL")
 			: null;
 
