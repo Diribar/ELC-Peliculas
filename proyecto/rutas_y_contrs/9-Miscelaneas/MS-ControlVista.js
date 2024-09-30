@@ -21,9 +21,7 @@ module.exports = {
 		// Productos
 		let prods = procesos.obtieneProds(usuario_id).then((n) => procsRE.procesaCampos.prods(n));
 		let rclvs = procesos.obtieneRCLVs(usuario_id).then((n) => procsRE.procesaCampos.rclvs(n));
-		let prodsConLinksInactivos = procesos
-			.obtieneLinksInactivos(usuario_id)
-			.then((n) => procsRE.procesaCampos.prods(n));
+		let prodsConLinksInactivos = procesos.obtieneLinksInactivos(usuario_id).then((n) => procsRE.procesaCampos.prods(n));
 
 		// RCLVs
 		[prods, rclvs, prodsConLinksInactivos] = await Promise.all([prods, rclvs, prodsConLinksInactivos]);
@@ -147,7 +145,7 @@ module.exports = {
 		rutasAntiguas: function (req, res) {
 			// Variables
 			const {entidad, id} = req.query;
-			const rutasAntsActs = comp.rutas(entidad);
+			const rutasAntsActs = procesos.rutas(entidad);
 			let {originalUrl} = req;
 			let nuevoUrl, nuevaCola;
 
