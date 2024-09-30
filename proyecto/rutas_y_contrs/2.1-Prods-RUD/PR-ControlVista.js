@@ -157,7 +157,7 @@ module.exports = {
 			const usuario = req.session.usuario;
 			const usuario_id = usuario.id;
 			const revisorPERL = usuario.rolUsuario.revisorPERL;
-			const entidadIdOrigen = entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
+			const entidadIdOrigen = entidad + "/?id=" + id + (origen ? "&origen=" + origen : "");
 
 			// Reemplaza valores
 			for (let prop in req.body)
