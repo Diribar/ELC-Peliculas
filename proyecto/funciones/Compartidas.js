@@ -1289,17 +1289,6 @@ module.exports = {
 
 		// Rutas
 		const rutas = [
-			// Producto Agregar
-			...[
-				// ant: '/producto/agregar' + rutaAnt - act: '/producto' + rutaAnt
-				{ant: "/producto/agregar/palabras-clave", act: "/producto/palabras-clave"},
-				{ant: "/producto/agregar/desambiguar", act: "/producto/desambiguar"},
-				{ant: "/producto/agregar/ingreso-manual", act: "/producto/ingreso-manual"},
-
-				// ant: '/producto/agregar' - act: entidad
-				{ant: "/producto/agregar", act: "/" + entidad},
-			],
-
 			// Familia - ant: familia + rutaAnt (salvo correccion) - act: entidad + rutaAct
 			...[
 				{ant: "/" + familia + "/historial", act: "/" + entidad + "/hs", codigo: "historial", titulo: "Historial de"},
@@ -1309,6 +1298,25 @@ module.exports = {
 				{ant: "/" + familia + "/eliminar", act: "/" + entidad + "/el", titulo: "Eliminar"},
 				{ant: "/correccion/motivo", act: "/" + entidad + "/cm"},
 				{ant: "/correccion/status", act: "/" + entidad + "/cs"},
+			],
+
+			// Producto Agregar
+			...[
+				// ant: '/producto/agregar/' + rutaAnt - act: '/producto/' + rutaAnt
+				{ant: "/producto/agregar/palabras-clave", act: "/producto/palabras-clave"},
+				{ant: "/producto/agregar/desambiguar", act: "/producto/desambiguar"},
+				{ant: "/producto/agregar/ingreso-manual", act: "/producto/ingreso-manual"},
+
+				// ant: '/producto/agregar' - act: entidad
+				{ant: "/producto/agregar", act: "/" + entidad},
+			],
+
+			// Producto RUD
+			...[
+				// ant: '/producto/' + rutaAnt - act: entidad + rutaAct
+				{ant: "/producto/detalle", act: "/" + entidad + "/dtp"},
+				{ant: "/producto/edicion", act: "/" + entidad + "/edp"},
+				{ant: "/producto/calificar", act: "/" + entidad + "/clp"},
 			],
 
 			// Revisión de Entidades - ant: revision + familia + ant (salvo links) - act: rutaAct + entidad
