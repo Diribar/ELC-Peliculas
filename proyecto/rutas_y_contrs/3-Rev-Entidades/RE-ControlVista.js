@@ -10,7 +10,7 @@ const procesos = require("./RE-Procesos");
 
 module.exports = {
 	// Tablero
-	tableroEntidades: async (req, res) => {
+	tableroControl: async (req, res) => {
 		// Variables
 		const tema = "revisionEnts";
 		const codigo = "tableroControl";
@@ -58,37 +58,6 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Tablero de Revisión"},
 			...{prodsRclvs, prods, rclvs, sigProd, origen: "TE", dataEntry, mostrarRclvs},
-		});
-	},
-	// Tablero de mantenimiento
-	tableroMantenim: async (req, res) => {
-		// Variables
-		const tema = "mantenimiento";
-		const codigo = "tableroControl";
-		const usuario_id = req.session.usuario.id;
-		const omnipotente = req.session.usuario.rolUsuario_id == rolOmnipotente_id;
-
-		// Productos
-		let prods = procesos.tablManten.obtieneProds(usuario_id).then((n) => procesos.procesaCampos.prods(n));
-		let rclvs = procesos.tablManten.obtieneRCLVs(usuario_id).then((n) => procesos.procesaCampos.rclvs(n));
-		let prodsConLinksInactivos = procesos.tablManten
-			.obtieneLinksInactivos(usuario_id)
-			.then((n) => procesos.procesaCampos.prods(n));
-
-		// RCLVs
-		[prods, rclvs, prodsConLinksInactivos] = await Promise.all([prods, rclvs, prodsConLinksInactivos]);
-
-		// Une Productos y Links
-		prods = {...prods, ...prodsConLinksInactivos};
-
-		// Obtiene información para la vista
-		const dataEntry = req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};
-
-		// Va a la vista
-		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Tablero de Mantenimiento", origen: "TM"},
-			...{prods, rclvs, omnipotente},
-			dataEntry,
 		});
 	},
 
@@ -335,7 +304,7 @@ module.exports = {
 		// Opciones de redireccionamiento
 		if (producto && codigo == "alta") destino = baseUrl + "/producto/edicion" + cola; // producto creado y aprobado
 		else if (origen) destino = "/miscelaneas/ic/" + cola; // otros casos con origen
-		else destino = "/revision/tablero-de-entidades"; // sin origen
+		else destino = "/revision/tablero"; // sin origen
 
 		// Fin
 		return res.redirect(destino);
@@ -484,7 +453,7 @@ module.exports = {
 
 			// Fin
 			if (edicion) return res.redirect(req.originalUrl);
-			else return res.redirect("/revision/tablero-de-entidades");
+			else return res.redirect("/revision/tablero");
 		},
 		solapam: async (req, res) => {
 			// Variables
@@ -516,7 +485,7 @@ module.exports = {
 			comp.actualizaSolapam();
 
 			// Fin
-			return res.redirect("/revision/tablero-de-entidades");
+			return res.redirect("/revision/tablero");
 		},
 	},
 

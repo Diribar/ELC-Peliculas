@@ -40,7 +40,6 @@ const m = {
 
 // Middlewares - Consolidados
 const usuarioBase = [m.usAltaTerm, m.usPenalizaciones];
-const aptoUsuario = [...usuarioBase, m.usAptoInput];
 const aptoCRUD = [m.entValida, m.iDvalido, m.statusCorrecto, ...usuarioBase, m.permUserReg];
 const aptoEdicion = [...aptoCRUD, m.usRolRevPERL, m.edicionVista];
 
@@ -53,14 +52,12 @@ router.get("/api/edicion/aprob-rech", m.edicionAPI, API.edicAprobRech);
 
 // APIs- Links
 router.get("/api/link/alta-baja", m.linkAltaBaja, API.links.altaBaja);
-//router.get("/api/link/eliminar", API.links.altaBaja);
 router.get("/api/link/edicion", m.edicionAPI, API.edicAprobRech);
 router.get("/api/link/siguiente-producto", API.links.sigProd);
 router.get("/api/link/obtiene-embeded-link", API.links.obtieneEmbededLink);
 
 // Vistas - Tablero de Control
-router.get("/tablero-de-entidades", usuarioBase, m.usRolAutTablEnts, vista.tableroEntidades);
-router.get("/tablero-de-mantenimiento", aptoUsuario, vista.tableroMantenim);
+router.get("/tablero", usuarioBase, m.usRolAutTablEnts, vista.tableroControl);
 
 // Vistas - Altas
 router.get("/alp/:entidad", aptoCRUD, m.prodSinRclvAprob, m.capturaActivar, m.rutaCRUD_ID, vista.altaProdForm);

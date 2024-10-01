@@ -354,7 +354,7 @@ module.exports = {
 	vistaEntendido: (url) => ({clase: iconos.entendido, link: url ? url : "/", titulo: "Entendido"}),
 	vistaTablero: {
 		clase: "fa-spell-check",
-		link: "/revision/tablero-de-entidades",
+		link: "/revision/tablero",
 		titulo: "Ir al 'Tablero de Control' de Entidades",
 		autofocus: true,
 	},
