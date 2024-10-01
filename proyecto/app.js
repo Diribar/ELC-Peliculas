@@ -105,10 +105,11 @@ app.set("views", [
 
 	// Middlewares transversales
 	app.use(require("./middlewares/transversales/urlsUsadas")); // para tener los últimos url
-	app.use(require("./middlewares/transversales/clientes-0Bienvenido.js")); // para filtrar los 'bots'
-	app.use(require("./middlewares/transversales/clientes-1Session.js")); // para obtener el cliente y usuario
-	app.use(require("./middlewares/transversales/clientes-2Contador.js")); // para contar la cantidad de días de navegación
-	app.use(require("./middlewares/transversales/clientes-3Carteles.js")); // en función de las novedades, revisa si se debe mostrar algún cartel
+	app.use(require("./middlewares/transversales/clientes-0-1FrenaFakes")); // para filtrar los 'bots'
+	app.use(require("./middlewares/transversales/clientes-0-2Bienvenido")); // para filtrar los 'bots'
+	app.use(require("./middlewares/transversales/clientes-1Session")); // para obtener el cliente y usuario
+	app.use(require("./middlewares/transversales/clientes-2Contador")); // para contar la cantidad de días de navegación
+	app.use(require("./middlewares/transversales/clientes-3Carteles")); // en función de las novedades, revisa si se debe mostrar algún cartel
 
 	// Vistas - Antiguas
 	app.use("/", require("./rutas_y_contrs/2.0-Familias/FM-RutasAnt")); // incluye algunas de 'revisión' y corrección
