@@ -2,8 +2,7 @@
 
 module.exports = async (req, res, next) => {
 	// Verifica y avanza
-	if ((req.session && (req.session.cliente || req.session.bienvenido)) || (req.cookies && req.cookies.cliente_id))
-		return next();
+	if (req.session.cliente || req.session.bienvenido || (req.cookies && req.cookies.cliente_id)) return next();
 
 	// Prepara la información
 	req.session.bienvenido = true;
