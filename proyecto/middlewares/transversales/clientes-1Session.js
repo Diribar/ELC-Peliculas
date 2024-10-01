@@ -63,7 +63,7 @@ module.exports = async (req, res, next) => {
 		// Crea el cliente
 		else {
 			// Crea y obtiene el cliente
-			const datos = {versionElc: "1.10", recienCreado: false, fechaUltNaveg: fechaCookie};
+			const datos = {versionElc: "1.10", fechaUltNaveg: fechaCookie};
 			cliente = await baseDeDatos.agregaRegistro("visitas", datos);
 			cliente = await baseDeDatos.obtienePorId("visitas", cliente.id, "rolUsuario").then((n) => obtieneCamposNecesarios(n));
 
@@ -108,6 +108,7 @@ module.exports = async (req, res, next) => {
 
 		// Actualiza variables
 		cliente.cliente_id = cliente_id;
+		req.session.recienCreado = true;
 	}
 
 	// Actualiza usuario y cliente
@@ -125,9 +126,9 @@ let obtieneCamposNecesarios = (usuario) => {
 	// Variables
 	const camposNecesarios = [
 		...["id", "cliente_id"], // identificación
-		...["recienCreado", "fechaUltNaveg"], // para el 'contador de navegaciones'
+		..."fechaUltNaveg", // para el 'contador de navegaciones'
 		...["diasNaveg", "visitaCreadaEn"], // para la tabla 'navegsPorDia'
-		...["recienCreado", "versionElc", "diasSinCartelBenefs"], // para mostrar carteles
+		...["versionElc", "diasSinCartelBenefs"], // para mostrar carteles
 		"rolUsuario", // para mostrar carteles
 	];
 

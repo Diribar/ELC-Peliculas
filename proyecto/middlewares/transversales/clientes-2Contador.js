@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
 	let {fechaUltNaveg} = cliente;
 
 	// Si no está recién creado y la fecha es igual a hoy, interrumpe la función
-	if (!cliente.recienCreado && fechaUltNaveg == hoy) return next();
+	if (!req.session.recienCreado && fechaUltNaveg == hoy) return next();
 
 	// Más variables
 	let {diasSinCartelBenefs, diasNaveg} = cliente;
@@ -29,15 +29,12 @@ module.exports = (req, res, next) => {
 	const usuario_id = usuario ? usuario.id : null;
 	contadorDeClientes(usuario_id, cliente);
 
-	// Actualiza la tabla usuario y la variable usuario
-	baseDeDatos.actualizaPorCondicion(tabla, {cliente_id}, {recienCreado: false});
-	cliente.recienCreado = false;
-
 	// Actualiza cookies
 	if (usuario) res.cookie("email", usuario.email, {maxAge: unDia * 30});
 	res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
 
 	// Actualiza session
+	delete req.session.recienCreado;
 	req.session.cliente = cliente;
 
 	// Fin
