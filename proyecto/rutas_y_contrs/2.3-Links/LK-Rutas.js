@@ -15,11 +15,9 @@ const iDvalido = require("../../middlewares/porRegistro/iDvalido");
 const linkIDvalido = require("../../middlewares/porRegistro/linkIDvalido");
 const statusCorrecto = require("../../middlewares/porRegistro/statusCorrecto");
 
-// Middlewares - Temas de captura
+// Middlewares - Otros
 const permUserReg = require("../../middlewares/porRegistro/permUserReg");
 const capturaActivar = require("../../middlewares/varios/capturaActivar");
-
-// Middlewares - Otros
 const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
 
 // Middlewares - Consolidados
@@ -38,7 +36,7 @@ router.get("/api/deshacer", API.deshace);
 
 // Vistas
 router.get("/abp", aptoABM, capturaActivar, vista.abm);
-router.get("/vsp",linkIDvalido, vista.visualizacion);
+router.get("/vsl", linkIDvalido, vista.visualizacion);
 
 // Fin
 module.exports = router;
