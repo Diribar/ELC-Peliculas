@@ -2,6 +2,9 @@
 "use strict";
 
 module.exports = async (req, res, next) => {
+	// Si es una de las aplicaciones triviales, avanza
+	if (requestsTriviales.some((n) => req.headers["user-agent"].startsWith(n))) return next();
+
 	// Variables
 	let {usuario, cliente} = req.session;
 

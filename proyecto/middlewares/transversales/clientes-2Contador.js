@@ -4,6 +4,7 @@
 module.exports = (req, res, next) => {
 	// Si corresponde, interrumpe la función
 	if (req.originalUrl.includes("/api/")) return next();
+	if (requestsTriviales.some((n) => req.headers["user-agent"].startsWith(n))) return next(); // si es una de las aplicaciones triviales, avanza
 
 	// Variables
 	const {usuario, cliente} = req.session;
