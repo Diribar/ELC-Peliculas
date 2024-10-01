@@ -37,12 +37,12 @@ const aptoEliminar = [...aptoCRUD, m.usRolRevPERL];
 const correcs = [m.entValida, m.iDvalido, m.statusCompara, aptoUsuario, m.permUserReg, m.usRolRevPERL];
 
 // APIs
-router.get("/crud/api/obtiene-col-cap", API.obtieneColCap);
-router.get("/crud/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
-router.get("/crud/api/obtiene-cap-id", API.obtieneCapID);
-router.get("/crud/api/obtiene-capitulos", API.obtieneCapitulos);
-router.get("/crud/api/obtiene-info-del-be", API.obtieneInfo);
-router.get("/crud/api/obtiene-registro", API.obtieneRegistro);
+router.get("/api/obtiene-col-cap", API.obtieneColCap);
+router.get("/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
+router.get("/api/obtiene-cap-id", API.obtieneCapID);
+router.get("/api/obtiene-capitulos", API.obtieneCapitulos);
+router.get("/api/obtiene-info-del-be", API.obtieneInfo);
+router.get("/api/obtiene-registro", API.obtieneRegistro);
 
 // Vistas - Historial
 router.get("/hs", aptoDetalle, m.statusCompara, vista.form.historial);
