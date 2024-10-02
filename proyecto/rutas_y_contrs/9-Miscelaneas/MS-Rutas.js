@@ -12,7 +12,6 @@ const usPenalizaciones= require("../../middlewares/porUsuario/usPenalizaciones")
 // Middlewares - Varios
 const entValida = require("../../middlewares/porRegistro/entidadValida");
 const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
-const entidadRclv = require("../../middlewares/porRegistro/entidadRclv");
 
 // Middlewares - Consolidado
 const aptoUsuario = [usAltaTerm, usAptoInput, usPenalizaciones];
@@ -32,7 +31,6 @@ router.get("/miscelaneas/ic/:entidad", entValida, capturaInactivar, vista.redire
 // Información para mostrar en el explorador
 router.get("/session", vista.listados.session);
 router.get("/cookies", vista.listados.cookies);
-router.get("/listados/rclvs", entidadRclv, vista.listados.rclvs); // busca los rclvs con más cantidad de películas
 router.get("/listados/links", vista.listados.links); // busca las películas con más cantidad de links
 
 // Fin
