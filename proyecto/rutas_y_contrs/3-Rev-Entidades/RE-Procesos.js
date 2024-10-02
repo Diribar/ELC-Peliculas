@@ -342,7 +342,7 @@ module.exports = {
 	guardar: {
 		obtieneDatos: async function (req) {
 			// Variables
-			const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, origen, desaprueba, prodEntidad, prodId} = req.query;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const {ruta} = comp.partesDelUrl(req);
