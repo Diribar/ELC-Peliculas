@@ -45,25 +45,25 @@ router.get("/api/obtiene-info-del-be", API.obtieneInfo);
 router.get("/api/obtiene-registro", API.obtieneRegistro);
 
 // Vistas - Historial
-router.get("/hs", aptoDetalle, m.statusCompara, vista.form.historial);
+router.get("/historial", aptoDetalle, m.statusCompara, vista.form.historial);
 
 // Vistas - Inactivar
-router.get("/in", aptoCRUD, m.capturaActivar, vista.form.motivos);
-router.post("/in", aptoCRUD, m.motivoNecesario, m.capturaInactivar, vista.inacRecupGuardar);
+router.get("/inactivar", aptoCRUD, m.capturaActivar, vista.form.motivos);
+router.post("/inactivar", aptoCRUD, m.motivoNecesario, m.capturaInactivar, vista.inacRecupGuardar);
 
 // Vistas - Recuperar
-router.get("/rc", aptoCRUD, m.capturaActivar, vista.form.historial);
-router.post("/rc", aptoCRUD, m.comentNecesario, m.capturaInactivar, vista.inacRecupGuardar);
+router.get("/recuperar", aptoCRUD, m.capturaActivar, vista.form.historial);
+router.post("/recuperar", aptoCRUD, m.comentNecesario, m.capturaInactivar, vista.inacRecupGuardar);
 
 // Vistas - Elimina
-router.get("/ec", eliminadoPorCreador, vista.form.elimina);
-router.get("/el", aptoEliminar, vista.form.elimina);
+router.get("/eliminado-por-creador", eliminadoPorCreador, vista.form.elimina);
+router.get("/eliminar", aptoEliminar, vista.form.elimina);
 
 // Vistas - Correcciones
-router.get("/cm", correcs, m.capturaActivar, m.statusCorrecto, vista.correcs.motivoForm);
-router.post("/cm", correcs, m.capturaInactivar, m.statusCorrecto, m.motivoNecesario, vista.correcs.motivoGuardar);
-router.get("/cs", correcs, m.capturaActivar, vista.correcs.statusForm);
-router.post("/cs", correcs, m.capturaInactivar, vista.correcs.statusGuardar);
+router.get("/correcion-del-motivo", correcs, m.capturaActivar, m.statusCorrecto, vista.correcs.motivoForm);
+router.post("/correcion-del-motivo", correcs, m.capturaInactivar, m.statusCorrecto, m.motivoNecesario, vista.correcs.motivoGuardar);
+router.get("/correccion-del-status", correcs, m.capturaActivar, vista.correcs.statusForm);
+router.post("/correccion-del-status", correcs, m.capturaInactivar, vista.correcs.statusGuardar);
 
 // Fin
 module.exports = router;
