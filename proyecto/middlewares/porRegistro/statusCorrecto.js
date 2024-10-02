@@ -24,9 +24,9 @@ module.exports = async (req, res, next) => {
 				? [inactivo_id]
 				: tarea == "eliminado-por-creador"
 				? [creado_id]
-				: ruta == "calificar"
+				: tarea == "calificar"
 				? activos_ids
-				: ruta == "abm-links" // abm links
+				: tarea == "abm-links" // abm links
 				? activos_ids
 				: ["correcion-del-motivo", "correccion-del-status"].includes(tarea) // correcciones
 				? [inactivo_id]
@@ -43,9 +43,9 @@ module.exports = async (req, res, next) => {
 			? [inactivar_id]
 			: tarea == "recuperar" // recuperar
 			? [recuperar_id]
-			: ruta == "links" // links
+			: tarea == "links" // links
 			? activos_ids
-			: ruta == "solapamiento" // solapamiento
+			: tarea == "solapamiento" // solapamiento
 			? activos_ids
 			: null;
 	}
