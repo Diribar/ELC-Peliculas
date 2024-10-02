@@ -5,7 +5,7 @@ const API = require("./LK-ControlAPI");
 const vista = require("./LK-ControlVista");
 
 // Middlewares
-const m={
+const m = {
 	// Específicos de usuarios
 	usAltaTerm: require("../../middlewares/porUsuario/usAltaTerm"),
 	usPenalizaciones: require("../../middlewares/porUsuario/usPenalizaciones"),
@@ -21,7 +21,7 @@ const m={
 	permUserReg: require("../../middlewares/porRegistro/permUserReg"),
 	capturaActivar: require("../../middlewares/varios/capturaActivar"),
 	rutaCRUD_ID: require("../../middlewares/varios/rutaCRUD_ID"),
-}
+};
 
 // Middlewares - Consolidados
 const aptoUsuario = [m.usAltaTerm, m.usPenalizaciones, m.usAptoInput];
