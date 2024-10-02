@@ -108,27 +108,6 @@ module.exports = {
 		{descripcion: "Comentario sobre una película", codigo: "producto"},
 		{descripcion: "Otro motivo", codigo: "varios"},
 	],
-	origenDeUrls: [
-		// Productos
-		{codigo: "PDA", url: "/producto/agregar/datos-adicionales"},
-		{codigo: "PDT", url: "/producto/detalle", cola: true},
-		{codigo: "PED", url: "/producto/edicion", cola: true},
-		{codigo: "RPA", url: "/revision/producto/alta", cola: true},
-		{url: "/producto/calificar", cola: true},
-		{url: "/producto/historial", cola: true},
-		{url: "/revision/producto/edicion", cola: true},
-		// RCLVs
-		{codigo: "RDT", url: "/rclv/detalle", cola: true},
-		{codigo: "RRA", url: "/revision/rclv/alta", cola: true},
-		// Links
-		{url: "/links/abm", cola: true},
-		{codigo: "RL", url: "/revision/links", cola: true},
-		// Tableros
-		{codigo: "TE", url: "/revision/tablero"},
-		{codigo: "TM", url: "/tablero-de-mantenimiento"},
-		{codigo: "TU", url: "/revision/usuarios/tablero-de-usuarios"},
-		{codigo: "CN", url: "/consultas"},
-	],
 	coloresConfigs: {
 		azul: ["#8BC1F7", "#519DE9", "#06C", "#004B95", "#002F5D"], // 1. Blue
 		celeste: ["#A2D9D9", "#73C5C5", "#009596", "#005F60", "#003737"], // 3. Cyan
