@@ -3,7 +3,7 @@ const procsFM = require("../../rutas_y_contrs/2.0-Familias/FM-FN-Procesos");
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const {id} = req.query;
 	const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
 	const familia = comp.obtieneDesdeEntidad.familia(entidad);

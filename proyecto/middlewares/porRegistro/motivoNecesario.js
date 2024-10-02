@@ -2,7 +2,7 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const {id, motivo_id, comentario, entDupl, idDupl} = {...req.params, ...req.body};
 	const link = req.baseUrl + req.path + "?entidad=" + entidad + "&id=" + id;
 	let mensajes, motivo;
