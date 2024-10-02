@@ -333,6 +333,5 @@ window.addEventListener("load", async () => {
 	funcionesGrales.statusInicial();
 });
 
-let entidadesRclv = (link) => {
-	return link.className.includes("personaje") ? "personajes" : link.className.includes("hecho") ? "hechos" : "temas";
-};
+let entidadesRclv = (link) =>
+	link.className.includes("personaje") ? "personajes" : link.className.includes("hecho") ? "hechos" : "temas";
