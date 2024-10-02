@@ -60,33 +60,33 @@ router.get("/api/link/obtiene-embeded-link", API.links.obtieneEmbededLink);
 router.get("/tablero", usuarioBase, m.usRolAutTablEnts, vista.tableroControl);
 
 // Vistas - Altas
-router.get("/alp/:entidad", aptoCRUD, m.prodSinRclvAprob, m.capturaActivar, m.rutaCRUD_ID, vista.altaProdForm);
-router.post("/alp/:entidad", aptoCRUD, m.usRolRevPERL, m.prodSinRclvAprob, m.capturaInactivar, vista.cambioStatusGuardar); // Cambios de status
-router.get("/alr/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
-router.post("/alr/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.multer.single("avatar"), vista.cambioStatusGuardar); // Cambios de status
+router.get("/alta/p/:entidad", aptoCRUD, m.prodSinRclvAprob, m.capturaActivar, m.rutaCRUD_ID, vista.altaProdForm);
+router.post("/alta/p/:entidad", aptoCRUD, m.usRolRevPERL, m.prodSinRclvAprob, m.capturaInactivar, vista.cambioStatusGuardar); // Cambios de status
+router.get("/alta/r/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
+router.post("/alta/r/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.multer.single("avatar"), vista.cambioStatusGuardar); // Cambios de status
 
 // Vistas - Edición
-router.get("/ed/:entidad", aptoEdicion, m.rutaCRUD_ID, m.capturaActivar, vista.edic.form);
-router.post("/ed/:entidad", aptoEdicion, m.motivoOpcional, m.capturaInactivar, vista.edic.avatar);
+router.get("/edicion/:entidad", aptoEdicion, m.rutaCRUD_ID, m.capturaActivar, vista.edic.form);
+router.post("/edicion/:entidad", aptoEdicion, m.motivoOpcional, m.capturaInactivar, vista.edic.avatar);
 
 // Vistas - Rechazar
-router.get("/ch/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.motivos);
-router.post("/ch/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.motivoNecesario, vista.cambioStatusGuardar);
+router.get("/rechazar/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.motivos);
+router.post("/rechazar/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.motivoNecesario, vista.cambioStatusGuardar);
 
 // Vistas - Revisar Inactivar
-router.get("/in/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.historial);
-router.post("/in/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
+router.get("/inactivar/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.historial);
+router.post("/inactivar/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
 
 // Vistas - Revisar Recuperar
-router.get("/rc/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.historial);
-router.post("/rc/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
+router.get("/recuperar/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.historial);
+router.post("/recuperar/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
 
 // Vistas - Solapamiento
-router.get("/slr/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
-router.post("/slr/:entidad", aptoCRUD, m.usRolRevPERL, m.multer.single("avatar"), m.capturaInactivar, vista.edic.solapam);
+router.get("/solapamiento/r/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
+router.post("/solapamiento/r/:entidad", aptoCRUD, m.usRolRevPERL, m.multer.single("avatar"), m.capturaInactivar, vista.edic.solapam);
 
 // Vistas - Links
-router.get("/lkp/:entidad", aptoCRUD, m.rutaCRUD_ID, m.linksEnSemana, m.usRolRevLinks, m.capturaActivar, vista.links);
+router.get("/links/p/:entidad", aptoCRUD, m.rutaCRUD_ID, m.linksEnSemana, m.usRolRevLinks, m.capturaActivar, vista.links);
 
 // Fin
 module.exports = router;
