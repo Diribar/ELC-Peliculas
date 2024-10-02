@@ -5,11 +5,7 @@ const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const procsComp = require("./PA-FN5-Compartidos");
 
 module.exports = {
-	movie: {
-		obtieneInfo: async (datos) => {
-			return procsComp.obtieneInfoDeMovie(datos);
-		},
-	},
+	movie: {obtieneInfo: async (datos) => procsComp.obtieneInfoDeMovie(datos)},
 	collection: {
 		obtieneInfo: async function (datos) {
 			// Obtiene información de la colección
