@@ -48,8 +48,8 @@ module.exports = {
 		},
 		elimina: async (req, res) => {
 			// Variables
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id} = req.query;
-			const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const include = entidad == "colecciones" ? "capitulos" : "";
 			const original = await baseDeDatos.obtienePorId(entidad, id, include);
@@ -191,7 +191,7 @@ module.exports = {
 			// Variables
 			const tema = "correccion";
 			const codigo = "cambiarMotivo";
-			const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, origen, prodRclv, ultHist} = {...req.query, ...req.body};
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const titulo = "Cambiar el Motivo";
@@ -214,7 +214,7 @@ module.exports = {
 		},
 		motivoGuardar: async (req, res) => {
 			// Variables
-			const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, motivo_id, entDupl, idDupl, ultHist, origen} = {...req.query, ...req.body};
 			const {statusFinal_id} = ultHist;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -237,7 +237,7 @@ module.exports = {
 			// Variables
 			const tema = "correccion";
 			const codigo = "corregirStatus";
-			const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, origen, prodRclv} = {...req.query, ...req.body};
 			const titulo = "Corregir el Status";
 
@@ -258,7 +258,7 @@ module.exports = {
 		},
 		statusGuardar: async (req, res) => {
 			// Variables
-			const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, origen, opcion, prodRclv, ultHist} = {...req.query, ...req.body};
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
