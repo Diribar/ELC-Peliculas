@@ -5,7 +5,7 @@ const API = require("./RCLV-ControlAPI");
 const vista = require("./RCLV-ControlVista");
 
 // Middlewares
-const m={
+const m = {
 	// Específicos de usuarios
 	usAltaTerm: require("../../middlewares/porUsuario/usAltaTerm"),
 	usPenalizaciones: require("../../middlewares/porUsuario/usPenalizaciones"),
@@ -25,7 +25,7 @@ const m={
 
 	// Middlewares - Otros
 	multer: require("../../middlewares/varios/multer"),
-}
+};
 
 // Middlewares - Consolidados
 const aptoUsuario = [m.usAltaTerm, m.usPenalizaciones, m.usAptoInput];
