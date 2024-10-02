@@ -30,13 +30,13 @@ module.exports = async (req, res, next) => {
 		const FN = {
 			entidades: () => {
 				// Variables
-				const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+				const entidad = comp.obtieneEntidadDesdeUrl(req);
 				const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 				// Resultados
-				const producto = originalUrl.startsWith("/producto/agregar/") || familia == "producto";
-				const rclv = originalUrl.startsWith("/rclv/agregar") || familia == "rclv";
-				const links = originalUrl.startsWith("/links/abm/") || familia == "links";
+				const producto = originalUrl.includes("/agregar/") || familia == "producto";
+				const rclv = originalUrl.includes("/agregar") || familia == "rclv";
+				const links = originalUrl.includes("/abm-links/") || familia == "producto";
 				const entidades = producto
 					? variables.entidades.prods
 					: rclv
