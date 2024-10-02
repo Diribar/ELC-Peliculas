@@ -117,7 +117,7 @@ module.exports = {
 		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const rutasCons = [];
-		const tareas = [];
+		let tareas;
 
 		// Rutas de Familia
 		if (["producto", "rclv"].includes(familia)) {
