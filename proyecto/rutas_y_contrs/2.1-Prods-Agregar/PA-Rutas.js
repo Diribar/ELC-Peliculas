@@ -8,17 +8,18 @@ const vista = require("./PA-ControlVista");
 const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones");
 const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
-const circuitoProdAgregar = require("../../middlewares/varios/circuitoProdAgregar");
+const prodAgregarVarios = require("../../middlewares/varios/prodAgregarVarios");
 const usAutorizFA = require("../../middlewares/porUsuario/usAutorizFA");
 
 // Middlewares - Específicos del registro
 const prodYaEnBD = require("../../middlewares/porRegistro/prodYaEnBD");
+const prodAgregarEntidad = require("../../middlewares/porRegistro/prodAgregarEntidad");
 
 // Middlewares - Otros
 const multer = require("../../middlewares/varios/multer");
 
 // Middlewares - Consolidados
-const dataEntry = [usAltaTerm, usPenalizaciones, usAptoInput, circuitoProdAgregar];
+const dataEntry = [usAltaTerm, usPenalizaciones, usAptoInput, prodAgregarVarios];
 const dataEntryMasYaEnBD = [...dataEntry, prodYaEnBD];
 const dataEntryMasFA = [...dataEntry, usAutorizFA];
 
@@ -55,11 +56,11 @@ router.post("/palabras-clave", dataEntry, vista.palabrasClave.guardar);
 router.get("/desambiguar", dataEntry, vista.desambiguar);
 
 // Vistas - Comienzo de "prodYaEnBD"
-router.get("/datos-duros", dataEntryMasYaEnBD, vista.datosDuros.form);
+router.get("/datos-duros", prodAgregarEntidad, dataEntryMasYaEnBD, vista.datosDuros.form);
 router.post("/datos-duros", dataEntryMasYaEnBD, multer.single("avatar"), vista.datosDuros.guardar);
-router.get("/datos-adicionales", dataEntryMasYaEnBD, vista.datosAdics.form);
+router.get("/datos-adicionales", prodAgregarEntidad, dataEntryMasYaEnBD, vista.datosAdics.form);
 router.post("/datos-adicionales", dataEntryMasYaEnBD, vista.datosAdics.guardar);
-router.get("/confirma", dataEntryMasYaEnBD, vista.confirma.form);
+router.get("/confirma", prodAgregarEntidad, dataEntryMasYaEnBD, vista.confirma.form);
 router.post("/confirma", dataEntryMasYaEnBD, vista.confirma.guardar);
 
 // Vistas - Fin de "prodYaEnBD"
