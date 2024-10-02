@@ -11,7 +11,7 @@ module.exports = {
 		const codigo = "detalle";
 		const entidad = comp.obtieneEntidadDesdeUrl(req);
 		const {id, hoyLocal} = req.query;
-		const origen = req.query.origen ? req.query.origen : "RDT";
+		const origen = req.query.origen ? req.query.origen : "DT";
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const usuario_id = usuario ? usuario.id : null;
 		const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
@@ -169,9 +169,9 @@ module.exports = {
 			// Variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, prodEntidad, prodId, eliminarEdic} = req.query;
+			const {tarea} = comp.partesDelUrl(req);
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			const origen = req.query.origen ? req.query.origen : "RDT";
-			const codigo = req.baseUrl + req.path;
+			const origen = req.query.origen ? req.query.origen : "DT";
 			const usuario_id = req.session.usuario.id;
 			let errores;
 
@@ -231,7 +231,7 @@ module.exports = {
 			const {original, edicion, edicN} = await procesos.altaEdicGuardar.guardaLosCambios(req, res, DE);
 
 			// Acciones si se agregó un registro 'rclv'
-			if (codigo == "/rclv/agregar/") {
+			if (tarea == "/agregar") {
 				// Si el origen es "Datos Adicionales", actualiza su session y cookie
 				if (origen == "PDA") {
 					req.session.datosAdics = {...req.session.datosAdics, [campo_id]: original.id};
@@ -261,7 +261,7 @@ module.exports = {
 				comp.gestionArchivos.mueveImagen(DE.avatar, "9-Provisorio", "3-RCLVs/Revisar");
 
 				// Elimina el eventual anterior
-				if (codigo == "/rclv/edicion/") {
+				if (tarea == "/edicion") {
 					// Si es un registro propio y en status creado, borra el eventual avatar original
 					if (original.creadoPor_id == usuario_id && original.statusRegistro_id == creado_id) {
 						if (original.avatar) comp.gestionArchivos.elimina(carpetaExterna + "3-RCLVs/Revisar/", original.avatar);
