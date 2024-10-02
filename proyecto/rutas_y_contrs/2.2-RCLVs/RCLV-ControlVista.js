@@ -9,7 +9,8 @@ module.exports = {
 		// Variables
 		const tema = "rclvCrud";
 		const codigo = "detalle";
-		const {entidad, id, hoyLocal} = req.query;
+		const entidad = comp.obtieneEntidadDesdeUrl(req);
+		const {id, hoyLocal} = req.query;
 		const origen = req.query.origen ? req.query.origen : "RDT";
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const usuario_id = usuario ? usuario.id : null;
@@ -69,14 +70,14 @@ module.exports = {
 	},
 	altaEdic: {
 		form: async (req, res) => {
-			// Puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
-			// Tema y Código
+			// Tema y Código - puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
 			const {baseUrl, ruta} = comp.partesDelUrl(req);
 			const tema = baseUrl == "/rclv" ? "rclvCrud" : baseUrl == "/revision" ? "revisionEnts" : "";
 			const codigo = ruta.slice(1, -1); // resultados posibles: 'agregar', 'edicion', 'alta', 'rclv/alta', 'rclv/solapamiento'
 
 			// Más variables
-			const {entidad, id, prodEntidad, prodId} = req.query;
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id, prodEntidad, prodId} = req.query;
 			const origen = req.query.origen
 				? req.query.origen
 				: tema == "revisionEnts"
@@ -166,7 +167,8 @@ module.exports = {
 		// Puede venir de agregarProd, edicionProd, detalleRCLV, revision
 		guardar: async (req, res) => {
 			// Variables
-			const {entidad, id, prodEntidad, prodId, eliminarEdic} = req.query;
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id, prodEntidad, prodId, eliminarEdic} = req.query;
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const origen = req.query.origen ? req.query.origen : "RDT";
 			const codigo = req.baseUrl + req.path;
@@ -274,11 +276,42 @@ module.exports = {
 			if (entidad == "epocasDelAno" && !edicion && !edicN) comp.actualizaSolapam();
 
 			// Obtiene el url de la siguiente instancia
-			let destino ="/miscelaneas/ic/" + entidad + "/?id=" + (id ? id : 1) + "&origen=" + origen;
+			let destino = "/miscelaneas/ic/" + entidad + "/?id=" + (id ? id : 1) + "&origen=" + origen;
 			if (origen == "PED") destino += "&prodEntidad=" + prodEntidad + "&prodId=" + prodId;
 
 			// Redirecciona a la siguiente instancia
 			return res.redirect(destino);
 		},
+	},
+	prodsPorReg: async (req, res) => {
+		// Variables
+		const {ruta} = comp.partesDelUrl(req);
+		const indice = ruta.lastIndexOf("/");
+		const rclv = ruta.slice(indice + 1);
+		const condicion = {id: {[Op.ne]: 1}};
+		const include = [...variables.entidades.prods, "prodsEdiciones"];
+		let rclvs = {};
+		let resultado = {};
+
+		// Lectura
+		await baseDeDatos
+			.obtieneTodosPorCondicion(rclv, condicion, include)
+			.then((n) =>
+				n.map((m) => {
+					rclvs[m.nombre] = 0;
+					for (let entidad of include) rclvs[m.nombre] += m[entidad].length;
+				})
+			)
+			.then(() => {
+				// Ordena los métodos según la cantidad de productos
+				const metodos = Object.keys(rclvs).sort((a, b) =>
+					rclvs[b] != rclvs[a] ? rclvs[b] - rclvs[a] : a < b ? -1 : 1
+				);
+				// Crea un objeto nuevo, con los métodos ordenados
+				metodos.map((n) => (resultado[n] = rclvs[n]));
+			});
+
+		// Fin
+		return res.send(resultado);
 	},
 };
