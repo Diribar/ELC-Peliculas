@@ -274,6 +274,17 @@ module.exports = {
 		oa: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : "o"),
 		a: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : ""),
 	},
+	obtieneEntidadDesdeUrl: (req) => {
+		// Lo obtiene del path
+		const entParams = req.params.entidad;
+		if (entParams) return entParams;
+
+		// Lo obtiene del baseUrl
+		let baseUrl = req.baseUrl.slice(1);
+		const indice = baseUrl.indexOf("/");
+		if (indice > -1) baseUrl = baseUrl.slice(0, indice);
+		return baseUrl
+	},
 	// Productos y RCLVs
 	puleEdicion: async function (entidad, original, edicion) {
 		// Variables
