@@ -1263,8 +1263,8 @@ module.exports = {
 
 		// Obtiene la ruta
 		let ruta = req.path;
-		if (ruta.startsWith(baseUrl)) ruta = ruta.replace(baseUrl, "");
-		if (ruta.endsWith("/")) ruta = ruta.slice(0, -1);
+		if (ruta.startsWith(baseUrl)) ruta = ruta.replace(baseUrl, ""); // si contiene el baseUrl, lo quita
+		if (ruta.endsWith("/")) ruta = ruta.slice(0, -1); // si termina con "/", lo quita
 
 		// Obtiene la tarea
 		const indice = ruta.indexOf("/", 1);
