@@ -227,11 +227,11 @@ module.exports = {
 			await baseDeDatos.actualizaPorId("statusHistorial", ultHist.id, {motivo_id, comentario});
 
 			// Genera la 'cola'
-			let cola = "/?entidad=" + entidad + "&id=" + id;
+			let cola = "/&id=" + id;
 			if (origen) cola += "&origen=" + origen;
 
 			// Fin
-			return res.redirect("/" + familia + "/historial" + cola);
+			return res.redirect("/" + entidad + "/historial" + cola);
 		},
 		statusForm: async (req, res) => {
 			// Variables
