@@ -3,7 +3,6 @@
 module.exports = (req, res, next) => {
 	// Variables
 	const entidad = comp.obtieneEntidadDesdeUrl(req);
-	const {ruta} = comp.partesDelUrl(req);
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	let informacion, siglaFam;
 
@@ -14,10 +13,8 @@ module.exports = (req, res, next) => {
 	if (!informacion)
 		siglaFam =
 			req.params && req.params.siglaFam
-				? req.params.siglaFam
-				: ruta[3] && ruta[3] != "/" // la convención es que el 4° elemento sea la siglaFam
-				? ruta[3]
-				: null;
+				? req.params.siglaFam // Obtiene la 'siglaFam' del params
+				: comp.partesDelUrl(req).siglaFam; // Si no la consiguió, la busca en el path
 
 	// Verificaciones si existe la 'siglaFam'
 	if (!informacion && siglaFam) {
