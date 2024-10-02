@@ -2,7 +2,7 @@
 
 module.exports = (req, res, next) => {
 	// Variables
-	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const {ruta} = comp.partesDelUrl(req);
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	let informacion, siglaFam;
@@ -24,7 +24,7 @@ module.exports = (req, res, next) => {
 		// Verifica que se reconozca la 'siglaFam'
 		if (!["p", "r"].includes(siglaFam))
 			informacion = {
-				mensajes: ["No tenemos esa dirección en nuestro sistema"],
+				mensajes: ["No tenemos esa dirección en nuestro sistema (entidad inválida)"],
 				iconos: [vistaAnterior, variables.vistaInicio], // se usa actual porque no llegó a cambiar el session
 			};
 		// Verifica la coherencia entre la siglaFam y la entidad

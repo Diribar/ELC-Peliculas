@@ -70,7 +70,7 @@ module.exports = {
 	},
 	infoNoPerenne: (req) => {
 		// Variables
-		const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+		const entidad = comp.obtieneEntidadDesdeUrl(req);;
 		const {id, origen} = req.query;
 		const linkVolver =
 			entidad && id

@@ -3,7 +3,7 @@ const procesos = require("../../rutas_y_contrs/3-Rev-Entidades/RE-Procesos");
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const {id} = req.query;
 	const revId = req.session.usuario.id;
 	delete req.sigProd;

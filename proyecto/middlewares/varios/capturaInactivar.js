@@ -4,7 +4,7 @@ module.exports = async (req, res, next) => {
 	if (!req.session.usuario) return next();
 
 	// Variables - Generales
-	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const {id} = req.query;
 	const capturadoPor_id = req.session.usuario.id;
 

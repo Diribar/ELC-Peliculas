@@ -2,7 +2,7 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const {edicID, campo, aprob, motivo_id} = req.query;
 	const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 

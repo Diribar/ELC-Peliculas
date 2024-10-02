@@ -6,7 +6,7 @@ module.exports = async (req, res, next) => {
 	if (!usuario_id) return next();
 
 	// Otras variables
-	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const {id: entidad_id} = req.query;
 	const condicion = {usuario_id, entidad, entidad_id};
 
