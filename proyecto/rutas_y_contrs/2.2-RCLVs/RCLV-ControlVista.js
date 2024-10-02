@@ -285,30 +285,36 @@ module.exports = {
 	},
 	prodsPorReg: async (req, res) => {
 		// Variables
-		const {ruta} = comp.partesDelUrl(req);
-		const indice = ruta.lastIndexOf("/");
-		const rclv = ruta.slice(indice + 1);
+		const entidad = comp.obtieneEntidadDesdeUrl(req);
 		const condicion = {id: {[Op.ne]: 1}};
 		const include = [...variables.entidades.prods, "prodsEdiciones"];
-		let rclvs = {};
-		let resultado = {};
+		const registros = {};
+		const resultado = {};
 
 		// Lectura
 		await baseDeDatos
-			.obtieneTodosPorCondicion(rclv, condicion, include)
-			.then((n) =>
-				n.map((m) => {
-					rclvs[m.nombre] = 0;
-					for (let entidad of include) rclvs[m.nombre] += m[entidad].length;
-				})
-			)
+			.obtieneTodosPorCondicion(entidad, condicion, include)
+			// Averigua la cantidad de includes por registro rclv
+			.then((regs) => {
+				for (let reg of regs) {
+					registros[reg.nombre] = 0;
+					for (let entInclude of include) registros[reg.nombre] += reg[entInclude].length;
+				}
+			})
+			// Ordena los registros por su cantidad de productos, en orden descendente
 			.then(() => {
 				// Ordena los métodos según la cantidad de productos
-				const metodos = Object.keys(rclvs).sort((a, b) =>
-					rclvs[b] != rclvs[a] ? rclvs[b] - rclvs[a] : a < b ? -1 : 1
+				const metodos = Object.keys(registros);
+				metodos.sort((a, b) =>
+					registros[b] != registros[a]
+						? registros[b] - registros[a] // por cantidad de productos
+						: a < b // por orden alfabético
+						? -1
+						: 1
 				);
+
 				// Crea un objeto nuevo, con los métodos ordenados
-				metodos.map((n) => (resultado[n] = rclvs[n]));
+				for (let metodo of metodos) resultado[metodo] = registros[metodo];
 			});
 
 		// Fin
