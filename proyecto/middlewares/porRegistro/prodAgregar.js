@@ -4,20 +4,20 @@ const procesos = require("../../rutas_y_contrs/2.1-Prods-Agregar/PA-FN4-Procesos
 
 module.exports = (req, res, next) => {
 	// Variables - Acciones comunes entre los pasos de 'producto agregar'
-	const entidad = req.baseUrl.slice(1);
+	const entidad = req.baseUrl.slice(1).replace("/agregar", "");
 	const codigoUrl = req.url.slice(1);
 	const pasos = [
-		{url: "palabras-clave", codigo: "palabrasClave"},
-		{url: "desambiguar", codigo: "desambiguar"},
-		{url: "ingreso-manual", codigo: "IM"},
+		{url: "palabras-clave", codigo: "palabrasClave", producto: true},
+		{url: "desambiguar", codigo: "desambiguar", producto: true},
+		{url: "ingreso-manual", codigo: "IM", producto: true},
 		{url: "ingreso-fa", codigo: "FA"},
 		{url: "datos-duros", codigo: "datosDuros"},
 		{url: "datos-adicionales", codigo: "datosAdics"},
 		{url: "confirma", codigo: "confirma"},
 	];
-
-	// Obtiene el código que corresponde al 'url' y la session/cookie actual
-	const codigo = pasos.find((n) => codigoUrl.startsWith(n.url)).codigo;
+	const entidades = variables.entidades.prods;
+	const paso = pasos.find((n) => codigoUrl.startsWith(n.url));
+	const {codigo, producto} = paso;
 	const datos = req.session[codigo] ? req.session[codigo] : req.cookies[codigo];
 
 	// Si no está la session/cookie actual, redirige a la url anterior
@@ -37,10 +37,13 @@ module.exports = (req, res, next) => {
 			// Redirecciona
 			return res.redirect(origen);
 		}
-	} else if (entidad == "undefined") {
-		if (["palabrasClave", "desambiguar", "IM"].includes(codigo)) return res.redirect("/producto/" + codigoUrl);
-		else if (datos) return res.redirect("/" + datos.entidad + "/" + codigoUrl);
 	}
+	// Si la entidad no es la esperada, redirige con la entidad correcta
+	else if (
+		(producto && entidad != "producto") || // la entidad no es 'producto' y debería serlo
+		(!producto && !entidades.includes(entidad)) // la entidad no es válida
+	)
+		return res.redirect("/" + (producto ? "producto" : datos.entidad) + "/" + codigoUrl);
 
 	// Tareas si es 'GET',
 	if (req.method == "GET") {
