@@ -45,11 +45,12 @@ router.get("/api/edicion/prefijos", API.prefijos);
 router.get("/api/edicion/obtiene-leyenda-nombre", API.obtieneLeyNombre);
 
 // Vistas - Relación con la vida
-router.get("/agr", aptoAgregar, vista.altaEdic.form);
-router.post("/agr", aptoAgregar, m.multer.single("avatar"), vista.altaEdic.guardar);
-router.get("/dtr", aptoDetalle, vista.detalle);
-router.get("/edr", aptoEdicion, m.capturaActivar, vista.altaEdic.form);
-router.post("/edr", aptoEdicion, m.multer.single("avatar"), m.capturaInactivar, vista.altaEdic.guardar);
+router.get("/agregar/r", aptoAgregar, vista.altaEdic.form);
+router.post("/agregar/r", aptoAgregar, m.multer.single("avatar"), vista.altaEdic.guardar);
+router.get("/detalle/r", aptoDetalle, vista.detalle);
+router.get("/edicion/r", aptoEdicion, m.capturaActivar, vista.altaEdic.form);
+router.post("/edicion/r", aptoEdicion, m.multer.single("avatar"), m.capturaInactivar, vista.altaEdic.guardar);
+router.get("/productos-por-registro/r", m.entValida, vista.prodsPorReg); // busca los rclvs con más cantidad de productos
 
 // Fin
 module.exports = router;

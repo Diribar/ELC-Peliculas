@@ -44,37 +44,6 @@ module.exports = {
 	listados: {
 		session: (req, res) => res.send(req.session), // session
 		cookies: (req, res) => res.send(req.cookies), // cookies
-		rclvs: async (req, res) => {
-			// Variables
-			const {ruta} = comp.partesDelUrl(req);
-			const indice = ruta.lastIndexOf("/");
-			const rclv = ruta.slice(indice + 1);
-			const condicion = {id: {[Op.ne]: 1}};
-			const include = [...variables.entidades.prods, "prodsEdiciones"];
-			let rclvs = {};
-			let resultado = {};
-
-			// Lectura
-			await baseDeDatos
-				.obtieneTodosPorCondicion(rclv, condicion, include)
-				.then((n) =>
-					n.map((m) => {
-						rclvs[m.nombre] = 0;
-						for (let entidad of include) rclvs[m.nombre] += m[entidad].length;
-					})
-				)
-				.then(() => {
-					// Ordena los métodos según la cantidad de productos
-					const metodos = Object.keys(rclvs).sort((a, b) =>
-						rclvs[b] != rclvs[a] ? rclvs[b] - rclvs[a] : a < b ? -1 : 1
-					);
-					// Crea un objeto nuevo, con los métodos ordenados
-					metodos.map((n) => (resultado[n] = rclvs[n]));
-				});
-
-			// Fin
-			return res.send(resultado);
-		},
 		links: async (req, res) => {
 			// Variables
 			const entidades = variables.entidades.prods;

@@ -10,6 +10,7 @@ const entId = [entValidaAnt, iDvalidoAnt];
 
 // Vistas
 router.get("/abm", entId, vistaMS.redirecciona.rutasAntiguas);
+router.get("/visualizacion", entId, vistaMS.redirecciona.rutasAntiguas);
 
 // Fin
 module.exports = router;
