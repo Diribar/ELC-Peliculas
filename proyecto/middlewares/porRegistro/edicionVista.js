@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
 		const revision = baseUrl == "/revision";
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const cola = entidad + "/?id=" + id + "&origen=" + (origen ? origen : "TE");
-		const vistaAnterior = variables.vistaAnterior("/miscelaneas/inactivar-captura/" + cola);
+		const vistaAnterior = variables.vistaAnterior("/inactivar-captura/" + cola);
 		let edicion;
 
 		if (revision) {
@@ -62,7 +62,7 @@ module.exports = async (req, res, next) => {
 			if (!origen) origen = baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "RDT" : "PDT";
 
 			// Información
-			const link = "/miscelaneas/inactivar-captura/" + entidad + "/?id=" + id + "&origen=" + origen;
+			const link = "/inactivar-captura/" + entidad + "/?id=" + id + "&origen=" + origen;
 			const vistaAnterior = variables.vistaAnterior(link);
 			informacion = {mensajes: ["No encontramos esa edición."], iconos: [vistaAnterior]};
 		}
