@@ -59,7 +59,7 @@ module.exports = async (req, res, next) => {
 		// En caso que no, mensaje de error
 		if (!edicion) {
 			// Acciones si no tiene origen
-			if (!origen) origen = baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "RDT" : "PDT";
+			if (!origen) origen = baseUrl == "/revision" ? "TE" : "DT";
 
 			// Información
 			const link = "/inactivar-captura/" + entidad + "/?id=" + id + "&origen=" + origen;
