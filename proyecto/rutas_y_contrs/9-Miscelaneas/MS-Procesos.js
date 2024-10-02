@@ -170,13 +170,8 @@ module.exports = {
 		for (let tarea of tareas)
 			rutasCons.push({
 				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
-				act: "/revision/" + tarea + "/" + entidad, // revision + tarea + siglaFam + entidad
-				titulo:
-					tarea == "rechazar"
-						? "Rechazar"
-						: ["inactivar", "recuperar"].includes(tarea)
-						? "Revisión de " + comp.letras.inicialMayus(tarea)
-						: null,
+				act: "/revision/" + tarea + "/" + entidad, // revision + tarea + entidad
+				titulo: tarea == "rechazar" ? "Rechazar" : "Revisión de " + comp.letras.inicialMayus(tarea),
 			});
 
 		// Fin
