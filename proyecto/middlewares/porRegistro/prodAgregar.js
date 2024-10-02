@@ -4,7 +4,7 @@ const procesos = require("../../rutas_y_contrs/2.1-Prods-Agregar/PA-FN4-Procesos
 
 module.exports = (req, res, next) => {
 	// Variables - Acciones comunes entre los pasos de 'producto agregar'
-	const entidad = req.baseUrl.slice(1).replace("/agregar", "");
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const codigoUrl = req.url.slice(1);
 	const pasos = [
 		{url: "palabras-clave", codigo: "palabrasClave", producto: true},
@@ -43,7 +43,7 @@ module.exports = (req, res, next) => {
 		(producto && entidad != "producto") || // la entidad no es 'producto' y debería serlo
 		(!producto && !entidades.includes(entidad)) // la entidad no es válida
 	)
-		return res.redirect("/" + (producto ? "producto" : datos.entidad) + "/" + codigoUrl);
+		return res.redirect("/" + (producto ? "producto" : datos.entidad) + "/agregar/" + codigoUrl);
 
 	// Tareas si es 'GET',
 	if (req.method == "GET") {

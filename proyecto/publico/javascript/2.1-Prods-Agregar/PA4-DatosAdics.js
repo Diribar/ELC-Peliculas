@@ -299,9 +299,9 @@ window.addEventListener("load", async () => {
 			// Guardar los valores en Session y Cookies
 			funcionesGrales.guardaLosValoresEnSessionCookies();
 			// Obtiene la RCLV_entidad
-			let entidad = "?entidad=" + entidades(link);
+			let entidadRclv = "?entidad=" + entidadesRclv(link);
 			// Para ir a la vista RCLV
-			location.href = "/rclv/agregar/" + entidad + "&origen=PDA";
+			location.href = "/rclv/agregar/" + entidadRclv + "&origen=PDA";
 		});
 	});
 	// Links a RCLV - Edición
@@ -310,11 +310,11 @@ window.addEventListener("load", async () => {
 			// Guardar los valores en Session y Cookies
 			funcionesGrales.guardaLosValoresEnSessionCookies();
 			// Obtiene la RCLV_entidad
-			let entidad = "?entidad=" + entidades(link);
+			let entidadRclv = "?entidad=" + entidadesRclv(link);
 			// Obtiene el RCLV_id
 			let id = "&id=" + DOM.inputsRCLV[i].value;
 			// Para ir a la vista RCLV
-			location.href = "/rclv/edicion/" + entidad + id + "&origen=PDA";
+			location.href = "/rclv/edicion/" + entidadRclv + id + "&origen=PDA";
 		});
 	});
 
@@ -333,6 +333,5 @@ window.addEventListener("load", async () => {
 	funcionesGrales.statusInicial();
 });
 
-let entidades = (link) => {
-	return link.className.includes("personaje") ? "personajes" : link.className.includes("hecho") ? "hechos" : "temas";
-};
+let entidadesRclv = (link) =>
+	link.className.includes("personaje") ? "personajes" : link.className.includes("hecho") ? "hechos" : "temas";

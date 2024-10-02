@@ -130,17 +130,6 @@ module.exports = {
 				{ant: "/correccion/status", act: "/" + entidad + "/cs"},
 			],
 
-			// Producto Agregar
-			...[
-				// ant: '/producto/agregar/' + rutaAnt - act: '/producto/' + rutaAnt
-				{ant: "/producto/agregar/palabras-clave", act: "/producto/palabras-clave"},
-				{ant: "/producto/agregar/desambiguar", act: "/producto/desambiguar"},
-				{ant: "/producto/agregar/ingreso-manual", act: "/producto/ingreso-manual"},
-
-				// ant: '/producto/agregar' - act: entidad
-				{ant: "/producto/agregar", act: "/" + entidad},
-			],
-
 			// Producto RUD
 			...[
 				// ant: '/producto/' + rutaAnt - act: entidad + rutaAct

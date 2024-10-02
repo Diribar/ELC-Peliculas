@@ -107,7 +107,7 @@ module.exports = {
 		},
 		obtieneElMensaje: (req, res) => {
 			// Variables
-			const {prodsNuevos, prodsYaEnBD} = req.session.desambiguar;
+			const {prodsNuevos, prodsYaEnBD, hayMas} = req.session.desambiguar;
 			const cantNuevos = prodsNuevos.length;
 			const coincidencias = cantNuevos + prodsYaEnBD.length;
 
