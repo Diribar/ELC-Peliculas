@@ -117,26 +117,26 @@ module.exports = {
 		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const rutasCons = [];
-		let tareas;
+		let opciones, tareas;
 
 		// Rutas de Familia
 		if (["producto", "rclv"].includes(familia)) {
-			tareas = [
-				{codigo: "historial", titulo: "Historial de"},
-				{codigo: "inactivar", titulo: "Inactivar"},
-				{codigo: "recuperar", titulo: "Recuperar"},
-				{codigo: "eliminadoPorCreador", titulo: "Eliminar"},
-				{codigo: "eliminar", titulo: "Eliminar"},
+			opciones = [
+				{tarea: "historial", titulo: "Historial de"},
+				{tarea: "inactivar", titulo: "Inactivar"},
+				{tarea: "recuperar", titulo: "Recuperar"},
+				{tarea: "eliminadoPorCreador", titulo: "Eliminar"},
+				{tarea: "eliminar", titulo: "Eliminar"},
 			];
-			for (let tarea of tareas)
+			for (let opcion of opciones)
 				rutasCons.push({
-					ant: "/" + familia + "/" + tarea.codigo, // familia + codigo (salvo correccion)
-					act: "/" + entidad + "/" + tarea.codigo + "/" + siglaFam, // entidad + codigo + siglaFam
-					titulo: tarea.titulo,
+					ant: "/" + familia + "/" + opcion.tarea, // familia + tarea (salvo correccion)
+					act: "/" + entidad + "/" + opcion.tarea, // entidad + tarea
+					titulo: opcion.titulo,
 				});
 			rutasCons.push(
-				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-motivo/" + siglaFam},
-				{ant: "/correccion/status", act: "/" + entidad + "/correccion-status/" + siglaFam}
+				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-motivo"},
+				{ant: "/correccion/status", act: "/" + entidad + "/correccion-status"}
 			);
 		}
 
@@ -159,14 +159,18 @@ module.exports = {
 				{ant: "/links/visualizacion", act: "/links/mirar/l"}
 			); // ant: 'links/abm' - act: entidad + '/lkp'
 
-
 		// Revisión de Entidades
-		tareas = ["alta", "edicion", "inactivar", "recuperar", "rechazar", "solapamiento", "links"];
+		tareas = ["alta", "solapamiento", "links"];
 		for (let tarea of tareas)
 			rutasCons.push({
 				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
 				act: "/revision/" + tarea + "/" + siglaFam + "/" + entidad, // revision + tarea + siglaFam + entidad
-				codigo: tarea,
+			});
+		tareas = ["edicion", "rechazar", "inactivar", "recuperar"];
+		for (let tarea of tareas)
+			rutasCons.push({
+				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
+				act: "/revision/" + tarea + "/" + entidad, // revision + tarea + siglaFam + entidad
 				titulo:
 					tarea == "rechazar"
 						? "Rechazar"
