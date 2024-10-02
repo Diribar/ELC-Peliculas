@@ -14,7 +14,7 @@ const m = {
 
 	// Middlewares - Específicos del registro
 	entValida: require("../../middlewares/porRegistro/entidadValida"),
-	iDvalido: require("../../middlewares/porRegistro/iDvalido"),
+	iDvalido: require("../../middlewares/porRegistro/idValido"),
 	statusCorrecto: require("../../middlewares/porRegistro/statusCorrecto"),
 	creadoPorUsuario: require("../../middlewares/porRegistro/creadoPorUsuario"),
 	motivoNecesario: require("../../middlewares/porRegistro/motivoNecesario"),
