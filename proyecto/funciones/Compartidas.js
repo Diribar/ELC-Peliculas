@@ -283,7 +283,7 @@ module.exports = {
 		let baseUrl = req.baseUrl.slice(1);
 		const indice = baseUrl.indexOf("/");
 		if (indice > -1) baseUrl = baseUrl.slice(0, indice);
-		return baseUrl
+		return baseUrl;
 	},
 	// Productos y RCLVs
 	puleEdicion: async function (entidad, original, edicion) {
@@ -1262,12 +1262,20 @@ module.exports = {
 		const url = req.url.startsWith(baseUrl) ? req.url.replace(baseUrl, "") : req.url;
 
 		// Obtiene la ruta
-		let ruta = req.path.startsWith(baseUrl) ? req.path.replace(baseUrl, "") : req.path;
+		let ruta = req.path;
+		if (ruta.startsWith(baseUrl)) ruta = ruta.replace(baseUrl, "");
+		if (ruta.endsWith("/")) ruta = ruta.slice(0, -1);
+
+		// Obtiene la tarea
 		const indice = ruta.indexOf("/", 1);
-		if (indice >= 0) ruta = ruta.slice(0, indice);
+		const tarea = indice >= 0 ? ruta.slice(0, indice) : ruta;
+
+		// Obtiene la siglaFam
+		let siglaFam = ruta.replace(tarea, "");
+		if (siglaFam) siglaFam = siglaFam.slice(1, 2);
 
 		// Fin
-		return {baseUrl, ruta, url};
+		return {baseUrl, tarea, siglaFam, url};
 	},
 	variablesSemanales: function () {
 		FN.primerLunesDelAno();
