@@ -79,9 +79,7 @@ module.exports = async (req, res, next) => {
 			? familia
 				? "TE"
 				: "TU"
-			: familia == "rclv"
-			? "RDT"
-			: "PDT";
+			: "DT";
 		const link = "/inactivar-captura/" + entidad + "/?id=" + id + "&origen=" + origen;
 		const vistaEntendido = variables.vistaEntendido(link);
 
