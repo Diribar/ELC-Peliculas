@@ -1268,14 +1268,14 @@ module.exports = {
 
 		// Obtiene la tarea
 		const indice = ruta.indexOf("/", 1);
-		const tarea = indice >= 0 ? ruta.slice(0, indice) : ruta;
+		const tarea = indice >= 0 ? ruta.slice(0, indice) : ruta; // obtiene solamente lo que figure hasta el "/"
 
 		// Obtiene la siglaFam
-		let siglaFam = ruta.replace(tarea, "");
+		let siglaFam = ruta.replace(tarea, ""); // si contiene la tarea, la quita
 		if (siglaFam) {
 			siglaFam = siglaFam.slice(1); // le quita el "/" del comienzo
-			if (siglaFam.length > 2 && siglaFam[1] != "/") siglaFam = null; // detecta que no es una siglaFam
-			else siglaFam = siglaFam[0]; // obtiene la siglaFam definitiva
+			if (siglaFam.length > 2 && siglaFam[1] != "/") siglaFam = null; // detecta si no es una 'siglaFam'
+			else siglaFam = siglaFam[0]; // obtiene la 'siglaFam'
 		}
 
 		// Fin
