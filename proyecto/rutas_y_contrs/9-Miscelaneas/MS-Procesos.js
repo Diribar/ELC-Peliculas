@@ -116,60 +116,67 @@ module.exports = {
 		// Variables
 		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const rutasCons = [];
+		const tareas = [];
 
-		// Rutas
-		const rutas = [
-			// Familia - ant: familia + rutaAnt (salvo correccion) - act: entidad + rutaAct
-			...[
-				{ant: "/" + familia + "/historial", act: "/" + entidad + "/hs", codigo: "historial", titulo: "Historial de"},
-				{ant: "/" + familia + "/inactivar", act: "/" + entidad + "/in", codigo: "inactivar", titulo: "Inactivar"},
-				{ant: "/" + familia + "/recuperar", act: "/" + entidad + "/rc", codigo: "recuperar", titulo: "Recuperar"},
-				{ant: "/" + familia + "/eliminadoPorCreador", act: "/" + entidad + "/ec", titulo: "Eliminar"},
-				{ant: "/" + familia + "/eliminar", act: "/" + entidad + "/el", titulo: "Eliminar"},
-				{ant: "/correccion/motivo", act: "/" + entidad + "/cm"},
-				{ant: "/correccion/status", act: "/" + entidad + "/cs"},
-			],
+		// Rutas de Familia
+		if (["producto", "rclv"].includes(familia)) {
+			tareas = [
+				{codigo: "historial", titulo: "Historial de"},
+				{codigo: "inactivar", titulo: "Inactivar"},
+				{codigo: "recuperar", titulo: "Recuperar"},
+				{codigo: "eliminadoPorCreador", titulo: "Eliminar"},
+				{codigo: "eliminar", titulo: "Eliminar"},
+			];
+			for (let tarea of tareas)
+				rutasCons.push({
+					ant: "/" + familia + "/" + tarea.codigo, // familia + codigo (salvo correccion)
+					act: "/" + entidad + "/" + tarea.codigo + "/" + siglaFam, // entidad + codigo + siglaFam
+					titulo: tarea.titulo,
+				});
+			rutasCons.push(
+				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-motivo/" + siglaFam},
+				{ant: "/correccion/status", act: "/" + entidad + "/correccion-status/" + siglaFam}
+			);
+		}
 
-			// Producto RUD
-			...[
-				// ant: '/producto/' + rutaAnt - act: entidad + rutaAct
-				{ant: "/producto/detalle", act: "/" + entidad + "/dtp"},
-				{ant: "/producto/edicion", act: "/" + entidad + "/edp"},
-				{ant: "/producto/calificar", act: "/" + entidad + "/clp"},
-			],
+		// Rutas de Producto RUD
+		if (familia == "producto") {
+			tareas = ["detalle", "edicion", "calificar"];
+			for (let tarea of tareas) rutasCons.push({ant: "/producto/" + tarea, act: "/" + entidad + "/" + tarea + "/p"}); // ant: '/producto/' + rutaAnt - act: entidad + rutaAct
+		}
 
-			// Links - ant: 'links/abm' - act: entidad + '/lkp'
-			{ant: "/links/abm", act: "/" + entidad + "/lkp"},
+		// Rclv CRUD
+		if (familia == "rclv") {
+			tareas = ["agregar", "detalle", "edicion"];
+			for (let tarea of tareas) rutasCons.push({ant: "/rclv/" + tarea, act: "/" + entidad + "/" + tarea + "/r"}); // ant: '/rclv/' + rutaAnt - act: entidad + rutaAct
+		}
 
-			// Revisión de Entidades - ant: revision + familia + ant (salvo links) - act: rutaAct + entidad
-			...[
-				{ant: "/revision/" + familia + "/alta", act: "/revision/al" + siglaFam + "/" + entidad},
-				{ant: "/revision/" + familia + "/edicion", act: "/revision/ed/" + entidad},
-				{
-					ant: "/revision/" + familia + "/inactivar",
-					act: "/revision/in/" + entidad,
-					codigo: "inactivar",
-					titulo: "Revisión de Inactivar",
-				},
-				{
-					ant: "/revision/" + familia + "/recuperar",
-					act: "/revision/rc/" + entidad,
-					codigo: "recuperar",
-					titulo: "Revisión de Recuperar",
-				},
-				{
-					ant: "/revision/" + familia + "/rechazar",
-					act: "/revision/ch/" + entidad,
-					codigo: "rechazar",
-					rechazar: "Rechazar",
-				},
-				{ant: "/revision/rclv/solapamiento", act: "/revision/slr/" + entidad},
-				{ant: "/revision/links", act: "/revision/lkp/" + entidad},
-			],
-		];
+		// Links
+		if (["producto", "link"].includes(familia))
+			rutasCons.push(
+				{ant: "/links/abm", act: "/" + entidad + "/abm-links/p"},
+				{ant: "/links/visualizacion", act: "/links/mirar/l"}
+			); // ant: 'links/abm' - act: entidad + '/lkp'
+
+
+		// Revisión de Entidades
+		tareas = ["alta", "edicion", "inactivar", "recuperar", "rechazar", "solapamiento", "links"];
+		for (let tarea of tareas)
+			rutasCons.push({
+				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
+				act: "/revision/" + tarea + "/" + siglaFam + "/" + entidad, // revision + tarea + siglaFam + entidad
+				codigo: tarea,
+				titulo:
+					tarea == "rechazar"
+						? "Rechazar"
+						: ["inactivar", "recuperar"].includes(tarea)
+						? "Revisión de " + comp.letras.inicialMayus(tarea)
+						: null,
+			});
 
 		// Fin
-		return rutas;
+		return rutasCons;
 	},
 };
 

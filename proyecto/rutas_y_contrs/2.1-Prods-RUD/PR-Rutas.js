@@ -52,11 +52,11 @@ router.get("/api/edicion/eliminar-nueva", API.edicion.eliminaNueva);
 router.get("/api/edicion/eliminar-guardada", API.edicion.eliminaGuardada);
 
 // Vistas
-router.get("/dtp", aptoDetalle, m.misDetalleProd, m.capturaInactivar, vista.detalle);
-router.get("/edp", aptoEdicion, m.capturaActivar, vista.edicion.form);
-router.post("/edp", aptoEdicion, m.multer.single("avatar"), vista.edicion.guardar);
-router.get("/clp", aptoCalificar, vista.califica.form);
-router.post("/clp", aptoCalificar, vista.califica.guardar);
+router.get("/detalle/p", aptoDetalle, m.misDetalleProd, m.capturaInactivar, vista.detalle);
+router.get("/edicion/p", aptoEdicion, m.capturaActivar, vista.edicion.form);
+router.post("/edicion/p", aptoEdicion, m.multer.single("avatar"), vista.edicion.guardar);
+router.get("/calificar/p", aptoCalificar, vista.califica.form);
+router.post("/calificar/p", aptoCalificar, vista.califica.guardar);
 
 // Fin
 module.exports = router;
