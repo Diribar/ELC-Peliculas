@@ -173,4 +173,4 @@ window.addEventListener("load", async () => {
 
 // Variables
 const paso = pathname.slice(pathname.lastIndexOf("/") + 1);
-const validaDatos = "/producto/agregar/api/valida/" + paso + "/?";
+const validaDatos = "api/valida/" + paso + "/?";
