@@ -150,7 +150,7 @@ module.exports = async (req, res, next) => {
 
 		// Datos para el link
 		const originalUrl = encodeURIComponent(req.originalUrl);
-		const linkInactivar = "/miscelaneas/inactivar-captura/" + capturaEnt + "/?id=" + capturaEnt_id + "&urlDestino=" + originalUrl;
+		const linkInactivar = "/inactivar-captura/" + capturaEnt + "/?id=" + capturaEnt_id + "&urlDestino=" + originalUrl;
 		const liberar = {
 			clase: iconos.check,
 			link: linkInactivar,
