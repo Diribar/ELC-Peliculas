@@ -105,10 +105,11 @@ app.set("views", [
 
 	// Middlewares transversales
 	app.use(require("./middlewares/transversales/urlsUsadas")); // para tener los últimos url
-	app.use(require("./middlewares/transversales/clientes-0Bienvenido.js")); // para filtrar los 'bots'
-	app.use(require("./middlewares/transversales/clientes-1Session.js")); // para obtener el cliente y usuario
-	app.use(require("./middlewares/transversales/clientes-2Contador.js")); // para contar la cantidad de días de navegación
-	app.use(require("./middlewares/transversales/clientes-3Carteles.js")); // en función de las novedades, revisa si se debe mostrar algún cartel
+	app.use(require("./middlewares/transversales/clientes-0-1FrenaFakes")); // para filtrar los 'bots'
+	app.use(require("./middlewares/transversales/clientes-0-2Bienvenido")); // para filtrar los 'bots'
+	app.use(require("./middlewares/transversales/clientes-1Session")); // para obtener el cliente y usuario
+	app.use(require("./middlewares/transversales/clientes-2Contador")); // para contar la cantidad de días de navegación
+	app.use(require("./middlewares/transversales/clientes-3Carteles")); // en función de las novedades, revisa si se debe mostrar algún cartel
 
 	// Vistas - Antiguas
 	app.use("/", require("./rutas_y_contrs/2.0-Familias/FM-RutasAnt")); // incluye algunas de 'revisión' y corrección
@@ -119,18 +120,20 @@ app.set("views", [
 	app.use("/revision", require("./rutas_y_contrs/3-Rev-Entidades/RE-RutasAnt"));
 	app.use("/revision/usuarios", require("./rutas_y_contrs/1.2-Rev-Usuarios/RU-RutasAnt"));
 
-	// Vistas - Actuales
-	app.use("/:entidad", require("./rutas_y_contrs/2.0-Familias/FM-Rutas")); // incluye algunas de 'revisión' y corrección
-	app.use("/:entidad", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas")); // producto
-	app.use("/:entidad", require("./rutas_y_contrs/2.1-Prods-RUD/PR-Rutas")); // producto
-	app.use("/:entidad", require("./rutas_y_contrs/2.2-RCLVs/RCLV-Rutas")); // rclv
-	app.use("/:entidad", require("./rutas_y_contrs/2.3-Links/LK-Rutas")); // producto y link
+	// Vistas - Con base definida
 	app.use("/usuarios", require("./rutas_y_contrs/1.1-Usuarios/US-Rutas"));
 	app.use("/revision", require("./rutas_y_contrs/3-Rev-Entidades/RE-Rutas"));
 	app.use("/revision", require("./rutas_y_contrs/1.2-Rev-Usuarios/RU-Rutas")); // revisarlo el día que se use
 	app.use("/consultas", require("./rutas_y_contrs/5-Consultas/CN-Rutas"));
 	app.use("/graficos", require("./rutas_y_contrs/6-Graficos/GR-Rutas"));
 	app.use("/institucional", require("./rutas_y_contrs/7-Institucional/IN-Rutas"));
+
+	// Vistas - Por entidad
+	app.use("/:entidad", require("./rutas_y_contrs/2.0-Familias/FM-Rutas")); // incluye algunas de 'revisión' y corrección
+	app.use("/:entidad", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas")); // producto
+	app.use("/:entidad", require("./rutas_y_contrs/2.1-Prods-RUD/PR-Rutas")); // producto
+	app.use("/:entidad", require("./rutas_y_contrs/2.2-RCLVs/RCLV-Rutas")); // rclv
+	app.use("/:entidad", require("./rutas_y_contrs/2.3-Links/LK-Rutas")); // producto y link
 	app.use("/", require("./rutas_y_contrs/9-Miscelaneas/MS-Rutas"));
 
 	// Middlewares transversales
