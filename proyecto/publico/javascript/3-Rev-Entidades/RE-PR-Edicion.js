@@ -94,7 +94,7 @@ window.addEventListener("load", async () => {
 
 			// Acciones si quedan campos
 			if (resultado.quedanCampos) this.cartelHayInconsistencias();
-			else location.href = (resultado.statusAprob ? "/miscelaneas/ic/" : "/" + familia + "/edicion/") + cola;
+			else location.href = (resultado.statusAprob ? "/miscelaneas/inactivar-captura/" : "/" + familia + "/edicion/") + cola;
 
 			// Fin
 			return;

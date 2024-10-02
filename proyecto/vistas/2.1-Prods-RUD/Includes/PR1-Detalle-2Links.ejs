@@ -2,7 +2,7 @@
 	<% if (entidad == "colecciones") { %>
 		<% const urlDestino = "/producto/detalle/?entidad=capitulos&id=" + capID + "&origenUrl=" + rutaCRUD; %>
 		<% const cola = "&urlDestino=" + encodeURIComponent(urlDestino); %>
-		<a href="/miscelaneas/ic/colecciones/?id=<%= id %><%= cola  %>">
+		<a href="/miscelaneas/inactivar-captura/colecciones/?id=<%= id %><%= cola  %>">
 			<button id="primerCap" type="button">Ir al primer capítulo</button>
 		</a>
 	<% } else if (links.existen) { %>

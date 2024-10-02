@@ -259,7 +259,7 @@ module.exports = {
 
 			// Fin
 			return origen == "TE"
-				? res.redirect("/miscelaneas/ic/" + entidadIdOrigen) // Regresa a Revisión
+				? res.redirect("/miscelaneas/inactivar-captura/" + entidadIdOrigen) // Regresa a Revisión
 				: res.redirect("/producto/detalle/" + entidadIdOrigen); // Redirige a detalle
 		},
 	},
