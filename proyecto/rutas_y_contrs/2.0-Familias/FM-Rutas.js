@@ -57,7 +57,7 @@ router.post("/recuperar", aptoCRUD, m.comentNecesario, m.capturaInactivar, vista
 
 // Vistas - Elimina
 router.get("/eliminado-por-creador", eliminadoPorCreador, vista.form.elimina);
-router.get("/eliminar", aptoEliminar, vista.form.elimina);
+router.get("/eliminado", aptoEliminar, vista.form.elimina);
 
 // Vistas - Correcciones
 router.get("/correcion-del-motivo", correcs, m.capturaActivar, m.statusCorrecto, vista.correcs.motivoForm);

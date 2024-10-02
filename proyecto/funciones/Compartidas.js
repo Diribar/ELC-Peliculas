@@ -1276,6 +1276,7 @@ module.exports = {
 			siglaFam = siglaFam.slice(1); // le quita el "/" del comienzo
 			if (siglaFam.length > 2 && siglaFam[1] != "/") siglaFam = null; // detecta si no es una 'siglaFam'
 			else siglaFam = siglaFam[0]; // obtiene la 'siglaFam'
+			if (siglaFam && !["p", "r", "l"].includes(siglaFam)) siglaFam = null;
 		}
 
 		// Fin
