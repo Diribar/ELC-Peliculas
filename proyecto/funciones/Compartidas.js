@@ -1272,7 +1272,11 @@ module.exports = {
 
 		// Obtiene la siglaFam
 		let siglaFam = ruta.replace(tarea, "");
-		if (siglaFam) siglaFam = siglaFam.slice(1, 2);
+		if (siglaFam) {
+			siglaFam = siglaFam.slice(1); // le quita el "/" del comienzo
+			if (siglaFam.length > 2 && siglaFam[1] != "/") siglaFam = null; // detecta que no es una siglaFam
+			else siglaFam = siglaFam[0]; // obtiene la siglaFam definitiva
+		}
 
 		// Fin
 		return {baseUrl, tarea, siglaFam, url};
