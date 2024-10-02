@@ -227,7 +227,7 @@ module.exports = {
 			await baseDeDatos.actualizaPorId("statusHistorial", ultHist.id, {motivo_id, comentario});
 
 			// Genera la 'cola'
-			let cola = "/&id=" + id;
+			let cola = "/?id=" + id;
 			if (origen) cola += "&origen=" + origen;
 
 			// Fin
