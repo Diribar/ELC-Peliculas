@@ -9,8 +9,8 @@ module.exports = async (req, res, next) => {
 	const familia = comp.obtieneDesdeEntidad.familia(entidad);
 	let elLa = comp.obtieneDesdeEntidad.elLa(entidad).trim();
 	elLa = comp.letras.inicialMayus(elLa);
-	const statusDistinto = req.path == "/" + entidad + "/correccion-status";
-	const statusIgual = ["/" + entidad + "/correccion-motivo/", "/" + entidad + "/historial/"].includes(req.path);
+	const statusDistinto = req.path == "/" + entidad + "/correccion-del-status";
+	const statusIgual = ["/" + entidad + "/correccion-del-motivo/", "/" + entidad + "/historial/"].includes(req.path);
 	let informacion;
 
 	// Compara los status
