@@ -2,4 +2,4 @@
 	<%- tema == "revisionEnts" ? include("RE-3TableroEntidades") : include("RE-3TableroMantenim") %>
 <% } %>
 <% if (["alta/p", "rechazar", "inactivar", "recuperar", "edicion"].includes(codigo)) { %><%- include("FM-Detalle") %><% } %>
-<% if (codigo == "abm-links") { %><%- include("FM-LK2-ABM") %><% } %>
+<% if (codigo == "abmLinks") { %><%- include("FM-LK2-ABM") %><% } %>
