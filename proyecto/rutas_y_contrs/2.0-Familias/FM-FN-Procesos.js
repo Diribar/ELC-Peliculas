@@ -168,7 +168,8 @@ module.exports = {
 	},
 	obtieneDatosGuardar: async function (req) {
 		// Variables
-		const {entidad, tarea: codigo} = comp.partesDelUrl(req);
+		const {entidad, tarea} = comp.partesDelUrl(req);
+		const codigo = tarea.slice(1);
 		const {id} = req.query;
 		const {motivo_id, entDupl, idDupl} = req.body;
 
