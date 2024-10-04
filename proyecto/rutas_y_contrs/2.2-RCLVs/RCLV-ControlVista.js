@@ -74,7 +74,7 @@ module.exports = {
 			const {baseUrl, tarea} = comp.partesDelUrl(req);
 			const tema = baseUrl == "/revision" ? "revisionEnts" : "rclvCrud";
 			let codigo = tarea.slice(1);
-			if (codigo == "alta") codigo += "/r"; // crud: 'agregar', 'edicion'; revisión: 'alta', 'solapamiento'
+			if (codigo == "alta") codigo += "/r"; // crud: 'agregar', 'edicion'; revisión: 'alta/r', 'solapamiento'
 
 			// Más variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
