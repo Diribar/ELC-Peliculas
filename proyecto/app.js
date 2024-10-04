@@ -129,7 +129,7 @@ app.set("views", [
 
 	// Vistas - Por entidad
 	app.use("/:entidad", require("./rutas_y_contrs/2.0-Familias/FM-Rutas")); // incluye algunas de 'revisión' y corrección
-	app.use("/:entidad/agregar", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas")); // producto
+	app.use("/:entidad", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas")); // producto
 	app.use("/:entidad", require("./rutas_y_contrs/2.1-Prods-RUD/PR-Rutas")); // producto
 	app.use("/:entidad", require("./rutas_y_contrs/2.2-RCLVs/RCLV-Rutas")); // rclv
 	app.use("/:entidad", require("./rutas_y_contrs/2.3-Links/LK-Rutas")); // producto y link
