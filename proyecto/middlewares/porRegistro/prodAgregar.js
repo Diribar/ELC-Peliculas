@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
 		{url: "ingreso-manual", codigo: "IM", producto: true},
 		{url: "ingreso-fa", codigo: "FA"},
 		{url: "agregar-dd", codigo: "datosDuros"},
-		{url: "datos-adicionales", codigo: "datosAdics"},
+		{url: "agregar-da", codigo: "datosAdics"},
 		{url: "confirma", codigo: "confirma"},
 		{url: "terminaste", codigo: "terminaste"},
 	];

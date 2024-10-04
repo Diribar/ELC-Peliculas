@@ -204,7 +204,7 @@ let FN = {
 
 				// Fin
 				if (errores.hay) location.href = "agregar-dd";
-				else location.href = "datos-adicionales";
+				else location.href = "agregar-da";
 			});
 		}
 	},
