@@ -64,7 +64,6 @@ module.exports = {
 
 		// Si no existe el cookie, redirecciona
 		const desambiguar = req.session.desambiguar ? req.session.desambiguar : req.cookies.desambiguar;
-		if (!desambiguar) return res.redirect("palabras-clave");
 
 		// Se asegura de que exista el session
 		if (!req.session.desambiguar) req.session.desambiguar = desambiguar;
@@ -366,7 +365,6 @@ module.exports = {
 		const terminaste = req.session.terminaste ? req.session.terminaste : req.cookies.terminaste;
 		delete req.session.terminaste;
 		res.clearCookie("terminaste");
-		if (!terminaste) return res.redirect("palabras-clave");
 
 		// Obtiene los datos del producto
 		const {entidad, id} = terminaste;
