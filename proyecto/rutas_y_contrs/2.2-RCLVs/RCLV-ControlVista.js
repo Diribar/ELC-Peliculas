@@ -71,9 +71,9 @@ module.exports = {
 	altaEdic: {
 		form: async (req, res) => {
 			// Tema y Código - puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
-			const {baseUrl, ruta} = comp.partesDelUrl(req);
-			const tema = baseUrl == "/rclv" ? "rclvCrud" : baseUrl == "/revision" ? "revisionEnts" : "";
-			const codigo = ruta.slice(1, -1); // resultados posibles: 'agregar', 'edicion', 'alta', 'rclv/alta', 'rclv/solapamiento'
+			const {baseUrl, tarea, siglaFam} = comp.partesDelUrl(req);
+			const tema = baseUrl == "/revision" ? "revisionEnts" : siglaFam == "r" ? "rclvCrud" : "";
+			const codigo = tarea.slice(1); // resultados crud: 'agregar', 'edicion'; revisión: 'alta', 'solapamiento'
 
 			// Más variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
@@ -81,8 +81,8 @@ module.exports = {
 			const origen = req.query.origen
 				? req.query.origen
 				: tema == "revisionEnts"
-				? codigo == "rclv/alta"
-					? "RRA"
+				? codigo == "alta"
+					? "RA"
 					: "TE"
 				: "";
 			const usuario_id = req.session.usuario.id;
