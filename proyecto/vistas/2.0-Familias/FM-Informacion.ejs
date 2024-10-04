@@ -12,7 +12,7 @@
     <!-- AMBOS -->
     <% } else if (tema == "revisionEnts" && codigo == "edicion") { %><%- include("RE-PR-Edic-Largos") %>
     <% } else if (tema == "fmCrud" && ["inactivar", "cambiarMotivo"].includes(codigo) || tema == "revisionEnts" && codigo == "rechazar") { %><%- include("FM-PR-ElegirMotivo") %>
-    <% } else if (["recuperar", "eliminar", "revisionInactivar", "revisionRecuperar", "corregirStatus", "historial"].includes(codigo)) { %><%- include("FM-PR-HistorialStatus") %>
+    <% } else if (tema == "fmCrud" && ["recuperar", "eliminar", "corregirStatus", "historial"].includes(codigo) || tema == "revisionEnts" && ["inactivar", "recuperar"].includes(codigo)) { %><%- include("FM-PR-HistorialStatus") %>
 
     <!-- Fin -->
     <% } %>
