@@ -1315,8 +1315,8 @@ module.exports = {
 					titulo: opcion.titulo,
 				});
 			rutasCons.push(
-				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-motivo/" + siglaFam},
-				{ant: "/correccion/status", act: "/" + entidad + "/correccion-status/" + siglaFam}
+				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-del-motivo/" + siglaFam},
+				{ant: "/correccion/status", act: "/" + entidad + "/correccion-del-status/" + siglaFam}
 			);
 		}
 
