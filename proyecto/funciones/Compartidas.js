@@ -276,8 +276,8 @@ module.exports = {
 	},
 	obtieneEntidadDesdeUrl: (req) => {
 		// Lo obtiene del path
-		const entParams = req.params.entidad;
-		if (entParams) return entParams;
+		const {entidad} = req.params;
+		if (entidad) return entidad;
 
 		// Lo obtiene del baseUrl
 		let baseUrl = req.baseUrl.slice(1);
