@@ -8,8 +8,8 @@ module.exports = {
 	altaMail_olvidoContr: async (req, res) => {
 		// Variables
 		const tema = "usuario";
-		const {ruta} = comp.partesDelUrl(req);
-		const codigo = ruta.slice(1) == "alta-mail" ? "altaMail" : "olvidoContr";
+		const {tarea} = comp.partesDelUrl(req);
+		const codigo = tarea.slice(1) == "alta-mail" ? "altaMail" : "olvidoContr";
 		const altaMail = codigo == "altaMail";
 		const olvidoContr = codigo == "olvidoContr";
 		const titulo = altaMail ? "Creación de Usuario - Mail" : olvidoContr ? "Olvido de Contraseña" : "";

@@ -6,12 +6,12 @@ module.exports = async (req, res, next) => {
 	if (!usuario) return res.redirect("/usuarios/garantiza-login-y-completo");
 
 	// Obtiene el statusEsperado
-	const {ruta} = comp.partesDelUrl(req);
+	const {tarea} = comp.partesDelUrl(req);
 	const statusEsperado =
-		(ruta == "/editables" && usuario.statusRegistro_id == mailValidado_id) ||
-		(["/editables-bienvenido", "/perennes"].includes(ruta) && usuario.statusRegistro_id == editables_id) ||
-		(ruta == "/perennes-bienvenido" && usuario.statusRegistro_id == perennes_id) ||
-		ruta == "/logout";
+		(tarea == "/editables" && usuario.statusRegistro_id == mailValidado_id) ||
+		(["/editables-bienvenido", "/perennes"].includes(tarea) && usuario.statusRegistro_id == editables_id) ||
+		(tarea == "/perennes-bienvenido" && usuario.statusRegistro_id == perennes_id) ||
+		tarea == "/logout";
 
 	// Si corresponde, redirecciona
 	if (!statusEsperado) return res.redirect("/usuarios/garantiza-login-y-completo");

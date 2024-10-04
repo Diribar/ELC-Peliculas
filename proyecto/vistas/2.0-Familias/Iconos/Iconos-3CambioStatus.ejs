@@ -63,8 +63,8 @@
 	<% } %>
 
 	<% condicRclvCrud = tema == "rclvCrud" && (["agregar", "edicion"].includes(codigo)) %>
-	<% condicRevision = tema == "revisionEnts" && codigo == "rclv/alta" %>
-	<% condicRevSolapam = tema == "revisionEnts" && codigo == "rclv/solapamiento" %>
+	<% condicRevision = tema == "revisionEnts" && codigo == "alta/r" %>
+	<% condicRevSolapam = tema == "revisionEnts" && codigo == "solapamiento" %>
 	<% if (condicRclvCrud || condicRevision && !locals.statusCreado || condicRevSolapam) { %>
 		<!-- CRUD - Aprobar -->
 		<button type="submit" autofocus class="inactivo">
@@ -90,7 +90,7 @@
 				<i class="<%= iconos.faSolid %> <%= iconos.xMark %>" tabindex="-1" title="Rechazar"></i>
 			</a>
 		<% } %>
-		<% if (["revisionInactivar", "revisionRecuperar"].includes(codigo)) {  %>
+		<% if (["inactivar", "recuperar"].includes(codigo)) {  %>
 			<!-- REVISION INACTIVAR Y RECUPERAR - Rechaza el cambio de status -->
 			<label for="desaprueba" class="inactivo">
 				<i class="<%= iconos.faSolid %> <%= iconos.xMark %>" tabindex="-1" title="Desaprueba el cambio de status"></i>
@@ -108,9 +108,9 @@
 <% condicCrud = tema == "fmCrud" %>
 <% condicCrudEliminar = tema == "fmCrud" && codigo == "eliminar" %>
 <% condicRevRech = tema == "revisionEnts" && codigo == "rechazar" %>
-<% if (condicCrud && codigo != "historial" || condicRevRech || tema == "correccion") {  %>
+<% if (condicCrud && codigo != "historial" || condicRevRech) {  %>
 	<button type="submit" class="iconos <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
-		<% if (condicCrud && !condicCrudEliminar || condicRevRech || tema == "correccion") {  %>
+		<% if (condicCrud && !condicCrudEliminar || condicRevRech) {  %>
 			<!-- VISTAS CRUD (Inactivar/Recuperar) - Para cambiar el status y enviar a Revisión -->
 			<!-- VISTAS REVISION (Inactivar/Recuperar/Rechazo) - Para confirmar el cambio de status -->
 			<i class="<%= iconos.faSolid %> <%= iconos.check %>" tabindex="-1" title="Confirma el cambio de status"></i>

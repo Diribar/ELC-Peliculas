@@ -5,7 +5,7 @@
 	position: sticky; top: 0px;
 	button {background: transparent; border: none;}
 
-	&.inactivar, &.rechazar, &.eliminar, &.revisionInactivar, &.cambiarMotivo {
+	&.inactivar, &.rechazar, &.eliminar, &.cambiarMotivo {
 		background: var(--rojo-oscuro);
 		select {color: var(--rojo-oscuro);}
 	}

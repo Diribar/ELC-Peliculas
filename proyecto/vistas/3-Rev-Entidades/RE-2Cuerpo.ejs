@@ -1,7 +1,5 @@
 <% if (codigo == "tableroControl") { %>
 	<%- tema == "revisionEnts" ? include("RE-3TableroEntidades") : include("RE-3TableroMantenim") %>
 <% } %>
-
-<% if (["producto/alta", "rechazar", "revisionInactivar", "revisionRecuperar"].includes(codigo) || codigo.endsWith("/edicion")) { %><%- include("FM-Detalle") %><% } %>
-
-<% if (codigo == "abmLinks") { %><%- include("FM-LK2-ABM") %><% } %>
+<% if (["alta/p", "rechazar", "inactivar", "recuperar", "edicion"].includes(codigo)) { %><%- include("FM-Detalle") %><% } %>
+<% if (codigo == "abm-links") { %><%- include("FM-LK2-ABM") %><% } %>
