@@ -189,7 +189,7 @@ module.exports = {
 	correcs: {
 		motivoForm: async (req, res) => {
 			// Variables
-			const tema = "correccion";
+			const tema = "fmCrud";
 			const codigo = "cambiarMotivo";
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, origen, prodRclv, ultHist} = {...req.query, ...req.body};
@@ -217,7 +217,6 @@ module.exports = {
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, motivo_id, entDupl, idDupl, ultHist, origen} = {...req.query, ...req.body};
 			const {statusFinal_id} = ultHist;
-			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 			// Genera el comentario
 			let {comentario} = req.body;
@@ -235,7 +234,7 @@ module.exports = {
 		},
 		statusForm: async (req, res) => {
 			// Variables
-			const tema = "correccion";
+			const tema = "fmCrud";
 			const codigo = "corregirStatus";
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, origen, prodRclv} = {...req.query, ...req.body};
