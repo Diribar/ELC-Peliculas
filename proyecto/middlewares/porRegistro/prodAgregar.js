@@ -44,7 +44,7 @@ module.exports = (req, res, next) => {
 		(producto && entidad != "producto") || // la entidad no es 'producto' y debería serlo
 		(!producto && !entidades.includes(entidad)) // la entidad no es válida
 	)
-		return res.redirect("/" + (producto ? "producto" : datos.entidad) + "/agregar/" + codigoUrl);
+		return res.redirect("/" + (producto ? "producto" : datos.entidad) + "/" + codigoUrl);
 
 	// Tareas si es 'GET',
 	if (req.method == "GET") {
