@@ -1256,6 +1256,16 @@ module.exports = {
 		// Fin
 		return mailEnviado;
 	},
+	variablesSemanales: function () {
+		FN.primerLunesDelAno();
+
+		// Otras variables
+		semanaUTC = parseInt((Date.now() - primerLunesDelAno) / unDia / 7) + 1;
+		lunesDeEstaSemana = primerLunesDelAno + (semanaUTC - 1) * unaSemana;
+
+		// Fin
+		return;
+	},
 	partesDelUrl: (req) => {
 		// Obtiene la base y el url (sin la base)
 		let url = req.baseUrl + req.path;
@@ -1346,16 +1356,6 @@ module.exports = {
 
 		// Fin
 		return rutasCons;
-	},
-	variablesSemanales: function () {
-		FN.primerLunesDelAno();
-
-		// Otras variables
-		semanaUTC = parseInt((Date.now() - primerLunesDelAno) / unDia / 7) + 1;
-		lunesDeEstaSemana = primerLunesDelAno + (semanaUTC - 1) * unaSemana;
-
-		// Fin
-		return;
 	},
 };
 
