@@ -71,20 +71,15 @@ module.exports = {
 	altaEdic: {
 		form: async (req, res) => {
 			// Tema y Código - puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
-			const {baseUrl, tarea, siglaFam} = comp.partesDelUrl(req);
-			const tema = baseUrl == "/revision" ? "revisionEnts" : siglaFam == "r" ? "rclvCrud" : "";
-			const codigo = tarea.slice(1); // crud: 'agregar', 'edicion'; revisión: 'alta', 'solapamiento'
+			const {baseUrl, tarea} = comp.partesDelUrl(req);
+			const tema = baseUrl == "/revision" ? "revisionEnts" : "rclvCrud";
+			let codigo = tarea.slice(1);
+			if (codigo == "alta") codigo += "/r"; // crud: 'agregar', 'edicion'; revisión: 'alta', 'solapamiento'
 
 			// Más variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, prodEntidad, prodId} = req.query;
-			const origen = req.query.origen
-				? req.query.origen
-				: tema == "revisionEnts"
-				? codigo == "alta"
-					? "RA"
-					: "TE"
-				: "";
+			const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? (codigo == "alta/r" ? "RA" : "TE") : "";
 			const usuario_id = req.session.usuario.id;
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -150,7 +145,7 @@ module.exports = {
 					? procesos.altaEdicForm.opcsLeyNombre({...dataEntry, personajes, hechos})
 					: [];
 			const ayudas = procesos.altaEdicForm.ayudas(entidad);
-			const statusAlineado = codigo == "rclv/alta";
+			const statusAlineado = codigo == "alta/r";
 			const cartelGenerico = codigo == "edicion";
 			const cartelRechazo = tema == "revisionEnts";
 
