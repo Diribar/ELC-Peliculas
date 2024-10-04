@@ -106,9 +106,10 @@ module.exports = {
 	// CRUD
 	obtieneDatosForm: async function (req) {
 		// Variables
-		const {entidad, baseUrl, tarea: codigo} = comp.partesDelUrl(req);
+		const {entidad, baseUrl, tarea} = comp.partesDelUrl(req);
 		const {originalUrl} = req;
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
+		const codigo = tarea.slice(1);
 		const {id} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
