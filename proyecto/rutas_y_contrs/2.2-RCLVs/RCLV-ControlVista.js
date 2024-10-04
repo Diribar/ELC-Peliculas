@@ -73,7 +73,7 @@ module.exports = {
 			// Tema y Código - puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
 			const {baseUrl, tarea, siglaFam} = comp.partesDelUrl(req);
 			const tema = baseUrl == "/revision" ? "revisionEnts" : siglaFam == "r" ? "rclvCrud" : "";
-			const codigo = tarea.slice(1); // resultados crud: 'agregar', 'edicion'; revisión: 'alta', 'solapamiento'
+			const codigo = tarea.slice(1); // crud: 'agregar', 'edicion'; revisión: 'alta', 'solapamiento'
 
 			// Más variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
