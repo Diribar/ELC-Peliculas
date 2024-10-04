@@ -90,7 +90,7 @@
 				<i class="<%= iconos.faSolid %> <%= iconos.xMark %>" tabindex="-1" title="Rechazar"></i>
 			</a>
 		<% } %>
-		<% if (["revisionInactivar", "revisionRecuperar"].includes(codigo)) {  %>
+		<% if (["inactivar", "recuperar"].includes(codigo)) {  %>
 			<!-- REVISION INACTIVAR Y RECUPERAR - Rechaza el cambio de status -->
 			<label for="desaprueba" class="inactivo">
 				<i class="<%= iconos.faSolid %> <%= iconos.xMark %>" tabindex="-1" title="Desaprueba el cambio de status"></i>
