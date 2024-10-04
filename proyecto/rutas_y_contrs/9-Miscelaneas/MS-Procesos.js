@@ -177,6 +177,32 @@ module.exports = {
 		// Fin
 		return rutasCons;
 	},
+	origenDeUrls: (entidad) => {
+		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
+		return [
+			// Productos
+			{codigo: "PDA", url: "/entidad/agregar/datos-adicionales"}, // OK
+			{codigo: "DT", url: "/" + entidad + "/detalle/" + siglaFam, cola: true}, // OK
+			{codigo: "PED", url: "/" + entidad + "/edicion/p", cola: true},
+
+			{codigo: "RA", url: "/revision/alta/" + siglaFam + "/" + entidad, cola: true},
+			{codigo: "RRA", url: "/revision/rclv/alta", cola: true},
+
+			{url: "/producto/calificar", cola: true},
+
+			{url: "/producto/historial", cola: true},
+			{url: "/revision/producto/edicion", cola: true},
+			// RCLVs
+			// Links
+			{url: "/links/abm", cola: true},
+			{codigo: "RL", url: "/revision/links", cola: true},
+			// Tableros
+			{codigo: "TE", url: "/revision/tablero"},
+			{codigo: "TM", url: "/tablero-de-mantenimiento"},
+			{codigo: "TU", url: "/revision/usuarios/tablero-de-usuarios"},
+			{codigo: "CN", url: "/consultas"},
+		];
+	},
 };
 
 let FN_tablManten = {
