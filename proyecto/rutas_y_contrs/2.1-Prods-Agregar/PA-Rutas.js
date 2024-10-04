@@ -55,8 +55,8 @@ router.post("/agregar-pc", dataEntry, vista.palabrasClave.guardar);
 router.get("/agregar-ds", dataEntry, vista.desambiguar);
 
 // Vistas - Comienzo de "prodYaEnBD"
-router.get("/datos-duros", dataEntryMasYaEnBD, vista.datosDuros.form);
-router.post("/datos-duros", dataEntryMasYaEnBD, multer.single("avatar"), vista.datosDuros.guardar);
+router.get("/agregar-dd", dataEntryMasYaEnBD, vista.datosDuros.form);
+router.post("/agregar-dd", dataEntryMasYaEnBD, multer.single("avatar"), vista.datosDuros.guardar);
 router.get("/datos-adicionales", dataEntryMasYaEnBD, vista.datosAdics.form);
 router.post("/datos-adicionales", dataEntryMasYaEnBD, vista.datosAdics.guardar);
 router.get("/confirma", dataEntryMasYaEnBD, vista.confirma.form);
