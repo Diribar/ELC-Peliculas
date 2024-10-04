@@ -13,7 +13,7 @@
 	<% } %>
 
 <% } else { %>
-	<% if (["producto/alta", "rechazar", "revisionInactivar", "revisionRecuperar", "abmLinks"].includes(codigo) || codigo.endsWith("/edicion")) { %>
+	<% if (["alta/p", "rechazar", "revisionInactivar", "revisionRecuperar", "abmLinks"].includes(codigo) || codigo.endsWith("/edicion")) { %>
 		<!-- Compartido -->
 		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-DatosBreves.css">
 		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-Iconos.css">
@@ -21,7 +21,7 @@
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-Detalle.css">
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-0MediaQuery.css">
 
-		<% if (codigo == "producto/alta") { %>
+		<% if (codigo == "alta/p") { %>
 			<!-- Prod-Altas - Particular -->
 			<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-0CRUD.css">
 			<link rel="stylesheet" href="/publico/formatos/2.1-Prods-RUD/PR-1Detalle.css">
