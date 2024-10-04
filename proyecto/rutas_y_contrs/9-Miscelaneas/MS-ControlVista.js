@@ -81,7 +81,8 @@ module.exports = {
 		inicio: (req, res) => res.redirect("/"),
 		urlDeOrigen: async (req, res) => {
 			// Variables
-			const {origen: origenCodigo, origenUrl, prodEntidad, prodId, entidad, id, urlDestino, grupo} = req.query;
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {origen: origenCodigo, origenUrl, prodEntidad, prodId, id, urlDestino, grupo} = req.query;
 			let destino;
 
 			// Casos particulares
@@ -115,8 +116,8 @@ module.exports = {
 		},
 		rutasAntiguas: function (req, res) {
 			// Variables
-			const {entidad, id} = req.query;
-			const rutasAntsActs = procesos.rutas(entidad);
+			const {entidad} = req.query; // debe ser 'req.query', porque así son las antiguas
+			const rutasAntsActs = comp.rutas(entidad);
 			let {originalUrl} = req;
 			let nuevoUrl, nuevaCola;
 
