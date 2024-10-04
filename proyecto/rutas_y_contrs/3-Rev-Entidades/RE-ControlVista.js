@@ -315,8 +315,8 @@ module.exports = {
 		form: async (req, res) => {
 			// Tema y Código
 			const tema = "revisionEnts";
-			const {ruta} = comp.partesDelUrl(req);
-			let codigo = ruta.slice(1, -1); // No se puede poner 'const', porque más adelante puede cambiar
+			const {tarea} = comp.partesDelUrl(req);
+			let codigo = tarea.slice(1); // No se puede poner 'const', porque puede cambiar a 'edicion/avatar'
 
 			// Variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
