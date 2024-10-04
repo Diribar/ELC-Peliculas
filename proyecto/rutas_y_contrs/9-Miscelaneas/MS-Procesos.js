@@ -181,7 +181,7 @@ module.exports = {
 		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
 		return [
 			// Productos
-			{codigo: "PDA", url: "/entidad/agregar/datos-adicionales"}, // OK
+			{codigo: "PDA", url: "/entidad/agregar-da"}, // OK
 			{codigo: "DT", url: "/" + entidad + "/detalle/" + siglaFam, cola: true}, // OK
 			{codigo: "PED", url: "/" + entidad + "/edicion/p", cola: true},
 
