@@ -4,7 +4,7 @@ module.exports = async (req, res, next) => {
 	// Variables
 	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const {id} = req.query;
-	const entidadNombre = obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
+	const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
 	const oa = comp.obtieneDesdeEntidad.oa(entidad);
 
 	// Más variables
