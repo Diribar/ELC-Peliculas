@@ -28,7 +28,7 @@ module.exports = async (req, res, next) => {
 				};
 
 				// Obtiene la vista siguiente
-				let urlSiguiente = "/revision/alta/r/" + rclv.entidad + ("/?id=" + rclv.id);
+				let urlSiguiente = "/revision/alta/r/" + rclv.entidad + "/?id=" + rclv.id;
 				urlSiguiente += "&prodEntidad=" + entidad + "&prodId=" + entId + (origen ? "&origen=" + origen : "");
 				const vistaSiguiente = variables.vistaSiguiente(urlSiguiente);
 
