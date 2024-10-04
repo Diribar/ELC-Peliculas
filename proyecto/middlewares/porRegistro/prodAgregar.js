@@ -7,9 +7,9 @@ module.exports = (req, res, next) => {
 	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const codigoUrl = req.url.slice(1);
 	const pasos = [
-		{url: "agregar-pc", codigo: "palabrasClave", producto: true},
-		{url: "agregar-ds", codigo: "desambiguar", producto: true},
-		{url: "agregar-im", codigo: "IM", producto: true},
+		{url: "agregar-pc", codigo: "palabrasClave", esProducto: true},
+		{url: "agregar-ds", codigo: "desambiguar", esProducto: true},
+		{url: "agregar-im", codigo: "IM", esProducto: true},
 		{url: "agregar-fa", codigo: "FA"},
 		{url: "agregar-dd", codigo: "datosDuros"},
 		{url: "agregar-da", codigo: "datosAdics"},
@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
 	];
 	const entidades = variables.entidades.prods;
 	const paso = pasos.find((n) => codigoUrl.startsWith(n.url));
-	const {codigo, producto} = paso;
+	const {codigo, esProducto} = paso;
 	const datos = req.session[codigo] ? req.session[codigo] : req.cookies[codigo];
 
 	// Si no está la session/cookie actual, redirige a la url anterior
@@ -41,10 +41,10 @@ module.exports = (req, res, next) => {
 	}
 	// Si la entidad no es la esperada, redirige con la entidad correcta
 	else if (
-		(producto && entidad != "producto") || // la entidad no es 'producto' y debería serlo
-		(!producto && !entidades.includes(entidad)) // la entidad no es válida
+		(esProducto && entidad != "producto") || // la entidad no es 'producto' y debería serlo
+		(!esProducto && !entidades.includes(entidad)) // la entidad no es válida
 	)
-		return res.redirect("/" + (producto ? "producto" : datos.entidad) + "/" + codigoUrl);
+		return res.redirect("/" + (esProducto ? "producto" : datos.entidad) + "/" + codigoUrl);
 
 	// Tareas si es 'GET',
 	if (req.method == "GET") {

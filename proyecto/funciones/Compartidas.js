@@ -276,8 +276,8 @@ module.exports = {
 	},
 	obtieneEntidadDesdeUrl: (req) => {
 		// Lo obtiene del path
-		const entParams = req.params.entidad;
-		if (entParams) return entParams;
+		const {entidad} = req.params;
+		if (entidad) return entidad;
 
 		// Lo obtiene del baseUrl
 		let baseUrl = req.baseUrl.slice(1);
@@ -1264,17 +1264,23 @@ module.exports = {
 		const tarea = url.slice(0, url.indexOf("/", 1));
 
 		// Obtiene la siglaFam
-		let siglaFam;
-		url = url.replace(tarea, ""); // si contiene la tarea, la quita
-		if (url) {
-			siglaFam = url.slice(1); // le quita el "/" del comienzo
-			if (siglaFam.length > 2 || siglaFam[1] != "/") siglaFam = null; // detecta si no es una 'siglaFam'
-			else siglaFam = siglaFam[0]; // obtiene la 'siglaFam'
-			if (siglaFam && !["p", "r", "l"].includes(siglaFam)) siglaFam = null;
+		let {siglaFam} = req.params;
+		if (!siglaFam) {
+			url = url.replace(tarea, ""); // si contiene la tarea, la quita
+			if (url) {
+				siglaFam = url.slice(1); // le quita el "/" del comienzo
+				if (siglaFam.length > 2 || siglaFam[1] != "/") siglaFam = null; // detecta si no es una 'siglaFam'
+				else siglaFam = siglaFam[0]; // obtiene la 'siglaFam'
+				if (siglaFam && !["p", "r", "l"].includes(siglaFam)) siglaFam = null;
+			}
 		}
 
+		// Obtiene la entidad
+		let {entidad} = req.params;
+		if (!entidad) entidad = baseUrl.slice(1);
+
 		// Fin
-		return {baseUrl, tarea, siglaFam, url};
+		return {baseUrl, tarea, siglaFam, entidad, url};
 	},
 	variablesSemanales: function () {
 		FN.primerLunesDelAno();

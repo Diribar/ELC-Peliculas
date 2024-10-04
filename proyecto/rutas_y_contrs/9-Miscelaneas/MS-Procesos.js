@@ -131,12 +131,12 @@ module.exports = {
 			for (let opcion of opciones)
 				rutasCons.push({
 					ant: "/" + familia + "/" + opcion.tarea, // familia + tarea (salvo correccion)
-					act: "/" + entidad + "/" + opcion.tarea, // entidad + tarea
+					act: "/" + entidad + "/" + opcion.tarea + "/" + siglaFam, // entidad + tarea
 					titulo: opcion.titulo,
 				});
 			rutasCons.push(
-				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-motivo"},
-				{ant: "/correccion/status", act: "/" + entidad + "/correccion-status"}
+				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-motivo/" + siglaFam},
+				{ant: "/correccion/status", act: "/" + entidad + "/correccion-status/" + siglaFam}
 			);
 		}
 
@@ -170,7 +170,7 @@ module.exports = {
 		for (let tarea of tareas)
 			rutasCons.push({
 				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
-				act: "/revision/" + tarea + "/" + entidad, // revision + tarea + entidad
+				act: "/revision/" + tarea + "/" + siglaFam + "/" + entidad, // revision + tarea + siglaFam + entidad
 				titulo: tarea == "rechazar" ? "Rechazar" : "Revisión de " + comp.letras.inicialMayus(tarea),
 			});
 
@@ -182,24 +182,21 @@ module.exports = {
 		return [
 			// Productos
 			{codigo: "PDA", url: "/entidad/agregar-da"}, // OK
-			{codigo: "DT", url: "/" + entidad + "/detalle/" + siglaFam, cola: true}, // OK
 			{codigo: "PED", url: "/" + entidad + "/edicion/p", cola: true},
+			{url: "/" + entidad + "/calificar/p/", cola: true},
+			{url: "/" + entidad + "/abm-links/p", cola: true},
+			{codigo: "RL", url: "/revision/abm-links/p/" + entidad, cola: true},
 
+			// Productos y Rclvs
+			{codigo: "DT", url: "/" + entidad + "/detalle/" + siglaFam, cola: true}, // OK
+			{url: "/" + entidad + "/historial/" + siglaFam, cola: true},
 			{codigo: "RA", url: "/revision/alta/" + siglaFam + "/" + entidad, cola: true},
-			{codigo: "RRA", url: "/revision/rclv/alta", cola: true},
+			{url: "/revision/edicion/" + siglaFam + "/" + entidad, cola: true},
 
-			{url: "/producto/calificar", cola: true},
-
-			{url: "/producto/historial", cola: true},
-			{url: "/revision/producto/edicion", cola: true},
-			// RCLVs
-			// Links
-			{url: "/links/abm", cola: true},
-			{codigo: "RL", url: "/revision/links", cola: true},
 			// Tableros
 			{codigo: "TE", url: "/revision/tablero"},
 			{codigo: "TM", url: "/tablero-de-mantenimiento"},
-			{codigo: "TU", url: "/revision/usuarios/tablero-de-usuarios"},
+			{codigo: "TU", url: "/revision/tablero-de-usuarios"},
 			{codigo: "CN", url: "/consultas"},
 		];
 	},
