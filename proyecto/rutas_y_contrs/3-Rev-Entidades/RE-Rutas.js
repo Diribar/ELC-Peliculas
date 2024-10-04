@@ -63,41 +63,33 @@ router.get("/tablero-de-entidades", usuarioBase, m.usRolAutTablEnts, vista.table
 router.get("/tablero-de-mantenimiento", aptoUsuario, vista.tableroMantenim);
 
 // Vistas - Altas
-router.get("/producto/alta", aptoCRUD, m.prodSinRclvAprob, m.capturaActivar, m.rutaCRUD_ID, vista.altaProdForm);
-router.post("/producto/alta", aptoCRUD, m.usRolRevPERL, m.prodSinRclvAprob, m.capturaInactivar, vista.cambioStatusGuardar); // Cambios de status
-router.get("/rclv/alta", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
-router.post("/rclv/alta", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.multer.single("avatar"), vista.cambioStatusGuardar); // Cambios de status
-
-// Vistas - Rechazar
-router.get("/:entidad/rechazar", aptoCRUD, m.capturaActivar, vistaFM.form.motivos);
-router.post("/:familia/rechazar", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.motivoNecesario, vista.cambioStatusGuardar);
-
-// Vistas - Revisar Inactivar
-router.get("/:entidad/inactivar", aptoCRUD, m.capturaActivar, vistaFM.form.historial);
-router.post("/:familia/inactivar", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
-
-// Vistas - Revisar Recuperar
-router.get("/:entidad/recuperar", aptoCRUD, m.capturaActivar, vistaFM.form.historial);
-router.post("/:familia/recuperar", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
-
-// Vistas - Solapamiento
-router.get("/rclv/solapamiento", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
-router.post("/rclv/solapamiento", aptoCRUD, m.usRolRevPERL, m.multer.single("avatar"), m.capturaInactivar, vista.edic.solapam);
+router.get("/alp/:entidad", aptoCRUD, m.prodSinRclvAprob, m.capturaActivar, m.rutaCRUD_ID, vista.altaProdForm);
+router.post("/alp/:entidad", aptoCRUD, m.usRolRevPERL, m.prodSinRclvAprob, m.capturaInactivar, vista.cambioStatusGuardar); // Cambios de status
+router.get("/alr/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
+router.post("/alr/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.multer.single("avatar"), vista.cambioStatusGuardar); // Cambios de status
 
 // Vistas - Edición
-router.get("/:familia/edicion", aptoEdicion, m.rutaCRUD_ID, m.capturaActivar, vista.edic.form);
-router.post("/:familia/edicion", aptoEdicion, m.motivoOpcional, m.capturaInactivar, vista.edic.avatar);
+router.get("/ed/:entidad", aptoEdicion, m.rutaCRUD_ID, m.capturaActivar, vista.edic.form);
+router.post("/ed/:entidad", aptoEdicion, m.motivoOpcional, m.capturaInactivar, vista.edic.avatar);
+
+// Vistas - Rechazar
+router.get("/ch/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.motivos);
+router.post("/ch/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.motivoNecesario, vista.cambioStatusGuardar);
+
+// Vistas - Revisar Inactivar
+router.get("/in/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.historial);
+router.post("/in/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
+
+// Vistas - Revisar Recuperar
+router.get("/rc/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.historial);
+router.post("/rc/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
+
+// Vistas - Solapamiento
+router.get("/slr/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
+router.post("/slr/:entidad", aptoCRUD, m.usRolRevPERL, m.multer.single("avatar"), m.capturaInactivar, vista.edic.solapam);
 
 // Vistas - Links
-router.get("/links", aptoCRUD, m.rutaCRUD_ID, m.linksEnSemana, m.usRolRevLinks, m.capturaActivar, vista.links);
-
-const entId = [m.entValida, m.iDvalido];
-router.get("/producto/rechazar", entId, vistaFM.redireccionar);
-router.get("/rclv/rechazar", entId, vistaFM.redireccionar);
-router.get("/producto/inactivar", entId, vistaFM.redireccionar);
-router.get("/rclv/inactivar", entId, vistaFM.redireccionar);
-router.get("/producto/recuperar", entId, vistaFM.redireccionar);
-router.get("/rclv/recuperar", entId, vistaFM.redireccionar);
+router.get("/lkp/:entidad", aptoCRUD, m.rutaCRUD_ID, m.linksEnSemana, m.usRolRevLinks, m.capturaActivar, vista.links);
 
 // Fin
 module.exports = router;

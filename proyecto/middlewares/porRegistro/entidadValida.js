@@ -2,25 +2,42 @@
 
 module.exports = (req, res, next) => {
 	// Variables
-	const entidad = req.query.entidad;
+	const {baseUrl, ruta} = comp.partesDelUrl(req);
+	const entidad = req.params.entidad ? req.params.entidad : baseUrl.slice(1);
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
-	let informacion;
+	let informacion, siglaFam;
 
-	// Verifica los datos
+	// Verifica que existe la entidad
 	if (!entidad) informacion = {mensajes: ["Falta el dato de la 'entidad'"], iconos: [vistaAnterior]};
-	else {
-		// Entidad inexistente
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const url = req.baseUrl + req.path;
-		const rutasStd = [familia, "/correccion/"];
-		const rutasPorFamilia = {
-			producto: [...rutasStd, "/links/"],
-			rclv: [...rutasStd],
-		};
-		if (
-			!familia || // la entidad no pertenece a una familia
-			!rutasPorFamilia[familia].some((n) => url.includes(n)) // la familia no está presente en el url
-		)
+
+	// Configura 'siglaFam'
+	if (!informacion)
+		siglaFam =
+			req.params && req.params.siglaFam
+				? req.params.siglaFam
+				: ruta[3] // la convención es que el 4° elemento sea la siglaFam
+				? ruta[3]
+				: null;
+
+	// Verificaciones si existe la 'siglaFam'
+	if (!informacion && siglaFam) {
+		// Verifica que se reconozca la 'siglaFam'
+		if (!["p", "r"].includes(siglaFam))
+			informacion = {
+				mensajes: ["No tenemos esa dirección en nuestro sistema"],
+				iconos: [vistaAnterior, variables.vistaInicio], // se usa actual porque no llegó a cambiar el session
+			};
+		// Verifica la coherencia entre la siglaFam y la entidad
+		else {
+			// Obtiene la siglaFam a partir de la entidad, y las compara
+			const siglaFamEnt = comp.obtieneDesdeEntidad.siglaFam(entidad);
+			if (siglaFam != siglaFamEnt) informacion = {mensajes: ["La entidad ingresada es inválida."], iconos: [vistaAnterior]};
+		}
+	}
+
+	if (!informacion && !siglaFam) {
+		const entidades = variables.entidades.prodsRclvs;
+		if (!entidades.includes(entidad))
 			informacion = {mensajes: ["La entidad ingresada es inválida."], iconos: [vistaAnterior]};
 	}
 

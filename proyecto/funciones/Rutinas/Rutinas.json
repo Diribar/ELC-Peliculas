@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 26/sep",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Lun. 30/sep",
+	"HoraUTC": "8:43",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 23/sep",
-	"HoraSemUTC": "12:52",
-	"semanaUTC": 39,
+	"FechaSemUTC": "Lun. 30/sep",
+	"HoraSemUTC": "8:43",
+	"semanaUTC": 40,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"24-sep-24": {},
-		"25-sep-24": {},
-		"26-sep-24": {},
-		"27-sep-24": {"leyenda": "Hoy recordamos a san Vicente de Paul", "entidad": "personajes", "id": 103},
-		"28-sep-24": {}
+		"28-sep-24": {},
+		"29-sep-24": {},
+		"30-sep-24": {},
+		"01-oct-24": {"leyenda": "Hoy recordamos a santa Teresita de Lisieux", "entidad": "personajes", "id": 100},
+		"02-oct-24": {}
 	}
 }

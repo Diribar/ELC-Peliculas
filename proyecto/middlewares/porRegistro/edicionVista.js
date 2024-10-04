@@ -2,8 +2,10 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const {entidad, id, edicID} = req.query;
-	let origen = req.query.origen;
+	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const {id, edicID} = req.query;
+	const {baseUrl} = comp.partesDelUrl(req);
+	let {origen} = req.query;
 	let entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 	let informacion;
 
@@ -11,7 +13,6 @@ module.exports = async (req, res, next) => {
 	if (!edicID) {
 		// Variables
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const {baseUrl} = comp.reqBasePathUrl(req);
 		const revision = baseUrl == "/revision";
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const cola = "?entidad=" + entidad + "&id=" + id + "&origen=" + (origen ? origen : "TE");
@@ -58,10 +59,7 @@ module.exports = async (req, res, next) => {
 		// En caso que no, mensaje de error
 		if (!edicion) {
 			// Acciones si no tiene origen
-			if (!origen) {
-				const {baseUrl} = comp.reqBasePathUrl(req);
-				origen = baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "RDT" : "PDT";
-			}
+			if (!origen) origen = baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "RDT" : "PDT";
 
 			// Información
 			const link = "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;

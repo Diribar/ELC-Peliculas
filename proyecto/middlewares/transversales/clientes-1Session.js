@@ -18,7 +18,10 @@ module.exports = async (req, res, next) => {
 		usuario = await comp.obtieneUsuarioPorMail(email);
 
 		// Si existe el usuario, lleva a cero el campo 'diasSinCartelBenefs'
-		if (usuario) baseDeDatos.actualizaPorId("usuarios", usuario.id, {diasSinCartelBenefs: 0});
+		if (usuario) {
+			baseDeDatos.actualizaPorId("usuarios", usuario.id, {diasSinCartelBenefs: 0});
+			usuario.diasSinCartelBenefs = 0;
+		}
 		// De lo contrario, borra esa cookie
 		else res.clearCookie("email");
 	}

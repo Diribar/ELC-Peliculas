@@ -475,7 +475,7 @@ module.exports = {
 			res.cookie(sigPaso.codigo, IM, {maxAge: unDia});
 
 			// Redirecciona a la siguiente instancia
-			const {baseUrl} = comp.reqBasePathUrl(req);
+			const {baseUrl} = comp.partesDelUrl(req);
 			return res.redirect(baseUrl + sigPaso.url);
 		},
 	},

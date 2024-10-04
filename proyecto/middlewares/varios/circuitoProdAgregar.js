@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
 	// Acciones comunes entre los pasos de 'producto agregar'
 
 	// Variables
-	const {ruta} = comp.reqBasePathUrl(req);
+	const {ruta} = comp.partesDelUrl(req);
 	const codigoUrl = ruta.slice(1);
 	const pasos = [
 		{url: "palabras-clave", codigo: "palabrasClave"},

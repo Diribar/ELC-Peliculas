@@ -55,7 +55,7 @@ router.post("/login", intentosLogin, validaLogin, visitas, vista.login.guardar);
 router.get("/logout", statusCorrecto, vista.login.logout);
 
 // Vista - Miscelaneas
-router.get("/:id/suspendido", visitas, vista.miscelaneas.accesosSuspendidos);
+router.get("/:codigo/suspendido", visitas, vista.miscelaneas.accesosSuspendidos);
 router.get("/envio-exitoso-de-mail", visitas, vista.miscelaneas.envioExitoso);
 router.get("/envio-fallido-de-mail", visitas, vista.miscelaneas.envioFallido);
 router.post("/login/olvido-contrasena", visitas, vista.miscelaneas.olvidoContr); // obtiene datos para redireccionar

@@ -1,18 +1,12 @@
 "use strict";
-// Variables
-const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
-	// Redirecciona después de inactivar una captura
-	redirecciona: {
-		redireccionaInicio: (req, res) => res.redirect("/"), // redirecciona a Inicio
-		inicio: (req, res) => {
-			const vistaActual = vistasInstitucs.inicio;
-			return res.render("CMP-0Estructura", {
-				tema: "institucional",
-				...vistaActual,
-			});
-		},
+	inicio: (req, res) => {
+		const vistaActual = vistasInstitucs.inicio;
+		return res.render("CMP-0Estructura", {
+			tema: "institucional",
+			...vistaActual,
+		});
 	},
 
 	// Listados
@@ -21,7 +15,7 @@ module.exports = {
 		cookies: (req, res) => res.send(req.cookies), // cookies
 		rclvs: async (req, res) => {
 			// Variables
-			const {ruta} = comp.reqBasePathUrl(req);
+			const {ruta} = comp.partesDelUrl(req);
 			const indice = ruta.lastIndexOf("/");
 			const rclv = ruta.slice(indice + 1);
 			const condicion = {id: {[Op.ne]: 1}};
@@ -54,7 +48,7 @@ module.exports = {
 			// Variables
 			const entidades = variables.entidades.prods;
 			let productos = [];
-			let TR, GR, CC, cantLinks;
+			let Trailer, Gratis, ConCosto, cantLinks;
 
 			// Busca las películas y filtra por las que tienen más de un link
 			for (let entidad of entidades)
@@ -62,23 +56,83 @@ module.exports = {
 					...(await baseDeDatos.obtieneTodos(entidad, "links").then((n) => n.filter((m) => m.links.length > 1)))
 				);
 
-			// Separa entre links TR, GR y CC
+			// Separa entre links Trailer, Gratis y ConCosto
 			for (let producto of productos) {
 				// Trailer
-				cantLinks = producto.links.filter((n) => n.tipo_id == 1).length;
-				if (!TR || TR.cantLinks < cantLinks) TR = {nombre: producto.nombreCastellano, cantLinks};
+				cantLinks = producto.links.filter((n) => n.tipo_id == linkTrailer_id).length;
+				if (!Trailer || Trailer.cantLinks < cantLinks) Trailer = {nombre: producto.nombreCastellano, cantLinks};
 
 				// Gratis
-				cantLinks = producto.links.filter((n) => n.tipo_id == 2 && n.gratuito).length;
-				if (!GR || GR.cantLinks < cantLinks) GR = {nombre: producto.nombreCastellano, cantLinks};
+				cantLinks = producto.links.filter((n) => n.tipo_id == linkPelicula_id && n.gratuito).length;
+				if (!Gratis || Gratis.cantLinks < cantLinks) Gratis = {nombre: producto.nombreCastellano, cantLinks};
 
 				// Gratis
-				cantLinks = producto.links.filter((n) => n.tipo_id == 2 && !n.gratuito).length;
-				if (!CC || CC.cantLinks < cantLinks) CC = {nombre: producto.nombreCastellano, cantLinks};
+				cantLinks = producto.links.filter((n) => n.tipo_id == linkPelicula_id && !n.gratuito).length;
+				if (!ConCosto || ConCosto.cantLinks < cantLinks) ConCosto = {nombre: producto.nombreCastellano, cantLinks};
 			}
 
 			// Devuelve la info
-			return res.send({TR, GR, CC});
+			return res.send({Trailer, Gratis, ConCosto});
+		},
+	},
+
+	// Redirecciona después de inactivar una captura
+	redirecciona: {
+		inicio: (req, res) => res.redirect("/"),
+		urlDeOrigen: async (req, res) => {
+			// Variables
+			const {origen: origenCodigo, origenUrl, prodEntidad, prodId, entidad, id, urlDestino, grupo} = req.query;
+			let destino;
+
+			// Casos particulares
+			if (urlDestino) return res.redirect(urlDestino);
+			if (!origenCodigo && !origenUrl) return res.redirect("/");
+
+			// Rutina para encontrar el destino
+			for (let origen of origenDeUrls)
+				if ((origenCodigo && origenCodigo == origen.codigo) || (origenUrl && origenUrl == origen.url)) {
+					destino = origen.url;
+					if (origen.cola)
+						destino += "/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodId ? prodId : id);
+					break;
+				}
+
+			// Links
+			if (!destino && ["LK", "LKM"].includes(origenCodigo))
+				destino =
+					"/links/abm/?entidad=" +
+					(prodEntidad ? prodEntidad : entidad) +
+					"&id=" +
+					(prodId ? prodId : id) +
+					(origenCodigo == "LKM" ? "&origen=TM" : "") +
+					(grupo ? "&grupo=inactivo" : "");
+
+			// Redirecciona a la vista que corresponda
+			if (!destino) destino = "/";
+			return res.redirect(destino);
+		},
+		rutasAntiguas: function (req, res) {
+			// Variables
+			const {entidad, id} = req.query;
+			const rutasAntsActs = comp.rutas(entidad);
+			let {originalUrl} = req;
+			let nuevoUrl, nuevaCola;
+
+			// Obtiene el reqBase y el path
+			const rutaAntAct = rutasAntsActs.find((n) => originalUrl.startsWith(n.ant));
+			nuevoUrl = rutaAntAct.act;
+
+			// Quita la entidad de la 'cola'
+			const colaActual = originalUrl.replace(rutaAntAct.ant, "");
+			nuevaCola = colaActual.replace("?entidad=" + entidad, "");
+
+			// Terminación de la 'cola'
+			nuevaCola = nuevaCola.replace("/&", "/?");
+			if (nuevaCola.endsWith("?")) nuevaCola = nuevaCola.slice(0, -1);
+			if (nuevaCola.endsWith("/")) nuevaCola = nuevaCola.slice(0, -1);
+
+			// Fin
+			return res.redirect(nuevoUrl + nuevaCola);
 		},
 	},
 };

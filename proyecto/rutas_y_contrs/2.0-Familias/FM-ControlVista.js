@@ -48,7 +48,8 @@ module.exports = {
 		},
 		elimina: async (req, res) => {
 			// Variables
-			const {entidad, id} = req.query;
+			const {id} = req.query;
+			const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const include = entidad == "colecciones" ? "capitulos" : "";
 			const original = await baseDeDatos.obtienePorId(entidad, id, include);
@@ -190,9 +191,10 @@ module.exports = {
 			// Variables
 			const tema = "correccion";
 			const codigo = "cambiarMotivo";
-			const titulo = "Cambiar el Motivo";
-			const {entidad, id, origen, prodRclv, ultHist} = {...req.query, ...req.body};
+			const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+			const {id, origen, prodRclv, ultHist} = {...req.query, ...req.body};
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+			const titulo = "Cambiar el Motivo";
 
 			// Datos para la vista
 			const motivo = ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
@@ -212,7 +214,8 @@ module.exports = {
 		},
 		motivoGuardar: async (req, res) => {
 			// Variables
-			const {entidad, id, motivo_id, entDupl, idDupl, ultHist, origen} = {...req.query, ...req.body};
+			const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+			const {id, motivo_id, entDupl, idDupl, ultHist, origen} = {...req.query, ...req.body};
 			const {statusFinal_id} = ultHist;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
@@ -234,8 +237,9 @@ module.exports = {
 			// Variables
 			const tema = "correccion";
 			const codigo = "corregirStatus";
+			const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+			const {id, origen, prodRclv} = {...req.query, ...req.body};
 			const titulo = "Corregir el Status";
-			const {entidad, id, origen, prodRclv} = {...req.query, ...req.body};
 
 			// Obtiene el historial
 			const historialStatus = await procesos.historialDeStatus.obtiene({entidad, ...prodRclv});
@@ -254,7 +258,8 @@ module.exports = {
 		},
 		statusGuardar: async (req, res) => {
 			// Variables
-			const {entidad, id, origen, opcion, prodRclv, ultHist} = {...req.query, ...req.body};
+			const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+			const {id, origen, opcion, prodRclv, ultHist} = {...req.query, ...req.body};
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 			let destino;
@@ -278,19 +283,5 @@ module.exports = {
 			// Fin
 			return res.redirect("/" + familia + "/" + destino + cola);
 		},
-	},
-	redireccionar: (req, res) => {
-		// Variables
-		const {entidad, id} = req.query;
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		let {originalUrl} = req;
-
-		// Acciones si la familia está en el url
-		if (["/producto/", "/rclv/"].includes(originalUrl)) {
-			originalUrl = originalUrl.replace("/" + familia + "/", "/" + entidad + "/"); // Reemplaza la familia por la entidad
-			originalUrl = originalUrl.replace("entidad=" + entidad + "&", ""); // Quita la entidad de la url
-			return res.send(originalUrl)
-		} else {
-		}
 	},
 };

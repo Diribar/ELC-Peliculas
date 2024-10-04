@@ -274,7 +274,6 @@ module.exports = {
 		oa: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : "o"),
 		a: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : ""),
 	},
-
 	// Productos y RCLVs
 	puleEdicion: async function (entidad, original, edicion) {
 		// Variables
@@ -1260,17 +1259,15 @@ module.exports = {
 		// Fin
 		return mailEnviado;
 	},
-	reqBasePathUrl: (req) => {
-		// Obtiene los resultados
-		const baseUrl = req.baseUrl
-			? req.baseUrl
-			: req.path.startsWith("/revision/usuarios")
-			? "/revision/usuarios"
-			: req.path.startsWith("/producto/agregar")
-			? "/producto/agregar"
-			: req.path.slice(0, req.path.indexOf("/", 1));
-		const ruta = req.path.startsWith(baseUrl) ? req.path.replace(baseUrl, "") : req.path;
+	partesDelUrl: (req) => {
+		// Obtiene la base y el url (sin la base)
+		const baseUrl = req.baseUrl ? req.baseUrl : req.path.slice(0, req.path.indexOf("/", 1));
 		const url = req.url.startsWith(baseUrl) ? req.url.replace(baseUrl, "") : req.url;
+
+		// Obtiene la ruta
+		let ruta = req.path.startsWith(baseUrl) ? req.path.replace(baseUrl, "") : req.path;
+		const indice = ruta.indexOf("/", 1);
+		if (indice >= 0) ruta = ruta.slice(0, indice);
 
 		// Fin
 		return {baseUrl, ruta, url};
@@ -1284,6 +1281,65 @@ module.exports = {
 
 		// Fin
 		return;
+	},
+	rutas: (entidad) => {
+		// Variables
+		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+
+		// Rutas
+		const rutas = [
+			// Producto Agregar
+			...[
+				// ant: '/producto/agregar' + rutaAnt - act: '/producto' + rutaAnt
+				{ant: "/producto/agregar/palabras-clave", act: "/producto/palabras-clave"},
+				{ant: "/producto/agregar/desambiguar", act: "/producto/desambiguar"},
+				{ant: "/producto/agregar/ingreso-manual", act: "/producto/ingreso-manual"},
+
+				// ant: '/producto/agregar' - act: entidad
+				{ant: "/producto/agregar", act: "/" + entidad},
+			],
+
+			// Familia - ant: familia + rutaAnt (salvo correccion) - act: entidad + rutaAct
+			...[
+				{ant: "/" + familia + "/historial", act: "/" + entidad + "/hs", codigo: "historial", titulo: "Historial de"},
+				{ant: "/" + familia + "/inactivar", act: "/" + entidad + "/in", codigo: "inactivar", titulo: "Inactivar"},
+				{ant: "/" + familia + "/recuperar", act: "/" + entidad + "/rc", codigo: "recuperar", titulo: "Recuperar"},
+				{ant: "/" + familia + "/eliminadoPorCreador", act: "/" + entidad + "/ec", titulo: "Eliminar"},
+				{ant: "/" + familia + "/eliminar", act: "/" + entidad + "/el", titulo: "Eliminar"},
+				{ant: "/correccion/motivo", act: "/" + entidad + "/cm"},
+				{ant: "/correccion/status", act: "/" + entidad + "/cs"},
+			],
+
+			// Revisión de Entidades - ant: revision + familia + ant (salvo links) - act: rutaAct + entidad
+			...[
+				{ant: "/revision/" + familia + "/alta", act: "/revision/al" + siglaFam + "/" + entidad},
+				{ant: "/revision/" + familia + "/edicion", act: "/revision/ed/" + entidad},
+				{
+					ant: "/revision/" + familia + "/inactivar",
+					act: "/revision/in/" + entidad,
+					codigo: "inactivar",
+					titulo: "Revisión de Inactivar",
+				},
+				{
+					ant: "/revision/" + familia + "/recuperar",
+					act: "/revision/rc/" + entidad,
+					codigo: "recuperar",
+					titulo: "Revisión de Recuperar",
+				},
+				{
+					ant: "/revision/" + familia + "/rechazar",
+					act: "/revision/ch/" + entidad,
+					codigo: "rechazar",
+					rechazar: "Rechazar",
+				},
+				{ant: "/revision/rclv/solapamiento", act: "/revision/slr/" + entidad},
+				{ant: "/revision/links", act: "/revision/lkp/" + entidad},
+			],
+		];
+
+		// Fin
+		return rutas;
 	},
 };
 

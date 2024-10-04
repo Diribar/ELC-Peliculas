@@ -226,26 +226,26 @@ app.set("views", [
 	app.use(require("./middlewares/transversales/clientes-2Contador.js")); // para contar la cantidad de días de navegación
 	app.use(require("./middlewares/transversales/clientes-3Carteles.js")); // en función de las novedades, revisa si se debe mostrar algún cartel
 
-	// Urls que dependen de la variable 'global'
-	// app.use("/:uno/:dos", (req,res)=>{res.send(req.params)});
-	app.use("/", require("./rutas_y_contrs/2.0-Familias/FM-Rutas")); // incluye algunas de 'revisión' y corrección
-	app.use("/producto/agregar", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas"));
-	app.use("/producto", require("./rutas_y_contrs/2.1-Prods-RUD/PR-Rutas"));
-	app.use("/rclv", require("./rutas_y_contrs/2.2-RCLVs/RCLV-Rutas"));
+	// Vistas - Antiguas
+	app.use("/", require("./rutas_y_contrs/2.0-Familias/FM-RutasAnt")); // incluye algunas de 'revisión' y corrección
+	app.use("/producto/agregar", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-RutasAnt"));
+	app.use("/producto", require("./rutas_y_contrs/2.1-Prods-RUD/PR-RutasAnt"));
+	app.use("/rclv", require("./rutas_y_contrs/2.2-RCLVs/RCLV-RutasAnt"));
+	app.use("/revision", require("./rutas_y_contrs/3-Rev-Entidades/RE-RutasAnt"));
+	app.use("/revision/usuarios", require("./rutas_y_contrs/1.2-Rev-Usuarios/RU-RutasAnt"));
 
-	app.use("/", require("./rutas_y_contrs/2.0-Familias/FM-Rutas")); // incluye algunas de 'revisión' y corrección
-	app.use("/producto/ap", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas")); // producto
-	app.use("/:entidad/ap", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas")); // producto
+	// Vistas - Actuales
+	app.use("/:entidad", require("./rutas_y_contrs/2.0-Familias/FM-Rutas")); // incluye algunas de 'revisión' y corrección
+	app.use("/:entidad", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas")); // producto
 	app.use("/:entidad", require("./rutas_y_contrs/2.1-Prods-RUD/PR-Rutas")); // producto
 	app.use("/:entidad", require("./rutas_y_contrs/2.2-RCLVs/RCLV-Rutas")); // rclv
 	app.use("/links", require("./rutas_y_contrs/2.3-Links/LK-Rutas"));
 	app.use("/usuarios", require("./rutas_y_contrs/1.1-Usuarios/US-Rutas"));
-	app.use("/revision/usuarios", require("./rutas_y_contrs/1.2-Rev-Usuarios/RU-Rutas"));
 	app.use("/revision", require("./rutas_y_contrs/3-Rev-Entidades/RE-Rutas"));
+	app.use("/revision", require("./rutas_y_contrs/1.2-Rev-Usuarios/RU-Rutas"));
 	app.use("/consultas", require("./rutas_y_contrs/5-Consultas/CN-Rutas"));
 	app.use("/institucional", require("./rutas_y_contrs/7-Institucional/IN-Rutas"));
 	app.use("/graficos", require("./rutas_y_contrs/6-Graficos/GR-Rutas"));
-	app.use("/", require("./rutas_y_contrs/0-Compartido/CMP-Rutas"));
 	app.use("/", require("./rutas_y_contrs/9-Miscelaneas/MS-Rutas"));
 
 	// Middlewares transversales

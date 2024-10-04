@@ -71,7 +71,7 @@ module.exports = {
 		form: async (req, res) => {
 			// Puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
 			// Tema y Código
-			const {baseUrl, ruta} = comp.reqBasePathUrl(req);
+			const {baseUrl, ruta} = comp.partesDelUrl(req);
 			const tema = baseUrl == "/rclv" ? "rclvCrud" : baseUrl == "/revision" ? "revisionEnts" : "";
 			const codigo = ruta.slice(1, -1); // resultados posibles: 'agregar', 'edicion', 'alta', 'rclv/alta', 'rclv/solapamiento'
 

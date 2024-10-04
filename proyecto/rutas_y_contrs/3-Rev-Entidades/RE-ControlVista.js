@@ -97,7 +97,8 @@ module.exports = {
 		// Variables
 		const tema = "revisionEnts";
 		const codigo = "producto/alta";
-		const {entidad, id} = req.query;
+		const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+		const {id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "TE";
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
@@ -345,14 +346,14 @@ module.exports = {
 		form: async (req, res) => {
 			// Tema y Código
 			const tema = "revisionEnts";
-			const {ruta} = comp.reqBasePathUrl(req);
+			const {ruta} = comp.partesDelUrl(req);
 			let codigo = ruta.slice(1, -1); // No se puede poner 'const', porque más adelante puede cambiar
 
 			// Variables
-			const {entidad, id, edicID} = req.query;
+			const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+			const {id, edicID} = req.query;
 			const origen = req.query.origen ? req.query.origen : "TE";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
