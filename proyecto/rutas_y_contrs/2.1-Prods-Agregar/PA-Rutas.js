@@ -52,7 +52,7 @@ router.get("/api/convierte-letras-al-castellano/", API.convierteLetrasAlCastella
 // Vistas - Data entry
 router.get("/agregar-pc", dataEntry, vista.palabrasClave.form);
 router.post("/agregar-pc", dataEntry, vista.palabrasClave.guardar);
-router.get("/desambiguar", dataEntry, vista.desambiguar);
+router.get("/agregar-ds", dataEntry, vista.desambiguar);
 
 // Vistas - Comienzo de "prodYaEnBD"
 router.get("/datos-duros", dataEntryMasYaEnBD, vista.datosDuros.form);
