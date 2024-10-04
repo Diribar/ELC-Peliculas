@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 	// Obtiene los datos de session
 	const rutaBuscaInfoDeSession = "api/desambiguar-busca-info-de-session";
 	let desambiguar = await fetch(rutaBuscaInfoDeSession).then((n) => n.json());
-	if (!desambiguar) location.href = "palabras-clave"; // si no existe, redirige al paso anterior
+	if (!desambiguar) location.href = "agregar-pc"; // si no existe, redirige al paso anterior
 
 	// Si corresponde, completa los datos de sesion
 	if (!desambiguar.mensaje) {

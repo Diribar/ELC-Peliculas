@@ -7,13 +7,14 @@ module.exports = (req, res, next) => {
 	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const codigoUrl = req.url.slice(1);
 	const pasos = [
-		{url: "palabras-clave", codigo: "palabrasClave", producto: true},
-		{url: "desambiguar", codigo: "desambiguar", producto: true},
+		{url: "agregar-pc", codigo: "palabrasClave", producto: true},
+		{url: "agregar-ds", codigo: "desambiguar", producto: true},
 		{url: "ingreso-manual", codigo: "IM", producto: true},
 		{url: "ingreso-fa", codigo: "FA"},
 		{url: "datos-duros", codigo: "datosDuros"},
 		{url: "datos-adicionales", codigo: "datosAdics"},
 		{url: "confirma", codigo: "confirma"},
+		{url: "terminaste", codigo: "terminaste"},
 	];
 	const entidades = variables.entidades.prods;
 	const paso = pasos.find((n) => codigoUrl.startsWith(n.url));
@@ -33,7 +34,7 @@ module.exports = (req, res, next) => {
 					? "ingreso-fa"
 					: req.session.IM || req.cookies.IM
 					? "ingreso-manual"
-					: "desambiguar";
+					: "agregar-ds";
 			// Redirecciona
 			return res.redirect(origen);
 		}
