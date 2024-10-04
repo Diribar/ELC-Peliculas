@@ -9,12 +9,12 @@ module.exports = (req, res, next) => {
 	const pasos = [
 		{url: "agregar-pc", codigo: "palabrasClave", producto: true},
 		{url: "agregar-ds", codigo: "desambiguar", producto: true},
-		{url: "ingreso-manual", codigo: "IM", producto: true},
+		{url: "agregar-im", codigo: "IM", producto: true},
 		{url: "ingreso-fa", codigo: "FA"},
 		{url: "agregar-dd", codigo: "datosDuros"},
 		{url: "agregar-da", codigo: "datosAdics"},
 		{url: "agregar-cn", codigo: "confirma"},
-		{url: "terminaste", codigo: "terminaste"},
+		{url: "agregar-tr", codigo: "terminaste"},
 	];
 	const entidades = variables.entidades.prods;
 	const paso = pasos.find((n) => codigoUrl.startsWith(n.url));
@@ -33,7 +33,7 @@ module.exports = (req, res, next) => {
 				req.session.FA || req.cookies.FA
 					? "ingreso-fa"
 					: req.session.IM || req.cookies.IM
-					? "ingreso-manual"
+					? "agregar-im"
 					: "agregar-ds";
 			// Redirecciona
 			return res.redirect(origen);
