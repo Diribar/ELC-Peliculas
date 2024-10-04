@@ -11,7 +11,7 @@ module.exports = {
 		// Variables
 		const tema = "prodRud";
 		const codigo = "detalle";
-		const entidad = comp.obtieneEntidadDesdeUrl(req);
+		const {siglaFam, entidad} = comp.partesDelUrl(req);
 		const {id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "DT";
 		const usuario = req.session.usuario ? req.session.usuario : null;
@@ -87,7 +87,7 @@ module.exports = {
 		// return res.send(links);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, origen, revisorPERL},
-			...{entidad, id, familia, status_id, creadoPor_id, statusAlineado},
+			...{siglaFam, entidad, id, familia, status_id, creadoPor_id, statusAlineado},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
