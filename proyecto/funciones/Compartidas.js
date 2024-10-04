@@ -1258,23 +1258,17 @@ module.exports = {
 	},
 	partesDelUrl: (req) => {
 		// Obtiene la base y el url (sin la base)
-		const baseUrl = req.baseUrl ? req.baseUrl : req.path.slice(0, req.path.indexOf("/", 1));
-		const url = req.url.startsWith(baseUrl) ? req.url.replace(baseUrl, "") : req.url;
-
-		// Obtiene la ruta
-		let ruta = req.path;
-		if (ruta.startsWith(baseUrl)) ruta = ruta.replace(baseUrl, ""); // si contiene el baseUrl, lo quita
-		if (ruta.endsWith("/")) ruta = ruta.slice(0, -1); // si termina con "/", lo quita
-
-		// Obtiene la tarea
-		const indice = ruta.indexOf("/", 1);
-		const tarea = indice >= 0 ? ruta.slice(0, indice) : ruta; // obtiene solamente lo que figure hasta el "/"
+		let url = req.baseUrl + req.path;
+		const baseUrl = url.slice(0, url.indexOf("/", 1));
+		url = url.replace(baseUrl, "");
+		const tarea = url.slice(0, url.indexOf("/", 1));
 
 		// Obtiene la siglaFam
-		let siglaFam = ruta.replace(tarea, ""); // si contiene la tarea, la quita
-		if (siglaFam) {
-			siglaFam = siglaFam.slice(1); // le quita el "/" del comienzo
-			if (siglaFam.length > 2 && siglaFam[1] != "/") siglaFam = null; // detecta si no es una 'siglaFam'
+		let siglaFam;
+		url = url.replace(tarea, ""); // si contiene la tarea, la quita
+		if (url) {
+			siglaFam = url.slice(1); // le quita el "/" del comienzo
+			if (siglaFam.length > 2 || siglaFam[1] != "/") siglaFam = null; // detecta si no es una 'siglaFam'
 			else siglaFam = siglaFam[0]; // obtiene la 'siglaFam'
 			if (siglaFam && !["p", "r", "l"].includes(siglaFam)) siglaFam = null;
 		}

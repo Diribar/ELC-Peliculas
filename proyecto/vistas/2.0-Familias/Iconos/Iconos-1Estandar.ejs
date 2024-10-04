@@ -5,31 +5,31 @@
 <% const ORIGEN = locals.origen ? ('&origen=' + origen) : '' %>
 <% const ORIGEN_DIF_DT= locals.origen && !origen.endsWith("DT") ? ORIGEN : '' %>
 <div id="estandar" class="iconos">
-	<% if (locals.origen && (!detalle || !["PDT", "RDT"].includes(origen))) { %><!-- Cuando la vista o su origen no es 'Detalle' -->
+	<% if (locals.origen && (!detalle || origen != "DT")) { %><!-- Cuando la vista o su origen no es 'Detalle' -->
 		<!-- Salir -->
-		<% const ENTIDAD = (locals.prodEntidad ? prodEntidad : entidad) %>
-		<% const ID = locals.prodId || locals.id ? ('/?id='+(locals.prodId || locals.id)) : '' %>
-		<a href="/inactivar-captura/<%= ENTIDAD + ID + ORIGEN %>" tabindex="-1">
+		<% const ENTIDAD = locals.prodEntidad || entidad %>
+		<% const ID = locals.prodId || locals.id %>
+		<a href="/inactivar-captura/<%= ENTIDAD %>/?id=<%= ID %><%= ORIGEN %>" tabindex="-1">
 			<i class="<%= iconos.faSolid %> <%= iconos.izquierda %>" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>
 	<% if (!detalle && (ORIGEN_DIF_DT && !revLinks || !locals.origen)) { %>
 		<!-- Ir a Detalle - siempre que el origen sea distinto a 'Detalle' o no haya origen -->
-		<a href="<%= '/' + familia + '/detalle/?entidad=' + entidad + '&id=' + id %>" tabindex="-1">
+		<a href="<%= '/' + entidad + '/detalle/p/?id=' + id %>" tabindex="-1">
 			<i class="<%= iconos.faSolid %> <%= iconos.detalle %>" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
 	<% } %>
 	<% if (terminaste || detalle) { %>
 		<% if (locals.status_id && status_id <= aprobado_id) { %>
 			<!-- Edición, Links y Calificar - con link -->
-			<a href="<%= '/' + familia + '/edicion/?entidad=' + entidad + '&id=' + id + ORIGEN_DIF_DT %>" tabindex="-1">
+			<a href="<%= '/' + entidad + '/edicion/p/?id=' + id + ORIGEN_DIF_DT %>" tabindex="-1">
 				<i class="<%= iconos.faSolid %> <%= iconos.edicion %>" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 			</a>
 			<% if (familia == "producto") { %>
-				<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + ORIGEN_DIF_DT %>" tabindex="-1">
+				<a href="<%= '/' + entidad + '/abm-links/p/?id=' + id + ORIGEN_DIF_DT %>" tabindex="-1">
 					<i class="<%= iconos.faSolid %> fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 				</a>
-				<a href="<%= '/producto/calificar/?entidad=' + entidad + '&id=' + id + ORIGEN_DIF_DT %>" tabindex="-1">
+				<a href="<%= '/' + entidad + '/calificar/p/?id=' + id + ORIGEN_DIF_DT %>" tabindex="-1">
 					<i class="<%= iconos.faSolid %> <%= iconos.calificar %> <%= iconos.rotar %> <%= locals.yaCalificada %>" tabindex="-1" title="<%= locals.yaCalificada ? 'Ya l'+ oa +' calificaste' : 'Califical' + oa %>"></i>
 				</a>
 			<% } %>
@@ -45,7 +45,7 @@
 
 	<% if (tema == "revisionEnts" && codigo == "abmLinks") { %>
 		<!-- Link para Revisión -->
-		<a href="<%= '/links/abm/?entidad=' + entidad + '&id=' + id + (ORIGEN_DIF_DT.includes("TE") ? ORIGEN_DIF_DT.replace("TE","RL") : ORIGEN_DIF_DT) %>" tabindex="-1">
+		<a href="<%= '/' + entidad + '/abm-links/p/?id=' + id + (ORIGEN_DIF_DT.includes("TE") ? ORIGEN_DIF_DT.replace("TE","RL") : ORIGEN_DIF_DT) %>" tabindex="-1">
 			<i class="<%= iconos.faSolid %> fa-link" title="Ir a la vista 'Links'" tabindex="-1"></i>
 		</a>
 		<% if (locals.linkSigProd) { %>
