@@ -13,7 +13,7 @@ const m = {
 
 	// Middlewares - Específicos del registro
 	entValida: require("../../middlewares/porRegistro/entidadValida"),
-	iDvalido: require("../../middlewares/porRegistro/iDvalido"),
+	idValido: require("../../middlewares/porRegistro/idValido"),
 	rutaCRUD_ID: require("../../middlewares/varios/rutaCRUD_ID"),
 	misDetalleProd: require("../../middlewares/varios/misDetalleProd"),
 	edicion: require("../../middlewares/porRegistro/edicionVista"),
@@ -29,7 +29,7 @@ const m = {
 };
 
 // Middlewares - Consolidados
-const aptoDetalle = [m.entValida, m.iDvalido, m.rutaCRUD_ID];
+const aptoDetalle = [m.entValida, m.idValido, m.rutaCRUD_ID];
 const aptoUsuario = [m.usAltaTerm, m.usPenalizaciones, m.usAptoInput];
 const aptoCalificar = [...aptoDetalle, m.statusCorrecto, ...aptoUsuario];
 const aptoEdicion = [...aptoCalificar, m.permUserReg, m.edicion];

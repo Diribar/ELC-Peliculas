@@ -5,10 +5,10 @@ const vistaMS = require("../9-Miscelaneas/MS-ControlVista");
 
 // Middlewares - Específicos del registro
 const entValidaAnt = require("../../middlewares/porRegistro/entValidaAnt");
-const iDvalidoAnt = require("../../middlewares/porRegistro/iDvalidoAnt");
+const idValidoAnt = require("../../middlewares/porRegistro/idValidoAnt");
 
 // Middlewares - Consolidados
-const entId = [entValidaAnt, iDvalidoAnt];
+const entId = [entValidaAnt, idValidoAnt];
 
 // Vistas
 router.get("/detalle", entId,  vistaMS.redirecciona.rutasAntiguas);
