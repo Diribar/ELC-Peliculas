@@ -106,8 +106,8 @@ module.exports = {
 	// CRUD
 	obtieneDatosForm: async function (req) {
 		// Variables
-		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
 		const {entidad, baseUrl, tarea: codigo} = comp.partesDelUrl(req);
+		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
 		const {id} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
@@ -137,7 +137,7 @@ module.exports = {
 		const status_id = original.statusRegistro_id;
 		const urlActual = req.originalUrl;
 		const entsNombre = variables.entidades[petitFamilias + "Nombre"];
-		const {titulo, entidadNombre} = this.titulo({entidad, codigo});
+		const {titulo, entidadNombre} = this.titulo({entidad, req});
 		const bloqueDer = await this.bloques.consolidado({tema, familia, entidad, original});
 		const imgDerPers = this.obtieneAvatar(original).orig;
 		const cartelGenerico = codigo != "historial";
@@ -150,13 +150,13 @@ module.exports = {
 			...{entsNombre, urlActual, cartelGenerico},
 		};
 	},
-	titulo: ({entidad, codigo}) => {
+	titulo: ({entidad, req}) => {
 		// Variables
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const {rutas} = comp;
-		const ruta = rutas.find((n) => n.codigo == codigo);
+		const rutas = comp.rutas(entidad);
 
 		// Título
+		const ruta = rutas.find((n) => req.originalUrl.startsWith(n.act));
 		let titulo = ruta.titulo + " ";
 		titulo += comp.obtieneDesdeEntidad.unaUn(entidad) + " ";
 		titulo += entidadNombre;
