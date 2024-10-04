@@ -7,7 +7,7 @@ module.exports = {
 	form: {
 		motivos: async (req, res) => {
 			// Variables
-			const datos = await procesos.obtieneDatosForm(req);
+			const datos = await procesos.obtieneDatos(req);
 
 			// Obtiene datos para la vista
 			const ayudasTitulo = "Por favor decinos por qué sugerís " + datos.codigo + " este registro.";
@@ -20,7 +20,7 @@ module.exports = {
 		historial: async (req, res) => {
 			// Variables
 			const {statusAlineado, prodRclv} = req.body;
-			const datos = await procesos.obtieneDatosForm(req);
+			const datos = await procesos.obtieneDatos(req);
 
 			// Obtiene el ayuda para el título
 			const ayudasTitulo =
