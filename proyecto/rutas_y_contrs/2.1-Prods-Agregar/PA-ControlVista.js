@@ -187,7 +187,7 @@ module.exports = {
 			}
 
 			// Redirecciona a la siguiente instancia
-			return res.redirect("datos-adicionales");
+			return res.redirect("agregar-da");
 		},
 	},
 	datosAdics: {
@@ -306,7 +306,7 @@ module.exports = {
 			// Si se eligió algún RCLV que no existe, vuelve a la instancia anterior
 			if (!confirma.sinRCLV) {
 				const {existe, epocaOcurrencia_id} = await procesos.confirma.verificaQueExistanLosRCLV(confirma);
-				if (!existe) return res.redirect("datos-adicionales");
+				if (!existe) return res.redirect("agregar-da");
 				else confirma.epocaOcurrencia_id = epocaOcurrencia_id;
 			}
 
