@@ -14,7 +14,6 @@ const m = {
 	// Middlewares - Específicos del registro
 	entValida: require("../../middlewares/porRegistro/entidadValida"),
 	idValido: require("../../middlewares/porRegistro/idValido"),
-	linkIdValido: require("../../middlewares/porRegistro/linkIdValido"),
 	statusCorrecto: require("../../middlewares/porRegistro/statusCorrecto"),
 
 	// Middlewares - Otros
@@ -25,7 +24,8 @@ const m = {
 
 // Middlewares - Consolidados
 const aptoUsuario = [m.usAltaTerm, m.usPenalizaciones, m.usAptoInput];
-const aptoABM = [...aptoUsuario, m.entValida, m.idValido, m.statusCorrecto, m.permUserReg, m.rutaCRUD_ID];
+const entIdValidos = [m.entValida, m.idValido];
+const aptoABM = [...aptoUsuario, ...entIdValidos, m.statusCorrecto, m.permUserReg, m.rutaCRUD_ID];
 
 // APIs - Links
 router.get("/api/valida", API.valida);
@@ -39,7 +39,7 @@ router.get("/api/deshacer", API.deshace);
 
 // Vistas
 router.get("/abm-links/p", aptoABM, m.capturaActivar, vista.abm);
-router.get("/mirar/l", m.linkIdValido, vista.visualizacion);
+router.get("/mirar/l", entIdValidos, vista.visualizacion);
 
 // Fin
 module.exports = router;
