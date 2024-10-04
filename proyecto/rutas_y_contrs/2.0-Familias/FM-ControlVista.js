@@ -214,7 +214,7 @@ module.exports = {
 		},
 		motivoGuardar: async (req, res) => {
 			// Variables
-			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {siglaFam, entidad} = comp.partesDelUrl(req);
 			const {id, motivo_id, entDupl, idDupl, ultHist, origen} = {...req.query, ...req.body};
 			const {statusFinal_id} = ultHist;
 
@@ -230,7 +230,7 @@ module.exports = {
 			if (origen) cola += "&origen=" + origen;
 
 			// Fin
-			return res.redirect("/" + entidad + "/historial" + cola);
+			return res.redirect("/" + entidad + "/historial/" + siglaFam + cola);
 		},
 		statusForm: async (req, res) => {
 			// Variables
