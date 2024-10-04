@@ -99,7 +99,7 @@ module.exports = {
 			// Variables
 			const tema = "prodRud";
 			const codigo = "edicion";
-			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {siglaFam, entidad} = comp.partesDelUrl(req);
 			const {id} = req.query;
 			const usuario_id = req.session.usuario.id;
 
@@ -145,7 +145,7 @@ module.exports = {
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, origen, prodEdic, imgDerPers, status_id},
-				...{entidadNombre, entidad, id, familia, registro, dataEntry, camposInput1, camposInput2},
+				...{siglaFam, entidad, entidadNombre, id, familia, registro, dataEntry, camposInput1, camposInput2},
 				...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos, anchorEncab},
 				...{estrucPers: true, cartelGenerico: true},
 			});
