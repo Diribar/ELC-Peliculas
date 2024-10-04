@@ -5,7 +5,7 @@
 <% const ORIGEN = locals.origen ? ('&origen=' + origen) : '' %>
 <% const ORIGEN_DIF_DT= locals.origen && !origen.endsWith("DT") ? ORIGEN : '' %>
 <div id="estandar" class="iconos">
-	<% if (locals.origen && (!detalle || !["PDT", "RDT"].includes(origen))) { %><!-- Cuando la vista o su origen no es 'Detalle' -->
+	<% if (locals.origen && (!detalle || origen != "DT")) { %><!-- Cuando la vista o su origen no es 'Detalle' -->
 		<!-- Salir -->
 		<% const ENTIDAD = (locals.prodEntidad ? prodEntidad : entidad) %>
 		<% const ID = locals.prodId || locals.id ? ('/?id='+(locals.prodId || locals.id)) : '' %>
