@@ -14,7 +14,7 @@ module.exports = {
 			const titulo = "Agregar - Palabras Clave";
 
 			// Obtiene el Data Entry de session y cookies
-			const palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
+			const {palabrasClave} = req.session.palabrasClave ? req.session : req.cookies;
 
 			// Variables para la vista
 			const mensajesAyuda = [
@@ -53,7 +53,7 @@ module.exports = {
 			res.cookie("desambiguar", {palabrasClave}, {maxAge: unDia});
 
 			// Redirecciona a 'desambiguar'
-			return res.redirect("desambiguar");
+			return res.redirect("agregar-ds");
 		},
 	},
 	desambiguar: async (req, res) => {
@@ -63,7 +63,7 @@ module.exports = {
 		const titulo = "Agregar - Desambiguar";
 
 		// Si no existe el cookie, redirecciona
-		const desambiguar = req.session.desambiguar ? req.session.desambiguar : req.cookies.desambiguar;
+		const {desambiguar} = req.session.desambiguar ? req.session : req.cookies;
 
 		// Se asegura de que exista el session
 		if (!req.session.desambiguar) req.session.desambiguar = desambiguar;
@@ -83,7 +83,7 @@ module.exports = {
 			const titulo = "Agregar - Datos Duros";
 
 			// Obtiene el Data Entry de session y cookies
-			const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
+			const {datosDuros} = req.session.datosDuros ? req.session : req.cookies;
 
 			// Acciones si existe un valor para el campo 'avatar'
 			if (datosDuros.avatar) {
@@ -118,7 +118,7 @@ module.exports = {
 					? "ingreso-fa"
 					: req.session.IM || req.cookies.IM
 					? "ingreso-manual"
-					: "desambiguar";
+					: "agregar-ds";
 			const camposInput1 = camposInput.filter((n) => n.campoInput == 1);
 			const camposInput2 = camposInput.filter((n) => n.campoInput == 2);
 
@@ -199,7 +199,7 @@ module.exports = {
 			const usuario_id = req.session.usuario.id;
 
 			// Prepara variables para la vista
-			const datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
+			const {datosAdics} = req.session.datosAdics ? req.session : req.cookies;
 			const camposDA = await variables.camposDA_conValores(usuario_id);
 			const camposChkBox = camposDA.filter((n) => n.chkBox && (!n.exclusivo || n.exclusivo.includes(datosAdics.entidad)));
 			const camposDE = Object.keys(datosAdics);
@@ -267,7 +267,7 @@ module.exports = {
 			let maximo;
 
 			// Obtiene el Data Entry de session y cookies
-			let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
+			let {confirma} = req.session.confirma ? req.session : req.cookies;
 
 			// Datos de la producción
 			maximo = 50;
@@ -362,7 +362,7 @@ module.exports = {
 		const usuario_id = req.session.usuario.id;
 
 		// Si se perdió la info, redirige a 'palabras clave'
-		const terminaste = req.session.terminaste ? req.session.terminaste : req.cookies.terminaste;
+		const {terminaste} = req.session.terminaste ? req.session : req.cookies;
 		delete req.session.terminaste;
 		res.clearCookie("terminaste");
 
