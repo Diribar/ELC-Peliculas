@@ -50,8 +50,8 @@ router.get("/api/DA-guarda-datos-adics/", API.guardaDatosAdics);
 router.get("/api/convierte-letras-al-castellano/", API.convierteLetrasAlCastellano);
 
 // Vistas - Data entry
-router.get("/palabras-clave", dataEntry, vista.palabrasClave.form);
-router.post("/palabras-clave", dataEntry, vista.palabrasClave.guardar);
+router.get("/agregar-pc", dataEntry, vista.palabrasClave.form);
+router.post("/agregar-pc", dataEntry, vista.palabrasClave.guardar);
 router.get("/desambiguar", dataEntry, vista.desambiguar);
 
 // Vistas - Comienzo de "prodYaEnBD"
