@@ -255,7 +255,7 @@ module.exports = {
 			res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
 
 			// Redirecciona a la siguiente instancia
-			return res.redirect("confirma");
+			return res.redirect("agregar-cn");
 		},
 	},
 	confirma: {
@@ -300,7 +300,7 @@ module.exports = {
 			const usuario_id = req.session.usuario.id;
 
 			// Obtiene el Data Entry de session y cookies
-			const confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
+			const {confirma} = req.session.confirma ? req.session : req.cookies;
 			const entidad = confirma.entidad;
 
 			// Si se eligió algún RCLV que no existe, vuelve a la instancia anterior

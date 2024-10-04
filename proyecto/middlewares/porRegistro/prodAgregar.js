@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
 		{url: "ingreso-fa", codigo: "FA"},
 		{url: "agregar-dd", codigo: "datosDuros"},
 		{url: "agregar-da", codigo: "datosAdics"},
-		{url: "confirma", codigo: "confirma"},
+		{url: "agregar-cn", codigo: "confirma"},
 		{url: "terminaste", codigo: "terminaste"},
 	];
 	const entidades = variables.entidades.prods;
