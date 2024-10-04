@@ -65,7 +65,7 @@ module.exports = {
 	altaProdForm: async (req, res) => {
 		// Variables
 		const tema = "revisionEnts";
-		const codigo = "producto/alta";
+		const codigo = "alta/p";
 		const entidad = comp.obtieneEntidadDesdeUrl(req);
 		const {id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "TE";
