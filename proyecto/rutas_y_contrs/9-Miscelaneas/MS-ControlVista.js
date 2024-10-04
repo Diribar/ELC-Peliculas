@@ -96,8 +96,7 @@ module.exports = {
 			);
 			if (origenDeUrl) {
 				destino = origenDeUrl.url;
-				if (origenDeUrl.cola)
-					destino += "/?id=" + (prodId ? prodId : id);
+				if (origenDeUrl.cola) destino += "/?id=" + (prodId ? prodId : id);
 			}
 
 			// Links
