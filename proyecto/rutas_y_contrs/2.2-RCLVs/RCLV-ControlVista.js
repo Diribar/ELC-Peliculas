@@ -9,7 +9,7 @@ module.exports = {
 		// Variables
 		const tema = "rclvCrud";
 		const codigo = "detalle";
-		const entidad = comp.obtieneEntidadDesdeUrl(req);
+		const {siglaFam, entidad} = comp.partesDelUrl(req);
 		const {id, hoyLocal} = req.query;
 		const origen = req.query.origen ? req.query.origen : "DT";
 		const usuario = req.session.usuario ? req.session.usuario : null;
@@ -63,7 +63,7 @@ module.exports = {
 		// Ir a la vista
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, revisorPERL, usuario},
-			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id, registro: rclv, statusAlineado},
+			...{siglaFam, entidad, entidadNombre, id, familia, status_id, creadoPor_id, registro: rclv, statusAlineado},
 			...{imgDerPers, bloqueDer, prodsDelRCLV, canonNombre, RCLVnombre, ea},
 			...{iconosMobile: true, iconoDL, iconoDB},
 		});
@@ -71,13 +71,12 @@ module.exports = {
 	altaEdic: {
 		form: async (req, res) => {
 			// Tema y Código - puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
-			const {baseUrl, tarea} = comp.partesDelUrl(req);
+			const {baseUrl, tarea, siglaFam, entidad} = comp.partesDelUrl(req);
 			const tema = baseUrl == "/revision" ? "revisionEnts" : "rclvCrud";
 			let codigo = tarea.slice(1);
 			if (codigo == "alta") codigo += "/r"; // crud: 'agregar', 'edicion'; revisión: 'alta/r', 'solapamiento'
 
 			// Más variables
-			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, prodEntidad, prodId} = req.query;
 			const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? (codigo == "alta/r" ? "RA" : "TE") : "";
 			const usuario_id = req.session.usuario.id;
@@ -152,7 +151,7 @@ module.exports = {
 			// Ir a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, origen, titulo},
-				...{entidad, id, prodEntidad, prodId, edicID, familia: "rclv", ent, familia},
+				...{siglaFam, entidad, id, prodEntidad, prodId, edicID, familia: "rclv", ent, familia},
 				...{personajes, hechos, temas, eventos, epocasDelAno, prioridadesRclv},
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer, ayudas},
 				...{apMars, originalUrl, opcsHoyEstamos, opcsLeyNombre, statusAlineado},
