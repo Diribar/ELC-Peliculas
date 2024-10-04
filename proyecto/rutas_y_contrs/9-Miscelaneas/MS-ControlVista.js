@@ -81,7 +81,8 @@ module.exports = {
 		inicio: (req, res) => res.redirect("/"),
 		urlDeOrigen: async (req, res) => {
 			// Variables
-			const {origen: origenCodigo, origenUrl, prodEntidad, prodId, entidad, id, urlDestino, grupo} = req.query;
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {origen: origenCodigo, origenUrl, prodEntidad, prodId, id, urlDestino, grupo} = req.query;
 			let destino;
 
 			// Casos particulares
