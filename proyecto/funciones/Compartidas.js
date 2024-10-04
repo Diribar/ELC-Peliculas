@@ -1275,8 +1275,12 @@ module.exports = {
 			}
 		}
 
+		// Obtiene la entidad
+		let {entidad} = req.params;
+		if (!entidad) entidad = baseUrl.slice(1);
+
 		// Fin
-		return {baseUrl, tarea, siglaFam, url};
+		return {baseUrl, tarea, siglaFam, entidad, url};
 	},
 	variablesSemanales: function () {
 		FN.primerLunesDelAno();
