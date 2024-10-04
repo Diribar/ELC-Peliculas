@@ -298,10 +298,12 @@ window.addEventListener("load", async () => {
 		link.addEventListener("click", () => {
 			// Guardar los valores en Session y Cookies
 			funcionesGrales.guardaLosValoresEnSessionCookies();
+
 			// Obtiene la RCLV_entidad
-			let entidadRclv = "?entidad=" + entidadesRclv(link);
+			const entidadRclv = entidadesRclv(link);
+
 			// Para ir a la vista RCLV
-			location.href = "/rclv/agregar/" + entidadRclv + "&origen=PDA";
+			location.href = "/" + entidadRclv + "/agregar/?origen=PDA";
 		});
 	});
 	// Links a RCLV - Edición
@@ -310,11 +312,11 @@ window.addEventListener("load", async () => {
 			// Guardar los valores en Session y Cookies
 			funcionesGrales.guardaLosValoresEnSessionCookies();
 			// Obtiene la RCLV_entidad
-			let entidadRclv = "?entidad=" + entidadesRclv(link);
+			const entidadRclv = entidadesRclv(link);
 			// Obtiene el RCLV_id
-			let id = "&id=" + DOM.inputsRCLV[i].value;
+			const id = "?id=" + DOM.inputsRCLV[i].value;
 			// Para ir a la vista RCLV
-			location.href = "/rclv/edicion/" + entidadRclv + id + "&origen=PDA";
+			location.href = "/" + entidadRclv + "/edicion/" + id + "&origen=PDA";
 		});
 	});
 
