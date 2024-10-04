@@ -59,8 +59,8 @@ router.get("/agregar-dd", dataEntryMasYaEnBD, vista.datosDuros.form);
 router.post("/agregar-dd", dataEntryMasYaEnBD, multer.single("avatar"), vista.datosDuros.guardar);
 router.get("/agregar-da", dataEntryMasYaEnBD, vista.datosAdics.form);
 router.post("/agregar-da", dataEntryMasYaEnBD, vista.datosAdics.guardar);
-router.get("/confirma", dataEntryMasYaEnBD, vista.confirma.form);
-router.post("/confirma", dataEntryMasYaEnBD, vista.confirma.guardar);
+router.get("/agregar-cn", dataEntryMasYaEnBD, vista.confirma.form);
+router.post("/agregar-cn", dataEntryMasYaEnBD, vista.confirma.guardar);
 
 // Vistas - Fin de "prodYaEnBD"
 router.get("/terminaste", vista.terminaste);
