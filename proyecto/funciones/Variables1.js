@@ -5,7 +5,6 @@ const unDia = unaHora * 24;
 const unaSemana = unDia * 7;
 const unAno = unDia * 365;
 
-const linkSemInicial = 1;
 const linksSemsPrimRev = 4;
 const linksSemsEstrRec = 5;
 const linksSemsEstandar = 26;
@@ -57,7 +56,8 @@ module.exports = {
 	],
 
 	// Links
-	...{linkSemInicial, linksSemsPrimRev, linksSemsEstrRec, linksSemsEstandar},
+	linkSemInicial: 1,
+	...{linksSemsPrimRev, linksSemsEstrRec, linksSemsEstandar},
 	linksVU_primRev: unaSemana * linksSemsPrimRev,
 	linksVU_estrRec: unaSemana * linksSemsEstrRec,
 	linksVU_estandar: unaSemana * linksSemsEstandar,
@@ -124,8 +124,8 @@ module.exports = {
 		{url: "/links/abm", cola: true},
 		{codigo: "RL", url: "/revision/links", cola: true},
 		// Tableros
-		{codigo: "TE", url: "/revision/tablero-de-entidades"},
-		{codigo: "TM", url: "/revision/tablero-de-mantenimiento"},
+		{codigo: "TE", url: "/revision/tablero"},
+		{codigo: "TM", url: "/tablero-de-mantenimiento"},
 		{codigo: "TU", url: "/revision/usuarios/tablero-de-usuarios"},
 		{codigo: "CN", url: "/consultas"},
 	],
@@ -140,4 +140,5 @@ module.exports = {
 		negro: ["#F0F0F0", "#D2D2D2", "#B8BBBE", "#8A8D90", "#6A6E73"], // 8. Black
 	},
 	eliminarCuandoSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
+	requestsTriviales: ["WhatsApp", "Postman"],
 };

@@ -1,59 +1,19 @@
 "use strict";
 // Variables
 const router = express.Router();
-const API = require("./PR-ControlAPI");
-const vista = require("./PR-ControlVista");
-
-// Middlewares - Específicos de usuarios
-const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
-const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones");
-const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
+const vistaMS = require("../9-Miscelaneas/MS-ControlVista");
 
 // Middlewares - Específicos del registro
-const entValida = require("../../middlewares/porRegistro/entidadValida");
-const iDvalido = require("../../middlewares/porRegistro/iDvalido");
-const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
-const misDetalleProd = require("../../middlewares/varios/misDetalleProd");
-const edicion = require("../../middlewares/porRegistro/edicionVista");
-const statusCorrecto = require("../../middlewares/porRegistro/statusCorrecto");
-
-// Middlewares - Temas de captura
-const permUserReg = require("../../middlewares/porRegistro/permUserReg");
-const capturaActivar = require("../../middlewares/varios/capturaActivar");
-const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
-
-// Middlewares - Otros
-const multer = require("../../middlewares/varios/multer");
+const entValidaAnt = require("../../middlewares/porRegistro/entValidaAnt");
+const iDvalidoAnt = require("../../middlewares/porRegistro/iDvalidoAnt");
 
 // Middlewares - Consolidados
-const aptoDetalle = [entValida, iDvalido, rutaCRUD_ID];
-const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
-const aptoCalificar = [...aptoDetalle, statusCorrecto, ...aptoUsuario];
-const aptoEdicion = [...aptoCalificar, permUserReg, edicion];
-
-// API - Calificaciones
-router.get("/api/obtiene-las-calificaciones", API.califics.delProducto);
-router.get("/api/obtiene-la-calificacion-del-usuario", API.califics.delUsuarioProducto);
-router.get("/api/elimina-la-calificacion-propia", API.califics.elimina);
-
-// API - Preferencias por producto
-router.get("/api/obtiene-opciones-de-preferencia", API.prefsDeCampo.obtieneOpciones);
-router.get("/api/guarda-la-preferencia-del-usuario", API.prefsDeCampo.guardaLaPreferencia);
-
-// API - Edición
-router.get("/api/valida", API.edicion.valida);
-router.get("/api/obtiene-original-y-edicion", API.edicion.obtieneVersionesProd);
-router.get("/api/edicion/obtiene-variables-prod", API.edicion.variables);
-router.get("/api/envia-a-req-session", API.edicion.envioParaSession);
-router.get("/api/edicion/eliminar-nueva", API.edicion.eliminaNueva);
-router.get("/api/edicion/eliminar-guardada", API.edicion.eliminaGuardada);
+const entId = [entValidaAnt, iDvalidoAnt];
 
 // Vistas
-router.get("/detalle", aptoDetalle, misDetalleProd, capturaInactivar, vista.detalle);
-router.get("/edicion", aptoEdicion, capturaActivar, vista.edicion.form);
-router.post("/edicion", aptoEdicion, multer.single("avatar"), vista.edicion.guardar);
-router.get("/calificar", aptoCalificar, vista.califica.form);
-router.post("/calificar", aptoCalificar, vista.califica.guardar);
+router.get("/detalle", entId,  vistaMS.redirecciona.rutasAntiguas);
+router.get("/edicion", entId, vistaMS.redirecciona.rutasAntiguas);
+router.get("/calificar", entId, vistaMS.redirecciona.rutasAntiguas);
 
 // Fin
 module.exports = router;

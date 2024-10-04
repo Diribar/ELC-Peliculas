@@ -324,31 +324,28 @@ module.exports = {
 			{titulo: "Parte", nombre: "parte", links: true},
 		],
 	},
-	avatarsExternosPelis: (nombre) => {
-		return [
-			{
-				href: "//themoviedb.org/search?query=" + nombre,
-				src: "/publico/imagenes/Logos/BD-TMDB.jpg",
-				alt: "TMDB",
-			},
-			{
-				href: "//filmaffinity.com/es/search.php?stext=" + nombre,
-				src: "/publico/imagenes/Logos/BD-FA.jpg",
-				alt: "FA",
-			},
-			{
-				href: "//imdb.com/find?q=" + nombre,
-				src: "/publico/imagenes/Logos/BD-IMDB.jpg",
-				alt: "IMDB",
-			},
-			{
-				href: "//google.com/search?q=" + nombre + "&tbm=isch&tbs=isz:l&hl=es-419",
-				src: "/publico/imagenes/Logos/BD-Google.jpg",
-				alt: "Google",
-			},
-		];
-	},
-
+	avatarsExternosPelis: (nombre) => [
+		{
+			href: "//themoviedb.org/search?query=" + nombre,
+			src: "/publico/imagenes/Logos/BD-TMDB.jpg",
+			alt: "TMDB",
+		},
+		{
+			href: "//filmaffinity.com/es/search.php?stext=" + nombre,
+			src: "/publico/imagenes/Logos/BD-FA.jpg",
+			alt: "FA",
+		},
+		{
+			href: "//imdb.com/find?q=" + nombre,
+			src: "/publico/imagenes/Logos/BD-IMDB.jpg",
+			alt: "IMDB",
+		},
+		{
+			href: "//google.com/search?q=" + nombre + "&tbm=isch&tbs=isz:l&hl=es-419",
+			src: "/publico/imagenes/Logos/BD-Google.jpg",
+			alt: "Google",
+		},
+	],
 	// Links a vistas
 	vistaInicio: {clase: iconos.inicio, link: "/", titulo: "Ir a 'Inicio'"},
 	vistaAnterior: (url) => ({clase: iconos.izquierda, link: url ? url : "/", titulo: "Volver a la vista anterior"}),
@@ -357,14 +354,14 @@ module.exports = {
 	vistaEntendido: (url) => ({clase: iconos.entendido, link: url ? url : "/", titulo: "Entendido"}),
 	vistaTablero: {
 		clase: "fa-spell-check",
-		link: "/revision/tablero-de-entidades",
+		link: "/revision/tablero",
 		titulo: "Ir al 'Tablero de Control' de Entidades",
 		autofocus: true,
 	},
 	vistaInactivar: {
 		revision: (entidad, id) => ({
 			clase: "fa-spell-check",
-			link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=TE",
+			link: "/miscelaneas/ic/" + entidad + "/?id=" + id + "&origen=TE",
 			titulo: "Ir al 'Tablero de Control' de Entidades",
 			autofocus: true,
 		}),

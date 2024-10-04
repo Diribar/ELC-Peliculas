@@ -274,6 +274,17 @@ module.exports = {
 		oa: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : "o"),
 		a: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : ""),
 	},
+	obtieneEntidadDesdeUrl: (req) => {
+		// Lo obtiene del path
+		const entParams = req.params.entidad;
+		if (entParams) return entParams;
+
+		// Lo obtiene del baseUrl
+		let baseUrl = req.baseUrl.slice(1);
+		const indice = baseUrl.indexOf("/");
+		if (indice > -1) baseUrl = baseUrl.slice(0, indice);
+		return baseUrl;
+	},
 	// Productos y RCLVs
 	puleEdicion: async function (entidad, original, edicion) {
 		// Variables
@@ -943,20 +954,6 @@ module.exports = {
 			FN_links.obtieneCantPorSem(links);
 			FN_links.obtienePromedios(links);
 			FN_links.obtienePendientes(links, edics);
-			// const {capitulosPosibles, pelisColesPosibles, estrRecPosibles} = FN_links.obtienePosibles(links);
-
-			// Averigua la combinación entre 'posibles' y 'pendientes'
-			// const {capitulos: capitulosPends, pelisColes: pelisColesPends, estrRec: estrRecPends} = cantLinksVencPorSem["0"];
-			// const capitulos = Math.min(capitulosPosibles, capitulosPends);
-			// const pelisColes = Math.min(pelisColesPosibles, pelisColesPends);
-			// const estrRec = Math.min(estrRecPosibles, siestrRecnds);
-
-			// Agrega la información
-			// cantLinksVencPorSem.paraRevisar = {
-			// 	capitulos,
-			// 	pelisColes,
-			// 	prods: capitulos + pelisColes + estrRec,
-			// };
 
 			// Fin
 			return;
@@ -1265,12 +1262,25 @@ module.exports = {
 		const url = req.url.startsWith(baseUrl) ? req.url.replace(baseUrl, "") : req.url;
 
 		// Obtiene la ruta
-		let ruta = req.path.startsWith(baseUrl) ? req.path.replace(baseUrl, "") : req.path;
+		let ruta = req.path;
+		if (ruta.startsWith(baseUrl)) ruta = ruta.replace(baseUrl, ""); // si contiene el baseUrl, lo quita
+		if (ruta.endsWith("/")) ruta = ruta.slice(0, -1); // si termina con "/", lo quita
+
+		// Obtiene la tarea
 		const indice = ruta.indexOf("/", 1);
-		if (indice >= 0) ruta = ruta.slice(0, indice);
+		const tarea = indice >= 0 ? ruta.slice(0, indice) : ruta; // obtiene solamente lo que figure hasta el "/"
+
+		// Obtiene la siglaFam
+		let siglaFam = ruta.replace(tarea, ""); // si contiene la tarea, la quita
+		if (siglaFam) {
+			siglaFam = siglaFam.slice(1); // le quita el "/" del comienzo
+			if (siglaFam.length > 2 && siglaFam[1] != "/") siglaFam = null; // detecta si no es una 'siglaFam'
+			else siglaFam = siglaFam[0]; // obtiene la 'siglaFam'
+			if (siglaFam && !["p", "r", "l"].includes(siglaFam)) siglaFam = null;
+		}
 
 		// Fin
-		return {baseUrl, ruta, url};
+		return {baseUrl, tarea, siglaFam, url};
 	},
 	variablesSemanales: function () {
 		FN.primerLunesDelAno();
@@ -1281,65 +1291,6 @@ module.exports = {
 
 		// Fin
 		return;
-	},
-	rutas: (entidad) => {
-		// Variables
-		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-
-		// Rutas
-		const rutas = [
-			// Producto Agregar
-			...[
-				// ant: '/producto/agregar' + rutaAnt - act: '/producto' + rutaAnt
-				{ant: "/producto/agregar/palabras-clave", act: "/producto/palabras-clave"},
-				{ant: "/producto/agregar/desambiguar", act: "/producto/desambiguar"},
-				{ant: "/producto/agregar/ingreso-manual", act: "/producto/ingreso-manual"},
-
-				// ant: '/producto/agregar' - act: entidad
-				{ant: "/producto/agregar", act: "/" + entidad},
-			],
-
-			// Familia - ant: familia + rutaAnt (salvo correccion) - act: entidad + rutaAct
-			...[
-				{ant: "/" + familia + "/historial", act: "/" + entidad + "/hs", codigo: "historial", titulo: "Historial de"},
-				{ant: "/" + familia + "/inactivar", act: "/" + entidad + "/in", codigo: "inactivar", titulo: "Inactivar"},
-				{ant: "/" + familia + "/recuperar", act: "/" + entidad + "/rc", codigo: "recuperar", titulo: "Recuperar"},
-				{ant: "/" + familia + "/eliminadoPorCreador", act: "/" + entidad + "/ec", titulo: "Eliminar"},
-				{ant: "/" + familia + "/eliminar", act: "/" + entidad + "/el", titulo: "Eliminar"},
-				{ant: "/correccion/motivo", act: "/" + entidad + "/cm"},
-				{ant: "/correccion/status", act: "/" + entidad + "/cs"},
-			],
-
-			// Revisión de Entidades - ant: revision + familia + ant (salvo links) - act: rutaAct + entidad
-			...[
-				{ant: "/revision/" + familia + "/alta", act: "/revision/al" + siglaFam + "/" + entidad},
-				{ant: "/revision/" + familia + "/edicion", act: "/revision/ed/" + entidad},
-				{
-					ant: "/revision/" + familia + "/inactivar",
-					act: "/revision/in/" + entidad,
-					codigo: "inactivar",
-					titulo: "Revisión de Inactivar",
-				},
-				{
-					ant: "/revision/" + familia + "/recuperar",
-					act: "/revision/rc/" + entidad,
-					codigo: "recuperar",
-					titulo: "Revisión de Recuperar",
-				},
-				{
-					ant: "/revision/" + familia + "/rechazar",
-					act: "/revision/ch/" + entidad,
-					codigo: "rechazar",
-					rechazar: "Rechazar",
-				},
-				{ant: "/revision/rclv/solapamiento", act: "/revision/slr/" + entidad},
-				{ant: "/revision/links", act: "/revision/lkp/" + entidad},
-			],
-		];
-
-		// Fin
-		return rutas;
 	},
 };
 

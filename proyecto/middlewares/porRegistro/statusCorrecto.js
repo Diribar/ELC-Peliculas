@@ -2,49 +2,50 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const {id} = req.query;
 	const familia = comp.obtieneDesdeEntidad.familia(entidad);
 	const entidades = variables.entidades.todos;
 	let statusEsperado_ids, informacion;
 
-	// Obtiene la 'baseUrl' y la 'ruta'
-	let {baseUrl, ruta} = comp.partesDelUrl(req);
+	// Obtiene la 'baseUrl' y la 'tarea'
+	let {baseUrl, tarea} = comp.partesDelUrl(req);
 	baseUrl = baseUrl.slice(1);
-	ruta = ruta.slice(1);
+	tarea = tarea.slice(1);
 
-	// Obtiene el status esperado - CRUD
+	// Obtiene el status esperado - Familia CRUD
 	if (!statusEsperado_ids && entidades.includes(baseUrl)) {
-		statusEsperado_ids = ruta.startsWith("ed") // edición
-			? activos_ids
-			: ruta.startsWith("in") // inactivar
-			? aprobados_ids
-			: ["rc", "el"].some((n) => ruta.startsWith(n)) // recuperar y eliminar
-			? [inactivo_id]
-			: ruta.startsWith("ec") // eliminar por el creador
-			? [creado_id]
-			: ruta == "clp" // calificar producto
-			? activos_ids
-			: ruta == "abp" // abm links
-			? activos_ids
-			: ["cm", "cs"].some((n) => ruta.startsWith(n)) // correcciones
-			? [inactivo_id]
-			: null;
+		statusEsperado_ids =
+			tarea == "edicion"
+				? activos_ids
+				: tarea == "inactivar"
+				? aprobados_ids
+				: ["recuperar ", "eliminado"].includes(tarea)
+				? [inactivo_id]
+				: tarea == "eliminado-por-creador"
+				? [creado_id]
+				: tarea == "calificar"
+				? activos_ids
+				: tarea == "abm-links" // abm links
+				? activos_ids
+				: ["correcion-del-motivo", "correccion-del-status"].includes(tarea) // correcciones
+				? [inactivo_id]
+				: null;
 	}
 
 	// Obtiene el status esperado - Revisión de Entidades
 	if (!statusEsperado_ids && baseUrl == "revision") {
-		statusEsperado_ids = ["al", "ch"].some((n) => ruta.startsWith(n)) // revisar alta y rechazar
+		statusEsperado_ids = ["alta", "rechazar"].includes(tarea) // revisar alta y rechazar
 			? [creado_id]
-			: ruta.startsWith("ed") // edición
+			: tarea == "edicion" // edición
 			? aprobados_ids
-			: ruta.startsWith("in") // inactivar
+			: tarea == "inactivar" // inactivar
 			? [inactivar_id]
-			: ruta.startsWith("rc") // recuperar
+			: tarea == "recuperar" // recuperar
 			? [recuperar_id]
-			: ruta == "lkp" // links
+			: tarea == "links" // links
 			? activos_ids
-			: ruta == "rsr" // solapamiento
+			: tarea == "solapamiento" // solapamiento
 			? activos_ids
 			: null;
 	}
@@ -81,7 +82,7 @@ module.exports = async (req, res, next) => {
 			: familia == "rclv"
 			? "RDT"
 			: "PDT";
-		const link = "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
+		const link = "/miscelaneas/ic/" + entidad + "/?id=" + id + "&origen=" + origen;
 		const vistaEntendido = variables.vistaEntendido(link);
 
 		// Información a mostrar

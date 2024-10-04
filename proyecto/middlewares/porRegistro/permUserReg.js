@@ -2,7 +2,7 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const {id} = req.query;
 	const familia = comp.obtieneDesdeEntidad.familia(entidad);
 	const rubro = req.originalUrl.startsWith("/revision/")
@@ -52,7 +52,7 @@ module.exports = async (req, res, next) => {
 	// Corrige el link de 'entendido'
 	if (req.originalUrl.startsWith("/" + familia + "/edicion"))
 		v.vistaEntendido.link =
-			v.origen == "TE" ? "/revision/tablero-de-entidades" : "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
+			v.origen == "TE" ? "/revision/tablero" : "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
 
 	// CRITERIO: registro en status 'creado' y otro usuario quiere acceder
 	const creadoPorElUsuario1 = v.registro.creadoPor_id == v.usuario_id;
@@ -150,7 +150,7 @@ module.exports = async (req, res, next) => {
 
 		// Datos para el link
 		const originalUrl = encodeURIComponent(req.originalUrl);
-		const linkInactivar = "/inactivar-captura/?entidad=" + capturaEnt + "&id=" + capturaEnt_id + "&urlDestino=" + originalUrl;
+		const linkInactivar = "/miscelaneas/ic/" + capturaEnt + "/?id=" + capturaEnt_id + "&urlDestino=" + originalUrl;
 		const liberar = {
 			clase: iconos.check,
 			link: linkInactivar,

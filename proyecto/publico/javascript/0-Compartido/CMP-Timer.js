@@ -92,7 +92,7 @@ window.addEventListener("load", async () => {
 			const [link, clase, titulo] = pathname.startsWith("/revision/usuarios")
 				? ["/revision/usuarios/tablero-de-usuarios", "fa-thumbs-up", "Entendido"]
 				: pathname.startsWith("/revision/")
-				? ["/revision/tablero-de-entidades", "fa-thumbs-up", "Entendido"]
+				? ["/revision/tablero", "fa-thumbs-up", "Entendido"]
 				: ["/" + familia + "/detalle/?entidad=" + entidad + "&id=" + entId, "fa-circle-info", "Ir a Detalle"];
 			contenidoDelCartelGenerico({DOM, mensajes, clase, titulo, link});
 

@@ -4,32 +4,35 @@ const router = express.Router();
 const API = require("./PR-ControlAPI");
 const vista = require("./PR-ControlVista");
 
-// Middlewares - Específicos de usuarios
-const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
-const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones");
-const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
+// Middlewares
+const m = {
+	// Específicos de usuarios
+	usAltaTerm: require("../../middlewares/porUsuario/usAltaTerm"),
+	usPenalizaciones: require("../../middlewares/porUsuario/usPenalizaciones"),
+	usAptoInput: require("../../middlewares/porUsuario/usAptoInput"),
 
-// Middlewares - Específicos del registro
-const entValida = require("../../middlewares/porRegistro/entidadValida");
-const iDvalido = require("../../middlewares/porRegistro/iDvalido");
-const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
-const misDetalleProd = require("../../middlewares/varios/misDetalleProd");
-const edicion = require("../../middlewares/porRegistro/edicionVista");
-const statusCorrecto = require("../../middlewares/porRegistro/statusCorrecto");
+	// Middlewares - Específicos del registro
+	entValida: require("../../middlewares/porRegistro/entidadValida"),
+	iDvalido: require("../../middlewares/porRegistro/iDvalido"),
+	rutaCRUD_ID: require("../../middlewares/varios/rutaCRUD_ID"),
+	misDetalleProd: require("../../middlewares/varios/misDetalleProd"),
+	edicion: require("../../middlewares/porRegistro/edicionVista"),
+	statusCorrecto: require("../../middlewares/porRegistro/statusCorrecto"),
 
-// Middlewares - Temas de captura
-const permUserReg = require("../../middlewares/porRegistro/permUserReg");
-const capturaActivar = require("../../middlewares/varios/capturaActivar");
-const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
+	// Middlewares - Temas de captura
+	permUserReg: require("../../middlewares/porRegistro/permUserReg"),
+	capturaActivar: require("../../middlewares/varios/capturaActivar"),
+	capturaInactivar: require("../../middlewares/varios/capturaInactivar"),
 
-// Middlewares - Otros
-const multer = require("../../middlewares/varios/multer");
+	// Middlewares - Otros
+	multer: require("../../middlewares/varios/multer"),
+};
 
 // Middlewares - Consolidados
-const aptoDetalle = [entValida, iDvalido, rutaCRUD_ID];
-const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
-const aptoCalificar = [...aptoDetalle, statusCorrecto, ...aptoUsuario];
-const aptoEdicion = [...aptoCalificar, permUserReg, edicion];
+const aptoDetalle = [m.entValida, m.iDvalido, m.rutaCRUD_ID];
+const aptoUsuario = [m.usAltaTerm, m.usPenalizaciones, m.usAptoInput];
+const aptoCalificar = [...aptoDetalle, m.statusCorrecto, ...aptoUsuario];
+const aptoEdicion = [...aptoCalificar, m.permUserReg, m.edicion];
 
 // API - Calificaciones
 router.get("/api/obtiene-las-calificaciones", API.califics.delProducto);
@@ -49,11 +52,11 @@ router.get("/api/edicion/eliminar-nueva", API.edicion.eliminaNueva);
 router.get("/api/edicion/eliminar-guardada", API.edicion.eliminaGuardada);
 
 // Vistas
-router.get("/dtp", aptoDetalle, misDetalleProd, capturaInactivar, vista.detalle);
-router.get("/edp", aptoEdicion, capturaActivar, vista.edicion.form);
-router.post("/edp", aptoEdicion, multer.single("avatar"), vista.edicion.guardar);
-router.get("/clp", aptoCalificar, vista.califica.form);
-router.post("/clp", aptoCalificar, vista.califica.guardar);
+router.get("/detalle/p", aptoDetalle, m.misDetalleProd, m.capturaInactivar, vista.detalle);
+router.get("/edicion/p", aptoEdicion, m.capturaActivar, vista.edicion.form);
+router.post("/edicion/p", aptoEdicion, m.multer.single("avatar"), vista.edicion.guardar);
+router.get("/calificar/p", aptoCalificar, vista.califica.form);
+router.post("/calificar/p", aptoCalificar, vista.califica.guardar);
 
 // Fin
 module.exports = router;

@@ -100,14 +100,10 @@ module.exports = {
 
 		// Genera el link
 		const link = sigProd
-			? "/inactivar-captura/?entidad=" +
-			  entidad +
-			  "&id=" +
-			  producto.id +
-			  "&prodEntidad=" +
-			  sigProd.entidad +
-			  "&prodId=" +
-			  sigProd.id +
+			? "/miscelaneas/ic/".concat(entidad) +
+			  "/?id=".concat(producto.id) +
+			  "&prodEntidad=".concat(sigProd.entidad) +
+			  "&prodId=".concat(sigProd.id) +
 			  "&origen=LKM&grupo=inactivo"
 			: "";
 

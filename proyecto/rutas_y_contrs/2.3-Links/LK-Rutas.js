@@ -4,27 +4,28 @@ const router = express.Router();
 const API = require("./LK-ControlAPI");
 const vista = require("./LK-ControlVista");
 
-// Middlewares - Específicos de usuarios
-const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
-const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones");
-const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
+// Middlewares
+const m = {
+	// Específicos de usuarios
+	usAltaTerm: require("../../middlewares/porUsuario/usAltaTerm"),
+	usPenalizaciones: require("../../middlewares/porUsuario/usPenalizaciones"),
+	usAptoInput: require("../../middlewares/porUsuario/usAptoInput"),
 
-// Middlewares - Específicos del registro
-const entValida = require("../../middlewares/porRegistro/entidadValida");
-const iDvalido = require("../../middlewares/porRegistro/iDvalido");
-const linkIDvalido = require("../../middlewares/porRegistro/linkIDvalido");
-const statusCorrecto = require("../../middlewares/porRegistro/statusCorrecto");
+	// Middlewares - Específicos del registro
+	entValida: require("../../middlewares/porRegistro/entidadValida"),
+	iDvalido: require("../../middlewares/porRegistro/iDvalido"),
+	linkIDvalido: require("../../middlewares/porRegistro/linkIDvalido"),
+	statusCorrecto: require("../../middlewares/porRegistro/statusCorrecto"),
 
-// Middlewares - Temas de captura
-const permUserReg = require("../../middlewares/porRegistro/permUserReg");
-const capturaActivar = require("../../middlewares/varios/capturaActivar");
-
-// Middlewares - Otros
-const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
+	// Middlewares - Otros
+	permUserReg: require("../../middlewares/porRegistro/permUserReg"),
+	capturaActivar: require("../../middlewares/varios/capturaActivar"),
+	rutaCRUD_ID: require("../../middlewares/varios/rutaCRUD_ID"),
+};
 
 // Middlewares - Consolidados
-const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
-const aptoABM = [...aptoUsuario, entValida, iDvalido, statusCorrecto, permUserReg, rutaCRUD_ID];
+const aptoUsuario = [m.usAltaTerm, m.usPenalizaciones, m.usAptoInput];
+const aptoABM = [...aptoUsuario, m.entValida, m.iDvalido, m.statusCorrecto, m.permUserReg, m.rutaCRUD_ID];
 
 // APIs - Links
 router.get("/api/valida", API.valida);
@@ -37,8 +38,8 @@ router.get("/api/recuperar", API.recupera);
 router.get("/api/deshacer", API.deshace);
 
 // Vistas
-router.get("/abp", aptoABM, capturaActivar, vista.abm);
-router.get("/vsp",linkIDvalido, vista.visualizacion);
+router.get("/abm-links/p", aptoABM, m.capturaActivar, vista.abm);
+router.get("/mirar/l", m.linkIDvalido, vista.visualizacion);
 
 // Fin
 module.exports = router;

@@ -11,9 +11,6 @@ module.exports = (sequelize, dt) => {
 		// Datos compartidos con usuario - innecesarios en 'session'
 		diasNaveg: {type: dt.INTEGER}, // para la estadística
 		visitaCreadaEn: {type: dt.DATE}, // para la estadística
-
-		// Carteles
-		recienCreado: {type: dt.BOOLEAN}, // default 'true '
 	};
 	const config = {
 		tableName: "us_visitas",

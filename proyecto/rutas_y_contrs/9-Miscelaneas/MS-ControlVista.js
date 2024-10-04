@@ -1,4 +1,6 @@
 "use strict";
+const procsRE = require("../3-Rev-Entidades/RE-Procesos");
+const procesos = require("./MS-Procesos");
 
 module.exports = {
 	inicio: (req, res) => {
@@ -8,42 +10,40 @@ module.exports = {
 			...vistaActual,
 		});
 	},
+	// Tablero de mantenimiento
+	tableroMantenim: async (req, res) => {
+		// Variables
+		const tema = "mantenimiento";
+		const codigo = "tableroControl";
+		const usuario_id = req.session.usuario.id;
+		const omnipotente = req.session.usuario.rolUsuario_id == rolOmnipotente_id;
+
+		// Productos
+		let prods = procesos.obtieneProds(usuario_id).then((n) => procsRE.procesaCampos.prods(n));
+		let rclvs = procesos.obtieneRCLVs(usuario_id).then((n) => procsRE.procesaCampos.rclvs(n));
+		let prodsConLinksInactivos = procesos.obtieneLinksInactivos(usuario_id).then((n) => procsRE.procesaCampos.prods(n));
+
+		// RCLVs
+		[prods, rclvs, prodsConLinksInactivos] = await Promise.all([prods, rclvs, prodsConLinksInactivos]);
+
+		// Une Productos y Links
+		prods = {...prods, ...prodsConLinksInactivos};
+
+		// Obtiene información para la vista
+		const dataEntry = req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};
+
+		// Va a la vista
+		return res.render("CMP-0Estructura", {
+			...{tema, codigo, titulo: "Tablero de Mantenimiento", origen: "TM"},
+			...{prods, rclvs, omnipotente},
+			dataEntry,
+		});
+	},
 
 	// Listados
 	listados: {
 		session: (req, res) => res.send(req.session), // session
 		cookies: (req, res) => res.send(req.cookies), // cookies
-		rclvs: async (req, res) => {
-			// Variables
-			const {ruta} = comp.partesDelUrl(req);
-			const indice = ruta.lastIndexOf("/");
-			const rclv = ruta.slice(indice + 1);
-			const condicion = {id: {[Op.ne]: 1}};
-			const include = [...variables.entidades.prods, "prodsEdiciones"];
-			let rclvs = {};
-			let resultado = {};
-
-			// Lectura
-			await baseDeDatos
-				.obtieneTodosPorCondicion(rclv, condicion, include)
-				.then((n) =>
-					n.map((m) => {
-						rclvs[m.nombre] = 0;
-						for (let entidad of include) rclvs[m.nombre] += m[entidad].length;
-					})
-				)
-				.then(() => {
-					// Ordena los métodos según la cantidad de productos
-					const metodos = Object.keys(rclvs).sort((a, b) =>
-						rclvs[b] != rclvs[a] ? rclvs[b] - rclvs[a] : a < b ? -1 : 1
-					);
-					// Crea un objeto nuevo, con los métodos ordenados
-					metodos.map((n) => (resultado[n] = rclvs[n]));
-				});
-
-			// Fin
-			return res.send(resultado);
-		},
 		links: async (req, res) => {
 			// Variables
 			const entidades = variables.entidades.prods;
@@ -114,7 +114,7 @@ module.exports = {
 		rutasAntiguas: function (req, res) {
 			// Variables
 			const {entidad, id} = req.query;
-			const rutasAntsActs = comp.rutas(entidad);
+			const rutasAntsActs = procesos.rutas(entidad);
 			let {originalUrl} = req;
 			let nuevoUrl, nuevaCola;
 

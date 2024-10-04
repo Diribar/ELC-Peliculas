@@ -3,7 +3,7 @@
 module.exports = async (req, res, next) => {
 	// Variables
 	const {id} = req.query;
-	const entidad = req.params.entidad ? req.params.entidad : req.baseUrl.slice(1);
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const usuario_id = req.session.usuario.id;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const haceUnaHora = comp.fechaHora.nuevoHorario(-1);

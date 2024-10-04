@@ -8,17 +8,17 @@ const vista = require("./PA-ControlVista");
 const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
 const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones");
 const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
-const circuitoProdAgregar = require("../../middlewares/varios/circuitoProdAgregar");
 const usAutorizFA = require("../../middlewares/porUsuario/usAutorizFA");
 
 // Middlewares - Específicos del registro
+const prodAgregar = require("../../middlewares/porRegistro/prodAgregar");
 const prodYaEnBD = require("../../middlewares/porRegistro/prodYaEnBD");
 
 // Middlewares - Otros
 const multer = require("../../middlewares/varios/multer");
 
 // Middlewares - Consolidados
-const dataEntry = [usAltaTerm, usPenalizaciones, usAptoInput, circuitoProdAgregar];
+const dataEntry = [usAltaTerm, usPenalizaciones, usAptoInput, prodAgregar];
 const dataEntryMasYaEnBD = [...dataEntry, prodYaEnBD];
 const dataEntryMasFA = [...dataEntry, usAutorizFA];
 

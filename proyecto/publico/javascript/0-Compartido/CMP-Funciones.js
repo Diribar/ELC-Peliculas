@@ -308,7 +308,7 @@ const entidades = [
 	...["personajes", "hechos", "temas", "eventos", "epocasDelAno"],
 	...["links", "usuarios"],
 ];
-const entidad = entidades.find(n=>pathname.includes(n))
+const entidad = entidades.find((n) => pathname.includes(n));
 const id = new URL(location.href).searchParams.get("id");
 
 // Variables fijas

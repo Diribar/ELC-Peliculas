@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 30/sep",
-	"HoraUTC": "8:43",
+	"FechaUTC": "Mié. 2/oct",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 30/sep",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"28-sep-24": {},
-		"29-sep-24": {},
 		"30-sep-24": {},
 		"01-oct-24": {"leyenda": "Hoy recordamos a santa Teresita de Lisieux", "entidad": "personajes", "id": 100},
-		"02-oct-24": {}
+		"02-oct-24": {},
+		"03-oct-24": {},
+		"04-oct-24": {"leyenda": "Hoy recordamos a san Francisco de Asís", "entidad": "personajes", "id": 57}
 	}
 }

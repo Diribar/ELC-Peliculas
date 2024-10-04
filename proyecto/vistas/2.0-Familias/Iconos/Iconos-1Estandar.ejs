@@ -7,9 +7,9 @@
 <div id="estandar" class="iconos">
 	<% if (locals.origen && (!detalle || !["PDT", "RDT"].includes(origen))) { %><!-- Cuando la vista o su origen no es 'Detalle' -->
 		<!-- Salir -->
-		<% const ENTIDAD = 'entidad=' + (locals.prodEntidad ? prodEntidad : entidad) %>
-		<% const ID = locals.prodId || locals.id ? ('&id='+(locals.prodId || locals.id)) : '' %>
-		<a href="/inactivar-captura/?<%= ENTIDAD + ID + ORIGEN %>" tabindex="-1">
+		<% const ENTIDAD = (locals.prodEntidad ? prodEntidad : entidad) %>
+		<% const ID = locals.prodId || locals.id ? ('/?id='+(locals.prodId || locals.id)) : '' %>
+		<a href="/miscelaneas/ic/<%= ENTIDAD + ID + ORIGEN %>" tabindex="-1">
 			<i class="<%= iconos.faSolid %> <%= iconos.izquierda %>" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>

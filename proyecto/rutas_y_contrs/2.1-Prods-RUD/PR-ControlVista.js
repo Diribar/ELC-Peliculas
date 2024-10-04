@@ -11,7 +11,8 @@ module.exports = {
 		// Variables
 		const tema = "prodRud";
 		const codigo = "detalle";
-		const {entidad, id} = req.query;
+		const entidad = comp.obtieneEntidadDesdeUrl(req);
+		const {id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "PDT";
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const usuario_id = usuario ? usuario.id : "";
@@ -98,7 +99,8 @@ module.exports = {
 			// Variables
 			const tema = "prodRud";
 			const codigo = "edicion";
-			const {entidad, id} = req.query;
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id} = req.query;
 			const usuario_id = req.session.usuario.id;
 
 			// Procesa la session y cookie
@@ -150,11 +152,12 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			const {entidad, id, origen} = req.query;
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id, origen} = req.query;
 			const usuario = req.session.usuario;
 			const usuario_id = usuario.id;
 			const revisorPERL = usuario.rolUsuario.revisorPERL;
-			const entidadIdOrigen = "?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
+			const entidadIdOrigen = entidad + "/?id=" + id + (origen ? "&origen=" + origen : "");
 
 			// Reemplaza valores
 			for (let prop in req.body)
@@ -256,7 +259,7 @@ module.exports = {
 
 			// Fin
 			return origen == "TE"
-				? res.redirect("/inactivar-captura/" + entidadIdOrigen) // Regresa a Revisión
+				? res.redirect("/miscelaneas/ic/" + entidadIdOrigen) // Regresa a Revisión
 				: res.redirect("/producto/detalle/" + entidadIdOrigen); // Redirige a detalle
 		},
 	},
@@ -265,7 +268,8 @@ module.exports = {
 			// Variables
 			const tema = "prodRud";
 			const codigo = "calificar";
-			const {entidad, id} = req.query;
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id} = req.query;
 			const origen = req.query.origen ? req.query.origen : "";
 			const usuario_id = req.session.usuario ? req.session.usuario.id : "";
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -316,7 +320,8 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Variables
-			const {entidad, id: entidad_id, feValores_id, entretiene_id, calidadTecnica_id} = {...req.query, ...req.body};
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id: entidad_id, feValores_id, entretiene_id, calidadTecnica_id} = {...req.query, ...req.body};
 			const usuario_id = req.session.usuario.id;
 			let condicion;
 
