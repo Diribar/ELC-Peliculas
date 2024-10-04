@@ -1267,7 +1267,7 @@ module.exports = {
 		let siglaFam;
 		url = url.replace(tarea, ""); // si contiene la tarea, la quita
 		if (url) {
-			siglaFam = siglaFam.slice(1); // le quita el "/" del comienzo
+			siglaFam = url.slice(1); // le quita el "/" del comienzo
 			if (siglaFam.length > 2 || siglaFam[1] != "/") siglaFam = null; // detecta si no es una 'siglaFam'
 			else siglaFam = siglaFam[0]; // obtiene la 'siglaFam'
 			if (siglaFam && !["p", "r", "l"].includes(siglaFam)) siglaFam = null;
