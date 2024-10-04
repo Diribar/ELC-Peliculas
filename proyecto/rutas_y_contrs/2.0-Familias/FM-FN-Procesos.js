@@ -104,9 +104,9 @@ module.exports = {
 	},
 
 	// CRUD
-	obtieneDatosForm: async function (req) {
+	obtieneDatos: async function (req) {
 		// Variables
-		const {entidad, baseUrl, tarea} = comp.partesDelUrl(req);
+		const {baseUrl, tarea, entidad} = comp.partesDelUrl(req);
 		const {originalUrl} = req;
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
 		const codigo = tarea.slice(1);
