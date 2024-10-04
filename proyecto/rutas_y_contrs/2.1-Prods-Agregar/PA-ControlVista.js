@@ -46,7 +46,7 @@ module.exports = {
 			if (errores.hay) return res.redirect(req.originalUrl);
 
 			// Si corresponde, redirecciona a 'ingreso manual'
-			if (metodo == "Ingr. Man.") return res.redirect("ingreso-manual");
+			if (metodo == "Ingr. Man.") return res.redirect("agregar-im");
 
 			// Guarda el Data Entry en session y cookie de desambiguar
 			req.session.desambiguar = {palabrasClave};
@@ -115,9 +115,9 @@ module.exports = {
 			// Datos para la vista
 			const origen =
 				req.session.FA || req.cookies.FA
-					? "ingreso-fa"
+					? "agregar-fa"
 					: req.session.IM || req.cookies.IM
-					? "ingreso-manual"
+					? "agregar-im"
 					: "agregar-ds";
 			const camposInput1 = camposInput.filter((n) => n.campoInput == 1);
 			const camposInput2 = camposInput.filter((n) => n.campoInput == 2);
@@ -351,7 +351,7 @@ module.exports = {
 			res.cookie("terminaste", terminaste, {maxAge: unDia});
 
 			// REDIRECCIONA --> es necesario que sea una nueva url, para que no se pueda recargar el post de 'guardar'
-			return res.redirect("terminaste");
+			return res.redirect("agregar-tr");
 		},
 	},
 	terminaste: async (req, res) => {
@@ -384,7 +384,7 @@ module.exports = {
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, imagenMG, agregaste},
-			...{entidad, familia: "producto", id, dataEntry: origEdic, entidadNombre, ruta: "/producto/"},
+			...{entidad, familia: "producto", id, dataEntry: origEdic, entidadNombre},
 			...{imgDerPers, tituloImgDerPers, status_id: creado_id},
 		});
 	},
@@ -468,7 +468,7 @@ module.exports = {
 			else res.cookie("datosOriginales", IM, {maxAge: unDia});
 
 			// Guarda en 'session' y 'cookie' del siguiente paso
-			const sigPaso = IM.fuente == "FA" ? {codigo: "FA", url: "ingreso-fa"} : {codigo: "datosDuros", url: "agregar-dd"};
+			const sigPaso = IM.fuente == "FA" ? {codigo: "FA", url: "agregar-fa"} : {codigo: "datosDuros", url: "agregar-dd"};
 			req.session[sigPaso.codigo] = IM;
 			res.cookie(sigPaso.codigo, IM, {maxAge: unDia});
 

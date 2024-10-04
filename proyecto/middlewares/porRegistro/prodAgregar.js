@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
 		{url: "agregar-pc", codigo: "palabrasClave", producto: true},
 		{url: "agregar-ds", codigo: "desambiguar", producto: true},
 		{url: "agregar-im", codigo: "IM", producto: true},
-		{url: "ingreso-fa", codigo: "FA"},
+		{url: "agregar-fa", codigo: "FA"},
 		{url: "agregar-dd", codigo: "datosDuros"},
 		{url: "agregar-da", codigo: "datosAdics"},
 		{url: "agregar-cn", codigo: "confirma"},
@@ -31,7 +31,7 @@ module.exports = (req, res, next) => {
 			// Obtiene el origen
 			const origen =
 				req.session.FA || req.cookies.FA
-					? "ingreso-fa"
+					? "agregar-fa"
 					: req.session.IM || req.cookies.IM
 					? "agregar-im"
 					: "agregar-ds";

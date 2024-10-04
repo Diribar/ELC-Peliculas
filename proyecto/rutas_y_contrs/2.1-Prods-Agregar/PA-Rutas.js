@@ -63,15 +63,15 @@ router.get("/agregar-cn", dataEntryMasYaEnBD, vista.confirma.form);
 router.post("/agregar-cn", dataEntryMasYaEnBD, vista.confirma.guardar);
 
 // Vistas - Fin de "prodYaEnBD"
-router.get("/terminaste", vista.terminaste);
+router.get("/agregar-tr", vista.terminaste);
 
 // Vistas - Ingreso Manual
-router.get("/ingreso-manual", dataEntry, vista.IM.form);
-router.post("/ingreso-manual", dataEntry, vista.IM.guardar);
+router.get("/agregar-im", dataEntry, vista.IM.form);
+router.post("/agregar-im", dataEntry, vista.IM.guardar);
 
 // Vistas - Ingreso FA
-router.get("/ingreso-fa", dataEntryMasFA, vista.FA.form);
-router.post("/ingreso-fa", dataEntryMasFA, vista.FA.guardar);
+router.get("/agregar-fa", dataEntryMasFA, vista.FA.form);
+router.post("/agregar-fa", dataEntryMasFA, vista.FA.guardar);
 
 // Fin
 module.exports = router;
