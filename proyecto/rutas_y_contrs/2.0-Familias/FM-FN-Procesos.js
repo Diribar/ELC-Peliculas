@@ -108,7 +108,7 @@ module.exports = {
 		// Variables
 		const {entidad, baseUrl, tarea: codigo} = comp.partesDelUrl(req);
 		const {originalUrl} = req;
-				const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
+		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
 		const {id} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
