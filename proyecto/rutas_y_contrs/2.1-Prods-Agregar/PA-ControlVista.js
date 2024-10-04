@@ -468,7 +468,7 @@ module.exports = {
 			else res.cookie("datosOriginales", IM, {maxAge: unDia});
 
 			// Guarda en 'session' y 'cookie' del siguiente paso
-			const sigPaso = IM.fuente == "FA" ? {codigo: "FA", url: "/ingreso-fa"} : {codigo: "datosDuros", url: "/datos-duros"};
+			const sigPaso = IM.fuente == "FA" ? {codigo: "FA", url: "ingreso-fa"} : {codigo: "datosDuros", url: "agregar-dd"};
 			req.session[sigPaso.codigo] = IM;
 			res.cookie(sigPaso.codigo, IM, {maxAge: unDia});
 
@@ -533,7 +533,7 @@ module.exports = {
 			res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 
 			// Redirecciona a la siguiente instancia
-			return res.redirect("datos-duros");
+			return res.redirect("agregar-dd");
 		},
 	},
 };

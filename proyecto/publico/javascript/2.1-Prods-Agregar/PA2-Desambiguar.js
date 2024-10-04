@@ -203,7 +203,7 @@ let FN = {
 				DOM.cartelProgreso.classList.add("disminuye");
 
 				// Fin
-				if (errores.hay) location.href = "datos-duros";
+				if (errores.hay) location.href = "agregar-dd";
 				else location.href = "datos-adicionales";
 			});
 		}
