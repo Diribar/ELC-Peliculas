@@ -106,19 +106,14 @@ module.exports = {
 	// CRUD
 	obtieneDatosForm: async function (req) {
 		// Variables
-		const {baseUrl} = comp.partesDelUrl(req);
-		const entidad = comp.obtieneEntidadDesdeUrl(req);
+		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
+		const {entidad, baseUrl, tarea: codigo} = comp.partesDelUrl(req);
 		const {id} = req.query;
-		const {originalUrl} = req;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const origen = req.query.origen;
 		const usuario_id = req.session && req.session.usuario ? req.session.usuario.id : null;
 		let comentario;
-
-		// Obtiene el tema y código
-		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
-		const codigo = this.codigo(originalUrl);
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -155,15 +150,6 @@ module.exports = {
 			...{entsNombre, urlActual, cartelGenerico},
 		};
 	},
-	codigo: (originalUrl) => {
-		// Variables
-		const {rutas} = comp;
-		const ruta = rutas.find((n) => originalUrl.startsWith(n.act));
-		const {codigo} = ruta;
-
-		// Fin - historial - inactivar - recuperar - revisionInactivar - revisionRecuperar - rechazar
-		return codigo;
-	},
 	titulo: ({entidad, codigo}) => {
 		// Variables
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -180,8 +166,7 @@ module.exports = {
 	},
 	obtieneDatosGuardar: async function (req) {
 		// Variables
-		const codigo = this.codigo(req.originalUrl); // 'inactivar' o 'recuperar'
-		const entidad = comp.obtieneEntidadDesdeUrl(req);
+		const {entidad, tarea: codigo} = comp.partesDelUrl(req);
 		const {id} = req.query;
 		const {motivo_id, entDupl, idDupl} = req.body;
 
