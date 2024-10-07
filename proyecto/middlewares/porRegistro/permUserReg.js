@@ -3,14 +3,10 @@
 module.exports = async (req, res, next) => {
 	// Variables
 	const entidad = comp.obtieneEntidadDesdeUrl(req);
+	const familia = comp.obtieneDesdeEntidad.familia(entidad);
 	const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
 	const {id} = req.query;
-	const familia = comp.obtieneDesdeEntidad.familia(entidad);
-	const rubro = req.originalUrl.startsWith("/revision/")
-		? "revision"
-		: ["p", "r"].includes(siglaFam) || req.originalUrl.startsWith("/links/abm/")
-		? "prodRclv"
-		: null;
+	const rubro = req.originalUrl.startsWith("/revision/") ? "revision" : ["p", "r"].includes(siglaFam) ? "prodRclv" : null;
 
 	let v = {
 		// Generales
