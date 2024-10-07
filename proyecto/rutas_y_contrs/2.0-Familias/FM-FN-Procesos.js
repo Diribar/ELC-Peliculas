@@ -185,6 +185,7 @@ module.exports = {
 
 		// Más variables
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const siglaFam = familia[0];
 		const usuario_id = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
@@ -197,7 +198,10 @@ module.exports = {
 		comentario = await this.comentario({entidad, id, codigo, motivo_id, entDupl, idDupl, comentario, statusFinal_id});
 
 		// Fin
-		return {entidad, id, familia, motivo_id, codigo, usuario_id, ahora, campo_id, original, statusFinal_id, comentario};
+		return {
+			...{familia, siglaFam, entidad, id},
+			...{motivo_id, codigo, usuario_id, ahora, campo_id, original, statusFinal_id, comentario},
+		};
 	},
 	comentario: async function (datos) {
 		// Stoppers
