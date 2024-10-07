@@ -155,11 +155,21 @@ module.exports = {
 	titulo: ({entidad, originalUrl}) => {
 		// Variables
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const rutas = comp.rutas(entidad);
+		const titulos = [
+			// Revisión
+			{tarea: "revision/edicion", titulo: "Revisión de Edicion de"},
+			{tarea: "revision/rechazar", titulo: "Rechazar"},
+			{tarea: "revision/inactivar", titulo: "Revisión de Inactivar"},
+			{tarea: "revision/recuperar", titulo: "Eliminado de Recuperar"},
+
+			// Crud
+			{tarea: "historial", titulo: "Historial de"},
+			{tarea: "inactivar", titulo: "Inactivar"},
+			{tarea: "recuperar", titulo: "Recuperar"},
+		];
 
 		// Título
-		const ruta = rutas.find((n) => originalUrl.startsWith(n.act));
-		let titulo = ruta.titulo + " ";
+		let titulo = titulos.find((n) => originalUrl.includes("/" + n.act + "/")) + " ";
 		titulo += comp.obtieneDesdeEntidad.unaUn(entidad) + " ";
 		titulo += entidadNombre;
 

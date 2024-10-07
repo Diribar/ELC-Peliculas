@@ -117,7 +117,7 @@ module.exports = {
 		rutasAntiguas: function (req, res) {
 			// Variables
 			const {entidad} = req.query; // debe ser 'req.query', porque así son las antiguas
-			const rutasAntsActs = comp.rutas(entidad);
+			const rutasAntsActs = procesos.rutas(entidad);
 			let {originalUrl} = req;
 			let nuevoUrl, nuevaCola;
 

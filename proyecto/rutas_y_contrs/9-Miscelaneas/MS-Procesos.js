@@ -135,6 +135,58 @@ module.exports = {
 			{codigo: "CN", url: "/consultas"},
 		];
 	},
+	rutas: (entidad) => {
+		// Variables
+		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const rutasCons = [];
+		let tareas;
+
+		// Rutas de Familia
+		if (["producto", "rclv"].includes(familia)) {
+			rutasCons.push(
+				{ant: "/" + familia + "/historial", act: "/" + entidad + "/historial"},
+				{ant: "/" + familia + "/inactivar", act: "/" + entidad + "/inactivar"},
+				{ant: "/" + familia + "/recuperar", act: "/" + entidad + "/recuperar"},
+				{ant: "/" + familia + "/eliminadoPorCreador", act: "/" + entidad + "/eliminado-por-creador"},
+				{ant: "/" + familia + "/eliminar", act: "/" + entidad + "/eliminado"},
+				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-del-motivo"},
+				{ant: "/correccion/status", act: "/" + entidad + "/correccion-del-status"}
+			);
+		}
+
+		// Rutas de Producto RUD
+		if (familia == "producto") {
+			tareas = ["detalle", "edicion", "calificar"];
+			for (let tarea of tareas) rutasCons.push({ant: "/producto/" + tarea, act: "/" + entidad + "/" + tarea + "/p"}); // ant: '/producto/' + rutaAnt - act: entidad + rutaAct
+		}
+
+		// Rclv CRUD
+		if (familia == "rclv") {
+			tareas = ["agregar", "detalle", "edicion"];
+			for (let tarea of tareas) rutasCons.push({ant: "/rclv/" + tarea, act: "/" + entidad + "/" + tarea + "/r"});
+		}
+
+		// Links
+		if (["producto", "link"].includes(familia))
+			rutasCons.push(
+				{ant: "/links/abm", act: "/" + entidad + "/abm-links/p"},
+				{ant: "/links/visualizacion", act: "/links/mirar/l"}
+			);
+
+		// Revisión de Entidades
+		rutasCons.push(
+			{ant: "/revision/" + familia + "/alta", act: "/revision/alta/" + siglaFam + "/" + entidad},
+			{ant: "/revision/solapamiento/", act: "/revision/solapamiento/r/" + entidad},
+			{ant: "/revision/links", act: "/revision/abm-links/p/" + entidad}
+		);
+		tareas = ["edicion", "rechazar", "inactivar", "recuperar"];
+		for (let tarea of tareas)
+			rutasCons.push({ant: "/revision/" + familia + "/" + tarea, act: "/revision/" + tarea + "/" + entidad});
+
+		// Fin
+		return rutasCons;
+	},
 };
 
 let FN_tablManten = {
