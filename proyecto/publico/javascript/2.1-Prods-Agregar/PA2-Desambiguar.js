@@ -81,7 +81,7 @@ window.addEventListener("load", async () => {
 			let boton = li.querySelector("a button");
 
 			// Información a enviar al BE
-			li.querySelector("a").href += prod.entidad + "&id=" + prod.id;
+			li.querySelector("a").href = "/" + prod.entidad + "/detalle/p/?id=" + prod.id;
 
 			// Imagen
 			let avatar = !prod.avatar
@@ -134,7 +134,6 @@ let FN = {
 			{ruta: "organiza-la-info", duracion: 1000},
 			{ruta: "agrega-hallazgos-de-IM-y-FA", duracion: 100},
 			{ruta: "obtiene-el-mensaje", duracion: 100},
-
 		];
 		let duracionTotal = 0;
 		for (let API of APIs) duracionTotal += API.duracion;
