@@ -46,25 +46,25 @@ router.get("/api/obtiene-registro", API.obtieneRegistro);
 router.get("/api/obtiene-embeded-link", API.obtieneEmbededLink);
 
 // Vistas - Historial
-router.get("/historial/:siglaFam", aptoDetalle, m.statusCompara, vista.form.historial);
+router.get("/historial", aptoDetalle, m.statusCompara, vista.form.historial);
 
 // Vistas - Inactivar
-router.get("/inactivar/:siglaFam", aptoCRUD, m.capturaActivar, vista.form.motivos);
-router.post("/inactivar/:siglaFam", aptoCRUD, m.motivoNecesario, m.capturaInactivar, vista.inacRecupGuardar);
+router.get("/inactivar", aptoCRUD, m.capturaActivar, vista.form.motivos);
+router.post("/inactivar", aptoCRUD, m.motivoNecesario, m.capturaInactivar, vista.inacRecupGuardar);
 
 // Vistas - Recuperar
-router.get("/recuperar/:siglaFam", aptoCRUD, m.capturaActivar, vista.form.historial);
-router.post("/recuperar/:siglaFam", aptoCRUD, m.comentNecesario, m.capturaInactivar, vista.inacRecupGuardar);
+router.get("/recuperar", aptoCRUD, m.capturaActivar, vista.form.historial);
+router.post("/recuperar", aptoCRUD, m.comentNecesario, m.capturaInactivar, vista.inacRecupGuardar);
 
 // Vistas - Elimina
-router.get("/eliminado-por-creador/:siglaFam", eliminadoPorCreador, vista.form.elimina);
-router.get("/eliminado/:siglaFam", aptoEliminar, vista.form.elimina);
+router.get("/eliminado-por-creador", eliminadoPorCreador, vista.form.elimina);
+router.get("/eliminado", aptoEliminar, vista.form.elimina);
 
 // Vistas - Correcciones
-router.get("/correcion-del-motivo/:siglaFam", correcs, m.capturaActivar, m.statusCorrecto, vista.correcs.motivoForm);
-router.post("/correcion-del-motivo/:siglaFam", correcs, m.capturaInactivar, m.statusCorrecto, m.motivoNecesario, vista.correcs.motivoGuardar);
-router.get("/correccion-del-status/:siglaFam", correcs, m.capturaActivar, vista.correcs.statusForm);
-router.post("/correccion-del-status/:siglaFam", correcs, m.capturaInactivar, vista.correcs.statusGuardar);
+router.get("/correcion-del-motivo", correcs, m.capturaActivar, m.statusCorrecto, vista.correcs.motivoForm);
+router.post("/correcion-del-motivo", correcs, m.capturaInactivar, m.statusCorrecto, m.motivoNecesario, vista.correcs.motivoGuardar);
+router.get("/correccion-del-status", correcs, m.capturaActivar, vista.correcs.statusForm);
+router.post("/correccion-del-status", correcs, m.capturaInactivar, vista.correcs.statusGuardar);
 
 // Fin
 module.exports = router;
