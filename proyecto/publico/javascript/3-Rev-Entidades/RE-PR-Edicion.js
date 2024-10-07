@@ -195,6 +195,4 @@ const rutaEdicion = "/revision/api/edicion/aprob-rech/?entidad=" + entidad + "&i
 const cola = "/?id=" + id + "&origen=" + (origen ? origen : "TE");
 
 // Otras variables
-const url = location.pathname.replace("/revision/", "");
-const familia = url.slice(0, url.indexOf("/"));
 let resultado, todoProcesado;
