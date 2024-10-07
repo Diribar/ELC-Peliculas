@@ -1350,7 +1350,7 @@ module.exports = {
 			);
 
 		// Revisión de Entidades
-		tareas = ["alta", "solapamiento", "abm-links"];
+		tareas = ["alta", "solapamiento"];
 		for (let tarea of tareas)
 			rutasCons.push({
 				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
