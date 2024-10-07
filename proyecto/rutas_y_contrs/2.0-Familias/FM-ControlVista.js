@@ -119,8 +119,8 @@ module.exports = {
 	inacRecupGuardar: async (req, res) => {
 		//  Variables
 		let datos = await procesos.obtieneDatosGuardar(req);
-		const {entidad, id, familia, motivo_id, codigo, usuario_id, ahora, campo_id, original, statusFinal_id, comentario} =
-			datos;
+		const {familia, siglaFam, entidad, id} = datos;
+		const {motivo_id, codigo, usuario_id, ahora, campo_id, original, statusFinal_id, comentario} = datos;
 
 		// CONSECUENCIAS - Actualiza el status en el registro original
 		datos = {
@@ -183,7 +183,7 @@ module.exports = {
 		}
 
 		// Fin
-		const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
+		const destino = "/" + entidad + "/detalle/" + siglaFam + "/?id=" + id;
 		return res.redirect(destino);
 	},
 	correcs: {
