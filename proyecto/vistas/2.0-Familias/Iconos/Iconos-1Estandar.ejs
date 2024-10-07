@@ -10,7 +10,7 @@
 		<!-- Salir -->
 		<% const prodEntidad = locals.prodEntidad || entidad %>
 		<% const prodId = locals.prodId || locals.id %>
-		<a href="<%= '/' prodEntidad + '/inactivar-captura/?id=' + prodId + ORIGEN %>" tabindex="-1">
+		<a href="<%= '/' + prodEntidad + '/inactivar-captura/?id=' + prodId + ORIGEN %>" tabindex="-1">
 			<i class="<%= iconos.faSolid %> <%= iconos.izquierda %>" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>
