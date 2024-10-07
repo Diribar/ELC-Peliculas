@@ -42,7 +42,13 @@ module.exports = {
 	obtieneDesdeEntidad: {
 		// Familia y derivados
 		familia: (entidad) => {
-			return FN.familia(entidad);
+			return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
+				? "producto"
+				: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
+				? "rclv"
+				: ["links", "linksEdicion"].includes(entidad)
+				? "link"
+				: "";
 		},
 		familias: (entidad) => {
 			return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
@@ -68,15 +74,7 @@ module.exports = {
 				? "edics"
 				: "";
 		},
-		siglaFam: (entidad) => {
-			return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
-				? "p"
-				: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
-				? "r"
-				: entidad == "usuarios"
-				? "u"
-				: "";
-		},
+		siglaFam: (entidad) => FN.siglaFam(entidad),
 		entidadNombre: (entidad) => FN.entidadNombre(entidad),
 		campo_id: (entidad) => {
 			return entidad == "peliculas"
@@ -413,19 +411,19 @@ module.exports = {
 			// Variables
 			const {entidad, id} = datos;
 			const entidadNombre = (datos.entidadNombre ? datos.entidadNombre : FN.entidadNombre(entidad)).toLowerCase(); // la primera opción es para links
+			const siglaFam = FN.siglaFam(entidad);
 
 			// 1. Inicio
-			let ea = ["capitulos", "links"].includes(entidad) ? "e" : "a";
-			let inicio = "Est" + ea + " ";
+			const ea = ["capitulos", "links"].includes(entidad) ? "e" : "a";
+			const inicio = "Est" + ea + " ";
 
 			// 2. Anchor
-			let url = "?entidad=" + entidad + "&id=" + id;
-			let link = "/" + FN.familia(entidad) + "/detalle/" + url;
-			let entidadHTML = "<u><b>" + entidadNombre + "</b></u>";
-			let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
+			const link = "/" + entidad + "/detalle/" + siglaFam + "/?id=" + id;
+			const entidadHTML = "<u><b>" + entidadNombre + "</b></u>";
+			const anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
 
 			// 3. Final
-			let final = " ya se encuentra en nuestra base de datos";
+			const final = " ya se encuentra en nuestra base de datos";
 
 			// Fin
 			return inicio + anchor + final;
@@ -1338,15 +1336,6 @@ let FN = {
 		const entNombre = indice > -1 ? [...variables.entidades.todosNombre][indice] : null;
 		return entNombre;
 	},
-	familia: (entidad) => {
-		return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
-			? "producto"
-			: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
-			? "rclv"
-			: ["links", "linksEdicion"].includes(entidad)
-			? "link"
-			: "";
-	},
 	asocProd: (registro) => {
 		return registro.pelicula_id
 			? "pelicula"
@@ -1354,6 +1343,15 @@ let FN = {
 			? "capitulo"
 			: registro.coleccion_id
 			? "coleccion"
+			: "";
+	},
+	siglaFam: (entidad) => {
+		return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
+			? "p"
+			: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
+			? "r"
+			: entidad == "usuarios"
+			? "u"
 			: "";
 	},
 
