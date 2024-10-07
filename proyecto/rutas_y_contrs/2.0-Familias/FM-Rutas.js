@@ -61,8 +61,8 @@ router.get("/eliminado-por-creador", eliminadoPorCreador, vista.form.elimina);
 router.get("/eliminado", aptoEliminar, vista.form.elimina);
 
 // Vistas - Correcciones
-router.get("/correcion-del-motivo", correcs, m.capturaActivar, m.statusCorrecto, vista.correcs.motivoForm);
-router.post("/correcion-del-motivo", correcs, m.capturaInactivar, m.statusCorrecto, m.motivoNecesario, vista.correcs.motivoGuardar);
+router.get("/correccion-del-motivo", correcs, m.capturaActivar, m.statusCorrecto, vista.correcs.motivoForm);
+router.post("/correccion-del-motivo", correcs, m.capturaInactivar, m.statusCorrecto, m.motivoNecesario, vista.correcs.motivoGuardar);
 router.get("/correccion-del-status", correcs, m.capturaActivar, vista.correcs.statusForm);
 router.post("/correccion-del-status", correcs, m.capturaInactivar, vista.correcs.statusGuardar);
 
