@@ -56,10 +56,8 @@ window.addEventListener("load", async () => {
 			// Guardar los valores en Session y Cookies
 			guardarLosValoresEnSession();
 
-			// Obtiene la RCLV_entidad
-			const entidadRclv = "?entidad=" + entidadesRclv(link);
-
 			// Para ir a la vista RCLV
+			const entidadRclv = entidadesRclv(link);
 			location.href = "/" + entidadRclv + "/agregar/r/?" + paramsOrigen;
 
 			// Fin
@@ -72,6 +70,7 @@ window.addEventListener("load", async () => {
 		link.addEventListener("click", () => {
 			// Si el ícono está inactivo, aborta la operación
 			if (link.className.includes("inactivo")) return;
+
 			// Guardar los valores en Session y Cookies
 			guardarLosValoresEnSession();
 
