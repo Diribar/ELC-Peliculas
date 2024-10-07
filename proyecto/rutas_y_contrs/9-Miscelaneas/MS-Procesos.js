@@ -157,7 +157,7 @@ module.exports = {
 		}
 
 		// Rutas de Familia, Producto RUD y Rclv CRUD
-		if (["producto", "rclv"].includes(familia) && !originalUrl.startsWith("/revisar")) {
+		if (["/productos", "/rclvs"].some((n) => originalUrl.startsWith(n))) {
 			// Obtiene las rutas
 			const rutas = [
 				// Familia
@@ -166,8 +166,6 @@ module.exports = {
 				{ant: "/" + familia + "/recuperar", act: "/" + entidad + "/recuperar"},
 				{ant: "/" + familia + "/eliminadoPorCreador", act: "/" + entidad + "/eliminado-por-creador"},
 				{ant: "/" + familia + "/eliminar", act: "/" + entidad + "/eliminado"},
-				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-del-motivo"},
-				{ant: "/correccion/status", act: "/" + entidad + "/correccion-del-status"},
 
 				// RUD Producto y Rclv
 				{ant: "/" + familia + "/detalle", act: "/" + entidad + "/detalle/" + siglaFam},
