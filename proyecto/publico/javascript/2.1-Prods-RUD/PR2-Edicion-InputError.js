@@ -297,7 +297,7 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambió el tipo de actuación
 		if (e.target.name == "tipoActuacion_id") {
 			if ([v.anime_id, v.documental_id].includes(Number(valor))) {
-				DOM.actores.value = valor == v.anime_id ? dibujosAnimados : documental;
+				DOM.actores.value = v.tiposActuacion.find((n) => n.id == valor).nombre;
 				DOM.actores.readOnly = true;
 			} else DOM.actores.readOnly = false;
 		}
