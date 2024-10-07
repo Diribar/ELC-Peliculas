@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 4/oct",
-	"HoraUTC": "0:53",
+	"FechaUTC": "Lun. 7/oct",
+	"HoraUTC": "10:29",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 30/sep",
-	"HoraSemUTC": "8:43",
-	"semanaUTC": 40,
+	"FechaSemUTC": "Lun. 7/oct",
+	"HoraSemUTC": "10:29",
+	"semanaUTC": 41,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"02-oct-24": {},
-		"03-oct-24": {},
-		"04-oct-24": {"leyenda": "Hoy recordamos a san Francisco de Asís", "entidad": "personajes", "id": 57},
 		"05-oct-24": {"leyenda": "Hoy recordamos a santa Faustina Kowalska", "entidad": "personajes", "id": 138},
-		"06-oct-24": {}
+		"06-oct-24": {},
+		"07-oct-24": {},
+		"08-oct-24": {},
+		"09-oct-24": {"leyenda": "Hoy recordamos a Abraham, santo", "entidad": "personajes", "id": 165}
 	}
 }
