@@ -1305,8 +1305,6 @@ module.exports = {
 				{tarea: "historial", titulo: "Historial de"},
 				{tarea: "inactivar", titulo: "Inactivar"},
 				{tarea: "recuperar", titulo: "Recuperar"},
-				{tarea: "eliminadoPorCreador", titulo: "Eliminar"},
-				{tarea: "eliminar", titulo: "Eliminar"},
 			];
 			for (let opcion of opciones)
 				rutasCons.push({
@@ -1319,6 +1317,18 @@ module.exports = {
 				{ant: "/correccion/status", act: "/" + entidad + "/correccion-del-status"}
 			);
 		}
+		rutasCons.push(
+			{
+				ant: "/" + familia + "/eliminadoPorCreador", // familia + tarea (salvo correccion)
+				act: "/" + entidad + "/eliminado-por-creador", // entidad + tarea
+				titulo: "Eliminar",
+			},
+			{
+				ant: "/" + familia + "/eliminar", // familia + tarea (salvo correccion)
+				act: "/" + entidad + "/eliminado", // entidad + tarea
+				titulo: "Eliminar",
+			}
+		);
 
 		// Rutas de Producto RUD
 		if (familia == "producto") {
@@ -1337,7 +1347,7 @@ module.exports = {
 			rutasCons.push(
 				{ant: "/links/abm", act: "/" + entidad + "/abm-links/p"},
 				{ant: "/links/visualizacion", act: "/links/mirar/l"}
-			); // ant: 'links/abm' - act: entidad + '/lkp'
+			);
 
 		// Revisión de Entidades
 		tareas = ["alta", "solapamiento", "abm-links"];
@@ -1346,6 +1356,10 @@ module.exports = {
 				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
 				act: "/revision/" + tarea + "/" + siglaFam + "/" + entidad, // revision + tarea + siglaFam + entidad
 			});
+		rutasCons.push({
+			ant: "/revision/links", // revision + familia + tarea (salvo links)
+			act: "/revision/abm-links/" + siglaFam + "/" + entidad, // revision + tarea + siglaFam + entidad
+		});
 		tareas = ["edicion", "rechazar", "inactivar", "recuperar"];
 		for (let tarea of tareas)
 			rutasCons.push({
