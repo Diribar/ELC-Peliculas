@@ -40,7 +40,7 @@ window.addEventListener("load", () => {
 			if (!DOM.todoElMain.querySelector("#cierraVideo")) DOM.todoElMain.appendChild(cierraVideo);
 
 			// Actualiza el campo 'videoConsVisto' del usuario con el valor 'true'
-			if (menu.id == "consultas") fetch("api/video-de-consultas-visto");
+			if (menu.id == "consultas") fetch("/usuarios/api/video-de-consultas-visto");
 		});
 	}
 
