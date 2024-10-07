@@ -316,7 +316,7 @@ window.addEventListener("load", async () => {
 			// Obtiene el RCLV_id
 			const id = "?id=" + DOM.inputsRCLV[i].value;
 			// Para ir a la vista RCLV
-			location.href = "/" + entidadRclv + "/edicion/" + id + "&origen=PDA";
+			location.href = "/" + entidadRclv + "/edicion/r/" + id + "&origen=PDA";
 		});
 	});
 
