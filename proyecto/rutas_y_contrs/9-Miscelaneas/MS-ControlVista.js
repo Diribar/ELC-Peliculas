@@ -118,7 +118,7 @@ module.exports = {
 			// Variables
 			const {entidad} = req.query; // debe ser 'req.query', porque así son las antiguas
 			const {originalUrl} = req;
-			const ruta = procesos.rutas(entidad, originalUrl);
+			const ruta = procesos.obtieneRuta(entidad, originalUrl);
 
 			// Si no se obtiene la nueva ruta => vista de dirección desconocida
 			if (!ruta) {

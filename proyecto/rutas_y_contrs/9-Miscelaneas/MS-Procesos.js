@@ -135,7 +135,7 @@ module.exports = {
 			{codigo: "CN", url: "/consultas"},
 		];
 	},
-	rutas: (entidad, originalUrl) => {
+	obtieneRuta: (entidad, originalUrl) => {
 		// Variables
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
