@@ -107,4 +107,20 @@ module.exports = {
 		const registro = await baseDeDatos.obtienePorId(entidad, id);
 		return res.json(registro);
 	},
+	obtieneEmbededLink: async (req, res) => {
+		// Variables
+		const {linkID, linkUrl} = req.query;
+
+		// Obtiene el link y el proveedor
+		const link = linkID
+			? await baseDeDatos.obtienePorId("links", linkID)
+			: await baseDeDatos.obtienePorCondicion("links", {url: linkUrl});
+		const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
+
+		// Acciones si es embeded
+		const urlEmbedded = provEmbeded ? "//" + link.url.replace(provEmbeded.embededQuitar, provEmbeded.embededPoner) : "";
+
+		// Fin
+		return res.json(urlEmbedded);
+	},
 };

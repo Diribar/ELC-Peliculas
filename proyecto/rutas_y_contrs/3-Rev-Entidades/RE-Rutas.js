@@ -54,7 +54,6 @@ router.get("/api/edicion/aprob-rech", m.edicionAPI, API.edicAprobRech);
 router.get("/api/link/alta-baja", m.linkAltaBaja, API.links.altaBaja);
 router.get("/api/link/edicion", m.edicionAPI, API.edicAprobRech);
 router.get("/api/link/siguiente-producto", API.links.sigProd);
-router.get("/api/link/obtiene-embeded-link", API.links.obtieneEmbededLink);
 
 // Vistas - Tablero de Control
 router.get("/tablero", usuarioBase, m.usRolAutTablEnts, vista.tableroControl);

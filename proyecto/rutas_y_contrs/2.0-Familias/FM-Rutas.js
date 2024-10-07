@@ -43,6 +43,7 @@ router.get("/api/obtiene-cap-id", API.obtieneCapID);
 router.get("/api/obtiene-capitulos", API.obtieneCapitulos);
 router.get("/api/obtiene-info-del-be", API.obtieneInfo);
 router.get("/api/obtiene-registro", API.obtieneRegistro);
+router.get("/api/obtiene-embeded-link", API.obtieneEmbededLink);
 
 // Vistas - Historial
 router.get("/historial/:siglaFam", aptoDetalle, m.statusCompara, vista.form.historial);
