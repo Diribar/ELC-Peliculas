@@ -268,7 +268,7 @@ module.exports = {
 			for (let regStatus of regsStatus) {
 				// Variables
 				const familia = comp.obtieneDesdeEntidad.familia(regStatus.entidad);
-				const {nombre, anchor} = await nombres(regStatus, familia);
+				const {nombre, anchor} = await nombres(regStatus);
 				if (!nombre) continue;
 
 				// Más variables
@@ -317,7 +317,7 @@ module.exports = {
 				// Variables
 				const aprobado = !regEdic.motivo_id;
 				const familia = comp.obtieneDesdeEntidad.familia(regEdic.entidad);
-				const {nombre, anchor} = await nombres(regEdic, familia);
+				const {nombre, anchor} = await nombres(regEdic);
 				if (!nombre) continue;
 
 				// Alimenta el resultado
@@ -751,8 +751,10 @@ let formatos = {
 		return respuesta;
 	},
 };
-let nombres = async (reg, familia) => {
+let nombres = async (reg) => {
 	// Variables
+	const {entidad, entidad_id} = reg;
+	const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
 	let nombre, anchor;
 
 	// Fórmulas
@@ -764,17 +766,11 @@ let nombres = async (reg, familia) => {
 		// Obtiene los nombres
 		nombre = comp.nombresPosibles(prodRclv);
 		anchor =
-			"<a href='" +
-			urlHost +
-			"/" +
-			familia +
-			"/detalle/?entidad=" +
-			reg.entidad +
-			"&id=" +
-			reg.entidad_id +
-			"' style='color: inherit; text-decoration: none'>" +
-			nombre +
-			"</a>";
+			"<a " +
+			("href='" + urlHost + "/" + entidad + "/detalle/" + siglaFam + "/") +
+			("?id=" + entidad_id) +
+			"' style='color: inherit; text-decoration: none'" +
+			(">" + nombre + "</a>");
 	} else {
 		// Obtiene el registro
 		const asocs = variables.entidades.asocProds;
