@@ -361,20 +361,20 @@ module.exports = {
 	vistaInactivar: {
 		revision: (entidad, id) => ({
 			clase: "fa-spell-check",
-			link: "/inactivar-captura/" + entidad + "/?id=" + id + "&origen=TE",
+			link: "/" + entidad + "/inactivar-captura/?id=" + id + "&origen=TE",
 			titulo: "Ir al 'Tablero de Control' de Entidades",
 			autofocus: true,
 		}),
 		producto: (entidad, id) => ({
 			clase: iconos.detalle,
-			link: "/producto/detalle/?entidad=" + entidad + "&id=" + id,
+			link: "/" + entidad + "/detalle/p/?id=" + id,
 			titulo: "Ir a la vista Detalle",
 			autofocus: true,
 		}),
 		rclv: (entidad, id) => ({
 			clase: iconos.detalle,
-			link: "/rclv/detalle/?entidad=" + entidad + "&id=" + id,
-			titulo: "Ir al 'Detalle de RCLV'",
+			link: "/" + entidad + "/detalle/r/?id=" + id,
+			titulo: "Ir a la vista Detalle",
 			autofocus: true,
 		}),
 	},

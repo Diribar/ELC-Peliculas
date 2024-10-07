@@ -1305,20 +1305,30 @@ module.exports = {
 				{tarea: "historial", titulo: "Historial de"},
 				{tarea: "inactivar", titulo: "Inactivar"},
 				{tarea: "recuperar", titulo: "Recuperar"},
-				{tarea: "eliminadoPorCreador", titulo: "Eliminar"},
-				{tarea: "eliminar", titulo: "Eliminar"},
 			];
 			for (let opcion of opciones)
 				rutasCons.push({
 					ant: "/" + familia + "/" + opcion.tarea, // familia + tarea (salvo correccion)
-					act: "/" + entidad + "/" + opcion.tarea + "/" + siglaFam, // entidad + tarea
+					act: "/" + entidad + "/" + opcion.tarea, // entidad + tarea
 					titulo: opcion.titulo,
 				});
 			rutasCons.push(
-				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-del-motivo/" + siglaFam},
-				{ant: "/correccion/status", act: "/" + entidad + "/correccion-del-status/" + siglaFam}
+				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-del-motivo"},
+				{ant: "/correccion/status", act: "/" + entidad + "/correccion-del-status"}
 			);
 		}
+		rutasCons.push(
+			{
+				ant: "/" + familia + "/eliminadoPorCreador", // familia + tarea (salvo correccion)
+				act: "/" + entidad + "/eliminado-por-creador", // entidad + tarea
+				titulo: "Eliminado",
+			},
+			{
+				ant: "/" + familia + "/eliminar", // familia + tarea (salvo correccion)
+				act: "/" + entidad + "/eliminado", // entidad + tarea
+				titulo: "Eliminado",
+			}
+		);
 
 		// Rutas de Producto RUD
 		if (familia == "producto") {
@@ -1337,20 +1347,24 @@ module.exports = {
 			rutasCons.push(
 				{ant: "/links/abm", act: "/" + entidad + "/abm-links/p"},
 				{ant: "/links/visualizacion", act: "/links/mirar/l"}
-			); // ant: 'links/abm' - act: entidad + '/lkp'
+			);
 
 		// Revisión de Entidades
-		tareas = ["alta", "solapamiento", "links"];
+		tareas = ["alta", "solapamiento"];
 		for (let tarea of tareas)
 			rutasCons.push({
 				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
 				act: "/revision/" + tarea + "/" + siglaFam + "/" + entidad, // revision + tarea + siglaFam + entidad
 			});
+		rutasCons.push({
+			ant: "/revision/links", // revision + familia + tarea (salvo links)
+			act: "/revision/abm-links/" + siglaFam + "/" + entidad, // revision + tarea + siglaFam + entidad
+		});
 		tareas = ["edicion", "rechazar", "inactivar", "recuperar"];
 		for (let tarea of tareas)
 			rutasCons.push({
 				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
-				act: "/revision/" + tarea + "/" + siglaFam + "/" + entidad, // revision + tarea + siglaFam + entidad
+				act: "/revision/" + tarea + "/" + entidad, // revision + tarea + entidad
 				titulo: tarea == "rechazar" ? "Rechazar" : "Revisión de " + comp.letras.inicialMayus(tarea),
 			});
 

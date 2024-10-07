@@ -54,7 +54,6 @@ router.get("/api/edicion/aprob-rech", m.edicionAPI, API.edicAprobRech);
 router.get("/api/link/alta-baja", m.linkAltaBaja, API.links.altaBaja);
 router.get("/api/link/edicion", m.edicionAPI, API.edicAprobRech);
 router.get("/api/link/siguiente-producto", API.links.sigProd);
-router.get("/api/link/obtiene-embeded-link", API.links.obtieneEmbededLink);
 
 // Vistas - Tablero de Control
 router.get("/tablero", usuarioBase, m.usRolAutTablEnts, vista.tableroControl);
@@ -66,20 +65,20 @@ router.get("/alta/r/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vista
 router.post("/alta/r/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.multer.single("avatar"), vista.cambioStatusGuardar); // Cambios de status
 
 // Vistas - Edición
-router.get("/edicion/:siglaFam/:entidad", aptoEdicion, m.rutaCRUD_ID, m.capturaActivar, vista.edic.form);
-router.post("/edicion/:siglaFam/:entidad", aptoEdicion, m.motivoOpcional, m.capturaInactivar, vista.edic.avatar);
+router.get("/edicion/:entidad", aptoEdicion, m.rutaCRUD_ID, m.capturaActivar, vista.edic.form);
+router.post("/edicion/:entidad", aptoEdicion, m.motivoOpcional, m.capturaInactivar, vista.edic.avatar);
 
 // Vistas - Rechazar
-router.get("/rechazar/:siglaFam/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.motivos);
-router.post("/rechazar/:siglaFam/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.motivoNecesario, vista.cambioStatusGuardar);
+router.get("/rechazar/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.motivos);
+router.post("/rechazar/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.motivoNecesario, vista.cambioStatusGuardar);
 
 // Vistas - Revisar Inactivar
-router.get("/inactivar/:siglaFam/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.historial);
-router.post("/inactivar/:siglaFam/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
+router.get("/inactivar/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.historial);
+router.post("/inactivar/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
 
 // Vistas - Revisar Recuperar
-router.get("/recuperar/:siglaFam/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.historial);
-router.post("/recuperar/:siglaFam/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
+router.get("/recuperar/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.historial);
+router.post("/recuperar/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.cambioStatusGuardar); // Va sin 'motivo'
 
 // Vistas - Solapamiento
 router.get("/solapamiento/r/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);

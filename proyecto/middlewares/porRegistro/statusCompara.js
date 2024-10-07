@@ -3,14 +3,14 @@ const procsFM = require("../../rutas_y_contrs/2.0-Familias/FM-FN-Procesos");
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const entidad = comp.obtieneEntidadDesdeUrl(req);
+	const {tema, entidad} = comp.partesDelUrl(req);
 	const {id} = req.query;
 	const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
 	const familia = comp.obtieneDesdeEntidad.familia(entidad);
 	let elLa = comp.obtieneDesdeEntidad.elLa(entidad).trim();
 	elLa = comp.letras.inicialMayus(elLa);
-	const statusDistinto = req.path == "/" + entidad + "/correccion-del-status";
-	const statusIgual = ["/" + entidad + "/correccion-del-motivo/", "/" + entidad + "/historial/"].includes(req.path);
+	const statusDistinto = tema == "/correccion-del-status";
+	const statusIgual = ["/correccion-del-motivo", "/historial"].includes(tema);
 	let informacion;
 
 	// Compara los status
@@ -30,7 +30,7 @@ module.exports = async (req, res, next) => {
 	} else if (!statusAlineado && statusIgual) {
 		// Variables
 		const {urlAnterior} = req.session;
-		const urlStatus = "/correccion/status/?entidad=" + entidad + "&id=" + id;
+		const urlStatus = "/" + entidad + "/correccion-del-status/?id=" + id;
 		const tituloStatus = "Ir a la vista de Cambio de Status";
 		const nombre = comp.nombresPosibles(prodRclv);
 

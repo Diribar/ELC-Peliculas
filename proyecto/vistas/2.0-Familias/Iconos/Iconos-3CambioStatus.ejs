@@ -7,7 +7,7 @@
 
 	<% if (locals.statusAlineado && condicHistorial && condicRegistro && condicDetalle) { %>
 		<!-- Historial de movimientos -->
-		<a href="<%= '/' + entidad + '/historial/' + siglaFam + '/?id=' + id + origenHTML %>" tabindex="-1">
+		<a href="<%= '/' + entidad + '/historial/?id=' + id + origenHTML %>" tabindex="-1">
 			<i class="<%= iconos.faSolid %> fa-arrow-right-arrow-left" tabindex="-1" title="Historial de movimientos"></i>
 		</a>
 	<% } %>
@@ -16,7 +16,7 @@
 		<% if (locals.statusAlineado) { %>
 			<% if (locals.status_id == creado_id && locals.creadoPor_id == usuario.id) { %>
 				<!-- Eliminarlo definitivamente: Status creado y si fue creado por el usuario -->
-				<a href="<%= '/' + familia + '/eliminadoPorCreador/?entidad=' + entidad + '&id=' + id + origenHTML %>" tabindex="-1">
+				<a href="<%= '/' + entidad + '/eliminado-por-creador/?id=' + id + origenHTML %>" tabindex="-1">
 					<i class="<%= iconos.faSolid %> <%= iconos.eliminar %>" tabindex="-1" title="Eliminar definitivamente"></i>
 				</a>
 			<% } %>
@@ -29,7 +29,7 @@
 			<% } %>
 		<% } else if (!locals.statusAlineado && locals.revisorPERL) { %>
 			<!-- Corregir Status -->
-			<a href="<%= '/correccion/status/?entidad=' + entidad + '&id=' + id + origenHTML %>" tabindex="-1">
+			<a href="<%= '/' + entidad + '/correccion-del-status/?id=' + id + origenHTML %>" tabindex="-1">
 				<i class="<%= iconos.faSolid %> <%= iconos.xMark %>" tabindex="-1" title="Ir a 'Corregir Status'"></i>
 			</a>
 		<% } %>
@@ -38,24 +38,24 @@
 		<!-- HISTORIAL -->
 		<% if (prodRclv.statusRegistro_id == inactivo_id ) { %>
 			<!-- Cambiar el motivo -->
-			<a href="<%= '/correccion/motivo/?entidad=' + entidad + '&id=' + id + origenHTML %>" tabindex="-1">
+			<a href="<%= '/' + entidad + '/correcion-del-motivo/?id=' + id + origenHTML %>" tabindex="-1">
 				<i class="<%= iconos.faSolid %> <%= iconos.ayuda %>" title="Cambiar el motivo" tabindex="-1"></i>
 			</a>
 		<% } %>
 		<% if (aprobados_ids.includes(locals.status_id)) { %>
 			<!-- Inactivar -->
-			<a href="<%= '/' + familia + '/inactivar/?entidad=' + entidad + '&id=' + id + origenHTML %>" tabindex="-1">
+			<a href="<%= '/' + entidad + '/inactivar/?id=' + id + origenHTML %>" tabindex="-1">
 				<i class="<%= iconos.faSolid %> <%= iconos.xMark %>" tabindex="-1" title="Ir a 'Inactivar'"></i>
 			</a>
 		<% } %>
 		<% if (locals.status_id == inactivo_id && codigo != "eliminar") { %>
 			<!-- Recuperar -->
-			<a href="<%= '/' + familia + '/recuperar/?entidad=' + entidad + '&id=' + id + origenHTML %>" tabindex="-1">
+			<a href="<%= '/' + entidad + '/recuperar/?id=' + id + origenHTML %>" tabindex="-1">
 				<i class="<%= iconos.faSolid %> <%= iconos.check %>" tabindex="-1" title="Ir a 'Recuperar'"></i>
 			</a>
 			<% if (locals.usuario && usuario.rolUsuario.revisorPERL) { %>
 				<!-- Eliminar -->
-				<a href="<%= '/' + familia + '/eliminar/?entidad=' + entidad + '&id=' + id + origenHTML %>" tabindex="-1">
+				<a href="<%= '/' + entidad + '/eliminado/?id=' + id + origenHTML %>" tabindex="-1">
 					<i class="<%= iconos.faSolid %> <%= iconos.eliminar %>" tabindex="-1" title="Eliminar definitivamente"></i>
 				</a>
 			<% } %>

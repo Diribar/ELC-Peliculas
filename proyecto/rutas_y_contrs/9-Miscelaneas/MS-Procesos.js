@@ -124,7 +124,7 @@ module.exports = {
 
 			// Productos y Rclvs
 			{codigo: "DT", url: "/" + entidad + "/detalle/" + siglaFam, cola: true}, // OK
-			{url: "/" + entidad + "/historial/" + siglaFam, cola: true},
+			{url: "/" + entidad + "/historial", cola: true},
 			{codigo: "RA", url: "/revision/alta/" + siglaFam + "/" + entidad, cola: true},
 			{url: "/revision/edicion/" + siglaFam + "/" + entidad, cola: true},
 
