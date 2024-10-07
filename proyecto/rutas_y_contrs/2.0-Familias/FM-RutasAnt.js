@@ -8,12 +8,19 @@ const entValidaAnt = require("../../middlewares/porRegistro/entValidaAnt");
 const idValidoAnt = require("../../middlewares/porRegistro/idValidoAnt");
 const entID = [entValidaAnt, idValidoAnt];
 
-// Vistas
-router.get("/:familia/historial", entID, vistaMS.redirecciona.rutasAntiguas); // Historial
-router.get("/:familia/inactivar", entID, vistaMS.redirecciona.rutasAntiguas); // Inactivar
-router.get("/:familia/recuperar", entID, vistaMS.redirecciona.rutasAntiguas); // Recuperar
-router.get("/:familia/eliminadoPorCreador", entID, vistaMS.redirecciona.rutasAntiguas); // Eliminado por creador
-router.get("/:familia/eliminar", entID, vistaMS.redirecciona.rutasAntiguas); // Eliminado
+// Vistas - Producto
+router.get("/producto/historial", entID, vistaMS.redirecciona.rutasAntiguas); // Historial
+router.get("/producto/inactivar", entID, vistaMS.redirecciona.rutasAntiguas); // Inactivar
+router.get("/producto/recuperar", entID, vistaMS.redirecciona.rutasAntiguas); // Recuperar
+router.get("/producto/eliminadoPorCreador", entID, vistaMS.redirecciona.rutasAntiguas); // Eliminado por creador
+router.get("/producto/eliminar", entID, vistaMS.redirecciona.rutasAntiguas); // Eliminado
+
+// Vistas - Rclv
+router.get("/rclv/historial", entID, vistaMS.redirecciona.rutasAntiguas); // Historial
+router.get("/rclv/inactivar", entID, vistaMS.redirecciona.rutasAntiguas); // Inactivar
+router.get("/rclv/recuperar", entID, vistaMS.redirecciona.rutasAntiguas); // Recuperar
+router.get("/rclv/eliminadoPorCreador", entID, vistaMS.redirecciona.rutasAntiguas); // Eliminado por creador
+router.get("/rclv/eliminar", entID, vistaMS.redirecciona.rutasAntiguas); // Eliminado
 
 // Vistas - Correcciones
 router.get("/correccion/motivo", entID, vistaMS.redirecciona.rutasAntiguas);
