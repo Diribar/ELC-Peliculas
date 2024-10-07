@@ -3,6 +3,7 @@
 module.exports = async (req, res, next) => {
 	// Variables
 	const entidad = comp.obtieneEntidadDesdeUrl(req);
+	const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
 	const {id} = req.query;
 	const familia = comp.obtieneDesdeEntidad.familia(entidad);
 	const rubro = req.originalUrl.startsWith("/revision/")
@@ -51,8 +52,7 @@ module.exports = async (req, res, next) => {
 
 	// Corrige el link de 'entendido'
 	if (req.originalUrl.startsWith("/" + familia + "/edicion"))
-		v.vistaEntendido.link =
-			v.origen == "TE" ? "/revision/tablero" : "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
+		v.vistaEntendido.link = v.origen == "TE" ? "/revision/tablero" : "/" + entidad + "/detalle/" + siglaFam + "/?id=" + id;
 
 	// CRITERIO: registro en status 'creado' y otro usuario quiere acceder
 	const creadoPorElUsuario1 = v.registro.creadoPor_id == v.usuario_id;
