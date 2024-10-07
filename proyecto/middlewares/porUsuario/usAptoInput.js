@@ -34,9 +34,9 @@ module.exports = async (req, res, next) => {
 				const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 				// Resultados
-				const producto = originalUrl.includes("/agregar/") || familia == "producto";
-				const rclv = originalUrl.includes("/agregar") || familia == "rclv";
-				const links = originalUrl.includes("/abm-links/") || familia == "producto";
+				const links = originalUrl.includes("/abm-links/");
+				const producto = !links && familia == "producto";
+				const rclv = familia == "rclv";
 				const entidades = producto
 					? variables.entidades.prods
 					: rclv

@@ -303,7 +303,7 @@ window.addEventListener("load", async () => {
 			const entidadRclv = entidadesRclv(link);
 
 			// Para ir a la vista RCLV
-			location.href = "/" + entidadRclv + "/agregar/?origen=PDA";
+			location.href = "/" + entidadRclv + "/agregar/r/?origen=PDA";
 		});
 	});
 	// Links a RCLV - Edición
