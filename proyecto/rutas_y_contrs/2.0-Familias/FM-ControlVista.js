@@ -230,7 +230,7 @@ module.exports = {
 			if (origen) cola += "&origen=" + origen;
 
 			// Fin
-			return res.redirect("/" + entidad + "/historial/" + siglaFam + cola);
+			return res.redirect("/" + entidad + "/historial" + cola);
 		},
 		statusForm: async (req, res) => {
 			// Variables
