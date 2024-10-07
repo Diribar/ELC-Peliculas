@@ -104,7 +104,8 @@ let FN_resultados = {
 
 			// Carteles periódicos, con una frecuencia dada
 			v.contadorDeMostrarResults++;
-			if (v.usuario_id && !v.videoConsVisto && v.contadorDeMostrarResults == 1) DOM.cartelVerVideo.classList.remove("ocultar"); // Si el usuario no vio el video, muestra el cartel 'ver video'
+			if (v.usuario_id && !v.videoConsVisto && v.contadorDeMostrarResults == 1)
+				DOM.cartelVerVideo.classList.remove("ocultar"); // Si el usuario no vio el video, muestra el cartel 'ver video'
 			if (!(v.contadorDeMostrarResults % 5)) {
 				if (v.usuario_id) {
 					// Si el usuario no vio el video, muestra un cartel
@@ -207,6 +208,7 @@ let FN_auxiliares = {
 	boton: function (registro) {
 		// Variables
 		const familia = ["peliculas", "colecciones", "capitulos"].includes(registro.entidad) ? "producto" : "rclv";
+		const siglaFam = familia[0];
 		const esUnProducto = familia == "producto";
 
 		// Crea el elemento 'li' que engloba todo el registro
@@ -216,7 +218,7 @@ let FN_auxiliares = {
 
 		// Crea el anchor
 		const anchor = document.createElement("a");
-		anchor.href = "/" + familia + "/detalle/?entidad=" + registro.entidad + "&id=" + registro.id;
+		anchor.href = "/" + registro.entidad + "/detalle/" + siglaFam + "/?id=" + registro.id;
 		// anchor.target = "_blank";
 		anchor.tabIndex = "-1";
 		li.appendChild(anchor);
@@ -290,14 +292,13 @@ let FN_auxiliares = {
 		}
 
 		// Crueldad
-		if (producto.crueldad){
+		if (producto.crueldad) {
 			const icono = document.createElement("i");
 			icono.id = "crueldad";
-			icono.className = "fa-solid fa-circle-exclamation"
+			icono.className = "fa-solid fa-circle-exclamation";
 			icono.title = "Crueldad sensible";
 			icono.tabIndex = "-1";
 			aux.iconos.appendChild(icono);
-
 		}
 
 		// Crea la infoInf
@@ -600,7 +601,7 @@ let FN_creaUnaCelda = {
 		const cantProds = rclv.productos.length;
 		const celda = document.createElement("td");
 		const anchor = document.createElement("a");
-		anchor.href = "/rclv/detalle/?entidad=" + rclv.entidad + "&id=" + rclv.id;
+		anchor.href = "/" + rclv.entidad + "/detalle/r/?id=" + rclv.id;
 		// anchor.target = "_blank";
 		anchor.tabIndex = "-1";
 

@@ -1,5 +1,21 @@
 "use strict";
+
+// Variables fijas
+const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+const unMinuto = 60 * 1000;
 const caractsAmplio = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/i;
+const entidades = [
+	...["peliculas", "colecciones", "capitulos"],
+	...["personajes", "hechos", "temas", "eventos", "epocasDelAno"],
+	...["links", "usuarios"],
+];
+
+// Variables
+const {pathname} = location;
+const entidad = entidades.find((n) => pathname.includes(n));
+const id = new URL(location.href).searchParams.get("id");
+
+// Funciones
 let keyPressed = (e) => {
 	// Variables
 	const localName = e.target.localName;
@@ -301,16 +317,13 @@ let contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
 	return;
 };
 
-// Variables del url
-const {pathname} = location;
-const entidades = [
-	...["peliculas", "colecciones", "capitulos"],
-	...["personajes", "hechos", "temas", "eventos", "epocasDelAno"],
-	...["links", "usuarios"],
-];
-const entidad = entidades.find((n) => pathname.includes(n));
-const id = new URL(location.href).searchParams.get("id");
-
-// Variables fijas
-const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
-const unMinuto = 60 * 1000;
+let siglaFam = () =>
+	["peliculas", "colecciones", "capitulos", "prodsEdicion"].includes(entidad)
+		? "p"
+		: ["personajes", "hechos", "temas", "eventos", "epocasDelAno", "rclvsEdicion"].includes(entidad)
+		? "r"
+		: entidad == "links"
+		? "l"
+		: entidad == "usuarios"
+		? "u"
+		: "";

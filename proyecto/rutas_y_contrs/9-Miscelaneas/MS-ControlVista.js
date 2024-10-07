@@ -123,7 +123,7 @@ module.exports = {
 			// Si no se obtiene la nueva ruta => vista de dirección desconocida
 			if (!ruta) {
 				const informacion = {
-					mensajes: ["No tenemos esa dirección en nuestro sistema"],
+					mensajes: ["No tenemos esa dirección en nuestro sistema (familia desconocida)"],
 					iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
 				};
 				return res.render("CMP-0Estructura", {informacion});
