@@ -8,10 +8,8 @@ module.exports = async (req, res, next) => {
 	const familia = comp.obtieneDesdeEntidad.familia(entidad);
 	const rubro = req.originalUrl.startsWith("/revision/")
 		? "revision"
-		: req.originalUrl.startsWith("/producto/") || req.originalUrl.startsWith("/links/abm/")
-		? "producto"
-		: req.originalUrl.startsWith("/rclv/")
-		? "rclv"
+		: ["p", "r"].includes(siglaFam) || req.originalUrl.startsWith("/links/abm/")
+		? "prodRclv"
 		: null;
 
 	let v = {
@@ -38,7 +36,7 @@ module.exports = async (req, res, next) => {
 		ea: comp.obtieneDesdeEntidad.oa(entidad),
 
 		// Vistas
-		vistaInactivar: rubro ? variables.vistaInactivar[rubro](entidad, id) : {},
+		vistaInactivar: rubro ? variables.vistaInactivar[rubro](entidad, id, siglaFam) : {},
 		vistaAnteriorTablero: v.usuario.rolUsuario.autTablEnts ? [v.vistaSinCaptura, v.vistaTablero] : [v.vistaSinCaptura],
 	};
 
