@@ -297,21 +297,25 @@ let contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
 		DOM.mensajes.appendChild(li);
 	}
 
-	// Crea el anchor
-	const a = document.createElement("a");
-	a.href = link;
-	a.tabIndex = "1";
-
 	// Crea el ícono
 	const i = document.createElement("i");
 	i.classList.add("fa-solid", clase);
 	i.title = titulo;
 
-	// Une las partes
+	// Crea el anchor
+	const a = document.createElement("a");
+	a.href = link;
+	a.tabIndex = "1";
 	a.appendChild(i);
-	DOM.iconos = document.querySelector("#cartelGenerico #iconosCartel");
-	DOM.iconos.appendChild(a);
-	DOM.iconos.querySelector("a").focus();
+
+	// Crea el div 'iconosCartel'
+	const div = document.createElement("div");
+	div.id = "iconosCartel";
+	div.appendChild(a);
+
+	// Agrega todo al DOM
+	DOM.cartelGenerico.appendChild(div)
+	DOM.cartelGenerico.querySelector("#iconosCartel a").focus();
 
 	// Fin
 	return;

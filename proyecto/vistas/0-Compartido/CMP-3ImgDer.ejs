@@ -19,7 +19,7 @@
 		<% hoyLocal = diaLocal + "-" + mesLocal + "-" + anoLocal %>
 		<% const RCLV_id = ImagenesDerecha[hoyLocal] && ImagenesDerecha[hoyLocal].id %>
 		<% RCLV_entidad = ImagenesDerecha[hoyLocal] && ImagenesDerecha[hoyLocal].entidad %>
-		<% destino = RCLV_entidad && RCLV_id ? ("/rclv/detalle/?entidad=" + RCLV_entidad + "&id=" + RCLV_id) : null %>
+		<% destino = RCLV_entidad && RCLV_id ? ("/"+ RCLV_entidad + "/detalle/r/?id=" + RCLV_id) : null %>
 		<% if (destino && locals.tema == "consultas" && locals.codigo == "tableroControl") cartelRCLV = true %>
 		<% ruta = "/publico/imagenes/ImagenDerecha/" + hoyLocal + ".jpg" %>
 		<% titulo = ImagenesDerecha[hoyLocal].leyenda %>
