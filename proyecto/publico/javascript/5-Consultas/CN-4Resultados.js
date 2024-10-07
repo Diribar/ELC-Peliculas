@@ -639,7 +639,7 @@ let FN_creaUnaCelda = {
 		const celda = document.createElement("td");
 		const anchor = document.createElement("a");
 		const calificarDetalle = vistaSinCalificar ? "calificar" : "detalle";
-		anchor.href = "/producto/" + calificarDetalle + "/?entidad=" + producto.entidad + "&id=" + producto.id;
+		anchor.href = "/" + producto.entidad + "/" + calificarDetalle + "/p/?id=" + producto.id;
 		let span;
 
 		// Obtiene el rclv
