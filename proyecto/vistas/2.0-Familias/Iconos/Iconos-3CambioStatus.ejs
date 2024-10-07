@@ -7,7 +7,7 @@
 
 	<% if (locals.statusAlineado && condicHistorial && condicRegistro && condicDetalle) { %>
 		<!-- Historial de movimientos -->
-		<a href="<%= '/' + entidad + '/historial/' + siglaFam + '/?id=' + id + origenHTML %>" tabindex="-1">
+		<a href="<%= '/' + entidad + '/historial/?id=' + id + origenHTML %>" tabindex="-1">
 			<i class="<%= iconos.faSolid %> fa-arrow-right-arrow-left" tabindex="-1" title="Historial de movimientos"></i>
 		</a>
 	<% } %>
