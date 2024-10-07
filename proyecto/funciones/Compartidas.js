@@ -1345,15 +1345,14 @@ let FN = {
 			? "coleccion"
 			: "";
 	},
-	siglaFam: (entidad) => {
-		return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
+	siglaFam: (entidad) =>
+		[...variables.entidades.prods, "prodsEdicion"].includes(entidad)
 			? "p"
 			: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
 			? "r"
 			: entidad == "usuarios"
 			? "u"
-			: "";
-	},
+			: "",
 
 	// Otras
 	obtieneRegs: async function (campos) {
