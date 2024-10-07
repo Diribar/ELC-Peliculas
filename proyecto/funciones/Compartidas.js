@@ -1321,12 +1321,12 @@ module.exports = {
 			{
 				ant: "/" + familia + "/eliminadoPorCreador", // familia + tarea (salvo correccion)
 				act: "/" + entidad + "/eliminado-por-creador", // entidad + tarea
-				titulo: "Eliminar",
+				titulo: "Eliminado",
 			},
 			{
 				ant: "/" + familia + "/eliminar", // familia + tarea (salvo correccion)
 				act: "/" + entidad + "/eliminado", // entidad + tarea
-				titulo: "Eliminar",
+				titulo: "Eliminado",
 			}
 		);
 
