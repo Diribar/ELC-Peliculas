@@ -157,19 +157,19 @@ module.exports = {
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const titulos = [
 			// Revisión
-			{tarea: "revision/edicion", titulo: "Revisión de Edicion de"},
-			{tarea: "revision/rechazar", titulo: "Rechazar"},
-			{tarea: "revision/inactivar", titulo: "Revisión de Inactivar"},
-			{tarea: "revision/recuperar", titulo: "Eliminado de Recuperar"},
+			{url: "revision/edicion", titulo: "Revisión de Edicion de"},
+			{url: "revision/rechazar", titulo: "Rechazar"},
+			{url: "revision/inactivar", titulo: "Revisión de Inactivar"},
+			{url: "revision/recuperar", titulo: "Eliminado de Recuperar"},
 
 			// Crud
-			{tarea: "historial", titulo: "Historial de"},
-			{tarea: "inactivar", titulo: "Inactivar"},
-			{tarea: "recuperar", titulo: "Recuperar"},
+			{url: "historial", titulo: "Historial de"},
+			{url: "inactivar", titulo: "Inactivar"},
+			{url: "recuperar", titulo: "Recuperar"},
 		];
 
 		// Título
-		let titulo = titulos.find((n) => originalUrl.includes("/" + n.act + "/")) + " ";
+		let titulo = titulos.find((n) => originalUrl.includes("/" + n.url + "/")) + " ";
 		titulo += comp.obtieneDesdeEntidad.unaUn(entidad) + " ";
 		titulo += entidadNombre;
 
