@@ -47,7 +47,8 @@ window.addEventListener("load", async () => {
 		});
 		DOM.logosInactivos.forEach((logoLink, i) => {
 			if (logoLink == e.target) DOM.contIframesInactivos[i].classList.remove("ocultar");
-			else if (!DOM.contIframesInactivos[i].className.includes("ocultar")) DOM.contIframesInactivos[i].classList.add("ocultar");
+			else if (!DOM.contIframesInactivos[i].className.includes("ocultar"))
+				DOM.contIframesInactivos[i].classList.add("ocultar");
 		});
 	});
 
@@ -67,4 +68,4 @@ window.addEventListener("load", async () => {
 });
 
 // Variables
-const rutaEmbeded = "/revision/api/link/obtiene-embeded-link/?linkUrl=";
+const rutaEmbeded = "/" + entidad + "/api/obtiene-embeded-link/?linkUrl=";
