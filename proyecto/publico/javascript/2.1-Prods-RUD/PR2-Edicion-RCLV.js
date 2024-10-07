@@ -76,14 +76,10 @@ window.addEventListener("load", async () => {
 			// Guardar los valores en Session y Cookies
 			guardarLosValoresEnSession();
 
-			// Obtiene la RCLV_entidad
-			let entidadRclv = "?entidad=" + entidadesRclv(link);
-
-			// Obtiene el RCLV_id
-			let rclv_id = "&id=" + DOM.inputsRCLV[i].value;
-
-			// Para ir a la vista RCLV
-			location.href = "/rclv/edicion/" + entidadRclv + rclv_id + paramsOrigen;
+			// Redirige a la vista RCLV
+			const entidadRclv = entidadesRclv(link);
+			const rclv_id =  DOM.inputsRCLV[i].value;
+			location.href = "/" + entidadRclv + "/edicion/r/?id=" + rclv_id + paramsOrigen;
 		});
 	});
 

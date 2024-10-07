@@ -36,9 +36,9 @@
 			</div>
 			<!-- Registros -->
 			<div class="temas">
-				<% const dt = "producto/detalle" %>
-				<% const ed = "producto/edicion" %>
-				<% const rp = "revision/producto/" %>
+				<% const dt = "/detalle/p" %>
+				<% const ed = "/edicion/p" %>
+				<% const rp = "revision/" %>
 				<% DE = dataEntry[familias] %>
 				<% if (revisorPERL) { %>
 					<%- include("RE-Registros", {familias, DE, titulo: "Inactivar", regs: prodsRclvs.IN, url: rp + "inactivar"}) %>
@@ -48,8 +48,8 @@
 				<% } %>
 				<%- include("RE-Registros", {familias, DE, titulo: "A completar - con Links", regs: prods.SE.filter(n => n.links), url: !revisorPERL ? dt : ed}) %>
 				<%- include("RE-Registros", {familias, DE, titulo: "A completar - sin Links", regs: prods.SE.filter(n => !n.links), url: !revisorPERL ? dt : ed}) %>
-				<%- include("RE-Registros", {familias, DE, titulo: "Altas - con Links", regs: prods.AL.filter(n => n.links), url: !revisorPERL ? dt : (rp + "alta")}) %>
-				<%- include("RE-Registros", {familias, DE, titulo: "Altas - sin links", regs: prods.AL.filter(n => !n.links), url: !revisorPERL ? dt : (rp + "alta")}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Altas - con Links", regs: prods.AL.filter(n => n.links), url: !revisorPERL ? dt : (rp + "alta/p")}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Altas - sin links", regs: prods.AL.filter(n => !n.links), url: !revisorPERL ? dt : (rp + "alta/p")}) %>
 				<% if (revisorPERL) { %>
 				<% } %>
 			</div>
@@ -69,14 +69,14 @@
 					</div>
 					<!-- Registros -->
 					<div class="temas">
-						<% let rr = "revision/rclv/" %>
+						<% let rr = "revision/" %>
 						<% DE = dataEntry[familias] %>
 						<%- include("RE-Registros", {familias, DE, titulo: "Inactivar", regs: rclvs.IN, url: rr + "inactivar"}) %>
 						<%- include("RE-Registros", {familias, DE, titulo: "Recuperar", regs: rclvs.RC, url: rr + "recuperar"}) %>
 						<%- include("RE-Registros", {familias, DE, titulo: "Ediciones", regs: rclvs.ED, url: rr + "edicion"}) %>
-						<%- include("RE-Registros", {familias, DE, titulo: "Altas", regs: rclvs.AL, url: rr + "alta"}) %>
-						<%- include("RE-Registros", {familias, DE, titulo: "Solapamiento de Fechas", regs: rclvs.SL, url: rr + "solapamiento"}) %>
-						<%- include("RE-Registros", {familias, DE, titulo: "Fecha Móvil", regs: rclvs.FM, url: "rclv/edicion"}) %>
+						<%- include("RE-Registros", {familias, DE, titulo: "Altas", regs: rclvs.AL, url: rr + "alta/r"}) %>
+						<%- include("RE-Registros", {familias, DE, titulo: "Solapamiento de Fechas", regs: rclvs.SL, url: rr + "solapamiento/r"}) %>
+						<%- include("RE-Registros", {familias, DE, titulo: "Fecha Móvil", regs: rclvs.FM, url: "/edicion/r"}) %>
 					</div>
 				</div>
 			<% } %>
@@ -96,7 +96,7 @@
 					<div class="temas">
 						<% DE = dataEntry[familias] %>
 						<div id="cuadro" class="bordeConSombra">
-							<% if (sigProd) { %><a href="/revision/links/?entidad=<%= sigProd.entidad %>&id=<%= sigProd.id %>"><% } %>
+							<% if (sigProd) { %><a href="/revision/abm-links/p/<%= sigProd.entidad %>/?id=<%= sigProd.id %>"><% } %>
 								<div id="grafico"></div>
 								<div id="algunosDatos"></div>
 							<% if (sigProd) { %></a><% } %>

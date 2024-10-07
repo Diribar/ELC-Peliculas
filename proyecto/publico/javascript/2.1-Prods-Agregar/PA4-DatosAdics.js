@@ -311,12 +311,11 @@ window.addEventListener("load", async () => {
 		link.addEventListener("click", () => {
 			// Guardar los valores en Session y Cookies
 			funcionesGrales.guardaLosValoresEnSessionCookies();
-			// Obtiene la RCLV_entidad
+
+			// Redirige a la vista RCLV
 			const entidadRclv = entidadesRclv(link);
-			// Obtiene el RCLV_id
-			const id = "?id=" + DOM.inputsRCLV[i].value;
-			// Para ir a la vista RCLV
-			location.href = "/" + entidadRclv + "/edicion/" + id + "&origen=PDA";
+			const id = DOM.inputsRCLV[i].value;
+			location.href = "/" + entidadRclv + "/edicion/r/?id=" + id + "&origen=PDA";
 		});
 	});
 

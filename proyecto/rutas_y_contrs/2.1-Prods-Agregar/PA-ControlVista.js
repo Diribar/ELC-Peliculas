@@ -553,5 +553,5 @@ let accionesParaCapitulosIMFA = async (datos, req, res) => {
 	procesos.borraSessionCookies(req, res, "IM");
 
 	// Redirecciona a su edición
-	return res.redirect("/producto/edicion/?entidad=capitulos&id=" + id);
+	return res.redirect("/capitulos/edicion/p/?id=" + id);
 };

@@ -45,7 +45,7 @@ module.exports = async (req, res, next) => {
 	v.horarioFinalCreado = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.creadoEn));
 
 	// Corrige el link de 'entendido'
-	if (req.originalUrl.startsWith("/" + familia + "/edicion"))
+	if (req.originalUrl.startsWith("/" + entidad + "/edicion/"))
 		v.vistaEntendido.link = v.origen == "TE" ? "/revision/tablero" : "/" + entidad + "/detalle/" + siglaFam + "/?id=" + id;
 
 	// CRITERIO: registro en status 'creado' y otro usuario quiere acceder
