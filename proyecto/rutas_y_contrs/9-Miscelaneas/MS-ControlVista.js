@@ -81,7 +81,8 @@ module.exports = {
 		inicio: (req, res) => res.redirect("/"),
 		urlDeOrigen: async (req, res) => {
 			// Variables
-			const {origen: origenCodigo, origenUrl, prodEntidad, prodId, entidad, id, urlDestino, grupo} = req.query;
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {origen: origenCodigo, origenUrl, prodEntidad, prodId, id, urlDestino, grupo} = req.query;
 			let destino;
 
 			// Casos particulares
@@ -89,13 +90,15 @@ module.exports = {
 			if (!origenCodigo && !origenUrl) return res.redirect("/");
 
 			// Rutina para encontrar el destino
-			for (let origen of origenDeUrls)
-				if ((origenCodigo && origenCodigo == origen.codigo) || (origenUrl && origenUrl == origen.url)) {
-					destino = origen.url;
-					if (origen.cola)
-						destino += "/?entidad=" + (prodEntidad ? prodEntidad : entidad) + "&id=" + (prodId ? prodId : id);
-					break;
-				}
+			const origenDeUrl = procesos.origenDeUrls(prodEntidad ? prodEntidad : entidad).find(
+				(n) =>
+					(origenCodigo && origenCodigo == n.codigo) || // coincide el código de origen
+					(origenUrl && origenUrl == origen.url) // coincide el url de origen
+			);
+			if (origenDeUrl) {
+				destino = origenDeUrl.url;
+				if (origenDeUrl.cola) destino += "/?id=" + (prodId ? prodId : id);
+			}
 
 			// Links
 			if (!destino && ["LK", "LKM"].includes(origenCodigo))
@@ -113,8 +116,8 @@ module.exports = {
 		},
 		rutasAntiguas: function (req, res) {
 			// Variables
-			const {entidad, id} = req.query;
-			const rutasAntsActs = procesos.rutas(entidad);
+			const {entidad} = req.query; // debe ser 'req.query', porque así son las antiguas
+			const rutasAntsActs = comp.rutas(entidad);
 			let {originalUrl} = req;
 			let nuevoUrl, nuevaCola;
 

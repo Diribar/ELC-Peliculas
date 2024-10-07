@@ -14,7 +14,7 @@ module.exports = {
 			const titulo = "Agregar - Palabras Clave";
 
 			// Obtiene el Data Entry de session y cookies
-			const palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
+			const {palabrasClave} = req.session.palabrasClave ? req.session : req.cookies;
 
 			// Variables para la vista
 			const mensajesAyuda = [
@@ -46,14 +46,14 @@ module.exports = {
 			if (errores.hay) return res.redirect(req.originalUrl);
 
 			// Si corresponde, redirecciona a 'ingreso manual'
-			if (metodo == "Ingr. Man.") return res.redirect("ingreso-manual");
+			if (metodo == "Ingr. Man.") return res.redirect("agregar-im");
 
 			// Guarda el Data Entry en session y cookie de desambiguar
 			req.session.desambiguar = {palabrasClave};
 			res.cookie("desambiguar", {palabrasClave}, {maxAge: unDia});
 
 			// Redirecciona a 'desambiguar'
-			return res.redirect("desambiguar");
+			return res.redirect("agregar-ds");
 		},
 	},
 	desambiguar: async (req, res) => {
@@ -63,8 +63,7 @@ module.exports = {
 		const titulo = "Agregar - Desambiguar";
 
 		// Si no existe el cookie, redirecciona
-		const desambiguar = req.session.desambiguar ? req.session.desambiguar : req.cookies.desambiguar;
-		if (!desambiguar) return res.redirect("palabras-clave");
+		const {desambiguar} = req.session.desambiguar ? req.session : req.cookies;
 
 		// Se asegura de que exista el session
 		if (!req.session.desambiguar) req.session.desambiguar = desambiguar;
@@ -84,7 +83,7 @@ module.exports = {
 			const titulo = "Agregar - Datos Duros";
 
 			// Obtiene el Data Entry de session y cookies
-			const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
+			const {datosDuros} = req.session.datosDuros ? req.session : req.cookies;
 
 			// Acciones si existe un valor para el campo 'avatar'
 			if (datosDuros.avatar) {
@@ -116,10 +115,10 @@ module.exports = {
 			// Datos para la vista
 			const origen =
 				req.session.FA || req.cookies.FA
-					? "ingreso-fa"
+					? "agregar-fa"
 					: req.session.IM || req.cookies.IM
-					? "ingreso-manual"
-					: "desambiguar";
+					? "agregar-im"
+					: "agregar-ds";
 			const camposInput1 = camposInput.filter((n) => n.campoInput == 1);
 			const camposInput2 = camposInput.filter((n) => n.campoInput == 2);
 
@@ -188,7 +187,7 @@ module.exports = {
 			}
 
 			// Redirecciona a la siguiente instancia
-			return res.redirect("datos-adicionales");
+			return res.redirect("agregar-da");
 		},
 	},
 	datosAdics: {
@@ -200,7 +199,7 @@ module.exports = {
 			const usuario_id = req.session.usuario.id;
 
 			// Prepara variables para la vista
-			const datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
+			const {datosAdics} = req.session.datosAdics ? req.session : req.cookies;
 			const camposDA = await variables.camposDA_conValores(usuario_id);
 			const camposChkBox = camposDA.filter((n) => n.chkBox && (!n.exclusivo || n.exclusivo.includes(datosAdics.entidad)));
 			const camposDE = Object.keys(datosAdics);
@@ -256,7 +255,7 @@ module.exports = {
 			res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
 
 			// Redirecciona a la siguiente instancia
-			return res.redirect("confirma");
+			return res.redirect("agregar-cn");
 		},
 	},
 	confirma: {
@@ -268,7 +267,7 @@ module.exports = {
 			let maximo;
 
 			// Obtiene el Data Entry de session y cookies
-			let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
+			let {confirma} = req.session.confirma ? req.session : req.cookies;
 
 			// Datos de la producción
 			maximo = 50;
@@ -301,13 +300,13 @@ module.exports = {
 			const usuario_id = req.session.usuario.id;
 
 			// Obtiene el Data Entry de session y cookies
-			const confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
+			const {confirma} = req.session.confirma ? req.session : req.cookies;
 			const entidad = confirma.entidad;
 
 			// Si se eligió algún RCLV que no existe, vuelve a la instancia anterior
 			if (!confirma.sinRCLV) {
 				const {existe, epocaOcurrencia_id} = await procesos.confirma.verificaQueExistanLosRCLV(confirma);
-				if (!existe) return res.redirect("datos-adicionales");
+				if (!existe) return res.redirect("agregar-da");
 				else confirma.epocaOcurrencia_id = epocaOcurrencia_id;
 			}
 
@@ -352,7 +351,7 @@ module.exports = {
 			res.cookie("terminaste", terminaste, {maxAge: unDia});
 
 			// REDIRECCIONA --> es necesario que sea una nueva url, para que no se pueda recargar el post de 'guardar'
-			return res.redirect("terminaste");
+			return res.redirect("agregar-tr");
 		},
 	},
 	terminaste: async (req, res) => {
@@ -363,10 +362,9 @@ module.exports = {
 		const usuario_id = req.session.usuario.id;
 
 		// Si se perdió la info, redirige a 'palabras clave'
-		const terminaste = req.session.terminaste ? req.session.terminaste : req.cookies.terminaste;
+		const {terminaste} = req.session.terminaste ? req.session : req.cookies;
 		delete req.session.terminaste;
 		res.clearCookie("terminaste");
-		if (!terminaste) return res.redirect("palabras-clave");
 
 		// Obtiene los datos del producto
 		const {entidad, id} = terminaste;
@@ -386,7 +384,7 @@ module.exports = {
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, imagenMG, agregaste},
-			...{entidad, familia: "producto", id, dataEntry: origEdic, entidadNombre, ruta: "/producto/"},
+			...{entidad, familia: "producto", id, dataEntry: origEdic, entidadNombre},
 			...{imgDerPers, tituloImgDerPers, status_id: creado_id},
 		});
 	},
@@ -470,7 +468,7 @@ module.exports = {
 			else res.cookie("datosOriginales", IM, {maxAge: unDia});
 
 			// Guarda en 'session' y 'cookie' del siguiente paso
-			const sigPaso = IM.fuente == "FA" ? {codigo: "FA", url: "/ingreso-fa"} : {codigo: "datosDuros", url: "/datos-duros"};
+			const sigPaso = IM.fuente == "FA" ? {codigo: "FA", url: "agregar-fa"} : {codigo: "datosDuros", url: "agregar-dd"};
 			req.session[sigPaso.codigo] = IM;
 			res.cookie(sigPaso.codigo, IM, {maxAge: unDia});
 
@@ -535,7 +533,7 @@ module.exports = {
 			res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 
 			// Redirecciona a la siguiente instancia
-			return res.redirect("datos-duros");
+			return res.redirect("agregar-dd");
 		},
 	},
 };

@@ -26,7 +26,7 @@ router.get("/tablero-de-mantenimiento", aptoUsuario, vista.tableroMantenim);
 
 // Redireciona
 router.get("/inicio", vista.redirecciona.inicio);
-router.get("/miscelaneas/ic/:entidad", entValida, capturaInactivar, vista.redirecciona.urlDeOrigen); // inactivar captura
+router.get("/:entidad/inactivar-captura", entValida, capturaInactivar, vista.redirecciona.urlDeOrigen); // inactivar captura
 
 // Información para mostrar en el explorador
 router.get("/session", vista.listados.session);

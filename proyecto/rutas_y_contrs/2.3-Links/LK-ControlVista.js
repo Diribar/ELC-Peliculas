@@ -9,7 +9,8 @@ module.exports = {
 		// Variables
 		const tema = "linksCrud";
 		const codigo = "abmLinks";
-		const {entidad, id, grupo, origen} = req.query;
+		const entidad = comp.obtieneEntidadDesdeUrl(req);
+		const {id, grupo, origen} = req.query;
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
 		const usuario_id = req.session.usuario.id;

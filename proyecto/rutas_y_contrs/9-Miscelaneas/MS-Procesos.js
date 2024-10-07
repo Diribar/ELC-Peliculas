@@ -112,70 +112,28 @@ module.exports = {
 		// Fin
 		return productos;
 	},
-	rutas: (entidad) => {
-		// Variables
+	origenDeUrls: (entidad) => {
 		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const rutasCons = [];
-		let opciones, tareas;
+		return [
+			// Productos
+			{codigo: "PDA", url: "/entidad/agregar-da"}, // OK
+			{codigo: "PED", url: "/" + entidad + "/edicion/p", cola: true},
+			{url: "/" + entidad + "/calificar/p/", cola: true},
+			{url: "/" + entidad + "/abm-links/p", cola: true},
+			{codigo: "RL", url: "/revision/abm-links/p/" + entidad, cola: true},
 
-		// Rutas de Familia
-		if (["producto", "rclv"].includes(familia)) {
-			opciones = [
-				{tarea: "historial", titulo: "Historial de"},
-				{tarea: "inactivar", titulo: "Inactivar"},
-				{tarea: "recuperar", titulo: "Recuperar"},
-				{tarea: "eliminadoPorCreador", titulo: "Eliminar"},
-				{tarea: "eliminar", titulo: "Eliminar"},
-			];
-			for (let opcion of opciones)
-				rutasCons.push({
-					ant: "/" + familia + "/" + opcion.tarea, // familia + tarea (salvo correccion)
-					act: "/" + entidad + "/" + opcion.tarea, // entidad + tarea
-					titulo: opcion.titulo,
-				});
-			rutasCons.push(
-				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-motivo"},
-				{ant: "/correccion/status", act: "/" + entidad + "/correccion-status"}
-			);
-		}
+			// Productos y Rclvs
+			{codigo: "DT", url: "/" + entidad + "/detalle/" + siglaFam, cola: true}, // OK
+			{url: "/" + entidad + "/historial", cola: true},
+			{codigo: "RA", url: "/revision/alta/" + siglaFam + "/" + entidad, cola: true},
+			{url: "/revision/edicion/" + siglaFam + "/" + entidad, cola: true},
 
-		// Rutas de Producto RUD
-		if (familia == "producto") {
-			tareas = ["detalle", "edicion", "calificar"];
-			for (let tarea of tareas) rutasCons.push({ant: "/producto/" + tarea, act: "/" + entidad + "/" + tarea + "/p"}); // ant: '/producto/' + rutaAnt - act: entidad + rutaAct
-		}
-
-		// Rclv CRUD
-		if (familia == "rclv") {
-			tareas = ["agregar", "detalle", "edicion"];
-			for (let tarea of tareas) rutasCons.push({ant: "/rclv/" + tarea, act: "/" + entidad + "/" + tarea + "/r"}); // ant: '/rclv/' + rutaAnt - act: entidad + rutaAct
-		}
-
-		// Links
-		if (["producto", "link"].includes(familia))
-			rutasCons.push(
-				{ant: "/links/abm", act: "/" + entidad + "/abm-links/p"},
-				{ant: "/links/visualizacion", act: "/links/mirar/l"}
-			); // ant: 'links/abm' - act: entidad + '/lkp'
-
-		// Revisión de Entidades
-		tareas = ["alta", "solapamiento", "links"];
-		for (let tarea of tareas)
-			rutasCons.push({
-				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
-				act: "/revision/" + tarea + "/" + siglaFam + "/" + entidad, // revision + tarea + siglaFam + entidad
-			});
-		tareas = ["edicion", "rechazar", "inactivar", "recuperar"];
-		for (let tarea of tareas)
-			rutasCons.push({
-				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
-				act: "/revision/" + tarea + "/" + entidad, // revision + tarea + entidad
-				titulo: tarea == "rechazar" ? "Rechazar" : "Revisión de " + comp.letras.inicialMayus(tarea),
-			});
-
-		// Fin
-		return rutasCons;
+			// Tableros
+			{codigo: "TE", url: "/revision/tablero"},
+			{codigo: "TM", url: "/tablero-de-mantenimiento"},
+			{codigo: "TU", url: "/revision/tablero-de-usuarios"},
+			{codigo: "CN", url: "/consultas"},
+		];
 	},
 };
 

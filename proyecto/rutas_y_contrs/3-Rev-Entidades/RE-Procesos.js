@@ -342,11 +342,13 @@ module.exports = {
 	guardar: {
 		obtieneDatos: async function (req) {
 			// Variables
-			const entidad = comp.obtieneEntidadDesdeUrl(req);
-			const {id, origen, desaprueba, prodEntidad, prodId} = req.query;
+			const {baseUrl, tarea, siglaFam, entidad} = comp.partesDelUrl(req);
+			const {id, origen, desaprueba} = req.query;
+			let codigo = tarea.slice(1);
+			if (codigo == "alta") codigo += "/" + siglaFam; // 'alta/p', 'rechazar', 'inactivar', 'recuperar'
+
+			// Más variables
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const {ruta} = comp.partesDelUrl(req);
-			const codigo = procsFM.codigo({ruta, familia}); // 'alta', 'rechazar', 'revisionInactivar', 'revisionRecuperar'
 			const aprobado = !desaprueba || codigo == "alta";
 			const producto = familia == "producto";
 			const rclv = familia == "rclv";
@@ -362,16 +364,11 @@ module.exports = {
 
 			// Más variables
 			const statusOriginal_id = original.statusRegistro_id;
-			const cola =
-				entidad.concat("/?id=", id) +
-				(prodEntidad ? "&prodEntidad=" + prodEntidad : "") +
-				(prodId ? "&prodId=" + prodId : "") +
-				(origen ? "&origen=" + origen : "");
+			const cola = entidad.concat("/?id=", id) + (origen ? "&origen=" + origen : "");
 			const revId = req.session.usuario.id;
 			const ahora = comp.fechaHora.ahora();
 			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
-			const {baseUrl} = comp.partesDelUrl(req);
 			const usuario_id = original.statusSugeridoPor_id;
 			const campoDecision = petitFamilias + (aprobado ? "Aprob" : "Rech");
 
@@ -1041,8 +1038,7 @@ let FN = {
 	},
 	statusFinalMasMotivo: async ({codigo, desaprueba, rclv, entidad, original, req}) => {
 		// Variables
-		const statusAprob =
-			codigo == "alta" || (codigo == "revisionInactivar" && desaprueba) || (codigo == "revisionRecuperar" && !desaprueba);
+		const statusAprob = codigo.startsWith("alta") || (codigo == "inactivar" && desaprueba) || (codigo == "recuperar" && !desaprueba);
 		const datos = {entidad, ...original, publico: true, epocaOcurrencia: true};
 		const prodCreadoAprob =
 			statusAprob && !rclv ? await validacsFM.validacs.consolidado({datos}).then((n) => n.impideAprobado) : null;
@@ -1059,13 +1055,13 @@ let FN = {
 			: inactivo_id;
 
 		// Obtiene el motivo
-		const motivoRegAnt = ["revisionInactivar", "revisionRecuperar"].includes(codigo)
+		const motivoRegAnt = ["inactivar", "recuperar"].includes(codigo)
 			? await baseDeDatos
 					.obtienePorCondicionElUltimo("statusHistorial", {entidad, entidad_id: original.id}, "statusFinalEn")
 					.then((n) => n.motivo_id)
 			: null;
 		const motivo_id = motivoRegAnt
-			? motivoRegAnt // si es un revisionInactivar o revisionRecuperar, lo toma del registro anterior
+			? motivoRegAnt // si es un inactivar o recuperar, lo toma del registro anterior
 			: codigo == "rechazar"
 			? req.body.motivo_id // si es un rechazo, lo toma del formulario
 			: null;

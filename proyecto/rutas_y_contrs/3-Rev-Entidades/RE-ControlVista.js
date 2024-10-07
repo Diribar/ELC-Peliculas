@@ -65,7 +65,7 @@ module.exports = {
 	altaProdForm: async (req, res) => {
 		// Variables
 		const tema = "revisionEnts";
-		const codigo = "producto/alta";
+		const codigo = "alta/p";
 		const entidad = comp.obtieneEntidadDesdeUrl(req);
 		const {id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "TE";
@@ -107,7 +107,7 @@ module.exports = {
 		const statusRegistro_id = original.statusRegistro_id;
 		const statusCreado = statusRegistro_id == creado_id;
 		const statusLink_id = [creado_id, aprobado_id, recuperar_id];
-		const links = await procsProd.obtieneLinksDelProducto({entidad, id, statusLink_id, origen: "RPA"});
+		const links = await procsProd.obtieneLinksDelProducto({entidad, id, statusLink_id, origen: "RA"});
 		const status_id = statusRegistro_id;
 		const asocs = variables.entidades.asocRclvs;
 
@@ -303,7 +303,7 @@ module.exports = {
 
 		// Opciones de redireccionamiento
 		if (producto && codigo == "alta") destino = baseUrl + "/producto/edicion" + cola; // producto creado y aprobado
-		else if (origen) destino = "/miscelaneas/ic/" + cola; // otros casos con origen
+		else if (origen) destino = "/inactivar-captura/" + cola; // otros casos con origen
 		else destino = "/revision/tablero"; // sin origen
 
 		// Fin
@@ -315,8 +315,8 @@ module.exports = {
 		form: async (req, res) => {
 			// Tema y Código
 			const tema = "revisionEnts";
-			const {ruta} = comp.partesDelUrl(req);
-			let codigo = ruta.slice(1, -1); // No se puede poner 'const', porque más adelante puede cambiar
+			const {tarea} = comp.partesDelUrl(req);
+			let codigo = tarea.slice(1); // No se puede poner 'const', porque puede cambiar a 'edicion/avatar'
 
 			// Variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
@@ -532,7 +532,7 @@ module.exports = {
 					: await procesos.links.obtieneSigProd({entidad, id, revId})
 				: null;
 		const linkSigProd = sigProd
-			? "/miscelaneas/ic/".concat(entidad, "/?id=", id) +
+			? "/inactivar-captura/".concat(entidad, "/?id=", id) +
 			  "&prodEntidad=".concat(sigProd.entidad, "&prodId=", sigProd.id, "&origen=RL")
 			: null;
 

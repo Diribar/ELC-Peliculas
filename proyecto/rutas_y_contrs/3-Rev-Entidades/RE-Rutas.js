@@ -18,7 +18,7 @@ const m = {
 
 	// Específicos del registro
 	entValida: require("../../middlewares/porRegistro/entidadValida"),
-	iDvalido: require("../../middlewares/porRegistro/iDvalido"),
+	idValido: require("../../middlewares/porRegistro/idValido"),
 	linkAltaBaja: require("../../middlewares/porRegistro/linkAltaBaja"),
 	rutaCRUD_ID: require("../../middlewares/varios/rutaCRUD_ID"),
 	statusCorrecto: require("../../middlewares/porRegistro/statusCorrecto"),
@@ -40,7 +40,7 @@ const m = {
 
 // Middlewares - Consolidados
 const usuarioBase = [m.usAltaTerm, m.usPenalizaciones];
-const aptoCRUD = [m.entValida, m.iDvalido, m.statusCorrecto, ...usuarioBase, m.permUserReg];
+const aptoCRUD = [m.entValida, m.idValido, m.statusCorrecto, ...usuarioBase, m.permUserReg];
 const aptoEdicion = [...aptoCRUD, m.usRolRevPERL, m.edicionVista];
 
 // APIs - Tablero
@@ -54,7 +54,6 @@ router.get("/api/edicion/aprob-rech", m.edicionAPI, API.edicAprobRech);
 router.get("/api/link/alta-baja", m.linkAltaBaja, API.links.altaBaja);
 router.get("/api/link/edicion", m.edicionAPI, API.edicAprobRech);
 router.get("/api/link/siguiente-producto", API.links.sigProd);
-router.get("/api/link/obtiene-embeded-link", API.links.obtieneEmbededLink);
 
 // Vistas - Tablero de Control
 router.get("/tablero", usuarioBase, m.usRolAutTablEnts, vista.tableroControl);
@@ -86,7 +85,7 @@ router.get("/solapamiento/r/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaActiva
 router.post("/solapamiento/r/:entidad", aptoCRUD, m.usRolRevPERL, m.multer.single("avatar"), m.capturaInactivar, vista.edic.solapam);
 
 // Vistas - Links
-router.get("/links/p/:entidad", aptoCRUD, m.rutaCRUD_ID, m.linksEnSemana, m.usRolRevLinks, m.capturaActivar, vista.links);
+router.get("/abm-links/p/:entidad", aptoCRUD, m.rutaCRUD_ID, m.linksEnSemana, m.usRolRevLinks, m.capturaActivar, vista.links);
 
 // Fin
 module.exports = router;

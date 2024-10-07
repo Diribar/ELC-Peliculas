@@ -11,9 +11,9 @@ module.exports = {
 		// Variables
 		const tema = "prodRud";
 		const codigo = "detalle";
-		const entidad = comp.obtieneEntidadDesdeUrl(req);
+		const {siglaFam, entidad} = comp.partesDelUrl(req);
 		const {id} = req.query;
-		const origen = req.query.origen ? req.query.origen : "PDT";
+		const origen = req.query.origen ? req.query.origen : "DT";
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const usuario_id = usuario ? usuario.id : "";
 		const autTablEnts = usuario ? usuario.rolUsuario.autTablEnts : false;
@@ -87,7 +87,7 @@ module.exports = {
 		// return res.send(links);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, origen, revisorPERL},
-			...{entidad, id, familia, status_id, creadoPor_id, statusAlineado},
+			...{siglaFam, entidad, id, familia, status_id, creadoPor_id, statusAlineado},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
@@ -99,7 +99,7 @@ module.exports = {
 			// Variables
 			const tema = "prodRud";
 			const codigo = "edicion";
-			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {siglaFam, entidad} = comp.partesDelUrl(req);
 			const {id} = req.query;
 			const usuario_id = req.session.usuario.id;
 
@@ -145,7 +145,7 @@ module.exports = {
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, origen, prodEdic, imgDerPers, status_id},
-				...{entidadNombre, entidad, id, familia, registro, dataEntry, camposInput1, camposInput2},
+				...{siglaFam, entidad, entidadNombre, id, familia, registro, dataEntry, camposInput1, camposInput2},
 				...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos, anchorEncab},
 				...{estrucPers: true, cartelGenerico: true},
 			});
@@ -259,7 +259,7 @@ module.exports = {
 
 			// Fin
 			return origen == "TE"
-				? res.redirect("/miscelaneas/ic/" + entidadIdOrigen) // Regresa a Revisión
+				? res.redirect("/inactivar-captura/" + entidadIdOrigen) // Regresa a Revisión
 				: res.redirect("/producto/detalle/" + entidadIdOrigen); // Redirige a detalle
 		},
 	},

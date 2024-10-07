@@ -75,7 +75,7 @@ window.addEventListener("load", () => {
 			// Redirecciona al sigProd
 			const cola1 = entidad + "/?id=" + id;
 			const cola2 = "&prodEntidad=" + sigProd.entidad + "&prodId=" + sigProd.id + "&origen=RL";
-			return sigProd ? (location.href = "/miscelaneas/ic/" + cola1 + cola2) : location.reload();
+			return sigProd ? (location.href = "/inactivar-captura/" + cola1 + cola2) : location.reload();
 		});
 	});
 

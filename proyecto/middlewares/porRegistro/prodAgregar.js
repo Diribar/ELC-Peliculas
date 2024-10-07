@@ -7,17 +7,18 @@ module.exports = (req, res, next) => {
 	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const codigoUrl = req.url.slice(1);
 	const pasos = [
-		{url: "palabras-clave", codigo: "palabrasClave", producto: true},
-		{url: "desambiguar", codigo: "desambiguar", producto: true},
-		{url: "ingreso-manual", codigo: "IM", producto: true},
-		{url: "ingreso-fa", codigo: "FA"},
-		{url: "datos-duros", codigo: "datosDuros"},
-		{url: "datos-adicionales", codigo: "datosAdics"},
-		{url: "confirma", codigo: "confirma"},
+		{url: "agregar-pc", codigo: "palabrasClave", esProducto: true},
+		{url: "agregar-ds", codigo: "desambiguar", esProducto: true},
+		{url: "agregar-im", codigo: "IM", esProducto: true},
+		{url: "agregar-fa", codigo: "FA"},
+		{url: "agregar-dd", codigo: "datosDuros"},
+		{url: "agregar-da", codigo: "datosAdics"},
+		{url: "agregar-cn", codigo: "confirma"},
+		{url: "agregar-tr", codigo: "terminaste"},
 	];
 	const entidades = variables.entidades.prods;
 	const paso = pasos.find((n) => codigoUrl.startsWith(n.url));
-	const {codigo, producto} = paso;
+	const {codigo, esProducto} = paso;
 	const datos = req.session[codigo] ? req.session[codigo] : req.cookies[codigo];
 
 	// Si no está la session/cookie actual, redirige a la url anterior
@@ -30,20 +31,20 @@ module.exports = (req, res, next) => {
 			// Obtiene el origen
 			const origen =
 				req.session.FA || req.cookies.FA
-					? "ingreso-fa"
+					? "agregar-fa"
 					: req.session.IM || req.cookies.IM
-					? "ingreso-manual"
-					: "desambiguar";
+					? "agregar-im"
+					: "agregar-ds";
 			// Redirecciona
 			return res.redirect(origen);
 		}
 	}
 	// Si la entidad no es la esperada, redirige con la entidad correcta
 	else if (
-		(producto && entidad != "producto") || // la entidad no es 'producto' y debería serlo
-		(!producto && !entidades.includes(entidad)) // la entidad no es válida
+		(esProducto && entidad != "producto") || // la entidad no es 'producto' y debería serlo
+		(!esProducto && !entidades.includes(entidad)) // la entidad no es válida
 	)
-		return res.redirect("/" + (producto ? "producto" : datos.entidad) + "/agregar/" + codigoUrl);
+		return res.redirect("/" + (esProducto ? "producto" : datos.entidad) + "/" + codigoUrl);
 
 	// Tareas si es 'GET',
 	if (req.method == "GET") {

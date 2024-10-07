@@ -43,7 +43,7 @@ module.exports = {
 
 			// Tipos de actuación
 			const datos = {
-				...{anime_id, documental_id, actuada_id},
+				...{anime_id, documental_id, actuada_id, tiposActuacion},
 				...{inputVacio, selectVacio, rclvSinElegir},
 				creados_ids,
 			};

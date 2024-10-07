@@ -2,9 +2,8 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const entidad = comp.obtieneEntidadDesdeUrl(req);
+	const {baseUrl, entidad} = comp.partesDelUrl(req);
 	const {id, edicID} = req.query;
-	const {baseUrl} = comp.partesDelUrl(req);
 	let {origen} = req.query;
 	let entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 	let informacion;
@@ -16,7 +15,7 @@ module.exports = async (req, res, next) => {
 		const revision = baseUrl == "/revision";
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const cola = entidad + "/?id=" + id + "&origen=" + (origen ? origen : "TE");
-		const vistaAnterior = variables.vistaAnterior("/miscelaneas/ic/" + cola);
+		const vistaAnterior = variables.vistaAnterior("/" + entidad + "/inactivar-captura" + cola);
 		let edicion;
 
 		if (revision) {
@@ -59,10 +58,10 @@ module.exports = async (req, res, next) => {
 		// En caso que no, mensaje de error
 		if (!edicion) {
 			// Acciones si no tiene origen
-			if (!origen) origen = baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "RDT" : "PDT";
+			if (!origen) origen = baseUrl == "/revision" ? "TE" : "DT";
 
 			// Información
-			const link = "/miscelaneas/ic/" + entidad + "/?id=" + id + "&origen=" + origen;
+			const link = "/" + entidad + "/inactivar-captura/?id=" + id + "&origen=" + origen;
 			const vistaAnterior = variables.vistaAnterior(link);
 			informacion = {mensajes: ["No encontramos esa edición."], iconos: [vistaAnterior]};
 		}

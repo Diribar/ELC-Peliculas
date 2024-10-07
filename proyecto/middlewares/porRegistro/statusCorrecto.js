@@ -73,16 +73,8 @@ module.exports = async (req, res, next) => {
 		const statusActualNombre = statusActual.nombre;
 
 		// Variables para el ícono
-		const origen = req.query.origen
-			? req.query.origen
-			: baseUrl == "revision"
-			? familia
-				? "TE"
-				: "TU"
-			: familia == "rclv"
-			? "RDT"
-			: "PDT";
-		const link = "/miscelaneas/ic/" + entidad + "/?id=" + id + "&origen=" + origen;
+		const origen = req.query.origen ? req.query.origen : baseUrl == "revision" ? (familia ? "TE" : "TU") : "DT";
+		const link = "/" + entidad + "/inactivar-captura/?id=" + id + "&origen=" + origen;
 		const vistaEntendido = variables.vistaEntendido(link);
 
 		// Información a mostrar

@@ -58,7 +58,7 @@ window.addEventListener("load", async () => {
 			guardarLosValoresEnSession();
 
 			// Obtiene la RCLV_entidad
-			const entidadRclv = "?entidad=" + entidades(link);
+			const entidadRclv = "?entidad=" + entidadesRclv(link);
 
 			// Para ir a la vista RCLV
 			location.href = "/rclv/agregar/" + entidadRclv + paramsOrigen;
@@ -77,7 +77,7 @@ window.addEventListener("load", async () => {
 			guardarLosValoresEnSession();
 
 			// Obtiene la RCLV_entidad
-			let entidadRclv = "?entidad=" + entidades(link);
+			let entidadRclv = "?entidad=" + entidadesRclv(link);
 
 			// Obtiene el RCLV_id
 			let rclv_id = "&id=" + DOM.inputsRCLV[i].value;
@@ -96,7 +96,7 @@ window.addEventListener("load", async () => {
 	});
 });
 
-let entidades = (link) => {
+let entidadesRclv = (link) => {
 	return link.className.includes("personaje_id")
 		? "personajes"
 		: link.className.includes("hecho_id")

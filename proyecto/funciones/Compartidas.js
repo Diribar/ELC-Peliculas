@@ -276,8 +276,8 @@ module.exports = {
 	},
 	obtieneEntidadDesdeUrl: (req) => {
 		// Lo obtiene del path
-		const entParams = req.params.entidad;
-		if (entParams) return entParams;
+		const {entidad} = req.params;
+		if (entidad) return entidad;
 
 		// Lo obtiene del baseUrl
 		let baseUrl = req.baseUrl.slice(1);
@@ -1256,32 +1256,6 @@ module.exports = {
 		// Fin
 		return mailEnviado;
 	},
-	partesDelUrl: (req) => {
-		// Obtiene la base y el url (sin la base)
-		const baseUrl = req.baseUrl ? req.baseUrl : req.path.slice(0, req.path.indexOf("/", 1));
-		const url = req.url.startsWith(baseUrl) ? req.url.replace(baseUrl, "") : req.url;
-
-		// Obtiene la ruta
-		let ruta = req.path;
-		if (ruta.startsWith(baseUrl)) ruta = ruta.replace(baseUrl, ""); // si contiene el baseUrl, lo quita
-		if (ruta.endsWith("/")) ruta = ruta.slice(0, -1); // si termina con "/", lo quita
-
-		// Obtiene la tarea
-		const indice = ruta.indexOf("/", 1);
-		const tarea = indice >= 0 ? ruta.slice(0, indice) : ruta; // obtiene solamente lo que figure hasta el "/"
-
-		// Obtiene la siglaFam
-		let siglaFam = ruta.replace(tarea, ""); // si contiene la tarea, la quita
-		if (siglaFam) {
-			siglaFam = siglaFam.slice(1); // le quita el "/" del comienzo
-			if (siglaFam.length > 2 && siglaFam[1] != "/") siglaFam = null; // detecta si no es una 'siglaFam'
-			else siglaFam = siglaFam[0]; // obtiene la 'siglaFam'
-			if (siglaFam && !["p", "r", "l"].includes(siglaFam)) siglaFam = null;
-		}
-
-		// Fin
-		return {baseUrl, tarea, siglaFam, url};
-	},
 	variablesSemanales: function () {
 		FN.primerLunesDelAno();
 
@@ -1291,6 +1265,111 @@ module.exports = {
 
 		// Fin
 		return;
+	},
+	partesDelUrl: (req) => {
+		// Obtiene la base y el url (sin la base)
+		let url = req.baseUrl + req.path;
+		const baseUrl = url.slice(0, url.indexOf("/", 1));
+		url = url.replace(baseUrl, "");
+		const tarea = url.slice(0, url.indexOf("/", 1));
+
+		// Obtiene la siglaFam
+		let {siglaFam} = req.params;
+		if (!siglaFam) {
+			url = url.replace(tarea, ""); // si contiene la tarea, la quita
+			if (url) {
+				siglaFam = url.slice(1); // le quita el "/" del comienzo
+				if (siglaFam.length > 2 || siglaFam[1] != "/") siglaFam = null; // detecta si no es una 'siglaFam'
+				else siglaFam = siglaFam[0]; // obtiene la 'siglaFam'
+				if (siglaFam && !["p", "r", "l"].includes(siglaFam)) siglaFam = null;
+			}
+		}
+
+		// Obtiene la entidad
+		let {entidad} = req.params;
+		if (!entidad) entidad = baseUrl.slice(1);
+
+		// Fin
+		return {baseUrl, tarea, siglaFam, entidad, url};
+	},
+	rutas: (entidad) => {
+		// Variables
+		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const rutasCons = [];
+		let opciones, tareas;
+
+		// Rutas de Familia
+		if (["producto", "rclv"].includes(familia)) {
+			opciones = [
+				{tarea: "historial", titulo: "Historial de"},
+				{tarea: "inactivar", titulo: "Inactivar"},
+				{tarea: "recuperar", titulo: "Recuperar"},
+			];
+			for (let opcion of opciones)
+				rutasCons.push({
+					ant: "/" + familia + "/" + opcion.tarea, // familia + tarea (salvo correccion)
+					act: "/" + entidad + "/" + opcion.tarea, // entidad + tarea
+					titulo: opcion.titulo,
+				});
+			rutasCons.push(
+				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-del-motivo"},
+				{ant: "/correccion/status", act: "/" + entidad + "/correccion-del-status"}
+			);
+		}
+		rutasCons.push(
+			{
+				ant: "/" + familia + "/eliminadoPorCreador", // familia + tarea (salvo correccion)
+				act: "/" + entidad + "/eliminado-por-creador", // entidad + tarea
+				titulo: "Eliminado",
+			},
+			{
+				ant: "/" + familia + "/eliminar", // familia + tarea (salvo correccion)
+				act: "/" + entidad + "/eliminado", // entidad + tarea
+				titulo: "Eliminado",
+			}
+		);
+
+		// Rutas de Producto RUD
+		if (familia == "producto") {
+			tareas = ["detalle", "edicion", "calificar"];
+			for (let tarea of tareas) rutasCons.push({ant: "/producto/" + tarea, act: "/" + entidad + "/" + tarea + "/p"}); // ant: '/producto/' + rutaAnt - act: entidad + rutaAct
+		}
+
+		// Rclv CRUD
+		if (familia == "rclv") {
+			tareas = ["agregar", "detalle", "edicion"];
+			for (let tarea of tareas) rutasCons.push({ant: "/rclv/" + tarea, act: "/" + entidad + "/" + tarea + "/r"}); // ant: '/rclv/' + rutaAnt - act: entidad + rutaAct
+		}
+
+		// Links
+		if (["producto", "link"].includes(familia))
+			rutasCons.push(
+				{ant: "/links/abm", act: "/" + entidad + "/abm-links/p"},
+				{ant: "/links/visualizacion", act: "/links/mirar/l"}
+			);
+
+		// Revisión de Entidades
+		tareas = ["alta", "solapamiento"];
+		for (let tarea of tareas)
+			rutasCons.push({
+				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
+				act: "/revision/" + tarea + "/" + siglaFam + "/" + entidad, // revision + tarea + siglaFam + entidad
+			});
+		rutasCons.push({
+			ant: "/revision/links", // revision + familia + tarea (salvo links)
+			act: "/revision/abm-links/" + siglaFam + "/" + entidad, // revision + tarea + siglaFam + entidad
+		});
+		tareas = ["edicion", "rechazar", "inactivar", "recuperar"];
+		for (let tarea of tareas)
+			rutasCons.push({
+				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
+				act: "/revision/" + tarea + "/" + entidad, // revision + tarea + entidad
+				titulo: tarea == "rechazar" ? "Rechazar" : "Revisión de " + comp.letras.inicialMayus(tarea),
+			});
+
+		// Fin
+		return rutasCons;
 	},
 };
 

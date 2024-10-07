@@ -8,12 +8,12 @@
 			<div class="margenDebajo inputError flexRow">
 				<!-- Título -->
 				<h3>Nombre<%- personajes ? 's' : '' %></h3>
-				<% if (codigo != "rclv/solapamiento") { %>
+				<% if (codigo != "solapamiento") { %>
 					<%- include("MN-Ayuda", {mensajes: ayudas.nombre}) %>
 					<%- include("MN-Errores", {nombre: "nombre", ocultarOK: true}) %>
 				<% } %>
 			</div>
-			<% if (codigo != "rclv/solapamiento") { %>
+			<% if (codigo != "solapamiento") { %>
 				<!-- Campos -->
 				<div class="flexCol spaceBetween">
 					<!-- Nombre Formal -->
@@ -130,7 +130,7 @@
 					</table>
 				</div>
 			</div>
-			<% if (codigo != "rclv/solapamiento") { %>
+			<% if (codigo != "solapamiento") { %>
 				<!-- Carpeta de imagenes -->
 				<div class="borderTop"></div>
 				<div id="sectorCarpetaAvatars" class="flexRowAlign inputError spaceBetween">
@@ -159,7 +159,7 @@
 				<ul type="none" id="posiblesRepetidos"></ul>
 			</div>
 			<% } %>
-		<% if (codigo != "rclv/solapamiento" && (tema == "revisionEnts" || (usuario.rolUsuario.revisorPERL && dataEntry.statusRegistro_id == aprobado_id))) { %>
+		<% if (codigo != "solapamiento" && (tema == "revisionEnts" || (usuario.rolUsuario.revisorPERL && dataEntry.statusRegistro_id == aprobado_id))) { %>
 			<!-- Prioridad -->
 			<div id="sectorPrioridad" class="flexRowAlign inputError spaceBetween margenDebajo">
 				<h3>Prioridad</h3>
@@ -173,7 +173,7 @@
 				<%- include("MN-Errores", {nombre: "prioridad_id", ocultarOK: true}) %>
 			</div>
 		<% } %>
-		<% if (codigo != "rclv/solapamiento") { %>
+		<% if (codigo != "solapamiento") { %>
 			<!-- Genero -->
 			<div id="sectorGenero" class="flexRowAlign altoFila inputError">
 				<h3><%- personajes ? 'Sexo' : 'Género' %></h3>

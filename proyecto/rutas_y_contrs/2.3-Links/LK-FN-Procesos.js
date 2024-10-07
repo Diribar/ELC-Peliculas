@@ -100,7 +100,7 @@ module.exports = {
 
 		// Genera el link
 		const link = sigProd
-			? "/miscelaneas/ic/".concat(entidad) +
+			? "/inactivar-captura/".concat(entidad) +
 			  "/?id=".concat(producto.id) +
 			  "&prodEntidad=".concat(sigProd.entidad) +
 			  "&prodId=".concat(sigProd.id) +

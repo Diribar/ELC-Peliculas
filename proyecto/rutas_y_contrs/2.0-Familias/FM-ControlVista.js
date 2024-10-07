@@ -7,7 +7,7 @@ module.exports = {
 	form: {
 		motivos: async (req, res) => {
 			// Variables
-			const datos = await procesos.obtieneDatosForm(req);
+			const datos = await procesos.obtieneDatos(req);
 
 			// Obtiene datos para la vista
 			const ayudasTitulo = "Por favor decinos por qué sugerís " + datos.codigo + " este registro.";
@@ -20,7 +20,7 @@ module.exports = {
 		historial: async (req, res) => {
 			// Variables
 			const {statusAlineado, prodRclv} = req.body;
-			const datos = await procesos.obtieneDatosForm(req);
+			const datos = await procesos.obtieneDatos(req);
 
 			// Obtiene el ayuda para el título
 			const ayudasTitulo =
@@ -189,7 +189,7 @@ module.exports = {
 	correcs: {
 		motivoForm: async (req, res) => {
 			// Variables
-			const tema = "correccion";
+			const tema = "fmCrud";
 			const codigo = "cambiarMotivo";
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, origen, prodRclv, ultHist} = {...req.query, ...req.body};
@@ -217,7 +217,6 @@ module.exports = {
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, motivo_id, entDupl, idDupl, ultHist, origen} = {...req.query, ...req.body};
 			const {statusFinal_id} = ultHist;
-			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 			// Genera el comentario
 			let {comentario} = req.body;
@@ -227,15 +226,15 @@ module.exports = {
 			await baseDeDatos.actualizaPorId("statusHistorial", ultHist.id, {motivo_id, comentario});
 
 			// Genera la 'cola'
-			let cola = "/?entidad=" + entidad + "&id=" + id;
+			let cola = "/?id=" + id;
 			if (origen) cola += "&origen=" + origen;
 
 			// Fin
-			return res.redirect("/" + familia + "/historial" + cola);
+			return res.redirect("/" + entidad + "/historial" + cola);
 		},
 		statusForm: async (req, res) => {
 			// Variables
-			const tema = "correccion";
+			const tema = "fmCrud";
 			const codigo = "corregirStatus";
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, origen, prodRclv} = {...req.query, ...req.body};
