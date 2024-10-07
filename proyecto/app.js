@@ -113,6 +113,7 @@ app.set("views", [
 
 	// Vistas - Antiguas
 	app.use("/", require("./rutas_y_contrs/2.0-Familias/FM-RutasAnt")); // incluye algunas de 'revisión' y corrección
+	app.use("/producto/agregar", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-RutasAnt"));
 	app.use("/producto", require("./rutas_y_contrs/2.1-Prods-RUD/PR-RutasAnt"));
 	app.use("/rclv", require("./rutas_y_contrs/2.2-RCLVs/RCLV-RutasAnt"));
 	app.use("/links", require("./rutas_y_contrs/2.3-Links/LK-RutasAnt"));
