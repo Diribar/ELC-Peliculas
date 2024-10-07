@@ -29,7 +29,7 @@
 			<% } %>
 		<% } else if (!locals.statusAlineado && locals.revisorPERL) { %>
 			<!-- Corregir Status -->
-			<a href="<%= '/correccion/status/?entidad=' + entidad + '&id=' + id + origenHTML %>" tabindex="-1">
+			<a href="<%= '/' + entidad + '/correccion-del-status/?id=' + id + origenHTML %>" tabindex="-1">
 				<i class="<%= iconos.faSolid %> <%= iconos.xMark %>" tabindex="-1" title="Ir a 'Corregir Status'"></i>
 			</a>
 		<% } %>

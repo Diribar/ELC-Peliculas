@@ -30,7 +30,7 @@ module.exports = async (req, res, next) => {
 	} else if (!statusAlineado && statusIgual) {
 		// Variables
 		const {urlAnterior} = req.session;
-		const urlStatus = "/correccion/status/?entidad=" + entidad + "&id=" + id;
+		const urlStatus = "/" + entidad + "/correccion-del-status/?id=" + id;
 		const tituloStatus = "Ir a la vista de Cambio de Status";
 		const nombre = comp.nombresPosibles(prodRclv);
 
