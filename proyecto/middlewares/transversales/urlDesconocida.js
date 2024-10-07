@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
 	// Acciones si no se reconoce la url
 	const informacion = {
 		mensajes: ["No tenemos esa dirección en nuestro sistema"],
-		iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio], // se usa actual porque no llegó a cambiar el session
+		iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
 	};
 
 	// Fin

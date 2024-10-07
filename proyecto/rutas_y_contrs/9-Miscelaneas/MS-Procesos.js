@@ -135,12 +135,10 @@ module.exports = {
 			{codigo: "CN", url: "/consultas"},
 		];
 	},
-	rutas: (entidad, originalUrl) => {
+	obtieneRuta: (entidad, originalUrl) => {
 		// Variables
-		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const rutasCons = [];
-		let tareas;
+		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
 
 		// Producto Agregar
 		if (originalUrl.startsWith("/producto/agregar")) {
@@ -154,54 +152,63 @@ module.exports = {
 				{ant: "/ingreso-manual", act: "im"},
 				{ant: "/ingreso-fa", act: "fa"},
 			];
-			const paso = rutas.find((n) => originalUrl.endsWith(n.ant));
-			return paso ? "/producto/agregar-" + paso.act : null;
+			const ruta = rutas.find((n) => originalUrl.endsWith(n.ant));
+			return ruta ? "/producto/agregar-" + ruta.act : null;
 		}
 
-		// Rutas de Familia
-		if (["producto", "rclv"].includes(familia)) {
-			rutasCons.push(
+		// Rutas de Familia, Producto RUD y Rclv CRUD
+		if (["producto", "rclv"].includes(familia) && !originalUrl.startsWith("/revisar")) {
+			// Obtiene las rutas
+			const rutas = [
+				// Familia
 				{ant: "/" + familia + "/historial", act: "/" + entidad + "/historial"},
 				{ant: "/" + familia + "/inactivar", act: "/" + entidad + "/inactivar"},
 				{ant: "/" + familia + "/recuperar", act: "/" + entidad + "/recuperar"},
 				{ant: "/" + familia + "/eliminadoPorCreador", act: "/" + entidad + "/eliminado-por-creador"},
 				{ant: "/" + familia + "/eliminar", act: "/" + entidad + "/eliminado"},
 				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-del-motivo"},
-				{ant: "/correccion/status", act: "/" + entidad + "/correccion-del-status"}
-			);
-		}
+				{ant: "/correccion/status", act: "/" + entidad + "/correccion-del-status"},
 
-		// Rutas de Producto RUD
-		if (familia == "producto") {
-			tareas = ["detalle", "edicion", "calificar"];
-			for (let tarea of tareas) rutasCons.push({ant: "/producto/" + tarea, act: "/" + entidad + "/" + tarea + "/p"}); // ant: '/producto/' + rutaAnt - act: entidad + rutaAct
-		}
+				// RUD Producto y Rclv
+				{ant: "/" + familia + "/detalle", act: "/" + entidad + "/detalle/" + siglaFam},
+				{ant: "/" + familia + "/edicion", act: "/" + entidad + "/edicion/" + siglaFam},
+			];
+			if (familia == "producto")
+				rutas.push(
+					{ant: "/producto/calificar", act: "/" + entidad + "/calificar/p"},
+					{ant: "/links/abm", act: "/" + entidad + "/abm-links/p"}
+				);
+			if (familia == "rclv") rutas.push({ant: "/rclv/agregar", act: "/" + entidad + "/agregar/r"});
 
-		// Rclv CRUD
-		if (familia == "rclv") {
-			tareas = ["agregar", "detalle", "edicion"];
-			for (let tarea of tareas) rutasCons.push({ant: "/rclv/" + tarea, act: "/" + entidad + "/" + tarea + "/r"});
+			// Redirecciona
+			const ruta = rutas.find((n) => originalUrl.startsWith(n.ant));
+			return ruta ? ruta.act : null;
 		}
 
 		// Links
-		if (["producto", "link"].includes(familia))
-			rutasCons.push(
-				{ant: "/links/abm", act: "/" + entidad + "/abm-links/p"},
-				{ant: "/links/visualizacion", act: "/links/mirar/l"}
-			);
+		if (familia == "link") return "/links/mirar/l";
 
 		// Revisión de Entidades
-		rutasCons.push(
-			{ant: "/revision/" + familia + "/alta", act: "/revision/alta/" + siglaFam + "/" + entidad},
-			{ant: "/revision/solapamiento/", act: "/revision/solapamiento/r/" + entidad},
-			{ant: "/revision/links", act: "/revision/abm-links/p/" + entidad}
-		);
-		tareas = ["edicion", "rechazar", "inactivar", "recuperar"];
-		for (let tarea of tareas)
-			rutasCons.push({ant: "/revision/" + familia + "/" + tarea, act: "/revision/" + tarea + "/" + entidad});
+		if (originalUrl.startsWith("/revision")) {
+			// Rutas específicas de cada familia
+			const rutas = [
+				{ant: "/revision/" + familia + "/alta", act: "/revision/alta/" + siglaFam + "/" + entidad},
+				{ant: "/revision/solapamiento/", act: "/revision/solapamiento/r/" + entidad},
+				{ant: "/revision/links", act: "/revision/abm-links/p/" + entidad},
+			];
+
+			// Rutas compartidas
+			tareas = ["edicion", "rechazar", "inactivar", "recuperar"];
+			for (let tarea of tareas)
+				rutas.push({ant: "/revision/" + familia + "/" + tarea, act: "/revision/" + tarea + "/" + entidad});
+
+			// Redirecciona
+			const ruta = rutas.find((n) => originalUrl.startsWith(n.ant));
+			return ruta ? ruta.act : null;
+		}
 
 		// Fin
-		return rutasCons;
+		return null;
 	},
 };
 

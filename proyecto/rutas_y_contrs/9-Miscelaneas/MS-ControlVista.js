@@ -117,19 +117,24 @@ module.exports = {
 		rutasAntiguas: function (req, res) {
 			// Variables
 			const {entidad} = req.query; // debe ser 'req.query', porque así son las antiguas
-			const rutas = procesos.rutas(entidad, req.originalUrl);
-			let {originalUrl} = req;
-			let nuevoUrl, nuevaCola;
+			const {originalUrl} = req;
+			const ruta = procesos.obtieneRuta(entidad, originalUrl);
 
-			// Obtiene el reqBase y el path
-			const ruta = rutas.find((n) => originalUrl.startsWith(n.ant));
-			nuevoUrl = ruta.act;
+			// Si no se obtiene la nueva ruta => vista de dirección desconocida
+			if (!ruta) {
+				const informacion = {
+					mensajes: ["No tenemos esa dirección en nuestro sistema"],
+					iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
+				};
+				return res.render("CMP-0Estructura", {informacion});
+			}
 
-			// Quita la entidad de la 'cola'
-			const colaActual = originalUrl.replace(ruta.ant, "");
-			nuevaCola = colaActual.replace("?entidad=" + entidad, "");
+			// Obtiene datos a partir de la ruta
+			const nuevoUrl = ruta.act;
+			const colaAnt = originalUrl.replace(ruta.ant, "");
 
-			// Terminación de la 'cola'
+			// Obtiene la nueva 'cola'
+			let nuevaCola = colaAnt.replace("?entidad=" + entidad, "");
 			nuevaCola = nuevaCola.replace("/&", "/?");
 			if (nuevaCola.endsWith("?")) nuevaCola = nuevaCola.slice(0, -1);
 			if (nuevaCola.endsWith("/")) nuevaCola = nuevaCola.slice(0, -1);
