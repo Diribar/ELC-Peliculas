@@ -25,7 +25,7 @@ window.addEventListener("load", async () => {
 
 			// Actualiza la vista
 			location.href =
-				"/inactivar-captura/capitulos/?id=".concat(id) +
+				"/capitulos/inactivar-captura/?id=".concat(id) +
 				"&prodEntidad=capitulos&prodId=".concat(capID) +
 				"&origenUrl=".concat(encodeURIComponent(origenUrl));
 		});
@@ -44,7 +44,7 @@ window.addEventListener("load", async () => {
 
 		// Actualiza la vista
 		location.href =
-			"/inactivar-captura/capitulos/?id=".concat(id) +
+			"/capitulos/inactivar-captura/?id=".concat(id) +
 			"&prodEntidad=capitulos&prodId=".concat(capID) +
 			"&origenUrl=".concat(encodeURIComponent(origenUrl));
 	});
