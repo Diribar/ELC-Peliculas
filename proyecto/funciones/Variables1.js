@@ -119,5 +119,5 @@ module.exports = {
 		negro: ["#F0F0F0", "#D2D2D2", "#B8BBBE", "#8A8D90", "#6A6E73"], // 8. Black
 	},
 	eliminarCuandoSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
-	requestsTriviales: ["WhatsApp", "Postman"],
+	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "Zabbix"],
 };
