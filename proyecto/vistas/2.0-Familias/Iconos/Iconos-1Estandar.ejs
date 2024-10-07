@@ -4,25 +4,26 @@
 <% const oa = comp.obtieneDesdeEntidad.oa(locals.entidad) %>
 <% const ORIGEN = locals.origen ? ('&origen=' + origen) : '' %>
 <% const ORIGEN_DIF_DT= locals.origen && !origen.endsWith("DT") ? ORIGEN : '' %>
+<% const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad) %>
 <div id="estandar" class="iconos">
 	<% if (locals.origen && (!detalle || origen != "DT")) { %><!-- Cuando la vista o su origen no es 'Detalle' -->
 		<!-- Salir -->
-		<% const ENTIDAD = locals.prodEntidad || entidad %>
-		<% const ID = locals.prodId || locals.id %>
-		<a href="/inactivar-captura/<%= ENTIDAD %>/?id=<%= ID %><%= ORIGEN %>" tabindex="-1">
+		<% const prodEntidad = locals.prodEntidad || entidad %>
+		<% const prodId = locals.prodId || locals.id %>
+		<a href="<%= '/' prodEntidad + '/inactivar-captura/?id=' + prodId + ORIGEN %>" tabindex="-1">
 			<i class="<%= iconos.faSolid %> <%= iconos.izquierda %>" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>
 	<% if (!detalle && (ORIGEN_DIF_DT && !revLinks || !locals.origen)) { %>
 		<!-- Ir a Detalle - siempre que el origen sea distinto a 'Detalle' o no haya origen -->
-		<a href="<%= '/' + entidad + '/detalle/p/?id=' + id %>" tabindex="-1">
+		<a href="<%= '/' + entidad + '/detalle/' + siglaFam + '/?id=' + id %>" tabindex="-1">
 			<i class="<%= iconos.faSolid %> <%= iconos.detalle %>" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 		</a>
 	<% } %>
 	<% if (terminaste || detalle) { %>
 		<% if (locals.status_id && status_id <= aprobado_id) { %>
 			<!-- Edición, Links y Calificar - con link -->
-			<a href="<%= '/' + entidad + '/edicion/p/?id=' + id + ORIGEN_DIF_DT %>" tabindex="-1">
+			<a href="<%= '/' + entidad + '/edicion/' + siglaFam + '/?id=' + id + ORIGEN_DIF_DT %>" tabindex="-1">
 				<i class="<%= iconos.faSolid %> <%= iconos.edicion %>" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 			</a>
 			<% if (familia == "producto") { %>
