@@ -92,7 +92,7 @@ window.addEventListener("load", async () => {
 				? ["/revision/usuarios/tablero-de-usuarios", "fa-thumbs-up", "Entendido"]
 				: pathname.startsWith("/revision/")
 				? ["/revision/tablero", "fa-thumbs-up", "Entendido"]
-				: ["/" + entidad + "/detalle/" + siglaFam() + "/?id=" + entId, "fa-circle-info", "Ir a Detalle"];
+				: ["/" + entidad + "/detalle/" + siglaFam + "/?id=" + entId, "fa-circle-info", "Ir a Detalle"];
 
 			// Crea el cartel en el DOM
 			contenidoDelCartelGenerico({DOM, mensajes, clase, titulo, link});

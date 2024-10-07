@@ -189,7 +189,8 @@ module.exports = {
 		},
 		guardaLosCambios: async (req, res, DE) => {
 			// Variables
-			const {entidad, origen} = req.query;
+			const {tarea, entidad} = comp.partesDelUrl(req);
+			const {origen} = req.query;
 			let {id} = req.query; // Si es un 'agregar', el 'id' es undefined
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const usuario_id = req.session.usuario.id;
@@ -197,7 +198,7 @@ module.exports = {
 			let original, edicion, edicN;
 
 			// Tareas para un nuevo registro
-			if (codigo == "/rclv/agregar/") {
+			if (tarea == "/agregar") {
 				// Guarda el nuevo registro
 				DE.creadoPor_id = usuario_id;
 				DE.statusSugeridoPor_id = usuario_id;
@@ -216,7 +217,7 @@ module.exports = {
 				}
 			}
 			// Tareas para edición
-			else if (codigo == "/rclv/edicion/") {
+			else if (tarea == "/edicion") {
 				// Obtiene el registro original
 				original = await baseDeDatos.obtienePorId(entidad, id, ["statusRegistro", "ediciones"]);
 				edicion = original.ediciones.find((n) => n[campo_id] == id && n.editadoPor_id == usuario_id);

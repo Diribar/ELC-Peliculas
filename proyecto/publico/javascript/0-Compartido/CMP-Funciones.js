@@ -314,14 +314,14 @@ let contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
 	div.appendChild(a);
 
 	// Agrega todo al DOM
-	DOM.cartelGenerico.appendChild(div)
+	DOM.cartelGenerico.appendChild(div);
 	DOM.cartelGenerico.querySelector("#iconosCartel a").focus();
 
 	// Fin
 	return;
 };
 
-let siglaFam = () =>
+let obtieneSiglaFam = () =>
 	["peliculas", "colecciones", "capitulos", "prodsEdicion"].includes(entidad)
 		? "p"
 		: ["personajes", "hechos", "temas", "eventos", "epocasDelAno", "rclvsEdicion"].includes(entidad)
@@ -331,3 +331,5 @@ let siglaFam = () =>
 		: entidad == "usuarios"
 		? "u"
 		: "";
+
+const siglaFam = obtieneSiglaFam();
