@@ -1311,12 +1311,12 @@ module.exports = {
 			for (let opcion of opciones)
 				rutasCons.push({
 					ant: "/" + familia + "/" + opcion.tarea, // familia + tarea (salvo correccion)
-					act: "/" + entidad + "/" + opcion.tarea + "/" + siglaFam, // entidad + tarea
+					act: "/" + entidad + "/" + opcion.tarea, // entidad + tarea
 					titulo: opcion.titulo,
 				});
 			rutasCons.push(
-				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-del-motivo/" + siglaFam},
-				{ant: "/correccion/status", act: "/" + entidad + "/correccion-del-status/" + siglaFam}
+				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-del-motivo"},
+				{ant: "/correccion/status", act: "/" + entidad + "/correccion-del-status"}
 			);
 		}
 
@@ -1340,7 +1340,7 @@ module.exports = {
 			); // ant: 'links/abm' - act: entidad + '/lkp'
 
 		// Revisión de Entidades
-		tareas = ["alta", "solapamiento", "links"];
+		tareas = ["alta", "solapamiento", "abm-links"];
 		for (let tarea of tareas)
 			rutasCons.push({
 				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
@@ -1350,7 +1350,7 @@ module.exports = {
 		for (let tarea of tareas)
 			rutasCons.push({
 				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
-				act: "/revision/" + tarea + "/" + siglaFam + "/" + entidad, // revision + tarea + siglaFam + entidad
+				act: "/revision/" + tarea + "/" + entidad, // revision + tarea + entidad
 				titulo: tarea == "rechazar" ? "Rechazar" : "Revisión de " + comp.letras.inicialMayus(tarea),
 			});
 
