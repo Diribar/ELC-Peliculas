@@ -106,7 +106,7 @@ module.exports = {
 	// CRUD
 	obtieneDatos: async function (req) {
 		// Variables
-		const {baseUrl, tarea, entidad} = comp.partesDelUrl(req);
+		const {baseUrl, tarea, siglaFam, entidad} = comp.partesDelUrl(req);
 		const {originalUrl} = req;
 		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
 		const codigo = tarea.slice(1);
@@ -147,7 +147,7 @@ module.exports = {
 		// Fin
 		return {
 			...{tema, codigo, titulo, origen},
-			...{entidad, entidadNombre, familia, petitFamilias, id, registro: original, comentario},
+			...{siglaFam, entidad, entidadNombre, familia, petitFamilias, id, registro: original, comentario},
 			...{canonNombre, RCLVnombre, prodsDelRCLV, imgDerPers, bloqueDer, status_id, cantProds},
 			...{entsNombre, urlActual, cartelGenerico},
 		};
