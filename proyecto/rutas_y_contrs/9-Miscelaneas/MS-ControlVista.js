@@ -117,16 +117,16 @@ module.exports = {
 		rutasAntiguas: function (req, res) {
 			// Variables
 			const {entidad} = req.query; // debe ser 'req.query', porque así son las antiguas
-			const rutasAntsActs = procesos.rutas(entidad);
+			const rutas = procesos.rutas(entidad, req.originalUrl);
 			let {originalUrl} = req;
 			let nuevoUrl, nuevaCola;
 
 			// Obtiene el reqBase y el path
-			const rutaAntAct = rutasAntsActs.find((n) => originalUrl.startsWith(n.ant));
-			nuevoUrl = rutaAntAct.act;
+			const ruta = rutas.find((n) => originalUrl.startsWith(n.ant));
+			nuevoUrl = ruta.act;
 
 			// Quita la entidad de la 'cola'
-			const colaActual = originalUrl.replace(rutaAntAct.ant, "");
+			const colaActual = originalUrl.replace(ruta.ant, "");
 			nuevaCola = colaActual.replace("?entidad=" + entidad, "");
 
 			// Terminación de la 'cola'

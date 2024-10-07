@@ -135,12 +135,28 @@ module.exports = {
 			{codigo: "CN", url: "/consultas"},
 		];
 	},
-	rutas: (entidad) => {
+	rutas: (entidad, originalUrl) => {
 		// Variables
 		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const rutasCons = [];
 		let tareas;
+
+		// Producto Agregar
+		if (originalUrl.startsWith("/producto/agregar")) {
+			const rutas = [
+				{ant: "/palabras-clave", act: "pc"},
+				{ant: "/desambiguar", act: "ds"},
+				{ant: "/datos-duros", act: "dd"},
+				{ant: "/datos-adicionales", act: "da"},
+				{ant: "/confirma", act: "cn"},
+				{ant: "/terminaste", act: "tr"},
+				{ant: "/ingreso-manual", act: "im"},
+				{ant: "/ingreso-fa", act: "fa"},
+			];
+			const paso = rutas.find((n) => originalUrl.endsWith(n.ant));
+			return paso ? "/producto/agregar-" + paso.act : null;
+		}
 
 		// Rutas de Familia
 		if (["producto", "rclv"].includes(familia)) {
