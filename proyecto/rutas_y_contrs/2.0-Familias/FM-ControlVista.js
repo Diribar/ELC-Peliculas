@@ -214,7 +214,7 @@ module.exports = {
 		},
 		motivoGuardar: async (req, res) => {
 			// Variables
-			const {siglaFam, entidad} = comp.partesDelUrl(req);
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, motivo_id, entDupl, idDupl, ultHist, origen} = {...req.query, ...req.body};
 			const {statusFinal_id} = ultHist;
 
