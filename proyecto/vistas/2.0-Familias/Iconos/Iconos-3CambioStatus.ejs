@@ -50,7 +50,7 @@
 		<% } %>
 		<% if (locals.status_id == inactivo_id && codigo != "eliminar") { %>
 			<!-- Recuperar -->
-			<a href="<%= '/' + familia + '/recuperar/?entidad=' + entidad + '&id=' + id + origenHTML %>" tabindex="-1">
+			<a href="<%= '/' + entidad + '/recuperar/?id=' + id + origenHTML %>" tabindex="-1">
 				<i class="<%= iconos.faSolid %> <%= iconos.check %>" tabindex="-1" title="Ir a 'Recuperar'"></i>
 			</a>
 			<% if (locals.usuario && usuario.rolUsuario.revisorPERL) { %>
