@@ -479,8 +479,6 @@ module.exports = {
 				procesos.descargaAvatarOriginal(original, entidad);
 
 			// Opciones de redireccionamiento
-			console.log(305, producto, codigo);
-
 			if (producto && codigo == "alta") destino = "/revision/edicion/" + entidad + cola; // producto creado y aprobado
 			else if (origen) destino = "/" + entidad + "/inactivar-captura" + cola; // otros casos con origen
 			else destino = "/revision/tablero"; // sin origen
