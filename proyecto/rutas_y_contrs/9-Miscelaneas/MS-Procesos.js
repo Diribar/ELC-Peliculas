@@ -112,27 +112,22 @@ module.exports = {
 		// Fin
 		return productos;
 	},
-	origenDeUrls: (entidad) => {
+	urlsOrigenDestino: (entidad) => {
 		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
 		return [
-			// Productos
-			{codigo: "PDA", url: "/entidad/agregar-da"}, // OK
-			{codigo: "PED", url: "/" + entidad + "/edicion/p", cola: true},
-			{url: "/" + entidad + "/calificar/p/", cola: true},
-			{url: "/" + entidad + "/abm-links/p", cola: true},
-			{codigo: "RL", url: "/revision/abm-links/p/" + entidad, cola: true},
-
 			// Productos y Rclvs
-			{codigo: "DT", url: "/" + entidad + "/detalle/" + siglaFam, cola: true}, // OK
-			{url: "/" + entidad + "/historial", cola: true},
-			{codigo: "RA", url: "/revision/alta/" + siglaFam + "/" + entidad, cola: true},
-			{url: "/revision/edicion/" + siglaFam + "/" + entidad, cola: true},
+			{codOrigen: "DT", destino: "/" + entidad + "/detalle/" + siglaFam, cola: true}, // OK
+			{codOrigen: "RA", destino: "/revision/alta/" + siglaFam + "/" + entidad, cola: true},
+
+			// Productos
+			{codOrigen: "PDA", destino: "/" + entidad + "/agregar-da"}, // OK
+			{codOrigen: "PED", destino: "/" + entidad + "/edicion/p", cola: true},
+			{codOrigen: "RL", destino: "/revision/abm-links/p/" + entidad, cola: true},
 
 			// Tableros
-			{codigo: "TE", url: "/revision/tablero"},
-			{codigo: "TM", url: "/tablero-de-mantenimiento"},
-			{codigo: "TU", url: "/revision/tablero-de-usuarios"},
-			{codigo: "CN", url: "/consultas"},
+			{codOrigen: "TE", destino: "/revision/tablero"},
+			{codOrigen: "TM", destino: "/tablero-de-mantenimiento"},
+			{codOrigen: "TU", destino: "/revision/tablero-de-usuarios"},
 		];
 	},
 	obtieneRuta: (entidad, originalUrl) => {
