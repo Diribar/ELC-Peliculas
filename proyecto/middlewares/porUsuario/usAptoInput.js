@@ -127,15 +127,16 @@ module.exports = async (req, res, next) => {
 	// VERIFICACION 4: Revisa si requiere el cartel de "responsabilidad"
 	if (!informacion) {
 		// Variables
-		const {baseUrl} = comp.partesDelUrl(req);
-		const familia = baseUrl.startsWith("/producto")
-			? {campo: "prods", vista: "PA"}
-			: // : baseUrl.startsWith("/rclv")
-			  // ? {campo: "rclvs", vista: "RCLV"}
-			  // : baseUrl.startsWith("/links")
-			  // ? {campo: "links", vista: "LK"}
-			  "";
-		let cartel = "cartel_resp_" + familia.campo;
+		const {tarea, siglaFam} = comp.partesDelUrl(req);
+		const familia =
+			tarea == "/abm-links"
+				? {campo: "links", vista: "LK"}
+				: siglaFam == "p"
+				? {campo: "prods", vista: "PA"}
+				: siglaFam == "r"
+				? {campo: "rclvs", vista: "RCLV"}
+				: "";
+		let cartel = "cartelResp_" + familia.campo;
 
 		// Revisa si requiere el cartel de "responsabilidad" de la familia
 		if (familia && usuario[cartel]) {
