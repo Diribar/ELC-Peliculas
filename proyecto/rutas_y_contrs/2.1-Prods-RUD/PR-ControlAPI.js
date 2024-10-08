@@ -93,7 +93,6 @@ module.exports = {
 			return res.json();
 		},
 	},
-
 	califics: {
 		delProducto: async (req, res) => {
 			// Variables
@@ -148,7 +147,6 @@ module.exports = {
 			return res.json();
 		},
 	},
-
 	prefsDeCampo: {
 		obtieneOpciones: (req, res) => res.json(pppOpcsSimples),
 		guardaLaPreferencia: async (req, res) => {

@@ -41,9 +41,8 @@ router.get("/api/obtiene-col-cap", API.obtieneColCap);
 router.get("/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
 router.get("/api/obtiene-cap-id", API.obtieneCapID);
 router.get("/api/obtiene-capitulos", API.obtieneCapitulos);
-router.get("/api/obtiene-info-del-be", API.obtieneInfo);
+router.get("/api/obtiene-info-del-be-familia", API.obtieneInfo);
 router.get("/api/obtiene-registro", API.obtieneRegistro);
-router.get("/api/obtiene-embeded-link", API.obtieneEmbededLink);
 
 // Vistas - Historial
 router.get("/historial", aptoDetalle, m.statusCompara, vista.form.historial);

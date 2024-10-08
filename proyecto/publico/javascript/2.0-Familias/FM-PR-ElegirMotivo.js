@@ -18,7 +18,7 @@ window.addEventListener("load", async () => {
 		comentario: document.querySelector("#comentario textarea"),
 		contador: document.querySelector("#comentario #contador"),
 	};
-	const {motivos: statusMotivos, largoComentario} = await fetch("/crud/api/obtiene-info-del-be/?entidad=" + entidad).then((n) =>
+	const {motivos: statusMotivos, largoComentario} = await fetch("/familia/api/obtiene-info-del-be-familia/?entidad=" + entidad).then((n) =>
 		n.json()
 	);
 	let comentNeces, duplicadoOK;

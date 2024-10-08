@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	const botonCapAnt = document.querySelector("#encabezado #colCap .fa-circle-left");
 	const botonCapPost = document.querySelector("#encabezado #colCap .fa-circle-right");
 	const urlOrigen = pathname.slice(0, -1);
-	const ruta = "/capitulos/api/obtiene-cap-ant-y-post/?id=";
+	const ruta = "/familia/api/obtiene-cap-ant-y-post/?id=";
 	const [capAntID, capPostID] = await fetch(ruta + id).then((n) => n.json());
 
 	// Acciones si existe "capítulo anterior"

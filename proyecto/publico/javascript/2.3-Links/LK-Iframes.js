@@ -68,4 +68,4 @@ window.addEventListener("load", async () => {
 });
 
 // Variables
-const rutaEmbeded = "/" + entidad + "/api/obtiene-embeded-link/?linkUrl=";
+const rutaEmbeded = "/link/api/obtiene-embeded-link/?linkUrl=";

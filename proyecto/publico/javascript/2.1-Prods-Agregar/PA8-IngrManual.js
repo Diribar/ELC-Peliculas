@@ -108,7 +108,7 @@ window.addEventListener("load", async () => {
 			this.limpiaLasOpciones(DOM.capitulo);
 
 			// Obtiene los capitulos de la temporada
-			const ruta = "/crud/api/obtiene-capitulos/";
+			const ruta = "/familia/api/obtiene-capitulos/";
 			const capitulos = await fetch(ruta + "?coleccion_id=" + DOM.coleccion_id.value + "&temporada=" + DOM.temporada.value)
 				.then((n) => n.json())
 				.then((n) => n.map((m) => m.numero));

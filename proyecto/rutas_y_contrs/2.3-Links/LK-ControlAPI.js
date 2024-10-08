@@ -18,6 +18,7 @@ module.exports = {
 	obtieneProvs: (req, res) => {
 		return res.json(linksProvs);
 	},
+
 	// ABM
 	guarda: async (req, res) => {
 		// Variables
@@ -179,5 +180,23 @@ module.exports = {
 
 		// Fin
 		return res.json(respuesta);
+	},
+
+	// Mirar
+	obtieneEmbededLink: async (req, res) => {
+		// Variables
+		const {linkID, linkUrl} = req.query;
+
+		// Obtiene el link y el proveedor
+		const link = linkID
+			? await baseDeDatos.obtienePorId("links", linkID)
+			: await baseDeDatos.obtienePorCondicion("links", {url: linkUrl});
+		const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
+
+		// Acciones si es embeded
+		const urlEmbedded = provEmbeded ? "//" + link.url.replace(provEmbeded.embededQuitar, provEmbeded.embededPoner) : "";
+
+		// Fin
+		return res.json(urlEmbedded);
 	},
 };
