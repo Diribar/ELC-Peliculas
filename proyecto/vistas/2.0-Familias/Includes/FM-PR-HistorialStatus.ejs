@@ -36,4 +36,4 @@
 		</tbody>
 	</table>
 </section>
-<%- !["eliminar", "corregirStatus", "historial"].includes(codigo) ? include("FM-PR-Comentario") : null %>
+<% if (["inactivar", "rechazar", "recuperar"].includes(codigo)) { %><%- include("FM-PR-Comentario") %><% } %>
