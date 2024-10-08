@@ -79,36 +79,34 @@ module.exports = {
 	// Redirecciona después de inactivar una captura
 	redirecciona: {
 		inicio: (req, res) => res.redirect("/"),
-		urlDeOrigen: async (req, res) => {
+		urlDeDestino: async (req, res) => {
 			// Variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
-			const {origen: origenCodigo, origenUrl, prodEntidad, prodId, id, urlDestino, grupo} = req.query;
+			const {origen: codOrigen, urlOrigen, prodEntidad, prodId, id, urlDestino, grupo} = req.query;
 			let destino;
 
 			// Casos particulares
 			if (urlDestino) return res.redirect(urlDestino);
-			if (!origenCodigo && !origenUrl) return res.redirect("/");
+			if (!codOrigen && !urlOrigen) return res.redirect("/");
 
-			// Rutina para encontrar el destino
-			const origenDeUrl = procesos.origenDeUrls(prodEntidad ? prodEntidad : entidad).find(
-				(n) =>
-					(origenCodigo && origenCodigo == n.codigo) || // coincide el código de origen
-					(origenUrl && origenUrl == origen.url) // coincide el url de origen
-			);
-			if (origenDeUrl) {
-				destino = origenDeUrl.url;
-				if (origenDeUrl.cola) destino += "/?id=" + (prodId ? prodId : id);
+			// Rutina para encontrar el destino en base al 'codOrigen'
+			if (codOrigen) {
+				const urls = procesos.urlsOrigenDestino(entidad);
+				const url = urlsOrigenDestino.find((n) => codOrigen == n.codOrigen);
+				if (url) {
+					destino = url.destino;
+					if (url.cola) destino += "/?id=" + (prodId ? prodId : id);
+				}
 			}
+			// Rutina para encontrar el destino en base al 'urlOrigen'
 
-			// Links
-			if (!destino && ["LK", "LKM"].includes(origenCodigo))
-				destino =
-					"/links/abm/?entidad=" +
-					(prodEntidad ? prodEntidad : entidad) +
-					"&id=" +
-					(prodId ? prodId : id) +
-					(origenCodigo == "LKM" ? "&origen=TM" : "") +
-					(grupo ? "&grupo=inactivo" : "");
+
+			console.log(96, urlsDestino);
+			console.log(102, {urlDestino, codOrigen, urlOrigen, prodEntidad, entidad});
+			if (urlDestino) {
+				destino = urlDestino.url;
+				if (urlDestino.cola) destino += "/?id=" + (prodId ? prodId : id);
+			}
 
 			// Redirecciona a la vista que corresponda
 			if (!destino) destino = "/";
