@@ -35,7 +35,7 @@ window.addEventListener("load", async () => {
 		// Variables
 		const tempNum = tempSelect ? tempSelect.value : 1;
 		const capNum = capitulo.value;
-		const ruta = "/familia/api/obtiene-cap-id/?entidad=capitulos";
+		const ruta = "/capitulos/api/obtiene-cap-id/?entidad=capitulos";
 
 		// Obtiene el cap_id
 		const cap_id = await fetch(ruta + "&coleccion_id=" + colID + "&temporada=" + tempNum + "&capitulo=" + capNum).then((n) =>
