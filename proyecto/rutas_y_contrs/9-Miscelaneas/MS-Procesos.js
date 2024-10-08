@@ -175,7 +175,7 @@ module.exports = {
 
 			// Redirecciona
 			const ruta = rutas.find((n) => originalUrl.startsWith(n.ant));
-			return ruta ? ruta : null;
+			return ruta;
 		}
 
 		// Links
@@ -197,7 +197,7 @@ module.exports = {
 
 			// Redirecciona
 			const ruta = rutas.find((n) => originalUrl.startsWith(n.ant));
-			return ruta ? ruta : null;
+			return ruta;
 		}
 
 		// Fin
