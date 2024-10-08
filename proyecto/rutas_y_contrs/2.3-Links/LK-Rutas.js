@@ -32,10 +32,10 @@ router.get("/api/valida-link", API.valida);
 router.get("/api/obtiene-provs-links", API.obtieneProvs);
 
 // APIs - ABM
-router.get("/api/guardar", API.guarda);
+router.get("/api/guardar-link", API.guarda);
 router.get("/api/inactiva-o-elimina", API.inactivaElimina);
-router.get("/api/recuperar", API.recupera);
-router.get("/api/deshacer", API.deshace);
+router.get("/api/recuperar-link", API.recupera);
+router.get("/api/deshacer-link", API.deshace);
 router.get("/api/obtiene-embeded-link", API.obtieneEmbededLink);
 
 // Vistas

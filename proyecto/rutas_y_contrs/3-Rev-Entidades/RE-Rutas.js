@@ -47,7 +47,7 @@ const aptoEdicion = [...aptoCRUD, m.usRolRevPERL, m.edicionVista];
 router.get("/api/actualiza-visibles", API.actualizaVisibles);
 
 // APIs - Producto y RCLV
-router.get("/api/edicion/motivo-generico", API.obtieneMotivoGenerico);
+router.get("/api/motivo-generico-revision", API.obtieneMotivoGenerico);
 router.get("/api/edicion/aprob-rech", m.edicionAPI, API.edicAprobRech);
 
 // APIs- Links

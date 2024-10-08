@@ -9,7 +9,7 @@ window.addEventListener("load", async () => {
 		edicsID: document.querySelectorAll(".edicion .edicID"),
 	};
 	const condicion = "?entidad=links";
-	const motivoGenerico_id = await fetch("/revision/api/edicion/motivo-generico").then((n) => n.json());
+	const motivoGenerico_id = await fetch("/revision/api/motivo-generico-revision").then((n) => n.json());
 
 	// Decisión tomada
 	for (let indice = 0; indice < DOM.ediciones.length; indice++) {
