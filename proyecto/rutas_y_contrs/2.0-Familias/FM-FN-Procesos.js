@@ -169,7 +169,7 @@ module.exports = {
 		];
 
 		// Título
-		let titulo = titulos.find((n) => originalUrl.includes("/" + n.url + "/")) + " ";
+		let titulo = titulos.find((n) => originalUrl.includes("/" + n.url + "/")).titulo + " ";
 		titulo += comp.obtieneDesdeEntidad.unaUn(entidad) + " ";
 		titulo += entidadNombre;
 
