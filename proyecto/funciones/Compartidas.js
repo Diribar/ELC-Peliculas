@@ -1280,8 +1280,7 @@ module.exports = {
 			url = url.replace(tarea, ""); // si contiene la tarea, la quita
 			if (url) {
 				siglaFam = url.slice(1); // le quita el "/" del comienzo
-				if (siglaFam.length > 2 || siglaFam[1] != "/") siglaFam = null; // detecta si no es una 'siglaFam'
-				else siglaFam = siglaFam[0]; // obtiene la 'siglaFam'
+				siglaFam = siglaFam[1] == "/" ? siglaFam[0] : null;
 				if (siglaFam && !["p", "r", "l"].includes(siglaFam)) siglaFam = null;
 			}
 		}
