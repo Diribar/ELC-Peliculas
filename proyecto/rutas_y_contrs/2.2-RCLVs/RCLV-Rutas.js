@@ -35,10 +35,10 @@ const aptoCRUD = [m.entValida, m.idValido, m.statusCorrecto, ...aptoUsuario, m.p
 const aptoEdicion = [...aptoCRUD, m.edicion, m.rclvNoEditable];
 
 // APIs - Detalle
-router.get("/api/detalle/obtiene-variables", API.obtieneVars.detalle);
+router.get("/api/obtiene-variables-detalle-rclv", API.obtieneVars.detalle);
 
 // APIs - Agregar/Editar
-router.get("/api/edicion/obtiene-variables-rclv", API.obtieneVars.edicion);
+router.get("/api/obtiene-variables-edicion-rclv", API.obtieneVars.edicion);
 router.get("/api/edicion/valida-sector", API.validaSector);
 router.get("/api/edicion/registros-con-esa-fecha", API.registrosConEsaFecha);
 router.get("/api/edicion/prefijos", API.prefijos);

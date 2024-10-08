@@ -939,7 +939,7 @@ const hechos = entidad == "hechos";
 const epocasDelAno = entidad == "epocasDelAno";
 const ano = personajes ? "anoNacim" : "anoComienzo";
 const rutas = {
-	obtieneVariables: "/rclv/api/edicion/obtiene-variables-rclv",
+	obtieneVariables: "/rclv/api/obtiene-variables-edicion-rclv",
 	validacion: "/rclv/api/edicion/valida-sector/?funcion=",
 	registrosConEsaFecha: "/rclv/api/edicion/registros-con-esa-fecha/",
 };
