@@ -23,10 +23,10 @@ const dataEntryMasYaEnBD = [...dataEntry, prodYaEnBD];
 const dataEntryMasFA = [...dataEntry, usAutorizFA];
 
 // APIs - Validar
-router.get("/api/valida/palabras-clave", API.validaPalabrasClave);
-router.get("/api/valida/datos-duros", API.validaDatosDuros);
-router.get("/api/valida/datos-adicionales", API.validaDatosAdics);
-router.get("/api/valida/ingreso-fa", API.validaCopiarFA);
+router.get("/api/valida/agregar-pc", API.validaPalabrasClave);
+router.get("/api/valida/agregar-dd", API.validaDatosDuros);
+router.get("/api/valida/agregar-da", API.validaDatosAdics);
+router.get("/api/valida/agregar-fa", API.validaCopiarFA);
 
 // APIs - Desambiguar Form
 router.get("/api/desambiguar-busca-info-de-session", API.desambForm.buscaInfoDeSession);

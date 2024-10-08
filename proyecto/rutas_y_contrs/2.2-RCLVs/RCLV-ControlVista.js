@@ -270,7 +270,7 @@ module.exports = {
 			if (entidad == "epocasDelAno" && !edicion && !edicN) comp.actualizaSolapam();
 
 			// Obtiene el url de la siguiente instancia
-			let destino = "/inactivar-captura/" + entidad + "/?id=" + (id ? id : 1) + "&origen=" + origen;
+			let destino = "/" + entidad + "/inactivar-captura/?id=" + (id ? id : 1) + "&origen=" + origen;
 			if (origen == "PED") destino += "&prodEntidad=" + prodEntidad + "&prodId=" + prodId;
 
 			// Redirecciona a la siguiente instancia
