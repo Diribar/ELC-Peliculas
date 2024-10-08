@@ -227,19 +227,24 @@ module.exports = {
 				espera.push(procesos.actualizaElStatusDelUsuario(usuario, "mailValidado"));
 
 			// Actualiza los datos del usuario
-			const {fechaUltNaveg} = esVisita ? cliente : usuario;
 			const diasNaveg = esVisita ? usuario.diasNaveg + cliente.diasNaveg : usuario.diasNaveg; // si se llevaban registros paralelos, se suman
 			const {visitaCreadaEn} = usuario.visitaCreadaEn ? usuario : cliente; // si existe la del usuario, se conserva
-			const datos = {fechaUltNaveg, diasNaveg, visitaCreadaEn, diasSinCartelBenefs: 0};
-			espera.push(baseDeDatos.actualizaPorId("usuarios", usuario.id, datos)); // no es necesario actualizar la variable 'usuario'
+
+			// Prepara la info a guardar en usuarios
+			const datos = {diasSinCartelBenefs: 0};
+			if (esVisita) datos.fechaUltNaveg = cliente;
+			if (esVisita) datos.diasNaveg = diasNaveg;
+			if (!usuario.visitaCreadaEn) datos.visitaCreadaEn = cliente.visitaCreadaEn;
+			espera.push(await baseDeDatos.actualizaPorId("usuarios", usuario.id, datos)); // no es necesario actualizar la variable 'usuario'
 
 			// Actualiza datos en la tabla 'navegsDelDia'
+			const visitaCreadaEnTexto = visitaCreadaEn.toISOString().slice(0, 10);
 			espera.push(
-				baseDeDatos
+				await baseDeDatos
 					.actualizaPorCondicion(
 						"navegsDelDia",
 						{cliente_id, fecha: hoy}, // el 'cliente_id' puede diferir del 'usuario.cliente_id'
-						{cliente_id: usuario.cliente_id, usuario_id, visitaCreadaEn, diasNaveg}
+						{cliente_id: usuario.cliente_id, usuario_id, visitaCreadaEn: visitaCreadaEnTexto, diasNaveg}
 					)
 					.then(() => procesos.eliminaDuplicados(usuario.id))
 			);
