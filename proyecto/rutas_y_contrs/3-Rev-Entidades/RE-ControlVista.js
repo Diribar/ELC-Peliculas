@@ -444,7 +444,7 @@ module.exports = {
 			// CONSECUENCIAS - Si es un RCLV y es un alta, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 			if (rclv && codigo == "alta") procesos.rclv.edicAprobRech(entidad, original, revId);
 
-			// CONSECUENCIAS - statusHistorial: elimina el registro con statusFinal 'inactivar_id'
+			// CONSECUENCIAS - statusHistorial: elimina el registro con statusFinal 'inactivar_id' o 'recuperar_id'
 			const condicion = {entidad, entidad_id: id, statusFinal_id: [inactivar_id, recuperar_id]};
 			baseDeDatos.eliminaPorCondicion("statusHistorial", condicion);
 
