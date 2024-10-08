@@ -15,7 +15,7 @@ router.get("/api/peliculas-cfc-vpc", API.prodsCfcVpc);
 router.get("/api/peliculas-publico", API.prodsPorPublico);
 router.get("/api/peliculas-epoca-estreno", API.prodsPorEpocaEstr);
 router.get("/api/rclvs-rangos-sin-efemerides", API.rclvsRangosSinEfems);
-router.get("/api/links-vencimiento", API.linksVencim);
+router.get("/api/vencimiento-de-links", API.linksVencim);
 router.get("/api/links-por-proveedor", API.linksPorProv);
 
 // Vistas
@@ -24,7 +24,7 @@ router.get("/peliculas-cfc-vpc", combinados, vista.prodsCfcVpc);
 router.get("/peliculas-publico", combinados, vista.prodsPorPublico);
 router.get("/peliculas-epoca-estreno", combinados, vista.prodsPorEpocaEstr);
 router.get("/rclvs-rangos-sin-efemerides", combinados, vista.rclvsRangosSinEfems);
-router.get("/links-vencimiento", combinados, vista.linksVencim);
+router.get("/vencimiento-de-links", combinados, vista.linksVencim);
 router.get("/links-por-proveedor", combinados, vista.linksPorProv);
 
 // Fin
