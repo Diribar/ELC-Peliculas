@@ -346,11 +346,10 @@ module.exports = {
 			const {id, origen, desaprueba} = req.query;
 			const tema = baseUrl.slice(1);
 			const codigo = tarea.slice(1); // 'alta', 'rechazar', 'inactivar', 'recuperar'
-			// if (codigo == "alta") codigo += "/" + siglaFam;
 
 			// Más variables
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const aprobado = !desaprueba || codigo == "alta";
+			const aprobado = !desaprueba || codigo == "alta"; // si aprueba la propuesta del usuario
 			const producto = familia == "producto";
 			const rclv = familia == "rclv";
 
