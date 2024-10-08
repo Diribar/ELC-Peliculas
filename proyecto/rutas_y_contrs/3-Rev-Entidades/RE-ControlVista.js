@@ -126,7 +126,7 @@ module.exports = {
 		let datos = await procesos.guardar.obtieneDatos(req);
 		const {entidad, id, origen, original, statusOriginal_id, statusFinal_id} = datos;
 		const {codigo, producto, rclv, motivo_id, comentario, aprobado} = datos;
-		const {cola, revId, ahora, revisorPERL, petitFamilias, baseUrl, usuario_id, campoDecision} = datos;
+		const {cola, revId, ahora, revisorPERL, petitFamilias, usuario_id, campoDecision} = datos;
 		datos = {}; // limpia la variable 'datos'
 		let destino;
 
@@ -302,8 +302,8 @@ module.exports = {
 			procesos.descargaAvatarOriginal(original, entidad);
 
 		// Opciones de redireccionamiento
-		if (producto && codigo == "alta") destino = baseUrl + "/producto/edicion" + cola; // producto creado y aprobado
-		else if (origen) destino = "/inactivar-captura/" + cola; // otros casos con origen
+		if (producto && codigo == "alta") destino = "/" + entidad + "/edicion/p" + cola; // producto creado y aprobado
+		else if (origen) destino = "/" + entidad + "/inactivar-captura" + cola; // otros casos con origen
 		else destino = "/revision/tablero"; // sin origen
 
 		// Fin
@@ -532,7 +532,7 @@ module.exports = {
 					: await procesos.links.obtieneSigProd({entidad, id, revId})
 				: null;
 		const linkSigProd = sigProd
-			? "/inactivar-captura/".concat(entidad, "/?id=", id) +
+			? "/".concat(entidad, "inactivar-captura/?id=", id) +
 			  "&prodEntidad=".concat(sigProd.entidad, "&prodId=", sigProd.id, "&origen=RL")
 			: null;
 

@@ -155,11 +155,21 @@ module.exports = {
 	titulo: ({entidad, originalUrl}) => {
 		// Variables
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
-		const rutas = comp.rutas(entidad);
+		const titulos = [
+			// Revisión
+			{url: "revision/edicion", titulo: "Revisión de Edicion de"},
+			{url: "revision/rechazar", titulo: "Rechazar"},
+			{url: "revision/inactivar", titulo: "Revisión de Inactivar"},
+			{url: "revision/recuperar", titulo: "Eliminado de Recuperar"},
+
+			// Crud
+			{url: "historial", titulo: "Historial de"},
+			{url: "inactivar", titulo: "Inactivar"},
+			{url: "recuperar", titulo: "Recuperar"},
+		];
 
 		// Título
-		const ruta = rutas.find((n) => originalUrl.startsWith(n.act));
-		let titulo = ruta.titulo + " ";
+		let titulo = titulos.find((n) => originalUrl.includes("/" + n.url + "/")) + " ";
 		titulo += comp.obtieneDesdeEntidad.unaUn(entidad) + " ";
 		titulo += entidadNombre;
 
@@ -175,6 +185,7 @@ module.exports = {
 
 		// Más variables
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const siglaFam = familia[0];
 		const usuario_id = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
@@ -187,7 +198,10 @@ module.exports = {
 		comentario = await this.comentario({entidad, id, codigo, motivo_id, entDupl, idDupl, comentario, statusFinal_id});
 
 		// Fin
-		return {entidad, id, familia, motivo_id, codigo, usuario_id, ahora, campo_id, original, statusFinal_id, comentario};
+		return {
+			...{familia, siglaFam, entidad, id},
+			...{motivo_id, codigo, usuario_id, ahora, campo_id, original, statusFinal_id, comentario},
+		};
 	},
 	comentario: async function (datos) {
 		// Stoppers

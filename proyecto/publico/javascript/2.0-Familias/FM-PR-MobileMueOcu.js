@@ -143,5 +143,5 @@ window.addEventListener("load", () => {
 
 // Variables
 const tarea = location.pathname;
-const calificar = tarea.includes("producto/calificar");
-const rclvDetalle = tarea.includes("rclv/detalle");
+const calificar = tarea.includes("/calificar/p");
+const rclvDetalle = tarea.includes("/detalle/r");

@@ -79,36 +79,32 @@ module.exports = {
 	// Redirecciona después de inactivar una captura
 	redirecciona: {
 		inicio: (req, res) => res.redirect("/"),
-		urlDeOrigen: async (req, res) => {
+		urlDeDestino: async (req, res) => {
 			// Variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
-			const {origen: origenCodigo, origenUrl, prodEntidad, prodId, id, urlDestino, grupo} = req.query;
+			const {origen: codOrigen, urlOrigen, prodEntidad, prodId, id} = req.query;
+			let {urlDestino} = req.query;
 			let destino;
 
 			// Casos particulares
 			if (urlDestino) return res.redirect(urlDestino);
-			if (!origenCodigo && !origenUrl) return res.redirect("/");
+			if (!codOrigen && !urlOrigen) return res.redirect("/");
 
-			// Rutina para encontrar el destino
-			const origenDeUrl = procesos.origenDeUrls(prodEntidad ? prodEntidad : entidad).find(
-				(n) =>
-					(origenCodigo && origenCodigo == n.codigo) || // coincide el código de origen
-					(origenUrl && origenUrl == origen.url) // coincide el url de origen
-			);
-			if (origenDeUrl) {
-				destino = origenDeUrl.url;
-				if (origenDeUrl.cola) destino += "/?id=" + (prodId ? prodId : id);
+			// Rutina para encontrar el destino en base al 'codOrigen'
+			if (codOrigen) {
+				const urls = procesos.urlsOrigenDestino(prodEntidad || entidad);
+				const url = urls.find((n) => codOrigen == n.codOrigen);
+				if (url) {
+					destino = url.destino;
+					if (url.cola) destino += "/?id=" + (prodId || id);
+				}
 			}
-
-			// Links
-			if (!destino && ["LK", "LKM"].includes(origenCodigo))
-				destino =
-					"/links/abm/?entidad=" +
-					(prodEntidad ? prodEntidad : entidad) +
-					"&id=" +
-					(prodId ? prodId : id) +
-					(origenCodigo == "LKM" ? "&origen=TM" : "") +
-					(grupo ? "&grupo=inactivo" : "");
+			// Rutina para encontrar el destino en base al 'urlOrigen'
+			else {
+				if (urlOrigen.includes("colecciones")) urlDestino = urlOrigen.replace("colecciones", "capitulos");
+				else if (urlOrigen.includes("capitulos")) urlDestino = urlOrigen.replace("capitulos", "colecciones");
+				if (urlDestino) destino = urlDestino + "/?id=" + prodId;
+			}
 
 			// Redirecciona a la vista que corresponda
 			if (!destino) destino = "/";
@@ -117,19 +113,24 @@ module.exports = {
 		rutasAntiguas: function (req, res) {
 			// Variables
 			const {entidad} = req.query; // debe ser 'req.query', porque así son las antiguas
-			const rutasAntsActs = comp.rutas(entidad);
-			let {originalUrl} = req;
-			let nuevoUrl, nuevaCola;
+			const {originalUrl} = req;
+			const ruta = procesos.obtieneRuta(entidad, originalUrl);
 
-			// Obtiene el reqBase y el path
-			const rutaAntAct = rutasAntsActs.find((n) => originalUrl.startsWith(n.ant));
-			nuevoUrl = rutaAntAct.act;
+			// Si no se obtiene la nueva ruta => vista de dirección desconocida
+			if (!ruta) {
+				const informacion = {
+					mensajes: ["No tenemos esa dirección en nuestro sistema (familia desconocida)"],
+					iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
+				};
+				return res.render("CMP-0Estructura", {informacion});
+			}
 
-			// Quita la entidad de la 'cola'
-			const colaActual = originalUrl.replace(rutaAntAct.ant, "");
-			nuevaCola = colaActual.replace("?entidad=" + entidad, "");
+			// Obtiene datos a partir de la ruta
+			const nuevoUrl = ruta.act;
+			const colaAnt = originalUrl.replace(ruta.ant, "");
 
-			// Terminación de la 'cola'
+			// Obtiene la nueva 'cola'
+			let nuevaCola = colaAnt.replace("?entidad=" + entidad, "");
 			nuevaCola = nuevaCola.replace("/&", "/?");
 			if (nuevaCola.endsWith("?")) nuevaCola = nuevaCola.slice(0, -1);
 			if (nuevaCola.endsWith("/")) nuevaCola = nuevaCola.slice(0, -1);

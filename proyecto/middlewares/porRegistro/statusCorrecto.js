@@ -43,7 +43,7 @@ module.exports = async (req, res, next) => {
 			? [inactivar_id]
 			: tarea == "recuperar" // recuperar
 			? [recuperar_id]
-			: tarea == "links" // links
+			: tarea == "abm-links" // links
 			? activos_ids
 			: tarea == "solapamiento" // solapamiento
 			? activos_ids

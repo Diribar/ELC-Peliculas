@@ -87,7 +87,7 @@ module.exports = {
 		// return res.send(links);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, origen, revisorPERL},
-			...{siglaFam, entidad, id, familia, status_id, creadoPor_id, statusAlineado},
+			...{entidad, id, familia, status_id, creadoPor_id, statusAlineado},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
@@ -145,7 +145,7 @@ module.exports = {
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, origen, prodEdic, imgDerPers, status_id},
-				...{siglaFam, entidad, entidadNombre, id, familia, registro, dataEntry, camposInput1, camposInput2},
+				...{entidad, entidadNombre, id, familia, registro, dataEntry, camposInput1, camposInput2},
 				...{paises, paisesTop5, idiomas, paisesNombre, camposDA, gruposPers, gruposHechos, anchorEncab},
 				...{estrucPers: true, cartelGenerico: true},
 			});
@@ -157,7 +157,7 @@ module.exports = {
 			const usuario = req.session.usuario;
 			const usuario_id = usuario.id;
 			const revisorPERL = usuario.rolUsuario.revisorPERL;
-			const entidadIdOrigen = entidad + "/?id=" + id + (origen ? "&origen=" + origen : "");
+			const idOrigen = "/?id=" + id + (origen ? "&origen=" + origen : "");
 
 			// Reemplaza valores
 			for (let prop in req.body)
@@ -259,8 +259,8 @@ module.exports = {
 
 			// Fin
 			return origen == "TE"
-				? res.redirect("/inactivar-captura/" + entidadIdOrigen) // Regresa a Revisión
-				: res.redirect("/producto/detalle/" + entidadIdOrigen); // Redirige a detalle
+				? res.redirect("/" + entidad + "/inactivar-captura" + idOrigen) // Regresa a Revisión
+				: res.redirect("/" + entidad + "/detalle/p" + idOrigen); // Redirige a detalle
 		},
 	},
 	califica: {

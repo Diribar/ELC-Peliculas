@@ -18,12 +18,12 @@
 			<!-- Registros -->
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
-				<%- include("RE-Registros", {familias, DE, titulo: "Sin Edición", regs: prods.SE, url: "producto/edicion", mostrarOrigen: true}) %>
-				<%- include("RE-Registros", {familias, DE, titulo: "Sin Calificar", regs: prods.SC, url: "producto/calificar", mostrarOrigen: true}) %>
-				<%- include("RE-Registros", {familias, DE, titulo: "Sin Tema", regs: prods.ST, url: "producto/edicion", mostrarOrigen: true}) %>
-				<%- include("RE-Registros", {familias, DE, titulo: "Sin Época", regs: prods.SEP, url: "producto/edicion", mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Edición", regs: prods.SE, url: "/edicion/p", mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Calificar", regs: prods.SC, url: "/calificar/p", mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Tema", regs: prods.ST, url: "/edicion/p", mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Época", regs: prods.SEP, url: "/edicion/p", mostrarOrigen: true}) %>
 				<% if (omnipotente) { %>
-					<%- include("RE-Registros", {familias, DE, titulo: "Inactivos", regs: prods.IN, url: "producto/detalle", mostrarOrigen: true}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Inactivos", regs: prods.IN, url: "/detalle/p", mostrarOrigen: true}) %>
 				<% } %>
 			</div>
 		</div>
@@ -41,13 +41,13 @@
 			<!-- Registros -->
 			<div class="temas">
 				<% DE = dataEntry[familias] %>
-				<%- include("RE-Registros", {familias, DE, titulo: "Sin Avatar", regs: rclvs.SA, url: "rclv/edicion", mostrarOrigen: true}) %>
-				<%- include("RE-Registros", {familias, DE, titulo: "Sin Películas", regs: rclvs.SP, url: "rclv/detalle", mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Avatar", regs: rclvs.SA, url: "/edicion/r", mostrarOrigen: true}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Sin Películas", regs: rclvs.SP, url: "/detalle/r", mostrarOrigen: true}) %>
 				<% if (usuario.rolUsuario.revisorPERL) { %>
-					<%- include("RE-Registros", {familias, DE, titulo: "Solapamiento de Fechas", regs: rclvs.SF, url: "rclv/edicion", mostrarOrigen: true}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Solapamiento de Fechas", regs: rclvs.SF, url: "/edicion/r", mostrarOrigen: true}) %>
 				<% } %>
 				<% if (omnipotente) { %>
-					<%- include("RE-Registros", {familias, DE, titulo: "Inactivos", regs: rclvs.IN, url: "rclv/detalle", mostrarOrigen: true}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Inactivos", regs: rclvs.IN, url: "/detalle/r", mostrarOrigen: true}) %>
 				<% } %>
 			</div>
 		</div>

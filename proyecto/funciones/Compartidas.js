@@ -42,7 +42,13 @@ module.exports = {
 	obtieneDesdeEntidad: {
 		// Familia y derivados
 		familia: (entidad) => {
-			return FN.familia(entidad);
+			return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
+				? "producto"
+				: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
+				? "rclv"
+				: ["links", "linksEdicion"].includes(entidad)
+				? "link"
+				: "";
 		},
 		familias: (entidad) => {
 			return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
@@ -68,15 +74,7 @@ module.exports = {
 				? "edics"
 				: "";
 		},
-		siglaFam: (entidad) => {
-			return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
-				? "p"
-				: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
-				? "r"
-				: entidad == "usuarios"
-				? "u"
-				: "";
-		},
+		siglaFam: (entidad) => FN.siglaFam(entidad),
 		entidadNombre: (entidad) => FN.entidadNombre(entidad),
 		campo_id: (entidad) => {
 			return entidad == "peliculas"
@@ -413,19 +411,19 @@ module.exports = {
 			// Variables
 			const {entidad, id} = datos;
 			const entidadNombre = (datos.entidadNombre ? datos.entidadNombre : FN.entidadNombre(entidad)).toLowerCase(); // la primera opción es para links
+			const siglaFam = FN.siglaFam(entidad);
 
 			// 1. Inicio
-			let ea = ["capitulos", "links"].includes(entidad) ? "e" : "a";
-			let inicio = "Est" + ea + " ";
+			const ea = ["capitulos", "links"].includes(entidad) ? "e" : "a";
+			const inicio = "Est" + ea + " ";
 
 			// 2. Anchor
-			let url = "?entidad=" + entidad + "&id=" + id;
-			let link = "/" + FN.familia(entidad) + "/detalle/" + url;
-			let entidadHTML = "<u><b>" + entidadNombre + "</b></u>";
-			let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
+			const link = "/" + entidad + "/detalle/" + siglaFam + "/?id=" + id;
+			const entidadHTML = "<u><b>" + entidadNombre + "</b></u>";
+			const anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
 
 			// 3. Final
-			let final = " ya se encuentra en nuestra base de datos";
+			const final = " ya se encuentra en nuestra base de datos";
 
 			// Fin
 			return inicio + anchor + final;
@@ -723,11 +721,11 @@ module.exports = {
 
 			// Obtiene los resultados
 			const tieneLink = capSinLink ? sinLinks : capTalVez ? linksTalVez : capConLinks ? conLinks : null; // opción pesimista
-			const capID = capSinLink ? capSinLink.id : null; // capítulo sin link
+			const cap_id = capSinLink ? capSinLink.id : null; // capítulo sin link
 
 			// Actualiza cada 'tipoDeLink' en la colección
 			baseDeDatos.actualizaPorId("colecciones", colID, {[tipoDeLink]: tieneLink});
-			baseDeDatos.actualizaPorCondicion("capsSinLink", {coleccion_id: colID}, {[tipoDeLink]: capID});
+			baseDeDatos.actualizaPorCondicion("capsSinLink", {coleccion_id: colID}, {[tipoDeLink]: cap_id});
 		}
 
 		// Fin
@@ -1292,85 +1290,6 @@ module.exports = {
 		// Fin
 		return {baseUrl, tarea, siglaFam, entidad, url};
 	},
-	rutas: (entidad) => {
-		// Variables
-		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const rutasCons = [];
-		let opciones, tareas;
-
-		// Rutas de Familia
-		if (["producto", "rclv"].includes(familia)) {
-			opciones = [
-				{tarea: "historial", titulo: "Historial de"},
-				{tarea: "inactivar", titulo: "Inactivar"},
-				{tarea: "recuperar", titulo: "Recuperar"},
-			];
-			for (let opcion of opciones)
-				rutasCons.push({
-					ant: "/" + familia + "/" + opcion.tarea, // familia + tarea (salvo correccion)
-					act: "/" + entidad + "/" + opcion.tarea, // entidad + tarea
-					titulo: opcion.titulo,
-				});
-			rutasCons.push(
-				{ant: "/correccion/motivo", act: "/" + entidad + "/correccion-del-motivo"},
-				{ant: "/correccion/status", act: "/" + entidad + "/correccion-del-status"}
-			);
-		}
-		rutasCons.push(
-			{
-				ant: "/" + familia + "/eliminadoPorCreador", // familia + tarea (salvo correccion)
-				act: "/" + entidad + "/eliminado-por-creador", // entidad + tarea
-				titulo: "Eliminado",
-			},
-			{
-				ant: "/" + familia + "/eliminar", // familia + tarea (salvo correccion)
-				act: "/" + entidad + "/eliminado", // entidad + tarea
-				titulo: "Eliminado",
-			}
-		);
-
-		// Rutas de Producto RUD
-		if (familia == "producto") {
-			tareas = ["detalle", "edicion", "calificar"];
-			for (let tarea of tareas) rutasCons.push({ant: "/producto/" + tarea, act: "/" + entidad + "/" + tarea + "/p"}); // ant: '/producto/' + rutaAnt - act: entidad + rutaAct
-		}
-
-		// Rclv CRUD
-		if (familia == "rclv") {
-			tareas = ["agregar", "detalle", "edicion"];
-			for (let tarea of tareas) rutasCons.push({ant: "/rclv/" + tarea, act: "/" + entidad + "/" + tarea + "/r"}); // ant: '/rclv/' + rutaAnt - act: entidad + rutaAct
-		}
-
-		// Links
-		if (["producto", "link"].includes(familia))
-			rutasCons.push(
-				{ant: "/links/abm", act: "/" + entidad + "/abm-links/p"},
-				{ant: "/links/visualizacion", act: "/links/mirar/l"}
-			);
-
-		// Revisión de Entidades
-		tareas = ["alta", "solapamiento"];
-		for (let tarea of tareas)
-			rutasCons.push({
-				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
-				act: "/revision/" + tarea + "/" + siglaFam + "/" + entidad, // revision + tarea + siglaFam + entidad
-			});
-		rutasCons.push({
-			ant: "/revision/links", // revision + familia + tarea (salvo links)
-			act: "/revision/abm-links/" + siglaFam + "/" + entidad, // revision + tarea + siglaFam + entidad
-		});
-		tareas = ["edicion", "rechazar", "inactivar", "recuperar"];
-		for (let tarea of tareas)
-			rutasCons.push({
-				ant: "/revision/" + familia + "/" + tarea, // revision + familia + tarea (salvo links)
-				act: "/revision/" + tarea + "/" + entidad, // revision + tarea + entidad
-				titulo: tarea == "rechazar" ? "Rechazar" : "Revisión de " + comp.letras.inicialMayus(tarea),
-			});
-
-		// Fin
-		return rutasCons;
-	},
 };
 
 // Funciones
@@ -1417,15 +1336,6 @@ let FN = {
 		const entNombre = indice > -1 ? [...variables.entidades.todosNombre][indice] : null;
 		return entNombre;
 	},
-	familia: (entidad) => {
-		return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
-			? "producto"
-			: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
-			? "rclv"
-			: ["links", "linksEdicion"].includes(entidad)
-			? "link"
-			: "";
-	},
 	asocProd: (registro) => {
 		return registro.pelicula_id
 			? "pelicula"
@@ -1435,6 +1345,14 @@ let FN = {
 			? "coleccion"
 			: "";
 	},
+	siglaFam: (entidad) =>
+		[...variables.entidades.prods, "prodsEdicion"].includes(entidad)
+			? "p"
+			: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
+			? "r"
+			: entidad == "usuarios"
+			? "u"
+			: "",
 
 	// Otras
 	obtieneRegs: async function (campos) {

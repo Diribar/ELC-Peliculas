@@ -73,9 +73,8 @@ window.addEventListener("load", () => {
 			sigProd = await fetch(rutaSigProd + url).then((n) => n.json());
 
 			// Redirecciona al sigProd
-			const cola1 = entidad + "/?id=" + id;
-			const cola2 = "&prodEntidad=" + sigProd.entidad + "&prodId=" + sigProd.id + "&origen=RL";
-			return sigProd ? (location.href = "/inactivar-captura/" + cola1 + cola2) : location.reload();
+			const cola = "&prodEntidad=" + sigProd.entidad + "&prodId=" + sigProd.id + "&origen=RL";
+			return sigProd ? (location.href = "/" + entidad + "/inactivar-captura/?id=" + id + cola) : location.reload();
 		});
 	});
 
@@ -87,6 +86,6 @@ window.addEventListener("load", () => {
 // const condicion = "?prodEntidad=" + entidad + "&prodId=" + id;
 
 // Variables
-const rutaAltaBaja = "/revision/api/link/alta-baja/";
-const rutaSigProd = "/revision/api/link/siguiente-producto/";
+const rutaAltaBaja = "/revision/api/alta-baja-link/";
+const rutaSigProd = "/revision/api/siguiente-producto-link/";
 let sigProd;

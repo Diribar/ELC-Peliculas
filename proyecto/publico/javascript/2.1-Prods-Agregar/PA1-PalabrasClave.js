@@ -176,5 +176,5 @@ window.addEventListener("load", async () => {
 });
 const rutas = {
 	cantProductos: "api/PC-obtiene-la-cantidad-de-prods/?palabrasClave=",
-	validaDatos: "api/valida/palabras-clave/?",
+	validaDatos: "api/valida/agregar-pc/?",
 };

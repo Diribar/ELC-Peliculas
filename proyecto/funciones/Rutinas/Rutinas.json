@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 7/oct",
-	"HoraUTC": "10:29",
+	"FechaUTC": "Mar. 8/oct",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 7/oct",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"05-oct-24": {"leyenda": "Hoy recordamos a santa Faustina Kowalska", "entidad": "personajes", "id": 138},
 		"06-oct-24": {},
 		"07-oct-24": {},
 		"08-oct-24": {},
-		"09-oct-24": {"leyenda": "Hoy recordamos a Abraham, santo", "entidad": "personajes", "id": 165}
+		"09-oct-24": {"leyenda": "Hoy recordamos a Abraham, santo", "entidad": "personajes", "id": 165},
+		"10-oct-24": {}
 	}
 }

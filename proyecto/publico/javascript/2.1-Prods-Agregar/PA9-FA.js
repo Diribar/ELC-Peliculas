@@ -1,48 +1,51 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let form = document.querySelector("#dataEntry");
-	let button = document.querySelector("form button[type='submit']");
-	let inputs = document.querySelectorAll("#dataEntry .input");
-	let mensajesError = document.querySelectorAll(".mensajeError");
-	let iconoOK = document.querySelectorAll(".fa-circle-check");
-	let iconoError = document.querySelectorAll(".fa-circle-xmark");
-	let resultadoComentario = document.querySelector("#resultado");
-	let entidad = document.querySelector("#entidad").innerHTML;
+	const DOM = {
+		form: document.querySelector("#dataEntry"),
+		button: document.querySelector("form button[type='submit']"),
+		inputs: document.querySelectorAll("#dataEntry .input"),
+		mensajesError: document.querySelectorAll(".mensajeError"),
+		iconoOK: document.querySelectorAll(".fa-circle-check"),
+		iconoError: document.querySelectorAll(".fa-circle-xmark"),
+		resultComent: document.querySelector("#resultado"),
+	};
+	const entidad = document.querySelector("#entidad").innerHTML;
+	const entNombre = entidad == "peliculas" ? "película" : entidad == "colecciones" ? "colección" : "capítulo";
+	const pre = "api/";
 	let statusInicial = true;
-	let pre = "api/";
 
 	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
 	let accionesSiHayErrores = async (i, errores) => {
 		// Averigua si hay un error
-		let campo = inputs[i].name;
-		let valor = encodeURIComponent(inputs[i].value);
+		let campo = DOM.inputs[i].name;
+		let valor = encodeURIComponent(DOM.inputs[i].value);
 		let mensaje = errores[campo];
 		// Verificar si el FA_id ya está en nuestra BD
 		if (campo == "direccion" && !mensaje) mensaje = await verificaRepetido_FA_id();
 		// Agregar comentario en 'contenido'
 		if (campo == "contenido") comentarioContenido(errores.campos, valor);
 		// En caso de error
-		mensajesError[i].innerHTML = mensaje;
+		DOM.mensajesError[i].innerHTML = mensaje;
 		if (mensaje) {
-			iconoError[i].classList.remove("ocultar");
-			iconoOK[i].classList.add("ocultar");
-			button.classList.add("inactivo");
+			DOM.iconoError[i].classList.remove("ocultar");
+			DOM.iconoOK[i].classList.add("ocultar");
+			DOM.button.classList.add("inactivo");
 		} else {
 			// En caso de que no haya error
-			iconoError[i].classList.add("ocultar");
-			iconoOK[i].classList.remove("ocultar");
+			DOM.iconoError[i].classList.add("ocultar");
+			DOM.iconoOK[i].classList.remove("ocultar");
 			let sinErrores = true;
-			for (let j = 0; j < inputs.length; j++) {
-				iconoOK[j].className.includes("ocultar")
-					? inputs[j].name != "en_coleccion"
+			for (let j = 0; j < DOM.inputs.length; j++) {
+				DOM.iconoOK[j].className.includes("ocultar")
+					? DOM.inputs[j].name != "en_coleccion"
 						? (sinErrores = false)
-						: inputs[0].value == "peliculas"
+						: DOM.inputs[0].value == "peliculas"
 						? (sinErrores = false)
 						: ""
 					: "";
 			}
-			sinErrores ? button.classList.remove("inactivo") : button.classList.add("inactivo");
+			sinErrores ? DOM.button.classList.remove("inactivo") : DOM.button.classList.add("inactivo");
 		}
 	};
 
@@ -67,28 +70,24 @@ window.addEventListener("load", async () => {
 		// Fin
 		return existe
 			? "Esta " +
-					"<a href='/producto/detalle/?entidad=" +
-					entidad +
-					"&id=" +
-					existe.id +
-					"' target='_blank'><u><b>" +
-					entidad +
-					"</b></u></a>" +
+					"<a " +
+					("href='/" + entidad + "/detalle/p/?id=" + existe.id) +
+					("' target='_blank'><u><b>" + entNombre + "</b></u></a>") +
 					" ya se encuentra en nuestra base de datos"
 			: "";
 	};
 
 	// Procesa el input del contenido
 	let comentarioContenido = (campos, valor) => {
-		resultadoComentario.classList.remove(...resultadoComentario.classList);
+		DOM.resultComent.classList.remove(...DOM.resultComent.classList);
 		// Formatos
 		campos
-			? resultadoComentario.classList.add("resultadoExitoso")
+			? DOM.resultComent.classList.add("resultadoExitoso")
 			: valor != ""
-			? resultadoComentario.classList.add("resultadoInvalido")
+			? DOM.resultComent.classList.add("resultadoInvalido")
 			: "";
 		// Mensaje
-		resultadoComentario.innerHTML = campos
+		DOM.resultComent.innerHTML = campos
 			? campos == 1
 				? "Se obtuvo 1 solo dato"
 				: "Se obtuvieron " + campos + " datos"
@@ -100,38 +99,38 @@ window.addEventListener("load", async () => {
 	// Revisa todos los inputs y devuelve los errores
 	let validaDataEntry = () => {
 		let url = "?";
-		for (let i = 0; i < inputs.length; i++) {
+		for (let i = 0; i < DOM.inputs.length; i++) {
 			if (i > 0) url += "&";
-			url += inputs[i].name;
+			url += DOM.inputs[i].name;
 			url += "=";
-			url += encodeURIComponent(inputs[i].value);
+			url += encodeURIComponent(DOM.inputs[i].value);
 		}
-		return fetch("api/valida/ingreso-fa/" + url).then((n) => n.json());
+		return fetch("api/valida/agregar-fa/" + url).then((n) => n.json());
 	};
 
 	// Status inicial
 	if (statusInicial) {
 		let errores = await validaDataEntry();
-		for (let i = 0; i < inputs.length; i++) {
-			inputs[i].value != "" ? accionesSiHayErrores(i, errores) : "";
+		for (let i = 0; i < DOM.inputs.length; i++) {
+			DOM.inputs[i].value != "" ? accionesSiHayErrores(i, errores) : "";
 		}
 		statusInicial = false;
 	}
 
 	// Revisa un data-entry en particular (el modificado) y comunica si está OK o no
-	for (let i = 0; i < inputs.length; i++) {
-		inputs[i].addEventListener("input", async () => {
+	for (let i = 0; i < DOM.inputs.length; i++) {
+		DOM.inputs[i].addEventListener("input", async () => {
 			let errores = await validaDataEntry();
 			accionesSiHayErrores(i, errores);
 		});
 	}
 
 	// Submit
-	form.addEventListener("submit", async (e) => {
-		if (button.className.includes("inactivo")) {
+	DOM.form.addEventListener("submit", async (e) => {
+		if (DOM.button.className.includes("inactivo")) {
 			e.preventDefault();
 			let errores = await validaDataEntry();
-			for (let i = 0; i < inputs.length; i++) {
+			for (let i = 0; i < DOM.inputs.length; i++) {
 				accionesSiHayErrores(i, errores);
 			}
 		}

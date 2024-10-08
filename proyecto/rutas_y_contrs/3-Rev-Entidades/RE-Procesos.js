@@ -364,7 +364,7 @@ module.exports = {
 
 			// Más variables
 			const statusOriginal_id = original.statusRegistro_id;
-			const cola = entidad.concat("/?id=", id) + (origen ? "&origen=" + origen : "");
+			const cola = "/?id=" + id + (origen ? "&origen=" + origen : "");
 			const revId = req.session.usuario.id;
 			const ahora = comp.fechaHora.ahora();
 			const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
@@ -1038,7 +1038,8 @@ let FN = {
 	},
 	statusFinalMasMotivo: async ({codigo, desaprueba, rclv, entidad, original, req}) => {
 		// Variables
-		const statusAprob = codigo.startsWith("alta") || (codigo == "inactivar" && desaprueba) || (codigo == "recuperar" && !desaprueba);
+		const statusAprob =
+			codigo.startsWith("alta") || (codigo == "inactivar" && desaprueba) || (codigo == "recuperar" && !desaprueba);
 		const datos = {entidad, ...original, publico: true, epocaOcurrencia: true};
 		const prodCreadoAprob =
 			statusAprob && !rclv ? await validacsFM.validacs.consolidado({datos}).then((n) => n.impideAprobado) : null;

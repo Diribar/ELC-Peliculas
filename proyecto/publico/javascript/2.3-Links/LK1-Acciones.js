@@ -51,7 +51,7 @@ window.addEventListener("load", async () => {
 			// Obtiene los datos
 			let objeto = obtieneDataEntry(fila);
 			// Submit
-			await fetch("/links/api/guardar/" + objeto).then((n) => n.json());
+			await fetch("/links/api/guardar-link/" + objeto).then((n) => n.json());
 			location.reload();
 		});
 	});
@@ -64,7 +64,7 @@ window.addEventListener("load", async () => {
 			let objeto = "?v.prodEntidad=" + v.prodEntidad + "&v.prodId=" + v.prodId;
 			objeto += "&url=" + DOM.urlInputs[fila].value;
 			// Submit
-			let respuesta = await fetch("/links/api/recuperar/" + objeto).then((n) => n.json());
+			let respuesta = await fetch("/links/api/recuperar-link/" + objeto).then((n) => n.json());
 			// location.reload();
 			if (respuesta.ocultar) DOM.filasDatos[fila].classList.add("ocultar");
 			//if (respuesta.activos) DOM.activos.innerHTML = "* Activos";
@@ -79,7 +79,7 @@ window.addEventListener("load", async () => {
 			let objeto = "?v.prodEntidad=" + v.prodEntidad + "&v.prodId=" + v.prodId;
 			objeto += "&url=" + DOM.urlInputs[fila].value;
 			// Submit
-			let respuesta = await fetch("/links/api/deshacer/" + objeto).then((n) => n.json());
+			let respuesta = await fetch("/links/api/deshacer-link/" + objeto).then((n) => n.json());
 			// location.reload();
 			if (respuesta.reload) location.reload();
 			if (respuesta.ocultar) DOM.filasDatos[fila].classList.add("ocultar");

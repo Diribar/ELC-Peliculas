@@ -365,15 +365,9 @@ module.exports = {
 			titulo: "Ir al 'Tablero de Control' de Entidades",
 			autofocus: true,
 		}),
-		producto: (entidad, id) => ({
+		prodRclv: (entidad, id, siglaFam) => ({
 			clase: iconos.detalle,
-			link: "/" + entidad + "/detalle/p/?id=" + id,
-			titulo: "Ir a la vista Detalle",
-			autofocus: true,
-		}),
-		rclv: (entidad, id) => ({
-			clase: iconos.detalle,
-			link: "/" + entidad + "/detalle/r/?id=" + id,
+			link: "/" + entidad + "/detalle/" + siglaFam + "/?id=" + id,
 			titulo: "Ir a la vista Detalle",
 			autofocus: true,
 		}),

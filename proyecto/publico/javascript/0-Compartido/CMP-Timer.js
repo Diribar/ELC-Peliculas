@@ -10,7 +10,6 @@ window.addEventListener("load", async () => {
 		cartelGenerico: document.querySelector("#todoElMain #cartelGenerico"),
 		contenedorMensajes: document.querySelector("#cartelGenerico #contenedorMensajes"),
 	};
-	const familia = ["peliculas", "colecciones", "capitulos"].includes(entidad) ? "producto" : "rclv";
 	if (!entidad && pathname.includes("/revision/usuarios")) entidad = "usuarios";
 
 	// Horario Inicial
@@ -93,7 +92,9 @@ window.addEventListener("load", async () => {
 				? ["/revision/usuarios/tablero-de-usuarios", "fa-thumbs-up", "Entendido"]
 				: pathname.startsWith("/revision/")
 				? ["/revision/tablero", "fa-thumbs-up", "Entendido"]
-				: ["/" + familia + "/detalle/?entidad=" + entidad + "&id=" + entId, "fa-circle-info", "Ir a Detalle"];
+				: ["/" + entidad + "/detalle/" + siglaFam + "/?id=" + entId, "fa-circle-info", "Ir a Detalle"];
+
+			// Crea el cartel en el DOM
 			contenidoDelCartelGenerico({DOM, mensajes, clase, titulo, link});
 
 			// Muestra el cartel
@@ -130,4 +131,3 @@ window.addEventListener("load", async () => {
 const tipoUsuario = pathname.startsWith("/revision/") ? "revisores" : "usuarios";
 const entId = new URL(location.href).searchParams.get("id");
 let minutosDispon, segundosDispon;
-

@@ -112,28 +112,96 @@ module.exports = {
 		// Fin
 		return productos;
 	},
-	origenDeUrls: (entidad) => {
+	urlsOrigenDestino: (entidad) => {
 		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
 		return [
-			// Productos
-			{codigo: "PDA", url: "/entidad/agregar-da"}, // OK
-			{codigo: "PED", url: "/" + entidad + "/edicion/p", cola: true},
-			{url: "/" + entidad + "/calificar/p/", cola: true},
-			{url: "/" + entidad + "/abm-links/p", cola: true},
-			{codigo: "RL", url: "/revision/abm-links/p/" + entidad, cola: true},
-
 			// Productos y Rclvs
-			{codigo: "DT", url: "/" + entidad + "/detalle/" + siglaFam, cola: true}, // OK
-			{url: "/" + entidad + "/historial", cola: true},
-			{codigo: "RA", url: "/revision/alta/" + siglaFam + "/" + entidad, cola: true},
-			{url: "/revision/edicion/" + siglaFam + "/" + entidad, cola: true},
+			{codOrigen: "DT", destino: "/" + entidad + "/detalle/" + siglaFam, cola: true}, // OK
+			{codOrigen: "RA", destino: "/revision/alta/" + siglaFam + "/" + entidad, cola: true},
+
+			// Productos
+			{codOrigen: "PDA", destino: "/" + entidad + "/agregar-da"}, // OK
+			{codOrigen: "PED", destino: "/" + entidad + "/edicion/p", cola: true},
+			{codOrigen: "RL", destino: "/revision/abm-links/p/" + entidad, cola: true},
 
 			// Tableros
-			{codigo: "TE", url: "/revision/tablero"},
-			{codigo: "TM", url: "/tablero-de-mantenimiento"},
-			{codigo: "TU", url: "/revision/tablero-de-usuarios"},
-			{codigo: "CN", url: "/consultas"},
+			{codOrigen: "TE", destino: "/revision/tablero"},
+			{codOrigen: "TM", destino: "/tablero-de-mantenimiento"},
+			{codOrigen: "TU", destino: "/revision/tablero-de-usuarios"},
 		];
+	},
+	obtieneRuta: (entidad, originalUrl) => {
+		// Variables
+		const familia = comp.obtieneDesdeEntidad.familia(entidad);
+		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
+
+		// Producto Agregar
+		if (originalUrl.startsWith("/producto/agregar")) {
+			const rutas = [
+				{ant: "/palabras-clave", act: "pc"},
+				{ant: "/desambiguar", act: "ds"},
+				{ant: "/datos-duros", act: "dd"},
+				{ant: "/datos-adicionales", act: "da"},
+				{ant: "/confirma", act: "cn"},
+				{ant: "/terminaste", act: "tr"},
+				{ant: "/ingreso-manual", act: "im"},
+				{ant: "/ingreso-fa", act: "fa"},
+			];
+			const ruta = rutas.find((n) => originalUrl.endsWith(n.ant));
+			return ruta ? "/producto/agregar-" + ruta.act : null;
+		}
+
+		// Rutas de Familia, Producto RUD y Rclv CRUD
+		if (["/productos", "/rclvs"].some((n) => originalUrl.startsWith(n))) {
+			// Obtiene las rutas
+			const rutas = [
+				// Familia
+				{ant: "/" + familia + "/historial", act: "/" + entidad + "/historial"},
+				{ant: "/" + familia + "/inactivar", act: "/" + entidad + "/inactivar"},
+				{ant: "/" + familia + "/recuperar", act: "/" + entidad + "/recuperar"},
+				{ant: "/" + familia + "/eliminadoPorCreador", act: "/" + entidad + "/eliminado-por-creador"},
+				{ant: "/" + familia + "/eliminar", act: "/" + entidad + "/eliminado"},
+
+				// RUD Producto y Rclv
+				{ant: "/" + familia + "/detalle", act: "/" + entidad + "/detalle/" + siglaFam},
+				{ant: "/" + familia + "/edicion", act: "/" + entidad + "/edicion/" + siglaFam},
+			];
+			if (familia == "producto")
+				rutas.push(
+					{ant: "/producto/calificar", act: "/" + entidad + "/calificar/p"},
+					{ant: "/links/abm", act: "/" + entidad + "/abm-links/p"}
+				);
+			if (familia == "rclv") rutas.push({ant: "/rclv/agregar", act: "/" + entidad + "/agregar/r"});
+
+			// Redirecciona
+			const ruta = rutas.find((n) => originalUrl.startsWith(n.ant));
+			return ruta ? ruta.act : null;
+		}
+
+		// Links
+		if (familia == "link") return "/links/mirar/l";
+
+		// Revisión de Entidades
+		if (originalUrl.startsWith("/revision")) {
+			// Rutas específicas de cada familia
+			const rutas = [
+				{ant: "/revision/" + familia + "/alta", act: "/revision/alta/" + siglaFam + "/" + entidad},
+				{ant: "/revision/solapamiento/", act: "/revision/solapamiento/r/" + entidad},
+				{ant: "/revision/links", act: "/revision/abm-links/p/" + entidad},
+			];
+
+			// Rutas compartidas
+			tareas = ["edicion", "rechazar", "inactivar", "recuperar"];
+			for (let tarea of tareas)
+				rutas.push({ant: "/revision/" + familia + "/" + tarea, act: "/revision/" + tarea + "/" + entidad});
+
+			// Redirecciona
+			const ruta = rutas.find((n) => originalUrl.startsWith(n.ant));
+			return ruta ? ruta.act : null;
+		}
+
+		// Fin
+		return null;
 	},
 };
 

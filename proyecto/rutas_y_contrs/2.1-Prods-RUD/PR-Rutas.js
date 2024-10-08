@@ -44,12 +44,18 @@ router.get("/api/obtiene-opciones-de-preferencia", API.prefsDeCampo.obtieneOpcio
 router.get("/api/guarda-la-preferencia-del-usuario", API.prefsDeCampo.guardaLaPreferencia);
 
 // API - Edición
-router.get("/api/valida", API.edicion.valida);
+router.get("/api/valida-edicion-prod", API.edicion.valida);
 router.get("/api/obtiene-original-y-edicion", API.edicion.obtieneVersionesProd);
-router.get("/api/edicion/obtiene-variables-prod", API.edicion.variables);
+router.get("/api/obtiene-variables-prod", API.edicion.variables);
 router.get("/api/envia-a-req-session", API.edicion.envioParaSession);
-router.get("/api/edicion/eliminar-nueva", API.edicion.eliminaNueva);
-router.get("/api/edicion/eliminar-guardada", API.edicion.eliminaGuardada);
+router.get("/api/eliminar-nueva", API.edicion.eliminaNueva);
+router.get("/api/eliminar-guardada", API.edicion.eliminaGuardada);
+
+// API - Varios
+router.get("/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
+router.get("/api/obtiene-col-cap", API.obtieneColCap);
+router.get("/api/obtiene-capitulos", API.obtieneCapitulos);
+router.get("/api/obtiene-cap-id", API.obtieneCapId);
 
 // Vistas
 router.get("/detalle/p", aptoDetalle, m.misDetalleProd, m.capturaInactivar, vista.detalle);

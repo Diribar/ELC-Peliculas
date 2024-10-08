@@ -1,11 +1,11 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const origenUrl = pathname.slice(0, -1);
+	const urlOrigen = pathname.slice(0, -1);
 	let ruta;
 
 	// Obtiene el ID de la colección
-	ruta = "/crud/api/obtiene-col-cap/?entidad=capitulos&id=";
+	ruta = "/capitulos/api/obtiene-col-cap/?entidad=capitulos&id=";
 	let colID = await fetch(ruta + id).then((n) => n.json());
 
 	// Obtiene DOM de Temporada y Capítulos
@@ -19,15 +19,15 @@ window.addEventListener("load", async () => {
 			const tempNum = tempSelect.value;
 
 			// Obtiene el primer capítulo de la temporada
-			const ruta = "/crud/api/obtiene-capitulos/";
+			const ruta = "/capitulos/api/obtiene-capitulos/";
 			const capitulos = await fetch(ruta + "?coleccion_id=" + colID + "&temporada=" + tempNum).then((n) => n.json());
-			const capID = capitulos[0].id;
+			const cap_id = capitulos[0].id;
 
 			// Actualiza la vista
 			location.href =
-				"/inactivar-captura/capitulos/?id=".concat(id) +
-				"&prodEntidad=capitulos&prodId=".concat(capID) +
-				"&origenUrl=".concat(encodeURIComponent(origenUrl));
+				"/capitulos/inactivar-captura/?id=".concat(id) +
+				"&prodEntidad=capitulos&prodId=".concat(cap_id) +
+				"&urlOrigen=".concat(encodeURIComponent(urlOrigen));
 		});
 
 	// CAMBIOS EN EL CAPÍTULO --> cambiar el url
@@ -35,17 +35,17 @@ window.addEventListener("load", async () => {
 		// Variables
 		const tempNum = tempSelect ? tempSelect.value : 1;
 		const capNum = capitulo.value;
-		const ruta = "/crud/api/obtiene-cap-id/?entidad=capitulos";
+		const ruta = "/capitulos/api/obtiene-cap-id/?entidad=capitulos";
 
-		// Obtiene el capID
-		const capID = await fetch(ruta + "&coleccion_id=" + colID + "&temporada=" + tempNum + "&capitulo=" + capNum).then((n) =>
+		// Obtiene el cap_id
+		const cap_id = await fetch(ruta + "&coleccion_id=" + colID + "&temporada=" + tempNum + "&capitulo=" + capNum).then((n) =>
 			n.json()
 		);
 
 		// Actualiza la vista
 		location.href =
-			"/inactivar-captura/capitulos/?id=".concat(id) +
-			"&prodEntidad=capitulos&prodId=".concat(capID) +
-			"&origenUrl=".concat(encodeURIComponent(origenUrl));
+			"/capitulos/inactivar-captura/?id=".concat(id) +
+			"&prodEntidad=capitulos&prodId=".concat(cap_id) +
+			"&urlOrigen=".concat(encodeURIComponent(urlOrigen));
 	});
 });
