@@ -22,9 +22,5 @@ router.get("/rclv/recuperar", entID, vistaMS.redirecciona.rutasAntiguas); // Rec
 router.get("/rclv/eliminadoPorCreador", entID, vistaMS.redirecciona.rutasAntiguas); // Eliminado por creador
 router.get("/rclv/eliminar", entID, vistaMS.redirecciona.rutasAntiguas); // Eliminado
 
-// Vistas - Correcciones
-router.get("/correccion/motivo", entID, vistaMS.redirecciona.rutasAntiguas);
-router.get("/correccion/status", entID, vistaMS.redirecciona.rutasAntiguas);
-
 // Fin
 module.exports = router;
