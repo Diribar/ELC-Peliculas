@@ -1352,6 +1352,8 @@ let FN = {
 			? "p"
 			: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
 			? "r"
+			: entidad == "links"
+			? "l"
 			: entidad == "usuarios"
 			? "u"
 			: "",

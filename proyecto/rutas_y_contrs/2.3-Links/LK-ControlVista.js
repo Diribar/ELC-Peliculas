@@ -59,25 +59,25 @@ module.exports = {
 			...{vista: req.baseUrl + req.path, anchorEncab},
 		});
 	},
-	visualizacion: async (req, res) => {
+	mirarLink: async (req, res) => {
 		// Variables
 		const tema = "linksCrud";
-		const codigo = "visualizacion";
-		const {link_id} = req.query;
+		const codigo = "mirarLink";
+		const {id} = req.query;
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const usuario_id = usuario ? usuario.id : "";
 		const origen = req.query.origen ? req.query.origen : "";
 
 		// Obtiene el link y su proveedor
-		const link = await baseDeDatos.obtienePorId("links", link_id, "prov");
+		const link = await baseDeDatos.obtienePorId("links", id, "prov");
 		const provEmbeded = provsEmbeded.find((n) => n.id == link.prov_id);
 		link.url = "//" + link.url.replace(provEmbeded.embededQuitar, provEmbeded.embededPoner);
 
 		// Obtiene el producto 'Original' y 'Editado'
 		const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
-		const id = link[comp.obtieneDesdeCampo_id.campo_idProd(link)];
-		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, usuario_id});
-		const prodComb = {...original, ...edicion, id}; // obtiene la versión más completa posible del producto
+		const prodId = link[comp.obtieneDesdeCampo_id.campo_idProd(link)];
+		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: prodId, usuario_id});
+		const prodComb = {...original, ...edicion, id: prodId}; // obtiene la versión más completa posible del producto
 		const imgDerPers = procsFM.obtieneAvatar(original, edicion).edic;
 
 		// Configura el título de la vista
@@ -89,7 +89,7 @@ module.exports = {
 		//return res.send(link)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, origen},
-			...{entidad, id, familia: "producto", registro: prodComb, link},
+			...{entidad, id: prodId, familia: "producto", registro: prodComb, link},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
 			iconosMobile: true,
 		});

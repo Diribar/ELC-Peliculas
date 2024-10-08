@@ -40,7 +40,7 @@ router.get("/api/obtiene-embeded-link", API.obtieneEmbededLink);
 
 // Vistas
 router.get("/abm-links/p", aptoABM, m.capturaActivar, vista.abm);
-router.get("/mirar/l", entIdValidos, vista.visualizacion);
+router.get("/mirar/l", entIdValidos, vista.mirarLink);
 
 // Fin
 module.exports = router;

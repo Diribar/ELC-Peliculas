@@ -784,7 +784,7 @@ let nombres = async (reg) => {
 		nombre = comp.nombresPosibles(link[asocProd]);
 
 		// Obtiene el anchor
-		link.href = link.prov.embededPoner ? urlHost + "/links/visualizacion/?link_id=" + link.id : "//" + link.url;
+		link.href = link.prov.embededPoner ? urlHost + "/links/mirar/l/?id=" + link.id : "//" + link.url;
 		anchor = "<a href='" + link.href + "' style='color: inherit; text-decoration: none'>" + nombre + "</a>";
 	}
 

@@ -86,7 +86,7 @@ module.exports = {
 			for (let link of links)
 				link.href =
 					link.prov.embededPoner && link.gratuito
-						? urlHost + "/links/visualizacion/?link_id=" + link.id + (origen ? "&origen=" + origen : "")
+						? urlHost + "/links/mirar/l/?id=" + link.id + (origen ? "&origen=" + origen : "")
 						: "//" + link.url;
 
 			// Los separa entre Películas y Trailers
