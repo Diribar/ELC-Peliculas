@@ -68,7 +68,7 @@ window.addEventListener("load", async () => {
 			// Si la 'entidad' y el 'id' están ingresados, busca el registro
 			if (entIdOK) {
 				let innerText;
-				const registro = await fetch("/familia/api/obtiene-registro/?entidad=" + entDupl + "&id=" + idDupl).then((n) =>
+				const registro = await fetch("/familia/api/obtiene-registro-familia/?entidad=" + entDupl + "&id=" + idDupl).then((n) =>
 					n.json()
 				);
 				if (registro) {

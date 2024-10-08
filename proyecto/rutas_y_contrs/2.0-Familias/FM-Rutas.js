@@ -38,7 +38,7 @@ const correcs = [m.entValida, m.idValido, m.statusCompara, aptoUsuario, m.permUs
 
 // APIs
 router.get("/api/obtiene-info-del-be-familia", API.obtieneInfo);
-router.get("/api/obtiene-registro", API.obtieneRegistro);
+router.get("/api/obtiene-registro-familia", API.obtieneRegistro);
 
 // Vistas - Historial
 router.get("/historial", aptoDetalle, m.statusCompara, vista.form.historial);
