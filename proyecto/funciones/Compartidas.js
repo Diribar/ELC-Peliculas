@@ -1265,11 +1265,14 @@ module.exports = {
 		return;
 	},
 	partesDelUrl: (req) => {
-		// Obtiene la base y el url (sin la base)
+		// Obtiene la base
 		let url = req.baseUrl + req.path;
 		const baseUrl = url.slice(0, url.indexOf("/", 1));
+
+		// Obtiene la tarea
 		url = url.replace(baseUrl, "");
-		const tarea = url.slice(0, url.indexOf("/", 1));
+		const indice = url.indexOf("/", 1);
+		const tarea = indice > -1 ? url.slice(0, indice) : url;
 
 		// Obtiene la siglaFam
 		let {siglaFam} = req.params;

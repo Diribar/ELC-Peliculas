@@ -101,9 +101,8 @@ module.exports = {
 			}
 			// Rutina para encontrar el destino en base al 'urlOrigen'
 			else {
-				if (urlOrigen.includes("colecciones")) urlDestino = urlOrigen.replace("colecciones", "capitulos");
-				else if (urlOrigen.includes("capitulos")) urlDestino = urlOrigen.replace("capitulos", "colecciones");
-				if (urlDestino) destino = urlDestino + "/?id=" + prodId;
+				urlDestino = entidad != prodEntidad ? urlOrigen.replace(entidad, prodEntidad) : urlOrigen;
+				destino = urlDestino + "/?id=" + prodId;
 			}
 
 			// Redirecciona a la vista que corresponda
