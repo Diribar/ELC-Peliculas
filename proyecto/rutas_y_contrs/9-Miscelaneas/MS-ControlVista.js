@@ -82,7 +82,8 @@ module.exports = {
 		urlDeDestino: async (req, res) => {
 			// Variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
-			const {origen: codOrigen, urlOrigen, prodEntidad, prodId, id, urlDestino, grupo} = req.query;
+			const {origen: codOrigen, urlOrigen, prodEntidad, prodId, id} = req.query;
+			let {urlDestino} = req.query;
 			let destino;
 
 			// Casos particulares
@@ -91,21 +92,18 @@ module.exports = {
 
 			// Rutina para encontrar el destino en base al 'codOrigen'
 			if (codOrigen) {
-				const urls = procesos.urlsOrigenDestino(entidad);
-				const url = urlsOrigenDestino.find((n) => codOrigen == n.codOrigen);
+				const urls = procesos.urlsOrigenDestino(prodEntidad || entidad);
+				const url = urls.find((n) => codOrigen == n.codOrigen);
 				if (url) {
 					destino = url.destino;
-					if (url.cola) destino += "/?id=" + (prodId ? prodId : id);
+					if (url.cola) destino += "/?id=" + (prodId || id);
 				}
 			}
 			// Rutina para encontrar el destino en base al 'urlOrigen'
-
-
-			console.log(96, urlsDestino);
-			console.log(102, {urlDestino, codOrigen, urlOrigen, prodEntidad, entidad});
-			if (urlDestino) {
-				destino = urlDestino.url;
-				if (urlDestino.cola) destino += "/?id=" + (prodId ? prodId : id);
+			else {
+				if (urlOrigen.includes("colecciones")) urlDestino = urlOrigen.replace("colecciones", "capitulos");
+				else if (urlOrigen.includes("capitulos")) urlDestino = urlOrigen.replace("capitulos", "colecciones");
+				if (urlDestino) destino = urlDestino + "/?id=" + prodId;
 			}
 
 			// Redirecciona a la vista que corresponda
