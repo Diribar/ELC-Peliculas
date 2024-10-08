@@ -1,9 +1,9 @@
 "use strict";
 
 module.exports = async (req, res, next) => {
-	// Asigna la variable 'rutaCRUD'
+	// Asigna la variable 'urlOrigen'
 	const ruta = req.baseUrl + req.path.slice(0, -1);
-	res.locals.rutaCRUD = encodeURIComponent(ruta);
+	res.locals.urlOrigen = encodeURIComponent(ruta);
 
 	// Averigua el id del primer capítulo de la colección
 	const entidad = comp.obtieneEntidadDesdeUrl(req);
