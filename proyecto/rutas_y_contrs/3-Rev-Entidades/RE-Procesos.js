@@ -342,10 +342,10 @@ module.exports = {
 	guardar: {
 		obtieneDatos: async function (req) {
 			// Variables
-			const {baseUrl, tarea, siglaFam, entidad} = comp.partesDelUrl(req);
+			const {baseUrl, tarea, entidad} = comp.partesDelUrl(req);
 			const {id, origen, desaprueba} = req.query;
-			let codigo = tarea.slice(1);
-			if (codigo == "alta") codigo += "/" + siglaFam; // 'alta/p', 'rechazar', 'inactivar', 'recuperar'
+			const codigo = tarea.slice(1); // 'alta', 'rechazar', 'inactivar', 'recuperar'
+			// if (codigo == "alta") codigo += "/" + siglaFam;
 
 			// Más variables
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
