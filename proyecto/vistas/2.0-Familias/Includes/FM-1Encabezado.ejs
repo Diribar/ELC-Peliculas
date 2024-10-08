@@ -19,7 +19,7 @@
 			<% if (entidad == "colecciones") { %>
 				<!-- Cantidad de Temporadas y de Capítulos -->
 				<div id="coleccion">
-					<% if (locals.anchorEncab) { %><a href="<%= '/colecciones/inactivar-captura/?id=' + id + '&prodEntidad=capitulos&prodId=' + capID + '&urlOrigen=' + urlOrigen %>"><% } %>
+					<% if (locals.anchorEncab) { %><a href="<%= '/colecciones/inactivar-captura/?id=' + id + '&prodEntidad=capitulos&prodId=' + cap_id + '&urlOrigen=' + urlOrigen %>"><% } %>
 						<button type="button">
 							<% if (registro.cantTemps > 1) { %>
 								<p id="temporadas"><b>Temporadas:</b> <%= registro.cantTemps %></p>
