@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 	let ruta;
 
 	// Obtiene el ID de la colección
-	ruta = "/familia/api/obtiene-col-cap/?entidad=capitulos&id=";
+	ruta = "/capitulos/api/obtiene-col-cap/?entidad=capitulos&id=";
 	let colID = await fetch(ruta + id).then((n) => n.json());
 
 	// Obtiene DOM de Temporada y Capítulos

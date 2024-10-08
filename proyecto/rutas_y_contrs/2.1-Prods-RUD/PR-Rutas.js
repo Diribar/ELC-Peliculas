@@ -53,6 +53,7 @@ router.get("/api/eliminar-guardada", API.edicion.eliminaGuardada);
 
 // API - Varios
 router.get("/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
+router.get("/api/obtiene-col-cap", API.obtieneColCap);
 
 // Vistas
 router.get("/detalle/p", aptoDetalle, m.misDetalleProd, m.capturaInactivar, vista.detalle);

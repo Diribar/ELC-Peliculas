@@ -4,17 +4,6 @@ const procesos = require("./FM-FN-Procesos");
 
 module.exports = {
 	// Tridente: Detalle - Edición del Producto - Links
-	obtieneColCap: async (req, res) => {
-		const {entidad, id} = req.query;
-		const condicion = {coleccion_id: id, temporada: 1, capitulo: 1};
-		const ID =
-			entidad == "colecciones"
-				? await baseDeDatos.obtienePorCondicion("capitulos", condicion).then((n) => n.id)
-				: await baseDeDatos.obtienePorId("capitulos", id).then((n) => n.coleccion_id);
-
-		// Fin
-		return res.json(ID);
-	},
 	obtieneCapID: async (req, res) => {
 		// Variables
 		const {coleccion_id, temporada, capitulo} = req.query;
