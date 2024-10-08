@@ -460,19 +460,18 @@ module.exports = {
 				const anterior = historialStatus[contador - 1];
 				const siguiente = historialStatus[contador];
 
-				//
+				// Si en el historial se omite un movimiento, lo agrega
 				if (anterior.statusFinal_id != siguiente.statusOriginal_id) {
-					// Genera los datos
-					const actual = {
+					const regAgregar = {
 						statusOriginal_id: anterior.statusFinal_id,
 						statusFinal_id: siguiente.statusOriginal_id,
 						statusFinalEn: siguiente.statusOriginalEn,
 						statusFinal: FN.statusFinal(siguiente.statusOriginal_id),
 					};
-
-					// Agrega el registro
-					historialStatus.splice(contador, 0, actual);
+					historialStatus.splice(contador, 0, regAgregar);
 				}
+
+				// Fin de la rutina
 				contador++;
 				if (contador == 10) break;
 			}
