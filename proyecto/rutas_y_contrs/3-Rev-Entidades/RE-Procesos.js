@@ -1038,17 +1038,16 @@ let FN = {
 	},
 	statusFinalMasMotivo: async ({codigo, desaprueba, rclv, entidad, original, req}) => {
 		// Variables
-		const statusAprob =
-			codigo.startsWith("alta") || (codigo == "inactivar" && desaprueba) || (codigo == "recuperar" && !desaprueba);
+		const statusAprob = codigo == "alta" || (codigo == "inactivar" && desaprueba) || (codigo == "recuperar" && !desaprueba);
 		const datos = {entidad, ...original, publico: true, epocaOcurrencia: true};
-		const prodCreadoAprob =
+		const impideAprobado =
 			statusAprob && !rclv ? await validacsFM.validacs.consolidado({datos}).then((n) => n.impideAprobado) : null;
 
 		// Obtiene el status final
 		const statusFinal_id = statusAprob
 			? rclv
 				? aprobado_id // si es un RCLV, se aprueba
-				: prodCreadoAprob // si es un producto, revisa si tiene errores
+				: impideAprobado // si es un producto, revisa si tiene errores que impidan su aprobación
 				? creadoAprob_id // si tiene errores que impiden el aprobado, status 'creadoAprob'
 				: entidad == "capitulos"
 				? original.statusColeccion_id // capítulo sin errores, toma el status de su colección
