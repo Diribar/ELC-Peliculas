@@ -34,7 +34,7 @@ window.addEventListener("load", async () => {
 		campoNombres: document.querySelectorAll("#contenido .campoNombre"),
 	};
 	let v = {
-		motivoGenerico_id: await fetch("/revision/api/edicion/motivo-generico").then((n) => n.json()),
+		motivoGenerico_id: await fetch("/revision/api/motivo-generico-revision").then((n) => n.json()),
 		campoNombres: Array.from(DOM.campoNombres).map((n) => n.innerHTML),
 		sinMotivo: DOM.rechazar.length - DOM.motivoRechazos.length, // Son los reemplazos, donde no se le pregunta un motivo al usuario
 		casos: DOM.aprobar.length == DOM.rechazar.length ? DOM.aprobar.length : 0,
@@ -191,7 +191,7 @@ const edicID = new URL(location.href).searchParams.get("edicID");
 const origen = new URL(location.href).searchParams.get("origen");
 
 // Rutas
-const rutaEdicion = "/revision/api/edicion/aprob-rech/?entidad=" + entidad + "&id=" + id + "&edicID=" + edicID;
+const rutaEdicion = "/revision/api/edicion-aprob-rech/?entidad=" + entidad + "&id=" + id + "&edicID=" + edicID;
 const cola = "/?id=" + id + "&origen=" + (origen ? origen : "TE");
 
 // Otras variables

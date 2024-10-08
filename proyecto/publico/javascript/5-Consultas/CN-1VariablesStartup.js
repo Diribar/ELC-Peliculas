@@ -95,7 +95,7 @@ window.addEventListener("load", async () => {
 });
 
 // Variables
-const ruta = "/consultas/api/";
+const ruta = "/consultas/api/cn-";
 let v = {
 	pppRutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario/?entidad=",
 	conLinksHD: "conLinksHD",
