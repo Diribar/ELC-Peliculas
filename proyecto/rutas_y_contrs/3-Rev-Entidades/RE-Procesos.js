@@ -340,10 +340,11 @@ module.exports = {
 	},
 
 	guardar: {
-		obtieneDatos: async function (req) {
+		obtieneDatos: async (req) => {
 			// Variables
 			const {baseUrl, tarea, entidad} = comp.partesDelUrl(req);
 			const {id, origen, desaprueba} = req.query;
+			const tema = baseUrl.slice(1);
 			const codigo = tarea.slice(1); // 'alta', 'rechazar', 'inactivar', 'recuperar'
 			// if (codigo == "alta") codigo += "/" + siglaFam;
 
@@ -360,10 +361,15 @@ module.exports = {
 
 			// Obtiene el status final, motivo_id, y comentario
 			const {statusFinal_id, motivo_id} = await FN.statusFinalMasMotivo({codigo, desaprueba, rclv, entidad, original, req});
-			const comentario = await procsFM.comentario({...req.body, codigo, motivo_id, statusFinal_id, entidad, id});
+			const statusOriginal_id = original.statusRegistro_id;
+			const comentario = await procsFM.comentario({
+				...req.body,
+				...{entidad, id},
+				...{tema, codigo, motivo_id},
+				...{statusOriginal_id, statusFinal_id},
+			});
 
 			// Más variables
-			const statusOriginal_id = original.statusRegistro_id;
 			const cola = "/?id=" + id + (origen ? "&origen=" + origen : "");
 			const revId = req.session.usuario.id;
 			const ahora = comp.fechaHora.ahora();
@@ -376,7 +382,7 @@ module.exports = {
 			return {
 				...{entidad, id, origen, original, statusOriginal_id, statusFinal_id},
 				...{codigo, producto, rclv, motivo_id, comentario, aprobado},
-				...{cola, revId, ahora, revisorPERL, petitFamilias, baseUrl, usuario_id, campoDecision},
+				...{cola, revId, ahora, revisorPERL, petitFamilias, tema, usuario_id, campoDecision},
 			};
 		},
 		prodsAsocs: async (entidad, id) => {
