@@ -227,20 +227,20 @@ module.exports = {
 				espera.push(procesos.actualizaElStatusDelUsuario(usuario, "mailValidado"));
 
 			// Actualiza los datos del usuario
-			const diasNaveg = esVisita ? usuario.diasNaveg + cliente.diasNaveg : usuario.diasNaveg; // si se llevaban registros paralelos, se suman
+			const diasNaveg = usuario.diasNaveg + (esVisita ? cliente.diasNaveg : 0); // si se llevaban registros paralelos, se suman
 			const {visitaCreadaEn} = usuario.visitaCreadaEn ? usuario : cliente; // si existe la del usuario, se conserva
 
 			// Prepara la info a guardar en usuarios
 			const datos = {diasSinCartelBenefs: 0};
-			if (esVisita) datos.fechaUltNaveg = cliente;
+			if (esVisita) datos.fechaUltNaveg = cliente.fechaUltNaveg;
 			if (esVisita) datos.diasNaveg = diasNaveg;
 			if (!usuario.visitaCreadaEn) datos.visitaCreadaEn = cliente.visitaCreadaEn;
-			espera.push(await baseDeDatos.actualizaPorId("usuarios", usuario.id, datos)); // no es necesario actualizar la variable 'usuario'
+			espera.push(baseDeDatos.actualizaPorId("usuarios", usuario.id, datos)); // no es necesario actualizar la variable 'usuario'
 
 			// Actualiza datos en la tabla 'navegsDelDia'
 			const visitaCreadaEnTexto = visitaCreadaEn.toISOString().slice(0, 10);
 			espera.push(
-				await baseDeDatos
+				baseDeDatos
 					.actualizaPorCondicion(
 						"navegsDelDia",
 						{cliente_id, fecha: hoy}, // el 'cliente_id' puede diferir del 'usuario.cliente_id'
