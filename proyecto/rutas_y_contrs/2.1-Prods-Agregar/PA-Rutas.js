@@ -22,7 +22,7 @@ const dataEntry = [usAltaTerm, usPenalizaciones, usAptoInput, prodAgregar];
 const dataEntryMasYaEnBD = [...dataEntry, prodYaEnBD];
 const dataEntryMasFA = [...dataEntry, usAutorizFA];
 
-// APIs - Validar
+// APIs - Validaciones
 router.get("/api/valida-agregar-pc", API.validaPalabrasClave);
 router.get("/api/valida-agregar-dd", API.validaDatosDuros);
 router.get("/api/valida-agregar-da", API.validaDatosAdics);
@@ -41,13 +41,12 @@ router.get("/api/desambiguar-actualiza-datos-originales", API.desambGuardar.actu
 router.get("/api/desambiguar-averigua-si-la-info-tiene-errores", API.desambGuardar.averiguaSiHayErrores);
 
 // APIs - Varias
-router.get("/api/PC-obtiene-la-cantidad-de-prods", API.cantProductos);
-router.get("/api/obtiene-colecciones", API.averiguaColecciones);
-router.get("/api/obtiene-cantTemps", API.averiguaCantTemps);
-router.get("/api/FA-obtiene-fa-id", API.obtieneFA_id);
-router.get("/api/averigua-si-ya-existe-en-bd", API.averiguaSiYaExisteEnBd);
-router.get("/api/DA-guarda-datos-adics/", API.guardaDatosAdics);
-router.get("/api/convierte-letras-al-castellano/", API.convierteLetrasAlCastellano);
+router.get("/api/obtiene-la-cantidad-de-prods-pc", API.cantProductos);
+router.get("/api/obtiene-colecciones-im", API.averiguaColecciones);
+router.get("/api/obtiene-cant-temps-im", API.averiguaCantTemps);
+router.get("/api/obtiene-fa-id", API.obtieneFA_id);
+router.get("/api/averigua-si-fa-ya-existe-en-bd", API.averiguaSiYaExisteEnBd);
+router.get("/api/guarda-datos-adics/", API.guardaDatosAdics);
 
 // Vistas - Data entry
 router.get("/agregar-pc", dataEntry, vista.palabrasClave.form);

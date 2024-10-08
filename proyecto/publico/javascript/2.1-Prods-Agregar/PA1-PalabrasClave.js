@@ -175,6 +175,6 @@ window.addEventListener("load", async () => {
 	FN.statusInicial();
 });
 const rutas = {
-	cantProductos: "api/PC-obtiene-la-cantidad-de-prods/?palabrasClave=",
+	cantProductos: "api/obtiene-la-cantidad-de-prods-pc/?palabrasClave=",
 	validaDatos: "api/valida-agregar-pc/?",
 };

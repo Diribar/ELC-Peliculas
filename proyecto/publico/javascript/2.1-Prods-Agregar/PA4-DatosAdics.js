@@ -49,7 +49,7 @@ window.addEventListener("load", async () => {
 	};
 	let rutas = {
 		validar: "api/valida-agregar-da/?",
-		guardaDatosAdics: "api/DA-guarda-datos-adics/?",
+		guardaDatosAdics: "api/guarda-datos-adics/?",
 	};
 	const camposRCLV = ["personaje_id", "hecho_id", "tema_id"];
 
