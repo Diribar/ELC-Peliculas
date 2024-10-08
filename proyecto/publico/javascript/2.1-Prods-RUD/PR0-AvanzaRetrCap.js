@@ -3,7 +3,7 @@ window.addEventListener("load", async () => {
 	// Variables
 	const botonCapAnt = document.querySelector("#encabezado #colCap .fa-circle-left");
 	const botonCapPost = document.querySelector("#encabezado #colCap .fa-circle-right");
-	const origenUrl = pathname.slice(0, -1);
+	const urlOrigen = pathname.slice(0, -1);
 	const ruta = "/capitulos/api/obtiene-cap-ant-y-post/?id=";
 	const [capAntID, capPostID] = await fetch(ruta + id).then((n) => n.json());
 
@@ -14,7 +14,7 @@ window.addEventListener("load", async () => {
 			location.href =
 				"/capitulos/inactivar-captura/?id=".concat(id) +
 				"&prodEntidad=capitulos&prodId=".concat(capAntID) +
-				"&origenUrl=".concat(encodeURIComponent(origenUrl));
+				"&urlOrigen=".concat(encodeURIComponent(urlOrigen));
 		});
 	} else botonCapAnt.classList.add("inactivo");
 
@@ -25,7 +25,7 @@ window.addEventListener("load", async () => {
 			location.href =
 				"/capitulos/inactivar-captura/?id=".concat(id) +
 				"&prodEntidad=capitulos&prodId=".concat(capPostID) +
-				"&origenUrl=".concat(encodeURIComponent(origenUrl));
+				"&urlOrigen=".concat(encodeURIComponent(urlOrigen));
 		});
 	} else botonCapPost.classList.add("inactivo");
 
