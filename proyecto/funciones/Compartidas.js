@@ -721,11 +721,11 @@ module.exports = {
 
 			// Obtiene los resultados
 			const tieneLink = capSinLink ? sinLinks : capTalVez ? linksTalVez : capConLinks ? conLinks : null; // opción pesimista
-			const capID = capSinLink ? capSinLink.id : null; // capítulo sin link
+			const cap_id = capSinLink ? capSinLink.id : null; // capítulo sin link
 
 			// Actualiza cada 'tipoDeLink' en la colección
 			baseDeDatos.actualizaPorId("colecciones", colID, {[tipoDeLink]: tieneLink});
-			baseDeDatos.actualizaPorCondicion("capsSinLink", {coleccion_id: colID}, {[tipoDeLink]: capID});
+			baseDeDatos.actualizaPorCondicion("capsSinLink", {coleccion_id: colID}, {[tipoDeLink]: cap_id});
 		}
 
 		// Fin

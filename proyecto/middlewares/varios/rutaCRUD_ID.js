@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
 	const {id} = req.query;
 	if (entidad == "colecciones") {
 		const condicion = {coleccion_id: id, temporada: 1, capitulo: 1};
-		res.locals.capID = await baseDeDatos.obtienePorCondicion("capitulos", condicion).then((n) => (n ? n.id : null));
+		res.locals.cap_id = await baseDeDatos.obtienePorCondicion("capitulos", condicion).then((n) => (n ? n.id : null));
 	}
 
 	// Fin
