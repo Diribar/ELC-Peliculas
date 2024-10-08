@@ -160,7 +160,7 @@ module.exports = {
 			{url: "revision/edicion", titulo: "Revisión de Edicion de"},
 			{url: "revision/rechazar", titulo: "Rechazar"},
 			{url: "revision/inactivar", titulo: "Revisión de Inactivar"},
-			{url: "revision/recuperar", titulo: "Eliminado de Recuperar"},
+			{url: "revision/recuperar", titulo: "Revisión de Recuperar"},
 
 			// Crud
 			{url: "historial", titulo: "Historial de"},
@@ -209,28 +209,23 @@ module.exports = {
 		if (!datos.motivo_id) return null;
 
 		// Variables
-		let comentario = null;
+		let comentario = datos.comentario;
 
-		// Si el movimiento es 'inactivar' o 'rechazar' y el motivo es 'duplicado', genera el comentario
-		if (["inactivar", "rechazar"].includes(datos.codigo) && datos.motivo_id == motivoDupl_id) {
-			// Variables
+		// Si el motivo es 'duplicado', genera el comentario
+		if (
+			datos.motivo_id == motivoDupl_id &&
+			((datos.tema != "revision" && datos.codigo == "inactivar") || datos.codigo == "rechazar") // crud de inactivar, o rechazar
+		) {
 			const {entDupl, idDupl} = datos;
 			const elLa = comp.obtieneDesdeEntidad.elLa(entDupl);
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entDupl).toLowerCase();
 			comentario = "con" + elLa + entidadNombre + " id " + idDupl;
-			return comentario;
 		}
 
-		// Lo obtiene del formulario
-		if (datos.comentario) comentario = datos.comentario;
-
 		// Si corresponde, lo obtiene del movimiento anterior
-		if (!comentario) {
-			const {comentNeces} = statusMotivos.find((n) => n.id == datos.motivo_id);
-			if ((comentNeces || datos.motivo_id == motivoDupl_id) && datos.statusFinal_id == inactivo_id) {
-				const ultHist = await this.historialDeStatus.ultimoRegistro(datos.entidad, datos.id);
-				if (ultHist && ultHist.comentario) comentario = ultHist.comentario;
-			}
+		if (!comentario && datos.tema == "revision" && [inactivar_id, recuperar_id].includes(datos.statusOriginal_id)) {
+			const ultHist = await this.historialDeStatus.ultimoRegistro(datos.entidad, datos.id);
+			if (ultHist && ultHist.comentario) comentario = ultHist.comentario;
 		}
 
 		// Quita el punto final
