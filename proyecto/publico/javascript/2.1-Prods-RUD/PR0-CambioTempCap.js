@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const origenUrl = pathname.slice(0, -1);
+	const urlOrigen = pathname.slice(0, -1);
 	let ruta;
 
 	// Obtiene el ID de la colección
@@ -27,7 +27,7 @@ window.addEventListener("load", async () => {
 			location.href =
 				"/capitulos/inactivar-captura/?id=".concat(id) +
 				"&prodEntidad=capitulos&prodId=".concat(capID) +
-				"&origenUrl=".concat(encodeURIComponent(origenUrl));
+				"&urlOrigen=".concat(encodeURIComponent(urlOrigen));
 		});
 
 	// CAMBIOS EN EL CAPÍTULO --> cambiar el url
@@ -46,6 +46,6 @@ window.addEventListener("load", async () => {
 		location.href =
 			"/capitulos/inactivar-captura/?id=".concat(id) +
 			"&prodEntidad=capitulos&prodId=".concat(capID) +
-			"&origenUrl=".concat(encodeURIComponent(origenUrl));
+			"&urlOrigen=".concat(encodeURIComponent(urlOrigen));
 	});
 });
