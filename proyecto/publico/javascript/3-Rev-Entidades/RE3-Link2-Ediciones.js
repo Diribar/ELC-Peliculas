@@ -32,7 +32,7 @@ window.addEventListener("load", async () => {
 
 // Fórmulas
 let resultado = async (url) => {
-	let ruta = "/revision/api/link/edicion/";
+	let ruta = "/revision/api/edicion-link/";
 	let respuesta = await fetch(ruta + url).then((n) => n.json());
 
 	// Si el resultado es 'OK', recarga la vista

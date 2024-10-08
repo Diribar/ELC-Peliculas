@@ -52,7 +52,7 @@ router.get("/api/edicion-aprob-rech", m.edicionAPI, API.edicAprobRech);
 
 // APIs- Links
 router.get("/api/alta-baja-link", m.linkAltaBaja, API.links.altaBaja);
-router.get("/api/link/edicion", m.edicionAPI, API.edicAprobRech);
+router.get("/api/edicion-link", m.edicionAPI, API.edicAprobRech);
 router.get("/api/siguiente-producto-link", API.links.sigProd);
 
 // Vistas - Tablero de Control
