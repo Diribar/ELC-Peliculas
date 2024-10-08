@@ -316,7 +316,7 @@ window.addEventListener("load", async () => {
 
 // Variables
 const rutas = {
-	validacion: "/rclv/api/edicion/valida-sector/?funcion=",
+	validacion: "/rclv/api/valida-sector-edicion-rclv/?funcion=",
 	registrosConEsaFecha: "/rclv/api/edicion/registros-con-esa-fecha/",
 };
 

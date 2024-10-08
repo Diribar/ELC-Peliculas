@@ -940,7 +940,7 @@ const epocasDelAno = entidad == "epocasDelAno";
 const ano = personajes ? "anoNacim" : "anoComienzo";
 const rutas = {
 	obtieneVariables: "/rclv/api/obtiene-variables-edicion-rclv",
-	validacion: "/rclv/api/edicion/valida-sector/?funcion=",
+	validacion: "/rclv/api/valida-sector-edicion-rclv/?funcion=",
 	registrosConEsaFecha: "/rclv/api/edicion/registros-con-esa-fecha/",
 };
 const linksUrl = ["https://es.wikipedia.org/wiki/", "https://www.google.com/search?q="];
