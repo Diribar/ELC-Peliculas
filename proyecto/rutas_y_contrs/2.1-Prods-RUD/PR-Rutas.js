@@ -51,6 +51,9 @@ router.get("/api/envia-a-req-session", API.edicion.envioParaSession);
 router.get("/api/eliminar-nueva", API.edicion.eliminaNueva);
 router.get("/api/eliminar-guardada", API.edicion.eliminaGuardada);
 
+// API - Varios
+router.get("/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
+
 // Vistas
 router.get("/detalle/p", aptoDetalle, m.misDetalleProd, m.capturaInactivar, vista.detalle);
 router.get("/edicion/p", aptoEdicion, m.capturaActivar, vista.edicion.form);

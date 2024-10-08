@@ -15,56 +15,6 @@ module.exports = {
 		// Fin
 		return res.json(ID);
 	},
-	obtieneCapAntPostID: async (req, res) => {
-		// Variables
-		const {id} = req.query;
-		let condicAnt, condicPost;
-
-		// Obtiene datos del capítulo actual
-		const {coleccion_id, temporada, capitulo} = await baseDeDatos.obtienePorId("capitulos", id);
-		const condicUltTemp = {coleccion_id, statusRegistro_id: activos_ids};
-		const condicEstandar = {coleccion_id, temporada, statusRegistro_id: activos_ids};
-
-		// Obtiene datos de la colección
-		const ultTemp = await baseDeDatos.maxValorPorCondicion("capitulos", condicUltTemp, "temporada"); // Último número de temporada de la colección
-		const ultCap = await baseDeDatos.maxValorPorCondicion("capitulos", condicEstandar, "capitulo"); // Último número de capítulo de la temporada actual
-
-		// Obtiene la temporada y capítulo anteriores
-		let capAnt = null;
-		if (temporada > 1 || capitulo > 1) {
-			// Establece la condición
-			condicAnt = {...condicEstandar};
-			if (capitulo == 1) condicAnt.temporada = temporada - 1;
-			else condicAnt.capitulo = {[Op.lt]: capitulo};
-
-			// Busca el capítulo anterior
-			capAnt = baseDeDatos.maxValorPorCondicion("capitulos", condicAnt, "capitulo").then((n) => (n ? n : null));
-		}
-
-		// Obtiene la temporada y capítulo posteriores
-		let capPost = null;
-		if (temporada != ultTemp || capitulo != ultCap) {
-			// Establece la condición
-			condicPost = {...condicEstandar};
-			if (capitulo == ultCap) condicPost.temporada = temporada + 1;
-			else condicPost.capitulo = {[Op.gt]: capitulo};
-
-			// Busca el capítulo posterior
-			capPost = baseDeDatos.minValorPorCondicion("capitulos", condicPost, "capitulo").then((n) => (n ? n : null));
-		}
-		[capAnt, capPost] = await Promise.all([capAnt, capPost]);
-
-		// Obtiene los ID
-		if (capAnt) condicAnt.capitulo = capAnt;
-		if (capPost) condicPost.capitulo = capPost;
-		const [capAnt_id, capPost_id] = await Promise.all([
-			capAnt ? baseDeDatos.obtienePorCondicion("capitulos", condicAnt).then((n) => n.id) : null,
-			capPost ? baseDeDatos.obtienePorCondicion("capitulos", condicPost).then((n) => n.id) : null,
-		]);
-
-		// Envia el resultado
-		return res.json([capAnt_id, capPost_id]);
-	},
 	obtieneCapID: async (req, res) => {
 		// Variables
 		const {coleccion_id, temporada, capitulo} = req.query;

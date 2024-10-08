@@ -38,7 +38,6 @@ const correcs = [m.entValida, m.idValido, m.statusCompara, aptoUsuario, m.permUs
 
 // APIs
 router.get("/api/obtiene-col-cap", API.obtieneColCap);
-router.get("/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
 router.get("/api/obtiene-cap-id", API.obtieneCapID);
 router.get("/api/obtiene-capitulos", API.obtieneCapitulos);
 router.get("/api/obtiene-info-del-be-familia", API.obtieneInfo);
