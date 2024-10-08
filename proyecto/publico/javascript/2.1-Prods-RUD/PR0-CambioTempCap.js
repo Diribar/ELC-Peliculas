@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 			const tempNum = tempSelect.value;
 
 			// Obtiene el primer capítulo de la temporada
-			const ruta = "/familia/api/obtiene-capitulos/";
+			const ruta = "/capitulos/api/obtiene-capitulos/";
 			const capitulos = await fetch(ruta + "?coleccion_id=" + colID + "&temporada=" + tempNum).then((n) => n.json());
 			const cap_id = capitulos[0].id;
 

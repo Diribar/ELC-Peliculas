@@ -20,16 +20,6 @@ module.exports = {
 		// Fin
 		return res.json(ID);
 	},
-	obtieneCapitulos: async (req, res) => {
-		// Variables
-		const {coleccion_id, temporada} = req.query;
-
-		// Obtiene los datos
-		const datos = await procesos.obtieneCapitulos(coleccion_id, temporada);
-
-		// Fin
-		return res.json(datos);
-	},
 	obtieneInfo: (req, res) => {
 		// Variables
 		const {entidad} = req.query;
