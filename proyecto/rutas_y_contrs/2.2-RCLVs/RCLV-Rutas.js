@@ -40,9 +40,9 @@ router.get("/api/obtiene-variables-detalle-rclv", API.obtieneVars.detalle);
 // APIs - Agregar/Editar
 router.get("/api/obtiene-variables-edicion-rclv", API.obtieneVars.edicion);
 router.get("/api/valida-sector-edicion-rclv", API.validaSector);
-router.get("/api/edicion/registros-con-esa-fecha", API.registrosConEsaFecha);
-router.get("/api/edicion/prefijos", API.prefijos);
-router.get("/api/edicion/obtiene-leyenda-nombre", API.obtieneLeyNombre);
+router.get("/api/registros-con-esa-fecha", API.registrosConEsaFecha);
+router.get("/api/prefijos-rclv", API.prefijos);
+router.get("/api/obtiene-leyenda-nombre", API.obtieneLeyNombre);
 
 // Vistas - Relación con la vida
 router.get("/agregar/r", aptoAgregar, vista.altaEdic.form);
