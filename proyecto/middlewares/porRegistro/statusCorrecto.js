@@ -14,13 +14,14 @@ module.exports = async (req, res, next) => {
 	tarea = tarea.slice(1);
 
 	// Obtiene el status esperado - Familia CRUD
+
 	if (!statusEsperado_ids && entidades.includes(baseUrl)) {
 		statusEsperado_ids =
 			tarea == "edicion"
 				? activos_ids
 				: tarea == "inactivar"
 				? aprobados_ids
-				: ["recuperar ", "eliminado"].includes(tarea)
+				: ["recuperar", "eliminado"].includes(tarea)
 				? [inactivo_id]
 				: tarea == "eliminado-por-creador"
 				? [creado_id]
@@ -51,6 +52,8 @@ module.exports = async (req, res, next) => {
 	}
 
 	// Obtiene el status esperado - Solución trivial
+	console.log(54, statusEsperado_ids);
+
 	if (!statusEsperado_ids) statusEsperado_ids = [];
 
 	// Obtiene el statusActual
