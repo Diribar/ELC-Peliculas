@@ -105,7 +105,7 @@ window.addEventListener("load", async () => {
 			url += "=";
 			url += encodeURIComponent(DOM.inputs[i].value);
 		}
-		return fetch("api/valida/agregar-fa/" + url).then((n) => n.json());
+		return fetch("api/valida-agregar-fa/" + url).then((n) => n.json());
 	};
 
 	// Status inicial
