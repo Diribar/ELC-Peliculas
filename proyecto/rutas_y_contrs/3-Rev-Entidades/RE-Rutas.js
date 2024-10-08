@@ -48,12 +48,12 @@ router.get("/api/actualiza-visibles", API.actualizaVisibles);
 
 // APIs - Producto y RCLV
 router.get("/api/motivo-generico-revision", API.obtieneMotivoGenerico);
-router.get("/api/edicion/aprob-rech", m.edicionAPI, API.edicAprobRech);
+router.get("/api/edicion-aprob-rech", m.edicionAPI, API.edicAprobRech);
 
 // APIs- Links
-router.get("/api/link/alta-baja", m.linkAltaBaja, API.links.altaBaja);
+router.get("/api/alta-baja-link", m.linkAltaBaja, API.links.altaBaja);
 router.get("/api/link/edicion", m.edicionAPI, API.edicAprobRech);
-router.get("/api/link/siguiente-producto", API.links.sigProd);
+router.get("/api/siguiente-producto-link", API.links.sigProd);
 
 // Vistas - Tablero de Control
 router.get("/tablero", usuarioBase, m.usRolAutTablEnts, vista.tableroControl);
