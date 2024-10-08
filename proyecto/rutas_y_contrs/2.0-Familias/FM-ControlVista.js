@@ -21,7 +21,6 @@ module.exports = {
 			// Variables
 			const {statusAlineado, prodRclv} = req.body;
 			const datos = await procesos.obtieneDatos(req);
-			console.log(24, datos.tema);
 
 			// Obtiene el ayuda para el título
 			const ayudasTitulo =
