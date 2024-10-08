@@ -401,7 +401,7 @@ module.exports = {
 			// CONSECUENCIAS - Actualiza el registro original --> es crítico el uso del 'await'
 			await baseDeDatos.actualizaPorId(entidad, id, datos);
 
-			// CONSECUENCIAS - Si corresponde, actualiza o crea el campo 'azar'
+			// CONSECUENCIAS - Si corresponde, agrega o actualiza un registro con el campo 'azar'
 			if (producto && aprobados_ids.includes(statusFinal_id)) {
 				// Variables
 				const azar = comp.azar();
@@ -409,10 +409,8 @@ module.exports = {
 				const datos = {[campo_id]: id, azar};
 				if (entidad != "peliculas") datos.grupoCol_id = entidad == "colecciones" ? id : original.coleccion_id;
 
-				// Actualiza o agrega un registro
-				const prodComplem = await baseDeDatos.obtienePorCondicion("prodsComplem", {[campo_id]: id});
-				if (!prodComplem) await baseDeDatos.agregaRegistro("prodsComplem", datos);
-				else if (!prodComplem.azar) baseDeDatos.actualizaPorId("prodsComplem", prodComplem.id, {azar});
+				// Agrega o actualiza un registro con el campo 'azar'
+				baseDeDatos.agregaActualizaPorCondicion("prodsComplem", {[campo_id]: id}, datos);
 			}
 
 			// CONSECUENCIAS - Acciones si es una colección
@@ -446,8 +444,8 @@ module.exports = {
 			// CONSECUENCIAS - Si es un RCLV y es un alta, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 			if (rclv && codigo == "alta") procesos.rclv.edicAprobRech(entidad, original, revId);
 
-			// CONSECUENCIAS - statusHistorial: si el registro 'inactivar_id' no tiene comentarios, lo elimina
-			const condicion = {entidad, entidad_id: id, statusFinal_id: inactivar_id, comentario: null};
+			// CONSECUENCIAS - statusHistorial: elimina el registro con statusFinal 'inactivar_id'
+			const condicion = {entidad, entidad_id: id, statusFinal_id: [inactivar_id, recuperar_id]};
 			baseDeDatos.eliminaPorCondicion("statusHistorial", condicion);
 
 			// CONSECUENCIAS - statusHistorial: Agrega un registro
