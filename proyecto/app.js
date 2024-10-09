@@ -11,7 +11,12 @@ global.urlHost =
 		: carpeta.includes("Pruebas")
 		? "https://pruebas.elc.lat" // test
 		: "https://elc.lat"; // producción
-global.nodeEnv = carpeta == "Proyecto" ? "development" : "production";
+global.entorno =
+	carpeta == "Proyecto"
+		? "development" // laptop
+		: carpeta == "2-Pruebas" // pruebas
+		? "pruebas"
+		: "production";
 
 // Variables que toman valores de '.env'
 require("dotenv").config();
@@ -28,7 +33,7 @@ global.fs = require("fs");
 global.carpsImagsEpocaDelAno = fs.readdirSync(carpetaExterna + "4-EpocasDelAno");
 
 // Base de datos
-global.config = require("./baseDeDatos/config/config.js")[nodeEnv];
+global.config = require("./baseDeDatos/config/config.js")[entorno];
 global.Sequelize = require("sequelize");
 global.sequelize = new Sequelize(config.database, config.username, config.password, config);
 global.db = require("./baseDeDatos/modelos"); // tiene que ir después de 'fs', porque lo usa el archivo 'index'
@@ -57,7 +62,7 @@ app.use(cookies());
 // app.use(morgan("custom")) //use the new format by name
 
 // *********** Para conectarse con el servidor ********************
-const PORT = nodeEnv == "development" ? "80" : process.env.PORT;
+const PORT = entorno == "development" ? "80" : process.env.PORT;
 app.listen(PORT, () => console.log("Servidor funcionando..."));
 
 // ******** Todas las carpetas donde se almacenan vistas **********
