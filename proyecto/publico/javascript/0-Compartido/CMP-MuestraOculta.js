@@ -17,7 +17,7 @@ window.addEventListener("load", () => {
 	// Mensajes de ayuda
 	window.addEventListener("click", (e) => {
 		// Si el click fue 'mmBR'
-		if (typeof e.target.className && e.target.className.includes("menuMobileSelectGraficos")) return;
+		if (typeof e.target.className && e.target.className.includes("mmSG")) return;
 
 		// Si el click es fuera del input deBúsqueda Rápida => toggle u oculta
 		if (![DOM.brInput].includes(e.target))
