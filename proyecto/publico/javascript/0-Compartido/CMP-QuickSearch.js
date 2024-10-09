@@ -16,11 +16,7 @@ window.addEventListener("load", () => {
 		DOM.muestraResultados.classList.remove("ocultar");
 
 		// Si se encontraron resultados, crea el listado
-		if (Array.isArray(registros)) {
-			creaElListado(registros);
-			DOM.muestraResultados.children[0].classList.add("resaltar"); // Resalta el registro anterior
-			return
-		}
+		if (Array.isArray(registros)) return creaElListado(registros);
 
 		// Mensaje de 'no se encontraron resultados'
 		const parrafo = document.createElement("p");
@@ -48,6 +44,13 @@ window.addEventListener("load", () => {
 			// Agrega la fila al cuerpo de la tabla
 			DOM.muestraResultados.appendChild(anchor);
 		}
+
+		// Terminación
+		DOM.muestraResultados.children[0].classList.add("resaltar"); // Resalta el registro anterior
+		posicion = 0;
+
+		// Fin
+		return;
 	};
 	let creaLasCeldas = ({anchor, registro}) => {
 		// Variables
