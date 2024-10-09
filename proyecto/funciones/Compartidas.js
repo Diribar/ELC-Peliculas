@@ -288,7 +288,7 @@ module.exports = {
 		// Variables
 		const familias = this.obtieneDesdeEntidad.familias(entidad);
 		const entidadEdic = this.obtieneDesdeEntidad.entidadEdic(entidad);
-		const edicID = edicion.id;
+		const edicId = edicion.id;
 		let camposNull = {};
 		let camposRevisar = [];
 
@@ -334,16 +334,16 @@ module.exports = {
 		let quedanCampos = !!Object.keys(edicion).length;
 		if (quedanCampos) {
 			// Devuelve el id a la variable de edicion
-			if (edicID) edicion.id = edicID;
+			if (edicId) edicion.id = edicId;
 
 			// Si la edición existe en BD y hubieron campos iguales entre la edición y el original, actualiza la edición
-			if (edicID && Object.keys(camposNull).length) await baseDeDatos.actualizaPorId(entidadEdic, edicID, camposNull);
+			if (edicId && Object.keys(camposNull).length) await baseDeDatos.actualizaPorId(entidadEdic, edicId, camposNull);
 		} else {
 			// Convierte en 'null' la variable de 'edicion'
 			edicion = null;
 
 			// Si había una edición guardada en la BD, la elimina
-			if (edicID) await baseDeDatos.eliminaPorId(entidadEdic, edicID);
+			if (edicId) await baseDeDatos.eliminaPorId(entidadEdic, edicId);
 		}
 
 		// Fin

@@ -11,7 +11,7 @@ module.exports = {
 	},
 	edicAprobRech: async (req, res) => {
 		// Variables
-		const {entidad, edicID, campo, aprob, motivo_id} = req.query;
+		const {entidad, edicId, campo, aprob, motivo_id} = req.query;
 		const revId = req.session.usuario.id;
 		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
@@ -19,7 +19,7 @@ module.exports = {
 		let statusAprob, reload;
 
 		// Obtiene el registro editado
-		let edicion = await baseDeDatos.obtienePorId(nombreEdic, edicID, include);
+		let edicion = await baseDeDatos.obtienePorId(nombreEdic, edicId, include);
 
 		// Obtiene la versión original con include
 		const entId = entidad == "links" ? edicion.link_id : req.query.id;
@@ -32,7 +32,7 @@ module.exports = {
 		if (familias == "rclvs") {
 			if (campo == "fechaMovil" && originalGuardado.fechaMovil == "0") {
 				await baseDeDatos.actualizaPorId(entidad, entId, {anoFM: null}); // debe serlo por el eventual solapamiento
-				baseDeDatos.actualizaPorId(nombreEdic, edicID, {anoFM: null});
+				baseDeDatos.actualizaPorId(nombreEdic, edicId, {anoFM: null});
 				reload = !aprob; // si fue rechazado, se debe recargar la vista para quitar 'anoFM'
 			}
 		}

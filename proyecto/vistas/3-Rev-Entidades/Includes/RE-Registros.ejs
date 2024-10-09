@@ -7,7 +7,7 @@
 		</h3>
 		<div class="registros <%- !DE || !DE[titulo.replace(/[-\s]/g, "")] ? 'ocultar' : '' %>">
 			<% for (let reg of regs) { %>
-				<% const EDIC_ID = reg.edicID ? ('&edicID=' + reg.edicID) : '' %>
+				<% const EDIC_ID = reg.edicId ? ('&edicId=' + reg.edicId) : '' %>
 				<% const ORIGEN = locals.origen ? ('&origen=' + locals.origen) : '' %>
 				<% const GRUPO = locals.grupo ? ('&grupo=' + locals.grupo) : '' %>
 				<% const corresponde_id = reg.entidad != "colecciones" || locals.grupo == "inactivo" || locals.origen == "TE" || !locals.campo %>

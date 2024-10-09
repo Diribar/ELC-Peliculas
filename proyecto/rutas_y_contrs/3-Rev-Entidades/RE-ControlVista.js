@@ -130,7 +130,7 @@ module.exports = {
 
 			// Variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
-			const {id, edicID} = req.query;
+			const {id, edicId} = req.query;
 			const origen = req.query.origen ? req.query.origen : "TE";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
@@ -148,7 +148,7 @@ module.exports = {
 
 			// Obtiene los registros
 			const original = await baseDeDatos.obtienePorId(entidad, id, includeOrig);
-			let edicion = await baseDeDatos.obtienePorId(edicEntidad, edicID, includeEdic);
+			let edicion = await baseDeDatos.obtienePorId(edicEntidad, edicId, includeEdic);
 
 			// Si el avatar está presente en la edición, muestra esa vista
 			if (edicion.avatar) {
@@ -193,7 +193,7 @@ module.exports = {
 				// Actualiza el registro 'edición'
 				edicion.avatarUrl = null;
 				const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-				baseDeDatos.actualizaPorId(entidadEdic, edicID, {avatar: null, avatarUrl: null});
+				baseDeDatos.actualizaPorId(entidadEdic, edicId, {avatar: null, avatarUrl: null});
 			}
 
 			// Más variables
@@ -487,13 +487,13 @@ module.exports = {
 		avatar: async (req, res) => {
 			// Variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
-			const {id, edicID, rechazar, motivo_id} = {...req.query, ...req.body};
+			const {id, edicId, rechazar, motivo_id} = {...req.query, ...req.body};
 			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const revId = req.session.usuario.id;
 			const original = await baseDeDatos.obtienePorId(entidad, id);
 			const campo = "avatar";
 			const aprob = !rechazar;
-			let edicion = await baseDeDatos.obtienePorId(entidadEdic, edicID);
+			let edicion = await baseDeDatos.obtienePorId(entidadEdic, edicId);
 			const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
 
 			// 1. PROCESOS PARTICULARES PARA AVATAR

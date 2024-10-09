@@ -40,7 +40,7 @@ module.exports = {
 					entidad,
 					fechaRef: n.editadoEn,
 					fechaRefTexto: comp.fechaHora.diaMes(n.editadoEn),
-					edicID: n.id,
+					edicId: n.id,
 				});
 			});
 
@@ -223,7 +223,7 @@ module.exports = {
 						...n[asociacion],
 						entidad,
 						editadoEn: n.editadoEn,
-						edicID: n.id,
+						edicId: n.id,
 						fechaRef: n.editadoEn,
 						fechaRefTexto: comp.fechaHora.diaMes(n.editadoEn),
 					});
@@ -765,7 +765,7 @@ module.exports = {
 					let datos = {entidad, id, nombre, fechaRef, fechaRefTexto, abrev, links};
 
 					// Completa los datos
-					if (rubro == "ED") datos.edicID = n.edicID;
+					if (rubro == "ED") datos.edicId = n.edicId;
 					if (n.entidad == "colecciones") datos.csl = n.csl;
 
 					// Fin
@@ -790,7 +790,7 @@ module.exports = {
 					let datos = {entidad, id, nombre, fechaRef, fechaRefTexto, abrev};
 
 					// Completa los datos
-					if (rubro == "ED") datos.edicID = n.edicID;
+					if (rubro == "ED") datos.edicId = n.edicId;
 
 					// Fin
 					return datos;

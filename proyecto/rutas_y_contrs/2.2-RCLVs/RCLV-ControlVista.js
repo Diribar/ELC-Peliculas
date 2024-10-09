@@ -88,7 +88,7 @@ module.exports = {
 			const eventos = entidad == "eventos";
 			const epocasDelAno = entidad == "epocasDelAno";
 			let dataEntry = {};
-			let apMars, edicID, bloqueDer;
+			let apMars, edicId, bloqueDer;
 
 			// Configura el título de la vista
 			const titulo =
@@ -102,10 +102,10 @@ module.exports = {
 			if (codigo != "agregar") {
 				// Obtiene el original y edicion
 				const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, usuario_id});
-				edicID = edicion.id;
+				edicId = edicion.id;
 
 				// Actualiza el data entry de session
-				dataEntry = {...original, ...edicion, id, edicID: edicion.id};
+				dataEntry = {...original, ...edicion, id, edicId: edicion.id};
 				const session = req.session[entidad] ? req.session[entidad] : req.cookies ? req.cookies[entidad] : null;
 				if (session) {
 					dataEntry = {...dataEntry, ...session};
@@ -151,7 +151,7 @@ module.exports = {
 			// Ir a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, origen, titulo},
-				...{entidad, id, prodEntidad, prodId, edicID, familia: "rclv", ent, familia},
+				...{entidad, id, prodEntidad, prodId, edicId, familia: "rclv", ent, familia},
 				...{personajes, hechos, temas, eventos, epocasDelAno, prioridadesRclv},
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer, ayudas},
 				...{apMars, originalUrl, opcsHoyEstamos, opcsLeyNombre, statusAlineado},
@@ -194,7 +194,7 @@ module.exports = {
 				if (edicion) await baseDeDatos.eliminaPorId("rclvsEdicion", edicion.id);
 
 				// Actualiza el 'originalUrl'
-				let posicion = req.originalUrl.indexOf("&edicID");
+				let posicion = req.originalUrl.indexOf("&edicId");
 				const urlInicial = req.originalUrl.slice(0, posicion);
 				let urlFinal = req.originalUrl.slice(posicion + 1);
 				posicion = urlFinal.indexOf("&");
