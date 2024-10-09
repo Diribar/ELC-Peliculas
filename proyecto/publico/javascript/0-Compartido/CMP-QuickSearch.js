@@ -31,7 +31,7 @@ window.addEventListener("load", () => {
 		for (let registro of registros) {
 			// Variables
 			const {familia, entidad, id} = registro;
-			const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
+			const siglaFam = familia[0];
 			const clase = familia.slice(0, 4);
 
 			// Crea el anchor del registro
