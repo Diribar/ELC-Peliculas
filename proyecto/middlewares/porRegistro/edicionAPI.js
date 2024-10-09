@@ -2,7 +2,8 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const {entidad, edicID, campo, aprob, motivo_id} = req.query;
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
+	const {edicID, campo, aprob, motivo_id} = req.query;
 	const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 
 	// Obtiene el registro editado

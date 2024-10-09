@@ -4,49 +4,53 @@ const router = express.Router();
 const API = require("./RCLV-ControlAPI");
 const vista = require("./RCLV-ControlVista");
 
-// Middlewares - Específicos de usuarios
-const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
-const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones");
-const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
+// Middlewares
+const m = {
+	// Específicos de usuarios
+	usAltaTerm: require("../../middlewares/porUsuario/usAltaTerm"),
+	usPenalizaciones: require("../../middlewares/porUsuario/usPenalizaciones"),
+	usAptoInput: require("../../middlewares/porUsuario/usAptoInput"),
 
-// Middlewares - Específicos del registro
-const entValida = require("../../middlewares/porRegistro/entidadValida");
-const IDvalido = require("../../middlewares/porRegistro/IDvalido");
-const edicion = require("../../middlewares/porRegistro/edicionVista");
-const statusCorrecto = require("../../middlewares/porRegistro/statusCorrecto");
-const rclvNoEditable = require("../../middlewares/porRegistro/rclvNoEditable");
+	// Middlewares - Específicos del registro
+	entValida: require("../../middlewares/porRegistro/entidadValida"),
+	idValido: require("../../middlewares/porRegistro/idValido"),
+	edicion: require("../../middlewares/porRegistro/edicionVista"),
+	statusCorrecto: require("../../middlewares/porRegistro/statusCorrecto"),
+	rclvNoEditable: require("../../middlewares/porRegistro/rclvNoEditable"),
 
-// Middlewares - Temas de captura
-const permUserReg = require("../../middlewares/porRegistro/permUserReg");
-const capturaActivar = require("../../middlewares/varios/capturaActivar");
-const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
+	// Middlewares - Temas de captura
+	permUserReg: require("../../middlewares/porRegistro/permUserReg"),
+	capturaActivar: require("../../middlewares/varios/capturaActivar"),
+	capturaInactivar: require("../../middlewares/varios/capturaInactivar"),
 
-// Middlewares - Otros
-const multer = require("../../middlewares/varios/multer");
+	// Middlewares - Otros
+	multer: require("../../middlewares/varios/multer"),
+};
 
 // Middlewares - Consolidados
-const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
-const aptoAgregar = [entValida, ...aptoUsuario];
-const aptoDetalle = [entValida, IDvalido, capturaInactivar];
-const aptoCRUD = [entValida, IDvalido, statusCorrecto, ...aptoUsuario, permUserReg];
-const aptoEdicion = [...aptoCRUD, edicion, rclvNoEditable];
+const aptoUsuario = [m.usAltaTerm, m.usPenalizaciones, m.usAptoInput];
+const aptoAgregar = [m.entValida, ...aptoUsuario];
+const aptoDetalle = [m.entValida, m.idValido, m.capturaInactivar];
+const aptoCRUD = [m.entValida, m.idValido, m.statusCorrecto, ...aptoUsuario, m.permUserReg];
+const aptoEdicion = [...aptoCRUD, m.edicion, m.rclvNoEditable];
 
 // APIs - Detalle
-router.get("/api/detalle/obtiene-variables", API.obtieneVars.detalle);
+router.get("/api/obtiene-variables-detalle-rclv", API.obtieneVars.detalle);
 
 // APIs - Agregar/Editar
-router.get("/api/edicion/obtiene-variables", API.obtieneVars.edicion);
-router.get("/api/edicion/valida-sector", API.validaSector);
-router.get("/api/edicion/registros-con-esa-fecha", API.registrosConEsaFecha);
-router.get("/api/edicion/prefijos", API.prefijos);
-router.get("/api/edicion/obtiene-leyenda-nombre", API.obtieneLeyNombre);
+router.get("/api/obtiene-variables-edicion-rclv", API.obtieneVars.edicion);
+router.get("/api/valida-sector-edicion-rclv", API.validaSector);
+router.get("/api/registros-con-esa-fecha", API.registrosConEsaFecha);
+router.get("/api/prefijos-rclv", API.prefijos);
+router.get("/api/obtiene-leyenda-nombre", API.obtieneLeyNombre);
 
 // Vistas - Relación con la vida
-router.get("/agregar", aptoAgregar, vista.altaEdic.form);
-router.post("/agregar", aptoAgregar, multer.single("avatar"), vista.altaEdic.guardar);
-router.get("/detalle", aptoDetalle, vista.detalle);
-router.get("/edicion", aptoEdicion, capturaActivar, vista.altaEdic.form);
-router.post("/edicion", aptoEdicion, multer.single("avatar"), capturaInactivar, vista.altaEdic.guardar);
+router.get("/agregar/r", aptoAgregar, vista.altaEdic.form);
+router.post("/agregar/r", aptoAgregar, m.multer.single("avatar"), vista.altaEdic.guardar);
+router.get("/detalle/r", aptoDetalle, vista.detalle);
+router.get("/edicion/r", aptoEdicion, m.capturaActivar, vista.altaEdic.form);
+router.post("/edicion/r", aptoEdicion, m.multer.single("avatar"), m.capturaInactivar, vista.altaEdic.guardar);
+router.get("/productos-por-registro/r", m.entValida, vista.prodsPorReg); // busca los rclvs con más cantidad de productos
 
 // Fin
 module.exports = router;

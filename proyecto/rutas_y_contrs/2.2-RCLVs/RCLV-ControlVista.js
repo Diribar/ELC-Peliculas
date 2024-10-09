@@ -9,8 +9,9 @@ module.exports = {
 		// Variables
 		const tema = "rclvCrud";
 		const codigo = "detalle";
-		const {entidad, id, hoyLocal} = req.query;
-		const origen = req.query.origen ? req.query.origen : "RDT";
+		const {siglaFam, entidad} = comp.partesDelUrl(req);
+		const {id, hoyLocal} = req.query;
+		const origen = req.query.origen ? req.query.origen : "DT";
 		const usuario = req.session.usuario ? req.session.usuario : null;
 		const usuario_id = usuario ? usuario.id : null;
 		const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
@@ -69,21 +70,15 @@ module.exports = {
 	},
 	altaEdic: {
 		form: async (req, res) => {
-			// Puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
-			// Tema y Código
-			const {baseUrl, ruta} = comp.reqBasePathUrl(req);
-			const tema = baseUrl == "/rclv" ? "rclvCrud" : baseUrl == "/revision" ? "revisionEnts" : "";
-			const codigo = ruta.slice(1, -1); // resultados posibles: 'agregar', 'edicion', 'alta', 'rclv/alta', 'rclv/solapamiento'
+			// Tema y Código - puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
+			const {baseUrl, tarea, siglaFam, entidad} = comp.partesDelUrl(req);
+			const tema = baseUrl == "/revision" ? "revisionEnts" : "rclvCrud";
+			let codigo = tarea.slice(1);
+			if (codigo == "alta") codigo += "/r"; // crud: 'agregar', 'edicion'; revisión: 'alta/r', 'solapamiento'
 
 			// Más variables
-			const {entidad, id, prodEntidad, prodId} = req.query;
-			const origen = req.query.origen
-				? req.query.origen
-				: tema == "revisionEnts"
-				? codigo == "rclv/alta"
-					? "RRA"
-					: "TE"
-				: "";
+			const {id, prodEntidad, prodId} = req.query;
+			const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? (codigo == "alta/r" ? "RA" : "TE") : "";
 			const usuario_id = req.session.usuario.id;
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -149,7 +144,7 @@ module.exports = {
 					? procesos.altaEdicForm.opcsLeyNombre({...dataEntry, personajes, hechos})
 					: [];
 			const ayudas = procesos.altaEdicForm.ayudas(entidad);
-			const statusAlineado = codigo == "rclv/alta";
+			const statusAlineado = codigo == "alta/r";
 			const cartelGenerico = codigo == "edicion";
 			const cartelRechazo = tema == "revisionEnts";
 
@@ -166,10 +161,11 @@ module.exports = {
 		// Puede venir de agregarProd, edicionProd, detalleRCLV, revision
 		guardar: async (req, res) => {
 			// Variables
-			const {entidad, id, prodEntidad, prodId, eliminarEdic} = req.query;
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id, prodEntidad, prodId, eliminarEdic} = req.query;
+			const {tarea} = comp.partesDelUrl(req);
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			const origen = req.query.origen ? req.query.origen : "RDT";
-			const codigo = req.baseUrl + req.path;
+			const origen = req.query.origen ? req.query.origen : "DT";
 			const usuario_id = req.session.usuario.id;
 			let errores;
 
@@ -229,7 +225,7 @@ module.exports = {
 			const {original, edicion, edicN} = await procesos.altaEdicGuardar.guardaLosCambios(req, res, DE);
 
 			// Acciones si se agregó un registro 'rclv'
-			if (codigo == "/rclv/agregar/") {
+			if (tarea == "/agregar") {
 				// Si el origen es "Datos Adicionales", actualiza su session y cookie
 				if (origen == "PDA") {
 					req.session.datosAdics = {...req.session.datosAdics, [campo_id]: original.id};
@@ -259,7 +255,7 @@ module.exports = {
 				comp.gestionArchivos.mueveImagen(DE.avatar, "9-Provisorio", "3-RCLVs/Revisar");
 
 				// Elimina el eventual anterior
-				if (codigo == "/rclv/edicion/") {
+				if (tarea == "/edicion") {
 					// Si es un registro propio y en status creado, borra el eventual avatar original
 					if (original.creadoPor_id == usuario_id && original.statusRegistro_id == creado_id) {
 						if (original.avatar) comp.gestionArchivos.elimina(carpetaExterna + "3-RCLVs/Revisar/", original.avatar);
@@ -274,11 +270,48 @@ module.exports = {
 			if (entidad == "epocasDelAno" && !edicion && !edicN) comp.actualizaSolapam();
 
 			// Obtiene el url de la siguiente instancia
-			let destino = "/inactivar-captura/?entidad=" + entidad + "&id=" + (id ? id : 1) + "&origen=" + origen;
+			let destino = "/" + entidad + "/inactivar-captura/?id=" + (id ? id : 1) + "&origen=" + origen;
 			if (origen == "PED") destino += "&prodEntidad=" + prodEntidad + "&prodId=" + prodId;
 
 			// Redirecciona a la siguiente instancia
 			return res.redirect(destino);
 		},
+	},
+	prodsPorReg: async (req, res) => {
+		// Variables
+		const entidad = comp.obtieneEntidadDesdeUrl(req);
+		const condicion = {id: {[Op.ne]: 1}};
+		const include = [...variables.entidades.prods, "prodsEdiciones"];
+		const registros = {};
+		const resultado = {};
+
+		// Lectura
+		await baseDeDatos
+			.obtieneTodosPorCondicion(entidad, condicion, include)
+			// Averigua la cantidad de includes por registro rclv
+			.then((regs) => {
+				for (let reg of regs) {
+					registros[reg.nombre] = 0;
+					for (let entInclude of include) registros[reg.nombre] += reg[entInclude].length;
+				}
+			})
+			// Ordena los registros por su cantidad de productos, en orden descendente
+			.then(() => {
+				// Ordena los métodos según la cantidad de productos
+				const metodos = Object.keys(registros);
+				metodos.sort((a, b) =>
+					registros[b] != registros[a]
+						? registros[b] - registros[a] // por cantidad de productos
+						: a < b // por orden alfabético
+						? -1
+						: 1
+				);
+
+				// Crea un objeto nuevo, con los métodos ordenados
+				for (let metodo of metodos) resultado[metodo] = registros[metodo];
+			});
+
+		// Fin
+		return res.send(resultado);
 	},
 };

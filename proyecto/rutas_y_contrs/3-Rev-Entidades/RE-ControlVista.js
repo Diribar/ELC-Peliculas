@@ -10,7 +10,7 @@ const procesos = require("./RE-Procesos");
 
 module.exports = {
 	// Tablero
-	tableroEntidades: async (req, res) => {
+	tableroControl: async (req, res) => {
 		// Variables
 		const tema = "revisionEnts";
 		const codigo = "tableroControl";
@@ -60,44 +60,14 @@ module.exports = {
 			...{prodsRclvs, prods, rclvs, sigProd, origen: "TE", dataEntry, mostrarRclvs},
 		});
 	},
-	// Tablero de mantenimiento
-	tableroMantenim: async (req, res) => {
-		// Variables
-		const tema = "mantenimiento";
-		const codigo = "tableroControl";
-		const usuario_id = req.session.usuario.id;
-		const omnipotente = req.session.usuario.rolUsuario_id == rolOmnipotente_id;
-
-		// Productos
-		let prods = procesos.tablManten.obtieneProds(usuario_id).then((n) => procesos.procesaCampos.prods(n));
-		let rclvs = procesos.tablManten.obtieneRCLVs(usuario_id).then((n) => procesos.procesaCampos.rclvs(n));
-		let prodsConLinksInactivos = procesos.tablManten
-			.obtieneLinksInactivos(usuario_id)
-			.then((n) => procesos.procesaCampos.prods(n));
-
-		// RCLVs
-		[prods, rclvs, prodsConLinksInactivos] = await Promise.all([prods, rclvs, prodsConLinksInactivos]);
-
-		// Une Productos y Links
-		prods = {...prods, ...prodsConLinksInactivos};
-
-		// Obtiene información para la vista
-		const dataEntry = req.session.tableros && req.session.tableros.mantenimiento ? req.session.tableros.mantenimiento : {};
-
-		// Va a la vista
-		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Tablero de Mantenimiento", origen: "TM"},
-			...{prods, rclvs, omnipotente},
-			dataEntry,
-		});
-	},
 
 	// Cambios de status
 	altaProdForm: async (req, res) => {
 		// Variables
 		const tema = "revisionEnts";
-		const codigo = "producto/alta";
-		const {entidad, id} = req.query;
+		const codigo = "alta/p";
+		const entidad = comp.obtieneEntidadDesdeUrl(req);
+		const {id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "TE";
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
@@ -137,7 +107,7 @@ module.exports = {
 		const statusRegistro_id = original.statusRegistro_id;
 		const statusCreado = statusRegistro_id == creado_id;
 		const statusLink_id = [creado_id, aprobado_id, recuperar_id];
-		const links = await procsProd.obtieneLinksDelProducto({entidad, id, statusLink_id, origen: "RPA"});
+		const links = await procsProd.obtieneLinksDelProducto({entidad, id, statusLink_id, origen: "RA"});
 		const status_id = statusRegistro_id;
 		const asocs = variables.entidades.asocRclvs;
 
@@ -156,7 +126,7 @@ module.exports = {
 		let datos = await procesos.guardar.obtieneDatos(req);
 		const {entidad, id, origen, original, statusOriginal_id, statusFinal_id} = datos;
 		const {codigo, producto, rclv, motivo_id, comentario, aprobado} = datos;
-		const {cola, revId, ahora, revisorPERL, petitFamilias, baseUrl, usuario_id, campoDecision} = datos;
+		const {cola, revId, ahora, revisorPERL, petitFamilias, usuario_id, campoDecision} = datos;
 		datos = {}; // limpia la variable 'datos'
 		let destino;
 
@@ -332,9 +302,9 @@ module.exports = {
 			procesos.descargaAvatarOriginal(original, entidad);
 
 		// Opciones de redireccionamiento
-		if (producto && codigo == "alta") destino = baseUrl + "/producto/edicion" + cola; // producto creado y aprobado
-		else if (origen) destino = "/inactivar-captura" + cola; // otros casos con origen
-		else destino = "/revision/tablero-de-entidades"; // sin origen
+		if (producto && codigo == "alta") destino = "/" + entidad + "/edicion/p" + cola; // producto creado y aprobado
+		else if (origen) destino = "/" + entidad + "/inactivar-captura" + cola; // otros casos con origen
+		else destino = "/revision/tablero"; // sin origen
 
 		// Fin
 		return res.redirect(destino);
@@ -345,14 +315,14 @@ module.exports = {
 		form: async (req, res) => {
 			// Tema y Código
 			const tema = "revisionEnts";
-			const {ruta} = comp.reqBasePathUrl(req);
-			let codigo = ruta.slice(1, -1); // No se puede poner 'const', porque más adelante puede cambiar
+			const {tarea} = comp.partesDelUrl(req);
+			let codigo = tarea.slice(1); // No se puede poner 'const', porque puede cambiar a 'edicion/avatar'
 
 			// Variables
-			const {entidad, id, edicID} = req.query;
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id, edicID} = req.query;
 			const origen = req.query.origen ? req.query.origen : "TE";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 			const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
@@ -483,7 +453,7 @@ module.exports = {
 
 			// Fin
 			if (edicion) return res.redirect(req.originalUrl);
-			else return res.redirect("/revision/tablero-de-entidades");
+			else return res.redirect("/revision/tablero");
 		},
 		solapam: async (req, res) => {
 			// Variables
@@ -515,7 +485,7 @@ module.exports = {
 			comp.actualizaSolapam();
 
 			// Fin
-			return res.redirect("/revision/tablero-de-entidades");
+			return res.redirect("/revision/tablero");
 		},
 	},
 
@@ -524,7 +494,8 @@ module.exports = {
 		// Variables
 		const tema = "revisionEnts";
 		const codigo = "abmLinks";
-		const {entidad, id} = req.query;
+		const entidad = comp.obtieneEntidadDesdeUrl(req);
+		const {id} = req.query;
 		const revId = req.session.usuario.id;
 		const origen = req.query.origen ? req.query.origen : "TE";
 
@@ -561,7 +532,7 @@ module.exports = {
 					: await procesos.links.obtieneSigProd({entidad, id, revId})
 				: null;
 		const linkSigProd = sigProd
-			? "/inactivar-captura/?entidad=".concat(entidad, "&id=", id) +
+			? "/".concat(entidad, "inactivar-captura/?id=", id) +
 			  "&prodEntidad=".concat(sigProd.entidad, "&prodId=", sigProd.id, "&origen=RL")
 			: null;
 

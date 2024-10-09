@@ -28,7 +28,7 @@ window.addEventListener("load", () => {
 		avatarInicial: DOM.imgAvatar ? DOM.imgAvatar.src : "",
 		esImagen: false,
 		imgOpcional: tarea == "editables",
-		rutaApi: "/usuarios/api/valida-" + tarea + "/?",
+		rutaApi: "api/valida-" + tarea + "/?",
 	};
 
 	// Funciones

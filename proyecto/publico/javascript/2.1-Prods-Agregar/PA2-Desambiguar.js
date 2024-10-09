@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 	// Obtiene los datos de session
 	const rutaBuscaInfoDeSession = "api/desambiguar-busca-info-de-session";
 	let desambiguar = await fetch(rutaBuscaInfoDeSession).then((n) => n.json());
-	if (!desambiguar) location.href = "palabras-clave"; // si no existe, redirige al paso anterior
+	if (!desambiguar) location.href = "agregar-pc"; // si no existe, redirige al paso anterior
 
 	// Si corresponde, completa los datos de sesion
 	if (!desambiguar.mensaje) {
@@ -81,7 +81,7 @@ window.addEventListener("load", async () => {
 			let boton = li.querySelector("a button");
 
 			// Información a enviar al BE
-			li.querySelector("a").href += prod.entidad + "&id=" + prod.id;
+			li.querySelector("a").href = "/" + prod.entidad + "/detalle/p/?id=" + prod.id;
 
 			// Imagen
 			let avatar = !prod.avatar
@@ -134,7 +134,6 @@ let FN = {
 			{ruta: "organiza-la-info", duracion: 1000},
 			{ruta: "agrega-hallazgos-de-IM-y-FA", duracion: 100},
 			{ruta: "obtiene-el-mensaje", duracion: 100},
-
 		];
 		let duracionTotal = 0;
 		for (let API of APIs) duracionTotal += API.duracion;
@@ -203,8 +202,8 @@ let FN = {
 				DOM.cartelProgreso.classList.add("disminuye");
 
 				// Fin
-				if (errores.hay) location.href = "datos-duros";
-				else location.href = "datos-adicionales";
+				if (errores.hay) location.href = "agregar-dd";
+				else location.href = "agregar-da";
 			});
 		}
 	},

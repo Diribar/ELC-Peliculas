@@ -2,7 +2,8 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const {entidad, id, rechazar, motivo_id} = {...req.query, ...req.body};
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
+	const {id, rechazar, motivo_id} = {...req.query, ...req.body};
 	let informacion;
 
 	// 1. Rechazado sin motivo => Recarga la vista

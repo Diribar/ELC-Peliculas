@@ -23,10 +23,10 @@ module.exports = async (req, res, next) => {
 		// Acciones si existe
 		if (existe) {
 			// Variables
-			const linkAnterior = "/producto/agregar/desambiguar";
+			const linkAnterior = "agregar-ds";
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(datos.entidad);
 			const vistaAnterior = variables.vistaAnterior(linkAnterior);
-			const vistaInactivar = variables.vistaInactivar.producto(datos.entidad, existe.id);
+			const vistaInactivar = variables.vistaInactivar.prodRclv(datos.entidad, existe.id, "p");
 
 			// Información para el cartel
 			informacion = {

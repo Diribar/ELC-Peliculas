@@ -297,7 +297,7 @@ window.addEventListener("load", async () => {
 		// Acciones si se cambió el tipo de actuación
 		if (e.target.name == "tipoActuacion_id") {
 			if ([v.anime_id, v.documental_id].includes(Number(valor))) {
-				DOM.actores.value = valor == v.anime_id ? dibujosAnimados : documental;
+				DOM.actores.value = v.tiposActuacion.find((n) => n.id == valor).nombre;
 				DOM.actores.readOnly = true;
 			} else DOM.actores.readOnly = false;
 		}
@@ -352,7 +352,7 @@ window.addEventListener("load", async () => {
 				v.esImagen = true;
 
 				// Elimina Session y Cookies
-				fetch("/producto/api/edicion-nueva/eliminar");
+				fetch("/producto/api/eliminar-nueva");
 
 				// Vuelve al status de la versión anterior
 				version[!indice ? "edicN" : "edicG"] = {...version[!indice ? "edicG" : "orig"]};
@@ -399,10 +399,10 @@ origen = origen ? "&origen=" + origen : "";
 
 // Rutas
 const rutas = {
-	validar: "/producto/api/valida/?",
+	validar: "/producto/api/valida-edicion-prod/?",
 	versiones: "/producto/api/obtiene-original-y-edicion/?entidad=" + entidad + "&id=" + id,
-	variablesBE: "/producto/api/edicion/obtiene-variables/?entidad=" + entidad + "&id=" + id,
-	eliminaEdicG: "/producto/api/edicion-guardada/eliminar/?entidad=" + entidad + "&id=" + id,
+	variablesBE: "/producto/api/obtiene-variables-prod/?entidad=" + entidad + "&id=" + id,
+	eliminaEdicG: "/producto/api/eliminar-guardada/?entidad=" + entidad + "&id=" + id,
 	recargaLaVistaSinEdicion: location.pathname + "?entidad=" + entidad + "&id=" + id + origen,
 };
 

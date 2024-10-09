@@ -34,7 +34,7 @@ window.addEventListener("load", async () => {
 		campoNombres: document.querySelectorAll("#contenido .campoNombre"),
 	};
 	let v = {
-		motivoGenerico_id: await fetch("/revision/api/edicion/motivo-generico").then((n) => n.json()),
+		motivoGenerico_id: await fetch("/revision/api/motivo-generico-revision").then((n) => n.json()),
 		campoNombres: Array.from(DOM.campoNombres).map((n) => n.innerHTML),
 		sinMotivo: DOM.rechazar.length - DOM.motivoRechazos.length, // Son los reemplazos, donde no se le pregunta un motivo al usuario
 		casos: DOM.aprobar.length == DOM.rechazar.length ? DOM.aprobar.length : 0,
@@ -55,7 +55,8 @@ window.addEventListener("load", async () => {
 		ocultaBloques: function () {
 			// Si corresponde, oculta un bloque
 			if (this.averiguaSiHayQueOcultarElBloque(DOM.bloqueIngrs, DOM.filasIngrs)) DOM.bloqueIngrs.classList.add("ocultar");
-			if (this.averiguaSiHayQueOcultarElBloque(DOM.bloqueReemps, DOM.filasReemps)) DOM.bloqueReemps.classList.add("ocultar");
+			if (this.averiguaSiHayQueOcultarElBloque(DOM.bloqueReemps, DOM.filasReemps))
+				DOM.bloqueReemps.classList.add("ocultar");
 
 			// Averigua si está todo procesado
 			const bloqueIngrsOculto = !DOM.bloqueIngrs || DOM.bloqueIngrs.className.includes("ocultar");
@@ -94,7 +95,10 @@ window.addEventListener("load", async () => {
 
 			// Acciones si quedan campos
 			if (resultado.quedanCampos) this.cartelHayInconsistencias();
-			else location.href = (resultado.statusAprob ? "/inactivar-captura/" : "/" + familia + "/edicion/") + cola;
+			else {
+				const tarea = resultado.statusAprob ? "inactivar-captura" : "edicion/" + siglaFam;
+				location.href = "/" + entidad + "/" + tarea + cola;
+			}
 
 			// Fin
 			return;
@@ -105,7 +109,7 @@ window.addEventListener("load", async () => {
 				"Se encontró una inconsistencia en el registro de edición.",
 				"Figura que está todo procesado, y a la vez quedan campos por procesar",
 			];
-			const link = "/" + familia + "/edicion/" + cola;
+			const link = "/" + entidad + "/edicion/" + siglaFam + cola;
 			const vistaEntendido = variables.vistaEntendido(link);
 			contenidoDelCartelGenerico({DOM, mensajes, ...vistaEntendido});
 
@@ -187,10 +191,8 @@ const edicID = new URL(location.href).searchParams.get("edicID");
 const origen = new URL(location.href).searchParams.get("origen");
 
 // Rutas
-const rutaEdicion = "/revision/api/edicion/aprob-rech/?entidad=" + entidad + "&id=" + id + "&edicID=" + edicID;
-const cola = "?entidad=" + entidad + "&id=" + id + "&origen=" + (origen ? origen : "TE");
+const rutaEdicion = "/revision/api/edicion-aprob-rech/?entidad=" + entidad + "&id=" + id + "&edicID=" + edicID;
+const cola = "/?id=" + id + "&origen=" + (origen ? origen : "TE");
 
 // Otras variables
-const url = location.pathname.replace("/revision/", "");
-const familia = url.slice(0, url.indexOf("/"));
 let resultado, todoProcesado;

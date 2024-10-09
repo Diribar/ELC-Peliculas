@@ -4,56 +4,65 @@ const router = express.Router();
 const API = require("./PR-ControlAPI");
 const vista = require("./PR-ControlVista");
 
-// Middlewares - Específicos de usuarios
-const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
-const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones");
-const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
+// Middlewares
+const m = {
+	// Específicos de usuarios
+	usAltaTerm: require("../../middlewares/porUsuario/usAltaTerm"),
+	usPenalizaciones: require("../../middlewares/porUsuario/usPenalizaciones"),
+	usAptoInput: require("../../middlewares/porUsuario/usAptoInput"),
 
-// Middlewares - Específicos del registro
-const entValida = require("../../middlewares/porRegistro/entidadValida");
-const IDvalido = require("../../middlewares/porRegistro/IDvalido");
-const rutaCRUD_ID = require("../../middlewares/varios/rutaCRUD_ID");
-const misDetalleProd = require("../../middlewares/varios/misDetalleProd");
-const edicion = require("../../middlewares/porRegistro/edicionVista");
-const statusCorrecto = require("../../middlewares/porRegistro/statusCorrecto");
+	// Middlewares - Específicos del registro
+	entValida: require("../../middlewares/porRegistro/entidadValida"),
+	idValido: require("../../middlewares/porRegistro/idValido"),
+	rutaCRUD_ID: require("../../middlewares/varios/rutaCRUD_ID"),
+	misDetalleProd: require("../../middlewares/varios/misDetalleProd"),
+	edicion: require("../../middlewares/porRegistro/edicionVista"),
+	statusCorrecto: require("../../middlewares/porRegistro/statusCorrecto"),
 
-// Middlewares - Temas de captura
-const permUserReg = require("../../middlewares/porRegistro/permUserReg");
-const capturaActivar = require("../../middlewares/varios/capturaActivar");
-const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
+	// Middlewares - Temas de captura
+	permUserReg: require("../../middlewares/porRegistro/permUserReg"),
+	capturaActivar: require("../../middlewares/varios/capturaActivar"),
+	capturaInactivar: require("../../middlewares/varios/capturaInactivar"),
 
-// Middlewares - Otros
-const multer = require("../../middlewares/varios/multer");
+	// Middlewares - Otros
+	multer: require("../../middlewares/varios/multer"),
+};
 
 // Middlewares - Consolidados
-const aptoDetalle = [entValida, IDvalido, rutaCRUD_ID];
-const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
-const aptoCalificar = [...aptoDetalle, statusCorrecto, ...aptoUsuario];
-const aptoEdicion = [...aptoCalificar, permUserReg, edicion];
+const aptoDetalle = [m.entValida, m.idValido, m.rutaCRUD_ID];
+const aptoUsuario = [m.usAltaTerm, m.usPenalizaciones, m.usAptoInput];
+const aptoCalificar = [...aptoDetalle, m.statusCorrecto, ...aptoUsuario];
+const aptoEdicion = [...aptoCalificar, m.permUserReg, m.edicion];
 
 // API - Calificaciones
-router.get("/api/obtiene-calificaciones", API.califics.delProducto);
-router.get("/api/calificacion-guardada", API.califics.delUsuarioProducto);
-router.get("/api/elimina-calif-propia", API.califics.elimina);
+router.get("/api/obtiene-las-calificaciones", API.califics.delProducto);
+router.get("/api/obtiene-la-calificacion-del-usuario", API.califics.delUsuarioProducto);
+router.get("/api/elimina-la-calificacion-propia", API.califics.elimina);
 
 // API - Preferencias por producto
 router.get("/api/obtiene-opciones-de-preferencia", API.prefsDeCampo.obtieneOpciones);
 router.get("/api/guarda-la-preferencia-del-usuario", API.prefsDeCampo.guardaLaPreferencia);
 
 // API - Edición
-router.get("/api/valida", API.edicion.valida);
+router.get("/api/valida-edicion-prod", API.edicion.valida);
 router.get("/api/obtiene-original-y-edicion", API.edicion.obtieneVersionesProd);
-router.get("/api/edicion/obtiene-variables", API.edicion.variables);
+router.get("/api/obtiene-variables-prod", API.edicion.variables);
 router.get("/api/envia-a-req-session", API.edicion.envioParaSession);
-router.get("/api/edicion-nueva/eliminar", API.edicion.eliminaNueva);
-router.get("/api/edicion-guardada/eliminar", API.edicion.eliminaGuardada);
+router.get("/api/eliminar-nueva", API.edicion.eliminaNueva);
+router.get("/api/eliminar-guardada", API.edicion.eliminaGuardada);
+
+// API - Varios
+router.get("/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
+router.get("/api/obtiene-col-cap", API.obtieneColCap);
+router.get("/api/obtiene-capitulos", API.obtieneCapitulos);
+router.get("/api/obtiene-cap-id", API.obtieneCapId);
 
 // Vistas
-router.get("/detalle", aptoDetalle, misDetalleProd, capturaInactivar, vista.detalle);
-router.get("/edicion", aptoEdicion, capturaActivar, vista.edicion.form);
-router.post("/edicion", aptoEdicion, multer.single("avatar"), vista.edicion.guardar);
-router.get("/calificar", aptoCalificar, vista.califica.form);
-router.post("/calificar", aptoCalificar, vista.califica.guardar);
+router.get("/detalle/p", aptoDetalle, m.misDetalleProd, m.capturaInactivar, vista.detalle);
+router.get("/edicion/p", aptoEdicion, m.capturaActivar, vista.edicion.form);
+router.post("/edicion/p", aptoEdicion, m.multer.single("avatar"), vista.edicion.guardar);
+router.get("/calificar/p", aptoCalificar, vista.califica.form);
+router.post("/calificar/p", aptoCalificar, vista.califica.guardar);
 
 // Fin
 module.exports = router;

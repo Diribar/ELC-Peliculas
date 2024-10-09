@@ -5,7 +5,6 @@ const unDia = unaHora * 24;
 const unaSemana = unDia * 7;
 const unAno = unDia * 365;
 
-const linkSemInicial = 1;
 const linksSemsPrimRev = 4;
 const linksSemsEstrRec = 5;
 const linksSemsEstandar = 26;
@@ -57,7 +56,8 @@ module.exports = {
 	],
 
 	// Links
-	...{linkSemInicial, linksSemsPrimRev, linksSemsEstrRec, linksSemsEstandar},
+	linkSemInicial: 1,
+	...{linksSemsPrimRev, linksSemsEstrRec, linksSemsEstandar},
 	linksVU_primRev: unaSemana * linksSemsPrimRev,
 	linksVU_estrRec: unaSemana * linksSemsEstrRec,
 	linksVU_estandar: unaSemana * linksSemsEstandar,
@@ -108,27 +108,6 @@ module.exports = {
 		{descripcion: "Comentario sobre una película", codigo: "producto"},
 		{descripcion: "Otro motivo", codigo: "varios"},
 	],
-	origenDeUrls: [
-		// Productos
-		{codigo: "PDA", url: "/producto/agregar/datos-adicionales"},
-		{codigo: "PDT", url: "/producto/detalle", cola: true},
-		{codigo: "PED", url: "/producto/edicion", cola: true},
-		{codigo: "RPA", url: "/revision/producto/alta", cola: true},
-		{url: "/producto/calificar", cola: true},
-		{url: "/producto/historial", cola: true},
-		{url: "/revision/producto/edicion", cola: true},
-		// RCLVs
-		{codigo: "RDT", url: "/rclv/detalle", cola: true},
-		{codigo: "RRA", url: "/revision/rclv/alta", cola: true},
-		// Links
-		{url: "/links/abm", cola: true},
-		{codigo: "RL", url: "/revision/links", cola: true},
-		// Tableros
-		{codigo: "TE", url: "/revision/tablero-de-entidades"},
-		{codigo: "TM", url: "/revision/tablero-de-mantenimiento"},
-		{codigo: "TU", url: "/revision/usuarios/tablero-de-usuarios"},
-		{codigo: "CN", url: "/consultas"},
-	],
 	coloresConfigs: {
 		azul: ["#8BC1F7", "#519DE9", "#06C", "#004B95", "#002F5D"], // 1. Blue
 		celeste: ["#A2D9D9", "#73C5C5", "#009596", "#005F60", "#003737"], // 3. Cyan
@@ -140,4 +119,5 @@ module.exports = {
 		negro: ["#F0F0F0", "#D2D2D2", "#B8BBBE", "#8A8D90", "#6A6E73"], // 8. Black
 	},
 	eliminarCuandoSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
+	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "Zabbix"],
 };

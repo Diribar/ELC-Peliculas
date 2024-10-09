@@ -22,7 +22,7 @@
 		<%- include("HR-BusqRapida") %>
 	</div>
 	<!-- Agregar un Producto -->
-	<a href="/producto/agregar/confirma" tabindex="-1" class="grupos margenDerecho ocultoMobile">
+	<a href="/entidad/agregar-cn" tabindex="-1" class="grupos margenDerecho ocultoMobile">
 		<div class="scale iconoComb" title="Agregar una Película">
 			<i class="<%= iconos.faSolid %> fa-video iconoHeader"></i>
 			<i class="<%= iconos.faSolid %> fa-plus iconoHeader adentro"></i>
@@ -31,14 +31,14 @@
 
 	<!-- Tablero de Revisión -->
 	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.autTablEnts) { %>
-		<a href="/revision/tablero-de-entidades" tabindex="-1" class="grupos ocultoMobile">
+		<a href="/revision/tablero" tabindex="-1" class="grupos ocultoMobile">
 			<i class="<%= iconos.faSolid %> scale iconoHeader revision fa-user-graduate" title="Tablero de Revisión"></i>
 		</a>
 	<% } %>
 
 	<!-- Tablero de Mantenimiento (sólo rol 'permInputs') -->
 	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.permInputs) { %>
-		<a href="/revision/tablero-de-mantenimiento" tabindex="-1" class="grupos ocultoMobile">
+		<a href="/tablero-de-mantenimiento" tabindex="-1" class="grupos ocultoMobile">
 			<i class="<%= iconos.faSolid %> fa-tools scale iconoHeader revision" title="Tablero de Mantenimiento"></i>
 		</a>
 	<% } %>

@@ -31,12 +31,13 @@ window.addEventListener("load", () => {
 		for (let registro of registros) {
 			// Variables
 			const {familia, entidad, id} = registro;
+			const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
 			const clase = familia.slice(0, 4);
 
 			// Crea el anchor del registro
 			const anchor = document.createElement("a");
 			anchor.classList.add(clase, "flexRow");
-			anchor.href = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
+			anchor.href = "/" + entidad + "/detalle/" + siglaFam + "/?id=" + id;
 
 			// Crea las celdas
 			creaLasCeldas({anchor, registro});

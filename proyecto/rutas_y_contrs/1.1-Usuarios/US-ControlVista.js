@@ -8,8 +8,8 @@ module.exports = {
 	altaMail_olvidoContr: async (req, res) => {
 		// Variables
 		const tema = "usuario";
-		const {ruta} = comp.reqBasePathUrl(req);
-		const codigo = ruta.slice(1) == "alta-mail" ? "altaMail" : "olvidoContr";
+		const {tarea} = comp.partesDelUrl(req);
+		const codigo = tarea.slice(1) == "alta-mail" ? "altaMail" : "olvidoContr";
 		const altaMail = codigo == "altaMail";
 		const olvidoContr = codigo == "olvidoContr";
 		const titulo = altaMail ? "Creación de Usuario - Mail" : olvidoContr ? "Olvido de Contraseña" : "";
@@ -212,6 +212,7 @@ module.exports = {
 			const {email} = req.body;
 			const {cliente} = req.session;
 			const {cliente_id} = cliente;
+			const esVisita = !cliente_id.startsWith("U");
 			let espera = [];
 
 			// Actualiza cookies - no se actualiza 'session'', para que se ejecute el middleware 'clientesSession'
@@ -225,10 +226,12 @@ module.exports = {
 			if (usuario.statusRegistro_id == mailPendValidar_id)
 				espera.push(procesos.actualizaElStatusDelUsuario(usuario, "mailValidado"));
 
-			// Actualiza datos en la BD - tabla 'usuarios'
-			const fechaUltNaveg = [usuario.fechaUltNaveg, cliente.fechaUltNaveg].sort((a, b) => (a > b ? -1 : 1))[0];
-			const datos = {fechaUltNaveg, diasSinCartelBenefs: 0};
-			espera.push(baseDeDatos.actualizaPorId("usuarios", usuario.id, datos));
+			// Actualiza los datos del usuario
+			const {fechaUltNaveg} = esVisita ? cliente : usuario;
+			const diasNaveg = esVisita ? usuario.diasNaveg + cliente.diasNaveg : usuario.diasNaveg; // si se llevaban registros paralelos, se suman
+			const {visitaCreadaEn} = usuario.visitaCreadaEn ? usuario : cliente; // si existe la del usuario, se conserva
+			const datos = {fechaUltNaveg, diasNaveg, visitaCreadaEn, diasSinCartelBenefs: 0};
+			espera.push(baseDeDatos.actualizaPorId("usuarios", usuario.id, datos)); // no es necesario actualizar la variable 'usuario'
 
 			// Actualiza datos en la tabla 'navegsDelDia'
 			espera.push(
@@ -236,13 +239,13 @@ module.exports = {
 					.actualizaPorCondicion(
 						"navegsDelDia",
 						{cliente_id, fecha: hoy}, // el 'cliente_id' puede diferir del 'usuario.cliente_id'
-						{usuario_id, cliente_id: usuario.cliente_id}
+						{cliente_id: usuario.cliente_id, usuario_id, visitaCreadaEn, diasNaveg}
 					)
 					.then(() => procesos.eliminaDuplicados(usuario.id))
 			);
 
 			// Acciones si el cliente estaba como visita
-			if (!cliente_id.startsWith("U")) {
+			if (esVisita) {
 				baseDeDatos.eliminaPorCondicion("visitas", {cliente_id}); // elimina el registro de la tabla
 				res.cookie("cliente_id", usuario.cliente_id, {maxAge: unDia * 30}); // actualiza la cookie
 			}
@@ -253,7 +256,7 @@ module.exports = {
 			delete req.session.cliente;
 
 			// Redirecciona
-			await Promise.all(espera)
+			await Promise.all(espera);
 			return res.redirect("/usuarios/garantiza-login-y-completo");
 		},
 		logout: (req, res) => {
@@ -279,7 +282,7 @@ module.exports = {
 	miscelaneas: {
 		accesosSuspendidos: (req, res) => {
 			// Variables
-			const codigo = req.params.id;
+			const {codigo} = req.params;
 			const mensajeCola = "Con el ícono de entendido salís del circuito de usuario.";
 			let mensajes, titulo, iconosInfo; // la variable 'iconos' está definida en 'app'
 

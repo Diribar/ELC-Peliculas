@@ -70,10 +70,11 @@ module.exports = {
 	},
 	infoNoPerenne: (req) => {
 		// Variables
-		const {entidad, id, origen} = req.query;
+		const entidad = comp.obtieneEntidadDesdeUrl(req);
+		const {id, origen} = req.query;
 		const linkVolver =
 			entidad && id
-				? "/inactivar-captura/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "")
+				? "/" + entidad + "/inactivar-captura/?id=" + id + (origen ? "&origen=" + origen : "")
 				: req.session.urlSinLogin;
 
 		// Fin

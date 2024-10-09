@@ -4,10 +4,10 @@ const procesos = require("./FM-FN-Procesos");
 const validacs = require("./FM-FN-Validar");
 
 module.exports = {
-	form:{
+	form: {
 		motivos: async (req, res) => {
 			// Variables
-			const datos = await procesos.obtieneDatosForm(req);
+			const datos = await procesos.obtieneDatos(req);
 
 			// Obtiene datos para la vista
 			const ayudasTitulo = "Por favor decinos por qué sugerís " + datos.codigo + " este registro.";
@@ -20,7 +20,7 @@ module.exports = {
 		historial: async (req, res) => {
 			// Variables
 			const {statusAlineado, prodRclv} = req.body;
-			const datos = await procesos.obtieneDatosForm(req);
+			const datos = await procesos.obtieneDatos(req);
 
 			// Obtiene el ayuda para el título
 			const ayudasTitulo =
@@ -48,7 +48,8 @@ module.exports = {
 		},
 		elimina: async (req, res) => {
 			// Variables
-			const {entidad, id, origen} = req.query;
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id} = req.query;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const include = entidad == "colecciones" ? "capitulos" : "";
 			const original = await baseDeDatos.obtienePorId(entidad, id, include);
@@ -97,9 +98,9 @@ module.exports = {
 				mensajes: [
 					articInicial +
 						entidadNombre +
-						' <em>' +
+						" <em>" +
 						nombre +
-						'</em> ' +
+						"</em> " +
 						capitulos +
 						"fue" +
 						plural1 +
@@ -118,7 +119,8 @@ module.exports = {
 	inacRecupGuardar: async (req, res) => {
 		//  Variables
 		let datos = await procesos.obtieneDatosGuardar(req);
-		const {entidad, id, familia, motivo_id, codigo, usuario_id, ahora, campo_id, original, statusFinal_id, comentario} = datos;
+		const {familia, siglaFam, entidad, id} = datos;
+		const {motivo_id, codigo, usuario_id, ahora, campo_id, original, statusFinal_id, comentario} = datos;
 
 		// CONSECUENCIAS - Actualiza el status en el registro original
 		datos = {
@@ -181,17 +183,18 @@ module.exports = {
 		}
 
 		// Fin
-		const destino = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
+		const destino = "/" + entidad + "/detalle/" + siglaFam + "/?id=" + id;
 		return res.redirect(destino);
 	},
 	correcs: {
 		motivoForm: async (req, res) => {
 			// Variables
-			const tema = "correccion";
+			const tema = "fmCrud";
 			const codigo = "cambiarMotivo";
-			const titulo = "Cambiar el Motivo";
-			const {entidad, id, origen, prodRclv, ultHist} = {...req.query, ...req.body};
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id, origen, prodRclv, ultHist} = {...req.query, ...req.body};
 			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+			const titulo = "Cambiar el Motivo";
 
 			// Datos para la vista
 			const motivo = ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
@@ -211,9 +214,9 @@ module.exports = {
 		},
 		motivoGuardar: async (req, res) => {
 			// Variables
-			const {entidad, id, motivo_id, entDupl, idDupl, ultHist, origen} = {...req.query, ...req.body};
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id, motivo_id, entDupl, idDupl, ultHist, origen} = {...req.query, ...req.body};
 			const {statusFinal_id} = ultHist;
-			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 			// Genera el comentario
 			let {comentario} = req.body;
@@ -223,18 +226,19 @@ module.exports = {
 			await baseDeDatos.actualizaPorId("statusHistorial", ultHist.id, {motivo_id, comentario});
 
 			// Genera la 'cola'
-			let cola = "/?entidad=" + entidad + "&id=" + id;
+			let cola = "/?id=" + id;
 			if (origen) cola += "&origen=" + origen;
 
 			// Fin
-			return res.redirect("/" + familia + "/historial" + cola);
+			return res.redirect("/" + entidad + "/historial" + cola);
 		},
 		statusForm: async (req, res) => {
 			// Variables
-			const tema = "correccion";
+			const tema = "fmCrud";
 			const codigo = "corregirStatus";
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id, origen, prodRclv} = {...req.query, ...req.body};
 			const titulo = "Corregir el Status";
-			const {entidad, id, origen, prodRclv} = {...req.query, ...req.body};
 
 			// Obtiene el historial
 			const historialStatus = await procesos.historialDeStatus.obtiene({entidad, ...prodRclv});
@@ -253,7 +257,8 @@ module.exports = {
 		},
 		statusGuardar: async (req, res) => {
 			// Variables
-			const {entidad, id, origen, opcion, prodRclv, ultHist} = {...req.query, ...req.body};
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id, origen, opcion, prodRclv, ultHist} = {...req.query, ...req.body};
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 			let destino;

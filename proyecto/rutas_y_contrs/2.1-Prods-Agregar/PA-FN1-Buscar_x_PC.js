@@ -224,26 +224,28 @@ module.exports = {
 		};
 		let agregaInfoDesdeBD = async () => {
 			// Obtiene las películas y colecciones
-			const peliculas = productos.filter((n) => n.entidad == "peliculas").length
-				? baseDeDatos.obtieneTodos("peliculas")
-				: [];
-			const colecciones = productos.filter((n) => n.entidad == "colecciones").length
+			let peliculas = productos.find((n) => n.entidad == "peliculas") ? baseDeDatos.obtieneTodos("peliculas") : [];
+			let colecciones = productos.find((n) => n.entidad == "colecciones")
 				? baseDeDatos.obtieneTodos("colecciones", "capitulos")
 				: [];
-			const prodsBD = await Promise.all([peliculas, colecciones]).then(([peliculas, colecciones]) => [
-				...peliculas,
-				...colecciones,
-			]);
+			[peliculas, colecciones] = await Promise.all([peliculas, colecciones]);
+			const capitulos = colecciones
+				.filter((n) => n.TMDB_entidad == "collection")
+				.map((n) => n.capitulos)
+				.flat();
+			const prodsBD = [...peliculas, ...colecciones, ...capitulos];
 
 			// Agrega info de la BD
 			for (let producto of productos) {
 				// Variables
 				const {TMDB_id, TMDB_entidad} = producto;
+
+				// Busca en las películas y colecciones
 				const prodBD = prodsBD.find(
 					(n) =>
 						n.TMDB_id == TMDB_id && // que coincida el TMDB_id
-						(!n.TMDB_entidad & (TMDB_entidad == "movie") || // que ambos sean una película
-							n.TMDB_entidad == TMDB_entidad) // o que coincida la TMDB_entidad
+						((!n.TMDB_entidad && TMDB_entidad == "movie") || // que ambos sean una película o capítulo tipo película
+							n.TMDB_entidad == TMDB_entidad) // o que coincida la TMDB_entidad de colección
 				);
 
 				// prodYaEnBD

@@ -42,7 +42,13 @@ module.exports = {
 	obtieneDesdeEntidad: {
 		// Familia y derivados
 		familia: (entidad) => {
-			return FN.familia(entidad);
+			return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
+				? "producto"
+				: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
+				? "rclv"
+				: ["links", "linksEdicion"].includes(entidad)
+				? "link"
+				: "";
 		},
 		familias: (entidad) => {
 			return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
@@ -68,6 +74,7 @@ module.exports = {
 				? "edics"
 				: "";
 		},
+		siglaFam: (entidad) => FN.siglaFam(entidad),
 		entidadNombre: (entidad) => FN.entidadNombre(entidad),
 		campo_id: (entidad) => {
 			return entidad == "peliculas"
@@ -265,7 +272,17 @@ module.exports = {
 		oa: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : "o"),
 		a: (asoc) => (["pelicula", "coleccion", "epocaDelAno"].includes(asoc) ? "a" : ""),
 	},
+	obtieneEntidadDesdeUrl: (req) => {
+		// Lo obtiene del path
+		const {entidad} = req.params;
+		if (entidad) return entidad;
 
+		// Lo obtiene del baseUrl
+		let baseUrl = req.baseUrl.slice(1);
+		const indice = baseUrl.indexOf("/");
+		if (indice > -1) baseUrl = baseUrl.slice(0, indice);
+		return baseUrl;
+	},
 	// Productos y RCLVs
 	puleEdicion: async function (entidad, original, edicion) {
 		// Variables
@@ -394,19 +411,19 @@ module.exports = {
 			// Variables
 			const {entidad, id} = datos;
 			const entidadNombre = (datos.entidadNombre ? datos.entidadNombre : FN.entidadNombre(entidad)).toLowerCase(); // la primera opción es para links
+			const siglaFam = FN.siglaFam(entidad);
 
 			// 1. Inicio
-			let ea = ["capitulos", "links"].includes(entidad) ? "e" : "a";
-			let inicio = "Est" + ea + " ";
+			const ea = ["capitulos", "links"].includes(entidad) ? "e" : "a";
+			const inicio = "Est" + ea + " ";
 
 			// 2. Anchor
-			let url = "?entidad=" + entidad + "&id=" + id;
-			let link = "/" + FN.familia(entidad) + "/detalle/" + url;
-			let entidadHTML = "<u><b>" + entidadNombre + "</b></u>";
-			let anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
+			const link = "/" + entidad + "/detalle/" + siglaFam + "/?id=" + id;
+			const entidadHTML = "<u><b>" + entidadNombre + "</b></u>";
+			const anchor = " <a href='" + link + "' target='_blank' tabindex='-1'> " + entidadHTML + "</a>";
 
 			// 3. Final
-			let final = " ya se encuentra en nuestra base de datos";
+			const final = " ya se encuentra en nuestra base de datos";
 
 			// Fin
 			return inicio + anchor + final;
@@ -704,11 +721,11 @@ module.exports = {
 
 			// Obtiene los resultados
 			const tieneLink = capSinLink ? sinLinks : capTalVez ? linksTalVez : capConLinks ? conLinks : null; // opción pesimista
-			const capID = capSinLink ? capSinLink.id : null; // capítulo sin link
+			const cap_id = capSinLink ? capSinLink.id : null; // capítulo sin link
 
 			// Actualiza cada 'tipoDeLink' en la colección
 			baseDeDatos.actualizaPorId("colecciones", colID, {[tipoDeLink]: tieneLink});
-			baseDeDatos.actualizaPorCondicion("capsSinLink", {coleccion_id: colID}, {[tipoDeLink]: capID});
+			baseDeDatos.actualizaPorCondicion("capsSinLink", {coleccion_id: colID}, {[tipoDeLink]: cap_id});
 		}
 
 		// Fin
@@ -935,20 +952,6 @@ module.exports = {
 			FN_links.obtieneCantPorSem(links);
 			FN_links.obtienePromedios(links);
 			FN_links.obtienePendientes(links, edics);
-			// const {capitulosPosibles, pelisColesPosibles, estrRecPosibles} = FN_links.obtienePosibles(links);
-
-			// Averigua la combinación entre 'posibles' y 'pendientes'
-			// const {capitulos: capitulosPends, pelisColes: pelisColesPends, estrRec: estrRecPends} = cantLinksVencPorSem["0"];
-			// const capitulos = Math.min(capitulosPosibles, capitulosPends);
-			// const pelisColes = Math.min(pelisColesPosibles, pelisColesPends);
-			// const estrRec = Math.min(estrRecPosibles, siestrRecnds);
-
-			// Agrega la información
-			// cantLinksVencPorSem.paraRevisar = {
-			// 	capitulos,
-			// 	pelisColes,
-			// 	prods: capitulos + pelisColes + estrRec,
-			// };
 
 			// Fin
 			return;
@@ -1251,21 +1254,6 @@ module.exports = {
 		// Fin
 		return mailEnviado;
 	},
-	reqBasePathUrl: (req) => {
-		// Obtiene los resultados
-		const baseUrl = req.baseUrl
-			? req.baseUrl
-			: req.path.startsWith("/revision/usuarios")
-			? "/revision/usuarios"
-			: req.path.startsWith("/producto/agregar")
-			? "/producto/agregar"
-			: req.path.slice(0, req.path.indexOf("/", 1));
-		const ruta = req.path.startsWith(baseUrl) ? req.path.replace(baseUrl, "") : req.path;
-		const url = req.url.startsWith(baseUrl) ? req.url.replace(baseUrl, "") : req.url;
-
-		// Fin
-		return {baseUrl, ruta, url};
-	},
 	variablesSemanales: function () {
 		FN.primerLunesDelAno();
 
@@ -1275,6 +1263,32 @@ module.exports = {
 
 		// Fin
 		return;
+	},
+	partesDelUrl: (req) => {
+		// Obtiene la base y el url (sin la base)
+		let url = req.baseUrl + req.path;
+		const baseUrl = url.slice(0, url.indexOf("/", 1));
+		url = url.replace(baseUrl, "");
+		const tarea = url.slice(0, url.indexOf("/", 1));
+
+		// Obtiene la siglaFam
+		let {siglaFam} = req.params;
+		if (!siglaFam) {
+			url = url.replace(tarea, ""); // si contiene la tarea, la quita
+			if (url) {
+				siglaFam = url.slice(1); // le quita el "/" del comienzo
+				if (siglaFam.length > 2 || siglaFam[1] != "/") siglaFam = null; // detecta si no es una 'siglaFam'
+				else siglaFam = siglaFam[0]; // obtiene la 'siglaFam'
+				if (siglaFam && !["p", "r", "l"].includes(siglaFam)) siglaFam = null;
+			}
+		}
+
+		// Obtiene la entidad
+		let {entidad} = req.params;
+		if (!entidad) entidad = baseUrl.slice(1);
+
+		// Fin
+		return {baseUrl, tarea, siglaFam, entidad, url};
 	},
 };
 
@@ -1322,15 +1336,6 @@ let FN = {
 		const entNombre = indice > -1 ? [...variables.entidades.todosNombre][indice] : null;
 		return entNombre;
 	},
-	familia: (entidad) => {
-		return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
-			? "producto"
-			: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
-			? "rclv"
-			: ["links", "linksEdicion"].includes(entidad)
-			? "link"
-			: "";
-	},
 	asocProd: (registro) => {
 		return registro.pelicula_id
 			? "pelicula"
@@ -1340,6 +1345,14 @@ let FN = {
 			? "coleccion"
 			: "";
 	},
+	siglaFam: (entidad) =>
+		[...variables.entidades.prods, "prodsEdicion"].includes(entidad)
+			? "p"
+			: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
+			? "r"
+			: entidad == "usuarios"
+			? "u"
+			: "",
 
 	// Otras
 	obtieneRegs: async function (campos) {

@@ -30,13 +30,13 @@ module.exports = async (req, res, next) => {
 		const FN = {
 			entidades: () => {
 				// Variables
-				const {entidad} = req.query;
+				const entidad = comp.obtieneEntidadDesdeUrl(req);
 				const familia = comp.obtieneDesdeEntidad.familia(entidad);
 
 				// Resultados
-				const producto = originalUrl.startsWith("/producto/agregar/") || familia == "producto";
-				const rclv = originalUrl.startsWith("/rclv/agregar") || familia == "rclv";
-				const links = originalUrl.startsWith("/links/abm/") || familia == "links";
+				const links = originalUrl.includes("/abm-links/");
+				const producto = !links && familia == "producto";
+				const rclv = familia == "rclv";
 				const entidades = producto
 					? variables.entidades.prods
 					: rclv
@@ -127,15 +127,16 @@ module.exports = async (req, res, next) => {
 	// VERIFICACION 4: Revisa si requiere el cartel de "responsabilidad"
 	if (!informacion) {
 		// Variables
-		const {baseUrl} = comp.reqBasePathUrl(req);
-		const familia = baseUrl.startsWith("/producto")
-			? {campo: "prods", vista: "PA"}
-			: // : baseUrl.startsWith("/rclv")
-			  // ? {campo: "rclvs", vista: "RCLV"}
-			  // : baseUrl.startsWith("/links")
-			  // ? {campo: "links", vista: "LK"}
-			  "";
-		let cartel = "cartel_resp_" + familia.campo;
+		const {tarea, siglaFam} = comp.partesDelUrl(req);
+		const familia =
+			tarea == "/abm-links"
+				? {campo: "links", vista: "LK"}
+				: siglaFam == "p"
+				? {campo: "prods", vista: "PA"}
+				: siglaFam == "r"
+				? {campo: "rclvs", vista: "RCLV"}
+				: "";
+		let cartel = "cartelResp_" + familia.campo;
 
 		// Revisa si requiere el cartel de "responsabilidad" de la familia
 		if (familia && usuario[cartel]) {

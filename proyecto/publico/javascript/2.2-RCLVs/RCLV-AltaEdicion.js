@@ -113,11 +113,11 @@ window.addEventListener("load", async () => {
 		};
 		// Variables compartidas
 		v.camposRCLIC = Array.from(DOM.inputsRCLIC).map((n) => n.name);
-		rutas.obtieneLeyNombre = "/rclv/api/edicion/obtiene-leyenda-nombre/?" + entidad + "=true";
+		rutas.obtieneLeyNombre = "/rclv/api/obtiene-leyenda-nombre/?" + entidad + "=true";
 
 		// Variables para personajes
 		if (personajes) {
-			v.prefijos = await fetch("/rclv/api/edicion/prefijos").then((n) => n.json());
+			v.prefijos = await fetch("/rclv/api/prefijos-rclv").then((n) => n.json());
 		}
 	}
 	if (epocasDelAno) {
@@ -939,9 +939,9 @@ const hechos = entidad == "hechos";
 const epocasDelAno = entidad == "epocasDelAno";
 const ano = personajes ? "anoNacim" : "anoComienzo";
 const rutas = {
-	obtieneVariables: "/rclv/api/edicion/obtiene-variables",
-	validacion: "/rclv/api/edicion/valida-sector/?funcion=",
-	registrosConEsaFecha: "/rclv/api/edicion/registros-con-esa-fecha/",
+	obtieneVariables: "/rclv/api/obtiene-variables-edicion-rclv",
+	validacion: "/rclv/api/valida-sector-edicion-rclv/?funcion=",
+	registrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
 };
 const linksUrl = ["https://es.wikipedia.org/wiki/", "https://www.google.com/search?q="];
 const googleIMG = {pre: "//google.com/search?q=", post: "&tbm=isch&tbs=isz:l&hl=es-419"};

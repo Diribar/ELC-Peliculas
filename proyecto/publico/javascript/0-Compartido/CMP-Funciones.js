@@ -1,5 +1,21 @@
 "use strict";
+
+// Variables fijas
+const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+const unMinuto = 60 * 1000;
 const caractsAmplio = /^[a-záéíóúüñ ,.'&$:;…"°¿?¡!+/()\d\-]+$/i;
+const entidades = [
+	...["peliculas", "colecciones", "capitulos"],
+	...["personajes", "hechos", "temas", "eventos", "epocasDelAno"],
+	...["links", "usuarios"],
+];
+
+// Variables
+const {pathname} = location;
+const entidad = entidades.find((n) => pathname.includes(n));
+const id = new URL(location.href).searchParams.get("id");
+
+// Funciones
 let keyPressed = (e) => {
 	// Variables
 	const localName = e.target.localName;
@@ -281,31 +297,39 @@ let contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
 		DOM.mensajes.appendChild(li);
 	}
 
-	// Crea el anchor
-	const a = document.createElement("a");
-	a.href = link;
-	a.tabIndex = "1";
-
 	// Crea el ícono
 	const i = document.createElement("i");
 	i.classList.add("fa-solid", clase);
 	i.title = titulo;
 
-	// Une las partes
+	// Crea el anchor
+	const a = document.createElement("a");
+	a.href = link;
+	a.tabIndex = "1";
 	a.appendChild(i);
-	DOM.iconos = document.querySelector("#cartelGenerico #iconosCartel");
-	DOM.iconos.appendChild(a);
-	DOM.iconos.querySelector("a").focus();
+
+	// Crea el div 'iconosCartel'
+	const div = document.createElement("div");
+	div.id = "iconosCartel";
+	div.appendChild(a);
+
+	// Agrega todo al DOM
+	DOM.cartelGenerico.appendChild(div);
+	DOM.cartelGenerico.querySelector("#iconosCartel a").focus();
 
 	// Fin
 	return;
 };
 
-// Variables del url
-const {pathname} = location;
-const entidad = new URL(location.href).searchParams.get("entidad");
-const id = new URL(location.href).searchParams.get("id");
+let obtieneSiglaFam = () =>
+	["peliculas", "colecciones", "capitulos", "prodsEdicion"].includes(entidad)
+		? "p"
+		: ["personajes", "hechos", "temas", "eventos", "epocasDelAno", "rclvsEdicion"].includes(entidad)
+		? "r"
+		: entidad == "links"
+		? "l"
+		: entidad == "usuarios"
+		? "u"
+		: "";
 
-// Variables fijas
-const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
-const unMinuto = 60 * 1000;
+const siglaFam = obtieneSiglaFam();

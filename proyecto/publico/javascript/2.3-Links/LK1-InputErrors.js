@@ -34,7 +34,7 @@ window.addEventListener("load", async () => {
 		camposInput: Array.from(DOM.camposInput).map((n) => n.name),
 
 		// Rutas
-		rutaValidar: "/links/api/valida/?",
+		rutaValidar: "/links/api/valida-link/?",
 		rutaObtieneProvs: "/links/api/obtiene-provs-links",
 	};
 	let columnas = DOM.camposInput.length;

@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 26/sep",
+	"FechaUTC": "Mar. 8/oct",
 	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 23/sep",
-	"HoraSemUTC": "12:52",
-	"semanaUTC": 39,
+	"FechaSemUTC": "Lun. 7/oct",
+	"HoraSemUTC": "10:29",
+	"semanaUTC": 41,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"24-sep-24": {},
-		"25-sep-24": {},
-		"26-sep-24": {},
-		"27-sep-24": {"leyenda": "Hoy recordamos a san Vicente de Paul", "entidad": "personajes", "id": 103},
-		"28-sep-24": {}
+		"06-oct-24": {},
+		"07-oct-24": {},
+		"08-oct-24": {},
+		"09-oct-24": {"leyenda": "Hoy recordamos a Abraham, santo", "entidad": "personajes", "id": 165},
+		"10-oct-24": {}
 	}
 }

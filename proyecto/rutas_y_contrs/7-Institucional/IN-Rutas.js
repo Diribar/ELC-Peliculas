@@ -3,6 +3,7 @@
 const router = express.Router();
 const API = require("./IN-ControlAPI");
 const vista = require("./IN-ControlVista");
+const vistaMS = require("../9-Miscelaneas/MS-ControlVista");
 
 // Middlewares - Específicos de usuarios
 const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
@@ -21,8 +22,8 @@ router.post("/contactanos", aptoUsuario, vista.contactanos.guardar);
 router.get("/contactanos/envio-exitoso", aptoUsuario, vista.contactanos.envioExitoso);
 router.get("/contactanos/envio-fallido", aptoUsuario, vista.contactanos.envioFallido);
 
-router.get("/inicio", vista.redireccionaInicio);
-router.get("/:id", vista.institucional); // institucional
+router.get("/inicio", vistaMS.redirecciona.inicio);
+router.get("/:codigo", vista.institucional); // institucional
 
 // Fin
 module.exports = router;

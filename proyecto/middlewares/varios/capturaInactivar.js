@@ -4,9 +4,9 @@ module.exports = async (req, res, next) => {
 	if (!req.session.usuario) return next();
 
 	// Variables - Generales
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
+	const {id} = req.query;
 	const capturadoPor_id = req.session.usuario.id;
-	const entidad = req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "";
-	const id = req.query.id;
 
 	// Inactiva el registro
 	const condicion = {entidad, entidad_id: id, capturadoPor_id};

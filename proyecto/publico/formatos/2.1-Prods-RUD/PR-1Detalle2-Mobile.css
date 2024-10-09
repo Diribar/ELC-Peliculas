@@ -36,7 +36,7 @@
 	#datosLargos #marcoInfo #etiquetas .etiqueta {width: min-content;}
 	#imgDerecha #links {
 		&:has(p) {max-width: 50%;}
-		nav :is(button, select) {font-size: 1.3rem; height: 24px;}
+		:is(button, select) {font-size: 1.3rem; height: 24px;} /* debe ser sin el 'nav', para las colecciones */
 		.ayudaIconoForm {font-size: 1.3rem;}
 
 		/* Ayuda */

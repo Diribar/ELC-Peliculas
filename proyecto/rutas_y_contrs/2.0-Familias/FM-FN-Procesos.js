@@ -104,19 +104,18 @@ module.exports = {
 	},
 
 	// CRUD
-	obtieneDatosForm: async function (req) {
+	obtieneDatos: async function (req) {
 		// Variables
-		const {baseUrl, ruta} = comp.reqBasePathUrl(req);
-		const {entidad, id} = req.query;
+		const {baseUrl, tarea, siglaFam, entidad} = comp.partesDelUrl(req);
+		const {originalUrl} = req;
+		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
+		const codigo = tarea.slice(1);
+		const {id} = req.query;
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
 		const origen = req.query.origen;
 		const usuario_id = req.session && req.session.usuario ? req.session.usuario.id : null;
 		let comentario;
-
-		// Obtiene el tema y código
-		const tema = baseUrl == "/revision" ? "revisionEnts" : "fmCrud";
-		const codigo = this.codigo({ruta, familia});
 
 		// Obtiene el registro
 		let include = [...comp.obtieneTodosLosCamposInclude(entidad)];
@@ -140,7 +139,7 @@ module.exports = {
 		const status_id = original.statusRegistro_id;
 		const urlActual = req.originalUrl;
 		const entsNombre = variables.entidades[petitFamilias + "Nombre"];
-		const {titulo, entidadNombre} = this.titulo({entidad, codigo});
+		const {titulo, entidadNombre} = this.titulo({entidad, originalUrl});
 		const bloqueDer = await this.bloques.consolidado({tema, familia, entidad, original});
 		const imgDerPers = this.obtieneAvatar(original).orig;
 		const cartelGenerico = codigo != "historial";
@@ -148,40 +147,29 @@ module.exports = {
 		// Fin
 		return {
 			...{tema, codigo, titulo, origen},
-			...{entidad, entidadNombre, familia, petitFamilias, id, registro: original, comentario},
+			...{siglaFam, entidad, entidadNombre, familia, petitFamilias, id, registro: original, comentario},
 			...{canonNombre, RCLVnombre, prodsDelRCLV, imgDerPers, bloqueDer, status_id, cantProds},
 			...{entsNombre, urlActual, cartelGenerico},
 		};
 	},
-	codigo: ({ruta, familia}) => {
-		// Obtiene el código a partir de la familia
-		let codigo = ruta.replaceAll("/", "");
-
-		// Pule el código
-		const esRevision = codigo.includes(familia);
-		codigo = codigo.replace(familia, "");
-
-		// Actualiza el código
-		if (esRevision && ["inactivar", "recuperar"].includes(codigo)) codigo = "revision" + comp.letras.inicialMayus(codigo);
-
-		// Fin - revisionInactivar - revisionRecuperar - recuperar - historial
-		return codigo;
-	},
-	titulo: ({entidad, codigo}) => {
+	titulo: ({entidad, originalUrl}) => {
 		// Variables
-		const opcionesDeTitulo = {
-			inactivar: "Inactivar",
-			rechazar: "Rechazar",
-			recuperar: "Recuperar",
-			eliminar: "Eliminar",
-			revisionInactivar: "Revisión de Inactivar",
-			revisionRecuperar: "Revisión de Recuperar",
-			historial: "Historial de",
-		};
 		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
+		const titulos = [
+			// Revisión
+			{url: "revision/edicion", titulo: "Revisión de Edicion de"},
+			{url: "revision/rechazar", titulo: "Rechazar"},
+			{url: "revision/inactivar", titulo: "Revisión de Inactivar"},
+			{url: "revision/recuperar", titulo: "Eliminado de Recuperar"},
+
+			// Crud
+			{url: "historial", titulo: "Historial de"},
+			{url: "inactivar", titulo: "Inactivar"},
+			{url: "recuperar", titulo: "Recuperar"},
+		];
 
 		// Título
-		let titulo = opcionesDeTitulo[codigo] + " ";
+		let titulo = titulos.find((n) => originalUrl.includes("/" + n.url + "/")) + " ";
 		titulo += comp.obtieneDesdeEntidad.unaUn(entidad) + " ";
 		titulo += entidadNombre;
 
@@ -190,21 +178,30 @@ module.exports = {
 	},
 	obtieneDatosGuardar: async function (req) {
 		// Variables
-		const {entidad, id, motivo_id, entDupl, idDupl} = {...req.query, ...req.body};
-		let {comentario} = req.body;
+		const {entidad, tarea} = comp.partesDelUrl(req);
+		const codigo = tarea.slice(1);
+		const {id} = req.query;
+		const {motivo_id, entDupl, idDupl} = req.body;
+
+		// Más variables
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const {ruta} = comp.reqBasePathUrl(req);
-		const codigo = ruta.slice(1, -1); // 'inactivar' o 'recuperar'
+		const siglaFam = familia[0];
 		const usuario_id = req.session.usuario.id;
 		const ahora = comp.fechaHora.ahora();
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const original = await baseDeDatos.obtienePorId(entidad, id, include);
 		const statusFinal_id = codigo == "inactivar" ? inactivar_id : recuperar_id;
+
+		// Comentario
+		let {comentario} = req.body;
 		comentario = await this.comentario({entidad, id, codigo, motivo_id, entDupl, idDupl, comentario, statusFinal_id});
 
 		// Fin
-		return {entidad, id, familia, motivo_id, codigo, usuario_id, ahora, campo_id, original, statusFinal_id, comentario};
+		return {
+			...{familia, siglaFam, entidad, id},
+			...{motivo_id, codigo, usuario_id, ahora, campo_id, original, statusFinal_id, comentario},
+		};
 	},
 	comentario: async function (datos) {
 		// Stoppers

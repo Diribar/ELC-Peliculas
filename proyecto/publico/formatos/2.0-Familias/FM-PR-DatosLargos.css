@@ -4,7 +4,7 @@
 	#encabezado {border-bottom: none; color: snow;}
 	#recuadroDL {
 		/* Colores condicionales */
-		&:has(.inactivar, .rechazar, .eliminar, .revisionInactivar, .cambiarMotivo) {
+		&:has(.inactivar, .rechazar, .eliminar, .cambiarMotivo) {
 			background: var(--rojo-claro) !important;
 			#contenido #informacion {color: var(--rojo-oscuro);}
 		}

@@ -2,16 +2,11 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const rubro = req.originalUrl.startsWith("/revision/")
-		? "revision"
-		: req.originalUrl.startsWith("/producto/") || req.originalUrl.startsWith("/links/abm/")
-		? "producto"
-		: req.originalUrl.startsWith("/rclv/")
-		? "rclv"
-		: null;
-	const entidad = req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "";
-	const entidad_id = req.query.id;
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const familia = comp.obtieneDesdeEntidad.familia(entidad);
+	const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
+	const {id} = req.query;
+	const rubro = req.originalUrl.startsWith("/revision/") ? "revision" : ["p", "r"].includes(siglaFam) ? "prodRclv" : null;
 
 	let v = {
 		// Generales
@@ -22,7 +17,7 @@ module.exports = async (req, res, next) => {
 		usuario_id: req.session.usuario.id,
 		tipoUsuario: req.originalUrl.startsWith("/revision/") ? "revisores" : "usuarios",
 		include: ["statusRegistro"],
-		baseUrl: comp.reqBasePathUrl(req).baseUrl,
+		baseUrl: comp.partesDelUrl(req).baseUrl,
 
 		// Vistas
 		vistaSinCaptura: variables.vistaAnterior(req.session.urlSinCaptura),
@@ -37,24 +32,21 @@ module.exports = async (req, res, next) => {
 		ea: comp.obtieneDesdeEntidad.oa(entidad),
 
 		// Vistas
-		vistaInactivar: rubro ? variables.vistaInactivar[rubro](entidad, entidad_id) : {},
+		vistaInactivar: rubro ? variables.vistaInactivar[rubro](entidad, id, siglaFam) : {},
 		vistaAnteriorTablero: v.usuario.rolUsuario.autTablEnts ? [v.vistaSinCaptura, v.vistaTablero] : [v.vistaSinCaptura],
 	};
 
 	// Más variables
 	if (entidad != "usuarios") v.include.push("ediciones");
 	if (entidad == "capitulos") v.include.push("coleccion");
-	v.registro = await baseDeDatos.obtienePorId(entidad, entidad_id, v.include);
+	v.registro = await baseDeDatos.obtienePorId(entidad, id, v.include);
 	v.creadoEn = v.registro.creadoEn;
 	v.creadoEn.setSeconds(0);
 	v.horarioFinalCreado = comp.fechaHora.fechaHorario(comp.fechaHora.nuevoHorario(1, v.creadoEn));
 
 	// Corrige el link de 'entendido'
-	if (req.originalUrl.startsWith("/" + familia + "/edicion"))
-		v.vistaEntendido.link =
-			v.origen == "TE"
-				? "/revision/tablero-de-entidades"
-				: "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + entidad_id;
+	if (req.originalUrl.startsWith("/" + entidad + "/edicion/"))
+		v.vistaEntendido.link = v.origen == "TE" ? "/revision/tablero" : "/" + entidad + "/detalle/" + siglaFam + "/?id=" + id;
 
 	// CRITERIO: registro en status 'creado' y otro usuario quiere acceder
 	const creadoPorElUsuario1 = v.registro.creadoPor_id == v.usuario_id;
@@ -87,13 +79,13 @@ module.exports = async (req, res, next) => {
 	// CRITERIOS BASADOS EN LAS CAPTURAS
 	const condicion = {
 		[Op.or]: [
-			{entidad, entidad_id},
+			{entidad, entidad_id: id},
 			{familia, capturadoPor_id: v.usuario_id, capturadoEn: {[Op.gte]: v.haceUnaHora}, activa: true},
 		],
 	};
 	const capturas = await baseDeDatos.obtieneTodosPorCondicion("capturas", condicion, "capturadoPor");
-	const captsEsteProdRclv = capturas.filter((n) => n.entidad == entidad && n.entidad_id == entidad_id);
-	const captsOtroProdRclv = capturas.find((n) => n.entidad != entidad || n.entidad_id != entidad_id);
+	const captsEsteProdRclv = capturas.filter((n) => n.entidad == entidad && n.entidad_id == id);
+	const captsOtroProdRclv = capturas.find((n) => n.entidad != entidad || n.entidad_id != id);
 	let captura;
 
 	// CRITERIO: el registro está capturado en forma 'activa' por otro usuario
@@ -131,29 +123,28 @@ module.exports = async (req, res, next) => {
 	captura = captsOtroProdRclv;
 	if (captura) {
 		// Prepara el mensaje
-		const prodRclvCapturado = await baseDeDatos.obtienePorId(captura.entidad, captura.entidad_id);
+		const {entidad: capturaEnt, entidad_id: capturaEnt_id} = captura;
+		const prodRclvCapturado = await baseDeDatos.obtienePorId(capturaEnt, capturaEnt_id);
 		// Acciones si no existe ese registro
 		if (!prodRclvCapturado) {
-			const {entidad, entidad_id} = captura;
-			await baseDeDatos.eliminaPorCondicion("capturas", {entidad, entidad_id});
+			await baseDeDatos.eliminaPorCondicion("capturas", {entidad: capturaEnt, entidad_id: capturaEnt_id});
 			return res.redirect(req.originalUrl);
 		}
 		const mensajes = [
 			"Tenés que liberar" +
-				comp.obtieneDesdeEntidad.elLa(captura.entidad) +
-				comp.obtieneDesdeEntidad.entidadNombre(captura.entidad).toLowerCase() +
+				comp.obtieneDesdeEntidad.elLa(capturaEnt) +
+				comp.obtieneDesdeEntidad.entidadNombre(capturaEnt).toLowerCase() +
 				" '" +
 				comp.nombresPosibles(prodRclvCapturado) +
 				"', que está reservad" +
-				comp.obtieneDesdeEntidad.oa(captura.entidad) +
+				comp.obtieneDesdeEntidad.oa(capturaEnt) +
 				" desde el " +
 				comp.fechaHora.fechaHorario(captura.capturadoEn),
 		];
 
 		// Datos para el link
 		const originalUrl = encodeURIComponent(req.originalUrl);
-		const linkInactivar =
-			"/inactivar-captura/?entidad=" + captura.entidad + "&id=" + captura.entidad_id + "&urlDestino=" + originalUrl;
+		const linkInactivar = "/" + capturaEnt + "/inactivar-captura/?id=" + capturaEnt_id + "&urlDestino=" + originalUrl;
 		const liberar = {
 			clase: iconos.check,
 			link: linkInactivar,

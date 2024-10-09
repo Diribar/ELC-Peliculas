@@ -2,8 +2,9 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const {entidad, id, edicID} = req.query;
-	let origen = req.query.origen;
+	const {baseUrl, siglaFam, entidad} = comp.partesDelUrl(req);
+	const {id, edicID} = req.query;
+	let {origen} = req.query;
 	let entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 	let informacion;
 
@@ -11,11 +12,9 @@ module.exports = async (req, res, next) => {
 	if (!edicID) {
 		// Variables
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		const {baseUrl} = comp.reqBasePathUrl(req);
 		const revision = baseUrl == "/revision";
-		const familia = comp.obtieneDesdeEntidad.familia(entidad);
-		const cola = "?entidad=" + entidad + "&id=" + id + "&origen=" + (origen ? origen : "TE");
-		const vistaAnterior = variables.vistaAnterior("/inactivar-captura/" + cola);
+		const cola = "/?id=" + id + "&origen=" + (origen ? origen : "TE");
+		const vistaAnterior = variables.vistaAnterior("/" + entidad + "/inactivar-captura" + cola);
 		let edicion;
 
 		if (revision) {
@@ -25,7 +24,7 @@ module.exports = async (req, res, next) => {
 			// Mensaje si no existe una edición
 			if (!edicion) {
 				// Acciones si el origen no es revisión
-				if (origen != "TE") return res.redirect("/" + familia + "/edicion/" + cola);
+				if (origen != "TE") return res.redirect("/" + entidad + "/edicion/" + siglaFam + cola);
 
 				// Mensaje si el origen es revisión
 				informacion = {
@@ -34,7 +33,7 @@ module.exports = async (req, res, next) => {
 						vistaAnterior,
 						{
 							clase: iconos.faSolid + " " + iconos.edicion,
-							link: "/" + familia + "/edicion/" + cola,
+							link: "/" + entidad + "/edicion/" + siglaFam + cola,
 							titulo: "Edición",
 						},
 					],
@@ -58,13 +57,10 @@ module.exports = async (req, res, next) => {
 		// En caso que no, mensaje de error
 		if (!edicion) {
 			// Acciones si no tiene origen
-			if (!origen) {
-				const {baseUrl} = comp.reqBasePathUrl(req);
-				origen = baseUrl == "/revision" ? "TE" : baseUrl == "/rclv" ? "RDT" : "PDT";
-			}
+			if (!origen) origen = baseUrl == "/revision" ? "TE" : "DT";
 
 			// Información
-			const link = "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
+			const link = "/" + entidad + "/inactivar-captura/?id=" + id + "&origen=" + origen;
 			const vistaAnterior = variables.vistaAnterior(link);
 			informacion = {mensajes: ["No encontramos esa edición."], iconos: [vistaAnterior]};
 		}

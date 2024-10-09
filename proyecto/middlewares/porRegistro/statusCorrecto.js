@@ -2,19 +2,64 @@
 
 module.exports = async (req, res, next) => {
 	// Variables
-	const entidad = req.query.entidad ? req.query.entidad : req.originalUrl.startsWith("/revision/usuarios") ? "usuarios" : "";
-	const id = req.query.id;
-	const {baseUrl, ruta} = comp.reqBasePathUrl(req);
-	const statusEsperados_id = FN_statusEsperados_id(baseUrl, ruta);
-	let informacion;
+	const entidad = comp.obtieneEntidadDesdeUrl(req);
+	const {id} = req.query;
+	const familia = comp.obtieneDesdeEntidad.familia(entidad);
+	const entidades = variables.entidades.todos;
+	let statusEsperado_ids, informacion;
+
+	// Obtiene la 'baseUrl' y la 'tarea'
+	let {baseUrl, tarea} = comp.partesDelUrl(req);
+	baseUrl = baseUrl.slice(1);
+	tarea = tarea.slice(1);
+
+	// Obtiene el status esperado - Familia CRUD
+	if (!statusEsperado_ids && entidades.includes(baseUrl)) {
+		statusEsperado_ids =
+			tarea == "edicion"
+				? activos_ids
+				: tarea == "inactivar"
+				? aprobados_ids
+				: ["recuperar ", "eliminado"].includes(tarea)
+				? [inactivo_id]
+				: tarea == "eliminado-por-creador"
+				? [creado_id]
+				: tarea == "calificar"
+				? activos_ids
+				: tarea == "abm-links" // abm links
+				? activos_ids
+				: ["correcion-del-motivo", "correccion-del-status"].includes(tarea) // correcciones
+				? [inactivo_id]
+				: null;
+	}
+
+	// Obtiene el status esperado - Revisión de Entidades
+	if (!statusEsperado_ids && baseUrl == "revision") {
+		statusEsperado_ids = ["alta", "rechazar"].includes(tarea) // revisar alta y rechazar
+			? [creado_id]
+			: tarea == "edicion" // edición
+			? aprobados_ids
+			: tarea == "inactivar" // inactivar
+			? [inactivar_id]
+			: tarea == "recuperar" // recuperar
+			? [recuperar_id]
+			: tarea == "abm-links" // links
+			? activos_ids
+			: tarea == "solapamiento" // solapamiento
+			? activos_ids
+			: null;
+	}
+
+	// Obtiene el status esperado - Solución trivial
+	if (!statusEsperado_ids) statusEsperado_ids = [];
 
 	// Obtiene el statusActual
 	const registro = await baseDeDatos.obtienePorId(entidad, id);
 	const {statusRegistro_id} = registro;
 
 	// Acciones si el status del registro no es el esperado
-	if (!statusEsperados_id.includes(statusRegistro_id)) {
-		// Si no existe un historial, saltea el mensaje
+	if (!statusEsperado_ids.includes(statusRegistro_id)) {
+		// Si el status es mayor que 'aprobado' y no existe un historial, interrumpe la función
 		if (statusRegistro_id > aprobado_id) {
 			const regHistorial = await baseDeDatos.obtienePorCondicion("statusHistorial", {entidad, entidad_id: id});
 			if (!regHistorial) return next();
@@ -28,16 +73,8 @@ module.exports = async (req, res, next) => {
 		const statusActualNombre = statusActual.nombre;
 
 		// Variables para el ícono
-		const origen = req.query.origen
-			? req.query.origen
-			: baseUrl == "/revision/usuarios"
-			? "TU"
-			: baseUrl == "/revision"
-			? "TE"
-			: baseUrl == "/rclv"
-			? "RDT"
-			: "PDT";
-		const link = "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&origen=" + origen;
+		const origen = req.query.origen ? req.query.origen : baseUrl == "revision" ? (familia ? "TE" : "TU") : "DT";
+		const link = "/" + entidad + "/inactivar-captura/?id=" + id + "&origen=" + origen;
 		const vistaEntendido = variables.vistaEntendido(link);
 
 		// Información a mostrar
@@ -50,41 +87,4 @@ module.exports = async (req, res, next) => {
 	// Conclusiones
 	if (informacion) return res.render("CMP-0Estructura", {informacion});
 	else return next();
-};
-
-// Funciones
-let FN_statusEsperados_id = (baseUrl, ruta) => {
-	return false
-		? false
-		: baseUrl == "/producto" || baseUrl == "/rclv" // Preguntas para 'CRUD'
-		? ruta == "/edicion/"
-			? activos_ids
-			: ruta == "/inactivar/"
-			? aprobados_ids
-			: ruta == "/recuperar/" || ruta == "/eliminar/"
-			? [inactivo_id]
-			: ruta == "/eliminadoPorCreador/"
-			? [creado_id]
-			: ruta == "/calificar/"
-			? activos_ids
-			: []
-		: baseUrl == "/links" && ruta == "/abm/" // Preguntas para 'Links'
-		? activos_ids
-		: baseUrl == "/revision" // Preguntas para 'Revisión'
-		? ruta.includes("/alta/") || ruta.includes("/rechazar/") // para 'producto' y 'rclv'
-			? [creado_id]
-			: ruta.includes("/edicion/")
-			? aprobados_ids
-			: ruta.includes("/inactivar/")
-			? [inactivar_id]
-			: ruta.includes("/recuperar/")
-			? [recuperar_id]
-			: ruta.includes("/links/")
-			? activos_ids // aprobados_ids
-			: ruta.includes("/solapamiento/")
-			? activos_ids
-			: []
-		: baseUrl == "/correccion" && ruta == "/motivo/"
-		? [inactivo_id]
-		: [];
 };
