@@ -19,16 +19,16 @@ const intentosOlvidoContr = require("../../middlewares/porUsuario/intentosOlvido
 const validarIdentidad = [statusCorrecto, usAltaTerm, usPenalizaciones];
 
 // APIs
-router.get("/api/valida-formato-mail", API.valida.formatoMail);
-router.get("/api/valida-login", API.valida.login);
-router.get("/api/valida-editables", API.valida.editables);
-router.get("/api/valida-perennes", API.valida.perennes);
-router.get("/api/alta-mail/validaciones", API.altaMail.validaMail);
-router.get("/api/alta-mail/envio-de-mail", API.altaMail.envioDeMailAltaUsuario);
-router.get("/api/olvido-contrasena/datosDeSession", API.olvidoContr.datosDeSession);
-router.get("/api/olvido-contrasena/validaciones", API.olvidoContr.validaDatosPer);
-router.get("/api/olvido-contrasena/envio-de-mail", API.olvidoContr.envioDeMailAltaContr);
-router.get("/api/video-de-consultas-visto", API.videoConsVisto);
+router.get("/api/us-valida-formato-mail", API.valida.formatoMail);
+router.get("/api/us-valida-login", API.valida.login);
+router.get("/api/us-valida-editables", API.valida.editables);
+router.get("/api/us-valida-perennes", API.valida.perennes);
+router.get("/api/us-alta-mail/validaciones", API.altaMail.validaMail);
+router.get("/api/us-alta-mail/envio-de-mail", API.altaMail.envioDeMailAltaUsuario);
+router.get("/api/us-olvido-contrasena/datos-de-session", API.olvidoContr.datosDeSession);
+router.get("/api/us-olvido-contrasena/validaciones", API.olvidoContr.validaDatosPer);
+router.get("/api/us-olvido-contrasena/envio-de-mail", API.olvidoContr.envioDeMailAltaContr);
+router.get("/api/us-video-de-consultas-visto", API.videoConsVisto);
 
 // Vistas - Sólo visitas
 router.get("/garantiza-login-y-completo", vista.loginCompleto);

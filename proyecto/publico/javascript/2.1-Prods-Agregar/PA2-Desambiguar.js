@@ -17,7 +17,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Obtiene los datos de session
-	const rutaBuscaInfoDeSession = "api/desambiguar-busca-info-de-session";
+	const rutaBuscaInfoDeSession = "api/pa-busca-info-de-session";
 	let desambiguar = await fetch(rutaBuscaInfoDeSession).then((n) => n.json());
 	if (!desambiguar) location.href = "agregar-pc"; // si no existe, redirige al paso anterior
 
@@ -143,7 +143,7 @@ let FN = {
 		for (let API of APIs) {
 			// Busca la información
 			let pendiente = true;
-			let aux = fetch("api/desambiguar-" + API.ruta + "/").then(() => (pendiente = false));
+			let aux = fetch("api/pa-" + API.ruta + "/").then(() => (pendiente = false));
 
 			// Evoluciona el progreso mientras espera la información
 			for (let repeticion = 0; repeticion < parseInt(API.duracion / pausa); repeticion++) {
@@ -191,11 +191,11 @@ let FN = {
 				};
 
 				// Actualiza Datos Originales
-				await fetch("api/desambiguar-actualiza-datos-originales/?datos=" + JSON.stringify(datos)); // El 'await' es necesario para esperar a que se grabe la cookie en la controladora
+				await fetch("api/pa-actualiza-datos-originales/?datos=" + JSON.stringify(datos)); // El 'await' es necesario para esperar a que se grabe la cookie en la controladora
 				DOM.progreso.style.width = "100%";
 
 				// 2. Averigua si la info tiene errores
-				const errores = await fetch("api/desambiguar-averigua-si-la-info-tiene-errores").then((n) => n.json());
+				const errores = await fetch("api/pa-averigua-si-la-info-tiene-errores").then((n) => n.json());
 
 				// Desaparece el cartelProgreso
 				DOM.cartelProgreso.classList.remove("aumenta");

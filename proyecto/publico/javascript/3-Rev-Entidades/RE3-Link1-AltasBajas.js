@@ -82,10 +82,10 @@ window.addEventListener("load", () => {
 	return;
 });
 
-// Variables repetidas con 'FM-Links-Inactivar'
+// Variables repetidas con 'LK-Links-Inactivar'
 // const condicion = "?prodEntidad=" + entidad + "&prodId=" + id;
 
 // Variables
-const rutaAltaBaja = "/revision/api/alta-baja-link/";
-const rutaSigProd = "/revision/api/siguiente-producto-link/";
+const rutaAltaBaja = "/links/api/lk-alta-baja/";
+const rutaSigProd = "/revision/api/re-siguiente-producto-link/";
 let sigProd;

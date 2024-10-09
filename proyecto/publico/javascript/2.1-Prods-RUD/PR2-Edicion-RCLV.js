@@ -15,7 +15,7 @@ window.addEventListener("load", async () => {
 	const paramsOrigen = "prodEntidad=" + entidad + "&prodId=" + id + "&origen=PED";
 
 	// Variables para guardar los datos
-	const rutaSession = "/producto/api/envia-a-req-session/";
+	const rutaSession = "/producto/api/pr-envia-a-req-session/";
 
 	// FUNCIONES
 	// Mostrar u ocultar los íconos de alta/edición de RCLV

@@ -2,8 +2,8 @@
 window.addEventListener("load", async () => {
 	// Variables
 	const domIconos = document.querySelectorAll(".iconos #ppp");
-	const opciones = await fetch("/producto/api/obtiene-opciones-de-preferencia").then((n) => n.json());
-	const rutaGuardar = "/producto/api/guarda-la-preferencia-del-usuario/?entidad=" + entidad + "&entidad_id=" + id;
+	const opciones = await fetch("/producto/api/pr-obtiene-opciones-de-preferencia").then((n) => n.json());
+	const rutaGuardar = "/producto/api/pr-guarda-la-preferencia-del-usuario/?entidad=" + entidad + "&entidad_id=" + id;
 	let guardado = true;
 
 	// Eventos
