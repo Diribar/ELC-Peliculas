@@ -10,24 +10,27 @@ module.exports = {
 	edicion: {
 		valida: async (req, res) => {
 			// Obtiene los campos
-			let campos = Object.keys(req.query);
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			req.query.entidad = entidad;
+			const campos = Object.keys(req.query);
 
 			// Averigua los errores solamente para esos campos
 			req.query.publico = req.session.usuario.rolUsuario.autTablEnts;
 			req.query.epocaOcurrencia = req.session.usuario.rolUsuario.autTablEnts;
-			let errores = await validacsFM.validacs.consolidado({campos, datos: req.query});
+			const errores = await validacsFM.validacs.consolidado({campos, datos: req.query});
 
 			// Devuelve el resultado
 			return res.json(errores);
 		},
 		obtieneVersionesProd: async (req, res) => {
 			// Variables
-			let {entidad: producto, id: prodId} = req.query;
-			let usuario_id = req.session.usuario.id;
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id: prodId} = req.query;
+			const usuario_id = req.session.usuario.id;
 
 			// Obtiene los datos ORIGINALES y EDITADOS del producto
-			let [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
-				entidad: producto,
+			const [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
+				entidad,
 				entId: prodId,
 				usuario_id,
 				excluirInclude: true,
