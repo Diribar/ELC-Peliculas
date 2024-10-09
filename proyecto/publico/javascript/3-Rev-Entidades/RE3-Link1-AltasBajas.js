@@ -86,6 +86,6 @@ window.addEventListener("load", () => {
 // const condicion = "?prodEntidad=" + entidad + "&prodId=" + id;
 
 // Variables
-const rutaAltaBaja = "/links/api/lk-alta-baja-link/";
+const rutaAltaBaja = "/links/api/lk-alta-baja/";
 const rutaSigProd = "/revision/api/siguiente-producto-link/";
 let sigProd;

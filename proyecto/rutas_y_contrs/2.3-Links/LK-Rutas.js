@@ -29,16 +29,16 @@ const entIdValidos = [m.entValida, m.idValido];
 const aptoABM = [...aptoUsuario, ...entIdValidos, m.statusCorrecto, m.permUserReg, m.rutaCRUD_ID];
 
 // APIs - Links
-router.get("/api/valida-link", API.valida);
-router.get("/api/obtiene-provs-links", API.obtieneProvs);
-router.get("/api/obtiene-embeded-link", API.obtieneEmbededLink);
+router.get("/api/lk-valida", API.valida);
+router.get("/api/lk-obtiene-provs", API.obtieneProvs);
+router.get("/api/lk-obtiene-embeded", API.obtieneEmbededLink);
 
 // APIs - ABM
-router.get("/api/guardar-link", API.guarda);
-router.get("/api/inactiva-o-elimina", API.inactivaElimina);
-router.get("/api/recuperar-link", API.recupera);
-router.get("/api/deshacer-link", API.deshace);
-router.get("/api/lk-alta-baja-link", m.linkAltaBaja, API.altaBaja);
+router.get("/api/lk-guardar", API.guarda);
+router.get("/api/lk-inactiva-o-elimina", API.inactivaElimina);
+router.get("/api/lk-recuperar", API.recupera);
+router.get("/api/lk-deshacer", API.deshace);
+router.get("/api/lk-alta-baja", m.linkAltaBaja, API.altaBaja);
 
 // Vistas
 router.get("/abm-links/p", aptoABM, m.capturaActivar, vista.abm);
