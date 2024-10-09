@@ -13,8 +13,8 @@ window.addEventListener("load", async () => {
 		entId: new URL(location.href).searchParams.get("id"),
 	};
 	let rutas = {
-		califGuardada: "/producto/api/obtiene-la-calificacion-del-usuario/?entidad=" + v.entidad + "&id=" + v.entId,
-		eliminaCalifPropia: "/producto/api/elimina-la-calificacion-propia/?entidad=" + v.entidad + "&id=" + v.entId,
+		califGuardada: "/producto/api/pr-obtiene-la-calificacion-del-usuario/?entidad=" + v.entidad + "&id=" + v.entId,
+		eliminaCalifPropia: "/producto/api/pr-elimina-la-calificacion-propia/?entidad=" + v.entidad + "&id=" + v.entId,
 	};
 
 	const {califGuardada, atributosCalific, calCriterios} = await fetch(rutas.califGuardada).then((n) => n.json());

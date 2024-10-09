@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 	let ruta;
 
 	// Obtiene el ID de la colección
-	ruta = "/capitulos/api/obtiene-col-cap/?entidad=capitulos&id=";
+	ruta = "/capitulos/api/pr-obtiene-col-cap/?entidad=capitulos&id=";
 	let colID = await fetch(ruta + id).then((n) => n.json());
 
 	// Obtiene DOM de Temporada y Capítulos
@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 			const tempNum = tempSelect.value;
 
 			// Obtiene el primer capítulo de la temporada
-			const ruta = "/capitulos/api/obtiene-capitulos/";
+			const ruta = "/capitulos/api/pr-obtiene-capitulos/";
 			const capitulos = await fetch(ruta + "?coleccion_id=" + colID + "&temporada=" + tempNum).then((n) => n.json());
 			const cap_id = capitulos[0].id;
 
@@ -35,7 +35,7 @@ window.addEventListener("load", async () => {
 		// Variables
 		const tempNum = tempSelect ? tempSelect.value : 1;
 		const capNum = capitulo.value;
-		const ruta = "/capitulos/api/obtiene-cap-id/?entidad=capitulos";
+		const ruta = "/capitulos/api/pr-obtiene-cap-id/?entidad=capitulos";
 
 		// Obtiene el cap_id
 		const cap_id = await fetch(ruta + "&coleccion_id=" + colID + "&temporada=" + tempNum + "&capitulo=" + capNum).then((n) =>
