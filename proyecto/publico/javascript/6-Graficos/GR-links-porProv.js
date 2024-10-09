@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const linksPorProv = await fetch("/graficos/api/links-por-proveedor").then((n) => n.json());
+	const linksPorProv = await fetch("/graficos/api/gr-links-por-proveedor").then((n) => n.json());
 	let ejeX = linksPorProv.map((n) => n.nombre);
 	const ejeY = linksPorProv.map((n) => n.links);
 

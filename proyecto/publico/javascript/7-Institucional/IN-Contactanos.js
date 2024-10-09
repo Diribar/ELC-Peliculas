@@ -18,7 +18,7 @@ window.addEventListener("load", async () => {
 	};
 	let v = {
 		campos: ["asunto", "comentario"],
-		validaDatos: "/institucional/api/valida-contactanos/?",
+		validaDatos: "/institucional/api/in-valida-contactanos/?",
 	};
 
 	// Funciones
