@@ -33,7 +33,7 @@ header {
 			#imgConsultas {width: 28px;}
 			&:has(select) i {margin-right: 3px;}
 			select {
-				width: 145px; background-color: transparent; border: none;
+				width: 100%; background-color: transparent; border: none;
 				option {color: var(--azul-oscuro); font-size: 20px;}
 			}
 
