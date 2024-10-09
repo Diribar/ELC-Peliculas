@@ -102,7 +102,7 @@ window.addEventListener("load", () => {
 
 		// Busca los productos
 		palabras = palabras.join(" ");
-		const resultados = await fetch("/api/busqueda-rapida/?palabras=" + palabras).then((n) => n.json());
+		const resultados = await fetch("/api/cmp-busqueda-rapida/?palabras=" + palabras).then((n) => n.json());
 
 		// Acciones en función de si encuentra resultados
 		if (resultados.length) agregaResultados(resultados);
