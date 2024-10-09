@@ -14,9 +14,9 @@ global.urlHost =
 global.entorno =
 	carpeta == "Proyecto"
 		? "development" // laptop
-		: carpeta == "2-Pruebas" // pruebas
-		? "pruebas"
-		: "production";
+		: carpeta == "1-Actual" // produccion
+		? "production"
+		: "pruebas";
 
 // Variables que toman valores de '.env'
 require("dotenv").config();
