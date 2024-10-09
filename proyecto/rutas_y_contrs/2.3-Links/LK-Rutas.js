@@ -15,6 +15,7 @@ const m = {
 	entValida: require("../../middlewares/porRegistro/entidadValida"),
 	idValido: require("../../middlewares/porRegistro/idValido"),
 	statusCorrecto: require("../../middlewares/porRegistro/statusCorrecto"),
+	linkAltaBaja: require("../../middlewares/porRegistro/linkAltaBaja"),
 
 	// Middlewares - Otros
 	permUserReg: require("../../middlewares/porRegistro/permUserReg"),
@@ -30,13 +31,14 @@ const aptoABM = [...aptoUsuario, ...entIdValidos, m.statusCorrecto, m.permUserRe
 // APIs - Links
 router.get("/api/valida-link", API.valida);
 router.get("/api/obtiene-provs-links", API.obtieneProvs);
+router.get("/api/obtiene-embeded-link", API.obtieneEmbededLink);
 
 // APIs - ABM
 router.get("/api/guardar-link", API.guarda);
 router.get("/api/inactiva-o-elimina", API.inactivaElimina);
 router.get("/api/recuperar-link", API.recupera);
 router.get("/api/deshacer-link", API.deshace);
-router.get("/api/obtiene-embeded-link", API.obtieneEmbededLink);
+router.get("/api/lk-alta-baja-link", m.linkAltaBaja, API.altaBaja);
 
 // Vistas
 router.get("/abm-links/p", aptoABM, m.capturaActivar, vista.abm);

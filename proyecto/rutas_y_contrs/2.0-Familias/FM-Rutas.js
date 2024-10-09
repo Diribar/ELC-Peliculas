@@ -21,7 +21,6 @@ const m = {
 	comentNecesario: require("../../middlewares/porRegistro/comentNecesario"),
 	rutaCRUD_ID: require("../../middlewares/varios/rutaCRUD_ID"),
 	statusCompara: require("../../middlewares/porRegistro/statusCompara"),
-	linkAltaBaja: require("../../middlewares/porRegistro/linkAltaBaja"),
 
 	// Middlewares - Temas de captura
 	permUserReg: require("../../middlewares/porRegistro/permUserReg"),
@@ -40,7 +39,6 @@ const correcs = [m.entValida, m.idValido, m.statusCompara, aptoUsuario, m.permUs
 // APIs
 router.get("/api/obtiene-info-del-be-familia", API.obtieneInfo);
 router.get("/api/obtiene-registro-familia", API.obtieneRegistro);
-router.get("/api/alta-baja-link", m.linkAltaBaja, API.altaBajaLinks);
 
 // Vistas - Historial
 router.get("/historial", aptoDetalle, m.statusCompara, vista.form.historial);
