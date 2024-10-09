@@ -15,8 +15,8 @@ const iconos = {
 
 	// Ocasionales
 	...{agregar: "fa-circle-plus", calificar: "fa-chart-simple", eliminar: "fa-trash-can"},
-	...{edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
-	detalle: "fa-circle-info",
+	...{detalle: "fa-circle-info", edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
+	...{chart: "fa-chart-pie", columnas: "fa-chart-simple"},
 };
 
 module.exports = {
@@ -34,6 +34,15 @@ module.exports = {
 		},
 		"derechos-de-autor": {titulo: "ELC | Derechos de Autor", codigo: "derechosAutor", icono: "fa-copyright"},
 	},
+	graficos: [
+		{titulo: "Usuarios - Visitas diarias", url: "usuarios-clientes-acums", icono: iconos.columnas, resaltar: true},
+		{titulo: "Links - Vencimiento Semanal", url: "vencimiento-de-links", icono: iconos.columnas, resaltar: true, hr: true},
+		{titulo: "Películas - CFC / VPC", url: "peliculas-cfc-vpc", icono: iconos.chart},
+		{titulo: "Películas - Público", url: "peliculas-publico", icono: iconos.chart},
+		{titulo: "Películas - Época de estreno", url: "peliculas-epoca-estreno", icono: iconos.columnas, hr: true},
+		{titulo: "Links - Por Proveedor", url: "links-por-proveedor", icono: iconos.chart},
+		{titulo: "RCLVs - Rangos sin Efemérides", url: "rclvs-rangos-sin-efemerides", icono: iconos.columnas},
+	],
 
 	// Productos
 	dibujosAnimados: "Dibujos Animados",
