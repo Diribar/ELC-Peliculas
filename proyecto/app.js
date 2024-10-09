@@ -5,18 +5,10 @@ for (let metodo in constantes) global[metodo] = constantes[metodo];
 // Require 'path'
 global.path = require("path");
 const carpeta = global.path.basename(path.resolve());
-global.urlHost =
-	carpeta == "Proyecto"
-		? "http://localhost" // development
-		: carpeta.includes("Pruebas")
-		? "https://pruebas.elc.lat" // test
-		: "https://elc.lat"; // producción
-global.entorno =
-	carpeta == "Proyecto"
-		? "development" // laptop
-		: carpeta == "1-Actual" // produccion
-		? "production"
-		: "test";
+const proyecto = carpeta == "Proyecto";
+const produccion = carpeta == "1-Actual";
+global.urlHost = proyecto ? "http://localhost" : produccion ? "https://elc.lat" : "https://pruebas.elc.lat";
+global.entorno = proyecto ? "development" : produccion ? "production" : "test";
 
 // Variables que toman valores de '.env'
 require("dotenv").config();
