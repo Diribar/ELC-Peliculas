@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 		ediciones: document.querySelectorAll(".edicion .inputError"),
 		aprobs: document.querySelectorAll(".edicion .inputError .aprob"),
 		rechs: document.querySelectorAll(".edicion .inputError .rech"),
-		edicsID: document.querySelectorAll(".edicion .edicID"),
+		edicsID: document.querySelectorAll(".edicion .edicId"),
 	};
 	const condicion = "?entidad=links";
 	const motivoGenerico_id = await fetch("/revision/api/motivo-generico-revision").then((n) => n.json());
@@ -15,7 +15,7 @@ window.addEventListener("load", async () => {
 	for (let indice = 0; indice < DOM.ediciones.length; indice++) {
 		// Variables
 		let url = condicion;
-		url += "&edicID=" + DOM.edicsID[indice].innerHTML;
+		url += "&edicId=" + DOM.edicsID[indice].innerHTML;
 		url += "&campo=" + DOM.inputs[indice].name;
 
 		// Eventos
