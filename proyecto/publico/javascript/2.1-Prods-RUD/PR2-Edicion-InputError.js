@@ -307,7 +307,7 @@ window.addEventListener("load", async () => {
 		if (["personaje_id", "hecho_id"].includes(nombre) && valor != 1) {
 			const entidadRclv = nombre == "personaje_id" ? "personajes" : "hechos";
 			const rclv = await fetch(rutas.obtieneRclv + entidadRclv + "&id=" + valor).then((n) => n.json());
-			DOM.epocaOcurrencia_id.value = rclv.epocaOcurrencia_id;
+			if (rclv.epocaOcurrencia_id) DOM.epocaOcurrencia_id.value = rclv.epocaOcurrencia_id;
 		}
 
 		// Acciones si se cambió el avatar
