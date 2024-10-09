@@ -10,10 +10,12 @@ const entidades = [
 	...["links", "usuarios"],
 ];
 
-// Variables
+// Variables obtenidas del url
 const {pathname} = location;
 const entidad = entidades.find((n) => pathname.includes(n));
 const id = new URL(location.href).searchParams.get("id");
+const edicId = new URL(location.href).searchParams.get("edicId");
+let origen = new URL(location.href).searchParams.get("origen");
 
 // Funciones
 let keyPressed = (e) => {
