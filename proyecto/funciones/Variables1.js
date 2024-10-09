@@ -16,7 +16,7 @@ const iconos = {
 	// Ocasionales
 	...{agregar: "fa-circle-plus", calificar: "fa-chart-simple", eliminar: "fa-trash-can"},
 	...{detalle: "fa-circle-info", edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
-	...{chart: "fa-chart-pie", columnas: "fa-chart-simple"},
+	...{graficos: "fa-chart-line", chart: "fa-chart-pie", columnas: "fa-chart-simple"},
 };
 
 module.exports = {
