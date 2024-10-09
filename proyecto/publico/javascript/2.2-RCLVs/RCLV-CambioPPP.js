@@ -7,8 +7,8 @@ window.addEventListener("load", async () => {
 
 	// Variables varias
 	const rutas = {
-		obtieneVariables: "/rclv/api/obtiene-variables-detalle-rclv",
-		pppRutaGuardar: "/producto/api/guarda-la-preferencia-del-usuario",
+		obtieneVariables: "/rclv/api/rc-obtiene-variables-detalle",
+		pppRutaGuardar: "/producto/api/pr-guarda-la-preferencia-del-usuario",
 	};
 	const v = await fetch(rutas.obtieneVariables).then((n) => n.json());
 	let entidades = [];
