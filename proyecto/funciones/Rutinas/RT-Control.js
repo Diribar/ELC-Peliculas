@@ -15,7 +15,7 @@ module.exports = {
 		await this.FechaHoraUTC();
 
 		// Stoppers
-		const info = {...rutinasJSON};
+		const info = {...rutinasJson};
 		if (!Object.keys(info).length) return;
 		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
@@ -40,7 +40,7 @@ module.exports = {
 	FechaHoraUTC: async function () {
 		// Variables
 		hoy = new Date().toISOString().slice(0, 10);
-		const info = {...rutinasJSON};
+		const info = {...rutinasJson};
 		const minutos = new Date().getMinutes();
 
 		// Filtros
@@ -80,7 +80,7 @@ module.exports = {
 		comp.variablesSemanales();
 
 		// Obtiene la información del archivo JSON
-		let info = {...rutinasJSON};
+		let info = {...rutinasJson};
 		if (!Object.keys(info).length) return;
 		if (!info.RutinasSemanales || !Object.keys(info.RutinasSemanales).length) return;
 		const rutinasSemanales = info.RutinasSemanales;
@@ -114,12 +114,12 @@ module.exports = {
 		if (entorno == "pruebas") return;
 
 		// Obtiene la información del archivo JSON
-		const info = {...rutinasJSON};
+		const {RutinasHorarias} = rutinasJson;
 
 		// Actualiza todas las rutinas horarias
 		console.log();
 		console.log("Rutinas horarias:");
-		for (let rutina of info.RutinasHorarias) {
+		for (let rutina of RutinasHorarias) {
 			const comienzo = Date.now();
 			await this.rutinas[rutina]();
 			const duracion = Date.now() - comienzo;
@@ -131,13 +131,16 @@ module.exports = {
 		return;
 	},
 	RutinasDiarias: async function () {
+		// Actualiza las variables diarias
 		procesos.variablesDiarias();
 
-		// Obtiene la información del archivo JSON
-		const info = {...rutinasJSON};
-
 		// Actualiza todas las rutinas diarias
-		for (let rutinaDiaria in info.RutinasDiarias) {
+		const {RutinasDiarias} = rutinasJson;
+		for (let rutinaDiaria in RutinasDiarias) {
+			// No aplica para el entorno de pruebas
+			if (entorno == "pruebas" && rutinaDiaria != "imagenDerecha") continue; // sólo se debe ejecutar la rutina 'imagenDerecha'
+
+			// Realiza la rutina
 			const comienzo = Date.now();
 			await this.rutinas[rutinaDiaria](); // ejecuta la rutina
 			const duracion = Date.now() - comienzo;
@@ -149,11 +152,12 @@ module.exports = {
 		return;
 	},
 	RutinasSemanales: async function () {
-		// Obtiene la información del archivo JSON
-		const info = {...rutinasJSON};
+		// No aplica para el entorno de pruebas
+		if (entorno == "pruebas") return;
 
 		// Actualiza las rutinasSemanales
-		for (let rutinaSemanal in info.RutinasSemanales) {
+		const {RutinasSemanales} = rutinasJson;
+		for (let rutinaSemanal in RutinasSemanales) {
 			const comienzo = Date.now();
 			await this.rutinas[rutinaSemanal]();
 			const duracion = Date.now() - comienzo;
@@ -265,7 +269,7 @@ module.exports = {
 		// Gestiones diarias
 		imagenDerecha: async () => {
 			// Variables
-			let info = {...rutinasJSON};
+			let info = {...rutinasJson};
 			const milisegs = Date.now() + (new Date().getTimezoneOffset() / 60) * unaHora;
 			const fechaInicial = milisegs - 2 * unDia; // Arranca desde 2 días atrás
 			const cantFechas = 5; // Incluye 5 días
@@ -314,9 +318,6 @@ module.exports = {
 			return;
 		},
 		navegsAcums: async () => {
-			// No aplica para el entorno de pruebas
-			if (entorno == "pruebas") return;
-
 			// Navegantes diarios, quitando los duplicados
 			const navegsDelDia = await baseDeDatos
 				.obtieneTodosPorCondicion("navegsDelDia", {fecha: {[Op.lt]: hoy}})
