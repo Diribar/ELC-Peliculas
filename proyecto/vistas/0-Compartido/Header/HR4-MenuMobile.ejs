@@ -33,10 +33,10 @@
 	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
 		<!-- Todos los revisores o superior -->
 		<div class="flexRow menuOpcion">
-			<i class="<%= iconos.faSolid %> <%= grafico.icono %> icono"></i>
+			<i class="<%= iconos.faSolid %> <%= iconos.graficos %> icono"></i>
 			<select id="selectGraficos" onchange="location = this.value;">
 				<option>Gráficos</option>
-				<% for (grafico of graficos) { %>
+				<% for (let grafico of graficos) { %>
 					<option value="<%= grafico.url %>"><%= grafico.titulo %></option>
 				<% } %>
 			</select>
