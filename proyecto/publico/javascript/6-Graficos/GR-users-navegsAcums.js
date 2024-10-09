@@ -1,6 +1,9 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
+	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
+	const alturaGrafico = DOM.grafico.offsetHeight;
+
 	const grupos = ["Logins", "Us. s/Login", "Visitas"];
 	let cantidades = {logins: 0, usSinLogin: 0, visitas: 0};
 	let promedio = {};
@@ -67,18 +70,20 @@ window.addEventListener("load", async () => {
 
 			// Título
 			title: "Prom.: " + leyendaTitulo,
-			titleTextStyle: {color: "brown", fontSize: 18},
+			titleTextStyle: {color: "brown", fontSize: Math.min(Math.max(alturaGrafico / 20, 13), 18)},
 
 			// Ejes
 			hAxis: {
+				textPosition: alturaGrafico / 20 < 10 ? "none" : "auto",
 				maxAlternation: 1, // todos los valores en una misma fila
 				slantedText: false, // todos los valores en dirección horizontal
 				textStyle: {fontSize: 12},
 			},
 			vAxis: {
-				title: "Cantidad de personas",
-				fontSize: 20,
 				viewWindow: {min: 0},
+				title: "Cantidad de personas",
+				titleTextStyle: {fontSize: Math.min(Math.max(alturaGrafico / 20, 12), 18)},
+				textStyle: {fontSize: Math.min(Math.max(alturaGrafico / 20, 10), 14)},
 			},
 
 			// Particularidades
