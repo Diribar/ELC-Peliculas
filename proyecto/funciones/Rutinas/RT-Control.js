@@ -269,7 +269,7 @@ module.exports = {
 		// Gestiones diarias
 		imagenDerecha: async () => {
 			// Variables
-			let info = {...rutinasJson};
+			let {ImagenesDerecha: imgsYaProcs} = {...rutinasJson};
 			const milisegs = Date.now() + (new Date().getTimezoneOffset() / 60) * unaHora;
 			const fechaInicial = milisegs - 2 * unDia; // Arranca desde 2 días atrás
 			const cantFechas = 5; // Incluye 5 días
@@ -289,8 +289,8 @@ module.exports = {
 				fechas.push(fechaArchivo);
 
 				// Obtiene los títulos ya vigentes de las 'ImagenesDerecha'
-				if (info.ImagenesDerecha && info.ImagenesDerecha[fechaArchivo])
-					ImagenesDerecha[fechaArchivo] = info.ImagenesDerecha[fechaArchivo];
+				if (imgsYaProcs && imgsYaProcs[fechaArchivo])
+					ImagenesDerecha[fechaArchivo] = imgsYaProcs[fechaArchivo];
 				// Obtiene los títulos nuevos de las 'ImagenesDerecha' y descarga los archivos
 				else {
 					// Variables
