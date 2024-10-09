@@ -96,8 +96,8 @@ app.set("views", [
 	global.variables = require("./funciones/Variables2.js");
 	global.comp = require("./funciones/Compartidas"); // tiene que ir antes que las BD
 	const procesos = require("./funciones/Rutinas/RT-Procesos");
-	global.rutinasJSON = procesos.lecturaRutinasJSON();
-	global.ImagenesDerecha = rutinasJSON.ImagenesDerecha;
+	global.rutinasJson = procesos.lecturaRutinasJSON();
+	global.ImagenesDerecha = rutinasJson.ImagenesDerecha;
 
 	// Filtros con 'default'
 	global.filtrosConDefault = {};
