@@ -19,7 +19,6 @@ const m = {
 	// Específicos del registro
 	entValida: require("../../middlewares/porRegistro/entidadValida"),
 	idValido: require("../../middlewares/porRegistro/idValido"),
-	linkAltaBaja: require("../../middlewares/porRegistro/linkAltaBaja"),
 	rutaCRUD_ID: require("../../middlewares/varios/rutaCRUD_ID"),
 	statusCorrecto: require("../../middlewares/porRegistro/statusCorrecto"),
 	edicionAPI: require("../../middlewares/porRegistro/edicionAPI"),
@@ -51,7 +50,6 @@ router.get("/api/motivo-generico-revision", API.obtieneMotivoGenerico);
 router.get("/api/edicion-aprob-rech", m.edicionAPI, API.edicAprobRech);
 
 // APIs- Links
-router.get("/api/alta-baja-link", m.linkAltaBaja, API.links.altaBaja);
 router.get("/api/edicion-link", m.edicionAPI, API.edicAprobRech);
 router.get("/api/siguiente-producto-link", API.links.sigProd);
 
