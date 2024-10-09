@@ -57,14 +57,19 @@ window.addEventListener("load", async () => {
 
 		const data = google.visualization.arrayToDataTable(resultado);
 		const options = {
+			// Temas generales
+			seriesType: "bars",
 			isStacked: true, // columnas apiladas
 			backgroundColor: "rgb(255,242,204)",
+			chartArea: {left: "15%", right: "5%", top: "15%", bottom: "20%"}, // reemplaza el ancho y alto
 			fontSize: 14,
+			legend: {position: "bottom", textStyle: {fontSize: 12}},
+
+			// Título
 			title: "Prom.: " + leyendaTitulo,
 			titleTextStyle: {color: "brown", fontSize: 18},
-			legend: {position: "bottom", textStyle: {fontSize: 12}},
-			chartArea: {left: "15%", right: "5%", top: "15%", bottom: "20%"}, // reemplaza el ancho y alto
-			colors: coloresRelleno,
+
+			// Ejes
 			hAxis: {
 				maxAlternation: 1, // todos los valores en una misma fila
 				slantedText: false, // todos los valores en dirección horizontal
@@ -75,7 +80,9 @@ window.addEventListener("load", async () => {
 				fontSize: 20,
 				viewWindow: {min: 0},
 			},
-			seriesType: "bars",
+
+			// Particularidades
+			colors: coloresRelleno,
 			series: {3: {type: "line"}},
 		};
 

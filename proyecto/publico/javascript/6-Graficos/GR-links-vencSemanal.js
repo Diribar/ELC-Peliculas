@@ -46,16 +46,23 @@ window.addEventListener("load", async () => {
 
 		// Opciones del gráfico
 		let options = {
+			// Temas generales
+			isStacked: true, // columnas apiladas
 			backgroundColor: "rgb(255,242,204)",
-			fontSize: 10,
+			chartArea: {width: "80%", height: "70%"},
+			fontSize: 14,
+			legend: "none",
 			animation: {
 				duration: 100,
 				easing: "out",
 				startup: true,
 			},
-			chartArea: {width: "80%", height: "70%"},
-			colors: ["rgb(37,64,97)", "rgb(31,73,125)", "rgb(79,98,40)"],
-			legend: "none",
+
+			// Título
+			title: "Prom. Semanal: " + cantLinks.promSem.prods,
+			titleTextStyle: {color: "brown", fontSize: 18},
+
+			// Ejes
 			hAxis: {
 				scaleType: "number",
 				format: "decimal",
@@ -67,7 +74,9 @@ window.addEventListener("load", async () => {
 				viewWindow: {min: 0, max: maxEjeY},
 				// gridlines: {count: 8},
 			},
-			isStacked: true, // columnas apiladas
+
+			// Particularidades
+			colors: ["rgb(37,64,97)", "rgb(31,73,125)", "rgb(79,98,40)"],
 		};
 		if (revision) options.hAxis.textColor = "none";
 		else {
@@ -78,8 +87,5 @@ window.addEventListener("load", async () => {
 		// Hace visible el gráfico
 		const imagenDelGrafico = new google.visualization.ColumnChart(grafico);
 		imagenDelGrafico.draw(data, options);
-
-		// Agrega algunos datos relevantes
-		algunosDatos.innerHTML = "Prom. Semanal: " + cantLinks.promSem.prods;
 	}
 });
