@@ -1,0 +1,17 @@
+/* Laptop */
+@media (orientation: landscape) and (height > 600px) {
+}
+
+/* Ambos */
+@media ((orientation: landscape) and (height > 600px) and (width <= 900px)) or (orientation: portrait) {
+}
+@media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
+}
+
+/* Parado */
+@media (orientation: portrait) {
+}
+
+/* Acostado */
+@media (orientation: landscape) and (height <= 600px)  {
+}
