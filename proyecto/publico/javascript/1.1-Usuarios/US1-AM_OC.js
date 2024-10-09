@@ -205,10 +205,10 @@ const camposPerennes = ["nombre", "apellido", "fechaNacim", "paisNacim_id"];
 const formatoMail = /^\w+([\.-_]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const indice = 1 + pathname.slice(1).indexOf("/");
 const codigo = pathname.slice(indice + 1) == "alta-mail" ? "alta-mail" : "olvido-contrasena";
-const rutaInicio = "api/" + codigo;
+const rutaInicio = "api/us-" + codigo;
 const olvidoContr = codigo == "olvido-contrasena";
 const rutas = {
-	datosDeSession: rutaInicio + "/datosDeSession",
+	datosDeSession: rutaInicio + "/datos-de-session",
 	valida: rutaInicio + "/validaciones/?datos=",
 	envia: rutaInicio + "/envio-de-mail/?email=",
 };
