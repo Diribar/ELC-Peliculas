@@ -110,6 +110,9 @@ module.exports = {
 		return;
 	},
 	RutinasHorarias: async function () {
+		// No aplica para el entorno de pruebas
+		if (entorno == "pruebas") return;
+
 		// Obtiene la información del archivo JSON
 		const info = {...rutinasJSON};
 
@@ -202,7 +205,7 @@ module.exports = {
 				const otrosDatos = {regsStatusUs, regsEdicUs, usuario};
 				const mailEnviado =
 					usuario.id != usAutom_id && // si es el usuario automático, no envía el mail
-					(nodeEnv != "development" || [1, 11].includes(usuario.id)) // en development, sólo envía el mail a los usuarios del programador
+					(entorno != "development" || [1, 11].includes(usuario.id)) // en development, sólo envía el mail a los usuarios del programador
 						? comp
 								.enviaMail({asunto, email, comentario: cuerpoMail}) // Envía el mail
 								.then((mailEnv) => procesos.mailDeFeedback.eliminaRegs.consolidado({mailEnv, ...otrosDatos}))
@@ -311,6 +314,9 @@ module.exports = {
 			return;
 		},
 		navegsAcums: async () => {
+			// No aplica para el entorno de pruebas
+			if (entorno == "pruebas") return;
+
 			// Navegantes diarios, quitando los duplicados
 			const navegsDelDia = await baseDeDatos
 				.obtieneTodosPorCondicion("navegsDelDia", {fecha: {[Op.lt]: hoy}})
@@ -349,7 +355,7 @@ module.exports = {
 				await baseDeDatos.agregaRegistro("navegsAcums", {
 					...{fecha: proximaFecha, diaSem, anoMes},
 					...{logins, usSinLogin, visitas},
-					...fidelidades
+					...fidelidades,
 				});
 
 				// Obtiene la fecha siguiente
@@ -380,7 +386,7 @@ module.exports = {
 			const fidelidades = procesos.fidelidades(clientes);
 
 			// Guarda los resultados
-			await baseDeDatos.agregaRegistro("fidelidadClientes", {fecha: hoy, diaSem, anoMes,...fidelidades});
+			await baseDeDatos.agregaRegistro("fidelidadClientes", {fecha: hoy, diaSem, anoMes, ...fidelidades});
 
 			// Fin
 			return;
@@ -799,8 +805,8 @@ const stoppersFeedbackParaUsers = (usuario) => {
 	const zonaHoraria = usuario.pais.zonaHoraria;
 	const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
 	if (
-		(nodeEnv != "development" && new Date(ahoraUsuario).getUTCHours()) || // Producción: saltea si para el usuario no son las 0hs
-		(nodeEnv == "development" && !new Date(ahoraUsuario).getUTCHours()) // Development: saltea si para el usuario son las 0hs
+		(entorno != "development" && new Date(ahoraUsuario).getUTCHours()) || // Producción: saltea si para el usuario no son las 0hs
+		(entorno == "development" && !new Date(ahoraUsuario).getUTCHours()) // Development: saltea si para el usuario son las 0hs
 	)
 		return true;
 

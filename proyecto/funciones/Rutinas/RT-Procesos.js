@@ -569,8 +569,7 @@ module.exports = {
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
 
 		// Feedback del proceso
-		if (campo != "feedbackParaUsers" || nodeEnv != "development")
-			console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(7, " "), "-", campo);
+		console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(7, " "), "-", campo);
 
 		// Fin
 		return;
@@ -740,7 +739,7 @@ let formatos = {
 	a: (texto, registro) => {
 		// Variables
 		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(registro.entidad);
-		const operacion = {[creado_id]: "alta/" + siglaFam, [inactivar_id]: "inactivar", [recuperar_id]: "recuperar"};// operaciones de revisión para prioritarios
+		const operacion = {[creado_id]: "alta/" + siglaFam, [inactivar_id]: "inactivar", [recuperar_id]: "recuperar"}; // operaciones de revisión para prioritarios
 
 		// Arma la respuesta
 		let respuesta = '<a href="' + urlHost + "/revision/"; // baseUrl

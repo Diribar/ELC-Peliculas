@@ -1,7 +1,7 @@
 "use strict";
 
 // Variables
-// const config = require(__dirname + "/../config/config.js")[nodeEnv];
+// const config = require(__dirname + "/../config/config.js")[entorno];
 // const Sequelize = require("sequelize");
 // const sequelize = new Sequelize(config.database, config.username, config.password, config);
 const basename = path.basename(__filename);
