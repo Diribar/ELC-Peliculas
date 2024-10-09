@@ -13,8 +13,8 @@
     header {
         :is(.ocultoMobile, .ocultoMobileParado) {display: none !important;}
         #menuMobile {
-            div.soloAngosto {display: flex;}
-            hr.soloAngosto {display: block;}
+            div.soloPortrait {display: flex;}
+            hr.soloPortrait {display: block;}
         }
         :is(#izquierda, #derecha) {margin: 0;}
         #tituloHeader {left: 47%;}
