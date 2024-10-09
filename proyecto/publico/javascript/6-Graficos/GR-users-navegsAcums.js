@@ -3,6 +3,7 @@ window.addEventListener("load", async () => {
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
 	const alturaGrafico = DOM.grafico.offsetHeight;
+	const anchoGrafico = DOM.grafico.offsetWidth;
 
 	const grupos = ["Logins", "Us. s/Login", "Visitas"];
 	let cantidades = {logins: 0, usSinLogin: 0, visitas: 0};
@@ -57,16 +58,18 @@ window.addEventListener("load", async () => {
 		// Opciones del gráfico - Titulo general
 		leyendaTitulo += promedio.total.toLocaleString("pt");
 		grupos.forEach((grupo, i) => (leyendaTitulo += " | " + grupo + ": " + Object.values(promedio)[i].toLocaleString("pt")));
+		if (anchoGrafico < 600) leyendaTitulo = leyendaTitulo.split("|")[0];
 
 		const data = google.visualization.arrayToDataTable(resultado);
+		const mostrarLeyenda = anchoGrafico > 600 && alturaGrafico > 200;
 		const options = {
 			// Temas generales
 			seriesType: "bars",
 			isStacked: true, // columnas apiladas
 			backgroundColor: "rgb(255,242,204)",
-			chartArea: {left: "15%", right: "5%", top: "15%", bottom: "20%"}, // reemplaza el ancho y alto
+			chartArea: {left: "15%", right: "5%", top: "15%", bottom: mostrarLeyenda ? "20%" : "12%"}, // reemplaza el ancho y alto
 			fontSize: 14,
-			legend: {position: "bottom", textStyle: {fontSize: 12}},
+			legend: {position: mostrarLeyenda > 200 ? "bottom" : "none", textStyle: {fontSize: 12}},
 
 			// Título
 			title: "Prom.: " + leyendaTitulo,
@@ -74,7 +77,7 @@ window.addEventListener("load", async () => {
 
 			// Ejes
 			hAxis: {
-				textPosition: alturaGrafico / 20 < 10 ? "none" : "auto",
+				textPosition: alturaGrafico > 200 ? "auto" : "none",
 				maxAlternation: 1, // todos los valores en una misma fila
 				slantedText: false, // todos los valores en dirección horizontal
 				textStyle: {fontSize: 12},
@@ -82,7 +85,8 @@ window.addEventListener("load", async () => {
 			vAxis: {
 				viewWindow: {min: 0},
 				title: "Cantidad de personas",
-				titleTextStyle: {fontSize: Math.min(Math.max(alturaGrafico / 20, 12), 18)},
+				titleTextStyle: {fontSize: anchoGrafico > 600 ? Math.min(Math.max(alturaGrafico / 20, 12), 18) : 1},
+				titleTextPosition: anchoGrafico < 600 ? "none" : "auto",
 				textStyle: {fontSize: Math.min(Math.max(alturaGrafico / 20, 10), 14)},
 			},
 
