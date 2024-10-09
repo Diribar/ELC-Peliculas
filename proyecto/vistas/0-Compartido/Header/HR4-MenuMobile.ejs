@@ -2,9 +2,7 @@
 	<% if (locals.tema != "consultas" && (locals.tema != "institucional" || locals.codigo != "inicio")) { %>
 		<!-- Quiero elegir una película -->
 		<a href="/consultas" class="menuOpcion">
-			<div>
-				<img src="/publico/imagenes/Varios/Consultas.jpg" height="20">
-			</div>
+			<div id="imgConsultas"><img src="/publico/imagenes/Varios/Consultas.jpg" height="20"></div>
 			<span>Quiero elegir una película</span>
 		</a>
 		<hr>
@@ -31,5 +29,18 @@
 			<i class="<%= iconos.faSolid %> icono fa-people-group"></i>
 			<span>ELC - Quiénes somos</span>
 		</a>
+	<% } %>
+	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
+		<!-- Todos los revisores o superior -->
+		<div class="flexRow menuOpcion">
+			<i class="<%= iconos.faSolid %> <%= grafico.icono %> icono"></i>
+			<select name="" id="">
+				<option>Gráficos</option>
+				<% for (grafico of graficos) { %>
+					<option value="<%= grafico.url %>"><%= grafico.titulo %></option>
+				<% } %>
+
+			</select>
+		</div>
 	<% } %>
 </div>
