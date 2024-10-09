@@ -4,23 +4,26 @@ const router = express.Router();
 const API = require("./PA-ControlAPI");
 const vista = require("./PA-ControlVista");
 
-// Middlewares - Específicos de usuarios
-const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
-const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones");
-const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
-const usAutorizFA = require("../../middlewares/porUsuario/usAutorizFA");
+// Middlewares
+const m = {
+	// Específicos de usuarios
+	usAltaTerm: require("../../middlewares/porUsuario/usAltaTerm"),
+	usPenalizaciones: require("../../middlewares/porUsuario/usPenalizaciones"),
+	usAptoInput: require("../../middlewares/porUsuario/usAptoInput"),
+	usAutorizFA: require("../../middlewares/porUsuario/usAutorizFA"),
 
-// Middlewares - Específicos del registro
-const prodAgregar = require("../../middlewares/porRegistro/prodAgregar");
-const prodYaEnBD = require("../../middlewares/porRegistro/prodYaEnBD");
+	// Específicos del registro
+	prodAgregar: require("../../middlewares/porRegistro/prodAgregar"),
+	prodYaEnBD: require("../../middlewares/porRegistro/prodYaEnBD"),
 
-// Middlewares - Otros
-const multer = require("../../middlewares/varios/multer");
+	// Otros
+	multer: require("../../middlewares/varios/multer"),
+};
 
 // Middlewares - Consolidados
-const dataEntry = [usAltaTerm, usPenalizaciones, usAptoInput, prodAgregar];
-const dataEntryMasYaEnBD = [...dataEntry, prodYaEnBD];
-const dataEntryMasFA = [...dataEntry, usAutorizFA];
+const dataEntry = [m.usAltaTerm, m.usPenalizaciones, m.usAptoInput, m.prodAgregar];
+const dataEntryMasYaEnBD = [...dataEntry, m.prodYaEnBD];
+const dataEntryMasFA = [...dataEntry, m.usAutorizFA];
 
 // APIs - Validaciones
 router.get("/api/valida-agregar-pc", API.validaPalabrasClave);
@@ -55,7 +58,7 @@ router.get("/agregar-ds", dataEntry, vista.desambiguar);
 
 // Vistas - Comienzo de "prodYaEnBD"
 router.get("/agregar-dd", dataEntryMasYaEnBD, vista.datosDuros.form);
-router.post("/agregar-dd", dataEntryMasYaEnBD, multer.single("avatar"), vista.datosDuros.guardar);
+router.post("/agregar-dd", dataEntryMasYaEnBD, m.multer.single("avatar"), vista.datosDuros.guardar);
 router.get("/agregar-da", dataEntryMasYaEnBD, vista.datosAdics.form);
 router.post("/agregar-da", dataEntryMasYaEnBD, vista.datosAdics.guardar);
 router.get("/agregar-cn", dataEntryMasYaEnBD, vista.confirma.form);
