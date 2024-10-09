@@ -1,11 +1,21 @@
 /* Laptop */
 @media (orientation: landscape) and (height > 600px) {
+			/* Zona de Vitreaux */
+	#cuerpo #centro {
+		#zonaDeVitreaux {display: flex; flex-direction: column; justify-content: center;}
+		#zonaDeGraficos {
+			padding: 20px 50px;
+			#cuadro {padding: 30px 20px;}
+		}
+	}
+
 }
 
 /* Ambos */
 @media ((orientation: landscape) and (height > 600px) and (width <= 900px)) or (orientation: portrait) {
 }
 @media (orientation: portrait), (orientation: landscape) and (height <= 600px) {
+	#cuerpo #centro #zonaDeVitreaux {display: none;}
 }
 
 /* Parado */
@@ -14,4 +24,13 @@
 
 /* Acostado */
 @media (orientation: landscape) and (height <= 600px)  {
+	#cuerpo {
+		#tituloPrincipal #titulo {font-size: 1rem; padding: 4px 5px;}
+		#centro #zonaDeGraficos {
+			padding: 0px 30px;
+			#cuadro {padding: 15px 20px;}
+		}
+
+	}
+
 }
