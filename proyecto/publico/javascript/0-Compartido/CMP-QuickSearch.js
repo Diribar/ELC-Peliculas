@@ -7,7 +7,7 @@ window.addEventListener("load", () => {
 		muestraResultados: document.querySelector("#busquedaRapida .mostrarClick #muestraResultados"),
 		escribiMas: document.querySelector("#busquedaRapida .mostrarClick #escribiMas"),
 	};
-	let posicion = null;
+	let posicion = 0;
 
 	// Funciones
 	let agregaResultados = (registros) => {
@@ -15,16 +15,19 @@ window.addEventListener("load", () => {
 		DOM.muestraResultados.innerHTML = "";
 		DOM.muestraResultados.classList.remove("ocultar");
 
-		// Rutinas en función del tipo de variable que sea 'registros'
-		if (Array.isArray(registros)) creaElListado(registros);
-		// En caso de que sea un sólo registro
-		else {
-			let parrafo = document.createElement("p");
-			parrafo.style.fontStyle = "italic";
-			parrafo.style.textAlign = "center";
-			parrafo.appendChild(document.createTextNode(registros));
-			DOM.muestraResultados.appendChild(parrafo);
+		// Si se encontraron resultados, crea el listado
+		if (Array.isArray(registros)) {
+			creaElListado(registros);
+			DOM.muestraResultados.children[0].classList.add("resaltar"); // Resalta el registro anterior
+			return
 		}
+
+		// Mensaje de 'no se encontraron resultados'
+		const parrafo = document.createElement("p");
+		parrafo.style.fontStyle = "italic";
+		parrafo.style.textAlign = "center";
+		parrafo.appendChild(document.createTextNode(registros));
+		DOM.muestraResultados.appendChild(parrafo);
 	};
 	let creaElListado = (registros) => {
 		// Rutina de creación de filas
@@ -42,7 +45,7 @@ window.addEventListener("load", () => {
 			// Crea las celdas
 			creaLasCeldas({anchor, registro});
 
-			// Agrega la fila al cuerpo de la tabla (tblbody)
+			// Agrega la fila al cuerpo de la tabla
 			DOM.muestraResultados.appendChild(anchor);
 		}
 	};
@@ -79,19 +82,16 @@ window.addEventListener("load", () => {
 		DOM.input.value = DOM.input.value.replace(/[^a-záéíóúüñ'¡¿-\d\s]/gi, "").replace(/ +/g, " ");
 		let dataEntry = DOM.input.value;
 
-		// Elimina palabras
+		// Elimina palabras repetidas
 		let palabras = dataEntry.split(" ");
 		for (let i = palabras.length - 1; i > 0; i--)
-			// Elimina palabras repetidas o ¿vacías?
-			if (palabras.filter((n) => n == palabras[i]).length > 1 || !palabras[i]) palabras.splice(i, 1);
+			if (palabras.filter((n) => n == palabras[i]).length > 1) palabras.splice(i, 1);
 		let pasaNoPasa = palabras.join("");
 
 		// Acciones si la palabra tiene menos de 3 caracteres significativos
 		if (pasaNoPasa.length < 3) {
-			// Oculta el sector de muestraResultados
-			DOM.muestraResultados.classList.add("ocultar");
-			// Muestra el cartel de "escribí más"
-			DOM.escribiMas.classList.remove("ocultar");
+			DOM.muestraResultados.classList.add("ocultar"); // Oculta el sector de muestraResultados
+			DOM.escribiMas.classList.remove("ocultar"); // Muestra el cartel de "escribí más"
 			return;
 		}
 		// Oculta el cartel de "escribí más"
@@ -110,34 +110,25 @@ window.addEventListener("load", () => {
 	});
 	DOM.input.addEventListener("keydown", (e) => {
 		// Variables
-		const cantResultados = DOM.muestraResultados.children ? DOM.muestraResultados.children.length : 0;
+		const cantResultados = DOM.muestraResultados.children && DOM.muestraResultados.children.length;
 		if (!cantResultados) return;
 
-		// Se desliza entre los productos
-		if (e.key == "ArrowUp") {
-			// Resalta el registro anterior
-			if (posicion === null) posicion = cantResultados - 1;
-			else {
-				DOM.muestraResultados.children[posicion].classList.remove("resaltar");
-				if (posicion === 0) posicion = cantResultados - 1;
-				else posicion--;
-			}
-			DOM.muestraResultados.children[posicion].classList.add("resaltar");
+		// Resalta el registro anterior
+		if (e.key == "ArrowUp" && posicion) {
+			DOM.muestraResultados.children[posicion].classList.remove("resaltar"); // Des-resalta el registro vigente
+			posicion--;
+			DOM.muestraResultados.children[posicion].classList.add("resaltar"); // Resalta el registro anterior
 		}
-		if (e.key == "ArrowDown") {
-			// Resalta el registro siguiente
-			if (posicion === null) posicion = 0;
-			else {
-				DOM.muestraResultados.children[posicion].classList.remove("resaltar");
-				if (posicion == cantResultados - 1) posicion = 0;
-				else posicion++;
-			}
-			DOM.muestraResultados.children[posicion].classList.add("resaltar");
+
+		// Resalta el registro siguiente
+		if (e.key == "ArrowDown" && posicion < cantResultados - 1) {
+			DOM.muestraResultados.children[posicion].classList.remove("resaltar"); // Des-resalta el registro vigente
+			posicion++;
+			DOM.muestraResultados.children[posicion].classList.add("resaltar"); // Resalta el registro siguiente
 		}
 
 		// Redirige a la vista del hallazgo
 		if (e.key == "Enter") {
-			if (posicion === null) posicion = 0;
 			const href = DOM.muestraResultados.children[posicion].href;
 			if (href) location.href = href;
 		}
