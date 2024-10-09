@@ -17,6 +17,6 @@ module.exports = {
 		dialect: "mysql",
 		logging: false,
 	},
-	pruebas: produccion,
+	test: produccion,
 	production: produccion,
 };

@@ -16,7 +16,7 @@ global.entorno =
 		? "development" // laptop
 		: carpeta == "1-Actual" // produccion
 		? "production"
-		: "pruebas";
+		: "test";
 
 // Variables que toman valores de '.env'
 require("dotenv").config();
