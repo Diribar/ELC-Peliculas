@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
 	// Verificaciones si existe la 'siglaFam'
 	if (!informacion && siglaFam) {
 		// Verifica que se reconozca la 'siglaFam'
-		if (!["p", "r"].includes(siglaFam))
+		if (!["p", "r", "l"].includes(siglaFam))
 			informacion = {
 				mensajes: ["No tenemos esa dirección en nuestro sistema (entidad inválida)"],
 				iconos: [vistaAnterior, variables.vistaInicio], // se usa actual porque no llegó a cambiar el session

@@ -111,7 +111,8 @@ module.exports = {
 		},
 		rutasAntiguas: function (req, res) {
 			// Variables
-			const {entidad} = req.query; // debe ser 'req.query', porque así son las antiguas
+			let {entidad} = req.query; // debe ser 'req.query', porque así son las antiguas
+			if (!entidad) entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {originalUrl} = req;
 			const ruta = procesos.obtieneRuta(entidad, originalUrl);
 
@@ -131,6 +132,7 @@ module.exports = {
 			// Obtiene la nueva 'cola'
 			let nuevaCola = colaAnt.replace("?entidad=" + entidad, "");
 			nuevaCola = nuevaCola.replace("/&", "/?");
+			if (nuevaCola.includes("link_id=")) nuevaCola = nuevaCola.replace("link_id=", "id=");
 			if (nuevaCola.endsWith("?")) nuevaCola = nuevaCola.slice(0, -1);
 			if (nuevaCola.endsWith("/")) nuevaCola = nuevaCola.slice(0, -1);
 

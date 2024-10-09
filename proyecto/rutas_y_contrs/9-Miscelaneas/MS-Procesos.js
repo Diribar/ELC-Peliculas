@@ -179,7 +179,7 @@ module.exports = {
 		}
 
 		// Links
-		if (familia == "link") return {ant: "/links/visualizacion/", act: "/links/mirar/l"};
+		if (familia == "link") return {ant: "/links/visualizacion/", act: "/links/mirar/l/"};
 
 		// Revisión de Entidades
 		if (originalUrl.startsWith("/revision")) {

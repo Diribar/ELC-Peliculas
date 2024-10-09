@@ -3,7 +3,7 @@
 		<i class="<%= iconos.faSolid %> <%= iconos.calificar %> <%= iconos.rotar %> <%= locals.yaCalificada || !!locals.califUsuario %>" tabindex="-1"></i>
 	</a>
 <% } %>
-<% if (["calificar", "visualizacion"].includes(codigo)) { %>
+<% if (["calificar", "mirarLink"].includes(codigo)) { %>
 	<a href="<%= '/' + entidad + '/detalle/p/?id=' + id %>" tabindex="-1">
 		<i class="<%= iconos.faSolid %> <%= iconos.detalle %>" tabindex="-1"></i>
 	</a>
