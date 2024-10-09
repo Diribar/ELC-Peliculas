@@ -18,7 +18,7 @@ window.addEventListener("load", async () => {
 		comentario: document.querySelector("#comentario textarea"),
 		contador: document.querySelector("#comentario #contador"),
 	};
-	const {motivos: statusMotivos, largoComentario} = await fetch("/familia/api/obtiene-info-del-be-familia/?entidad=" + entidad).then((n) =>
+	const {motivos: statusMotivos, largoComentario} = await fetch("/familia/api/fm-obtiene-info-del-be/?entidad=" + entidad).then((n) =>
 		n.json()
 	);
 	let comentNeces, duplicadoOK;
@@ -68,7 +68,7 @@ window.addEventListener("load", async () => {
 			// Si la 'entidad' y el 'id' están ingresados, busca el registro
 			if (entIdOK) {
 				let innerText;
-				const registro = await fetch("/familia/api/obtiene-registro-familia/?entidad=" + entDupl + "&id=" + idDupl).then((n) =>
+				const registro = await fetch("/familia/api/fm-obtiene-registro/?entidad=" + entDupl + "&id=" + idDupl).then((n) =>
 					n.json()
 				);
 				if (registro) {

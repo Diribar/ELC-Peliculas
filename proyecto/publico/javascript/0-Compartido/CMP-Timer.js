@@ -13,7 +13,7 @@ window.addEventListener("load", async () => {
 	if (!entidad && pathname.includes("/revision/usuarios")) entidad = "usuarios";
 
 	// Horario Inicial
-	const datos = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + entId).then((n) => n.json());
+	const datos = await fetch("/api/cmp-horario-inicial/?entidad=" + entidad + "&id=" + entId).then((n) => n.json());
 	const {capturadoEn, creadoEn, capturadoPor_id, usuario_id} = datos;
 	let horarioInicial = !capturadoEn ? creadoEn : capturadoPor_id == usuario_id ? capturadoEn : new Date();
 	horarioInicial = new Date(horarioInicial);

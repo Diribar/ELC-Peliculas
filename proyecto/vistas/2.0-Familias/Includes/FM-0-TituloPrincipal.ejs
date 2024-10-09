@@ -1,7 +1,7 @@
 <% if (locals.cartelGenerico || locals.cartelRechazo) { %><%- include('MN-TimerContador') %><% } %>
 <div id="tituloPrincipal" class="flexCol">
 	<h1 id="titulo"><%= locals.tituloDetalle ? tituloDetalle : titulo %></h1>
-	<% if (codigo == "visualizacion") { %>
+	<% if (codigo == "mirarLink") { %>
 		<h2 id="secundario">
 			Gentileza de
 			<img src="/Externa/6-LogosProvs/<%= link.prov.avatar %>" alt="<%= link.prov.nombre %>" title="<%= link.prov.nombre %>">

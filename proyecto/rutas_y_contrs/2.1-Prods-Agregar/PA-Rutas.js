@@ -4,50 +4,52 @@ const router = express.Router();
 const API = require("./PA-ControlAPI");
 const vista = require("./PA-ControlVista");
 
-// Middlewares - Específicos de usuarios
-const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
-const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones");
-const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
-const usAutorizFA = require("../../middlewares/porUsuario/usAutorizFA");
+// Middlewares
+const m = {
+	// Específicos de usuarios
+	usAltaTerm: require("../../middlewares/porUsuario/usAltaTerm"),
+	usPenalizaciones: require("../../middlewares/porUsuario/usPenalizaciones"),
+	usAptoInput: require("../../middlewares/porUsuario/usAptoInput"),
+	usAutorizFA: require("../../middlewares/porUsuario/usAutorizFA"),
 
-// Middlewares - Específicos del registro
-const prodAgregar = require("../../middlewares/porRegistro/prodAgregar");
-const prodYaEnBD = require("../../middlewares/porRegistro/prodYaEnBD");
+	// Específicos del registro
+	prodAgregar: require("../../middlewares/porRegistro/prodAgregar"),
+	prodYaEnBD: require("../../middlewares/porRegistro/prodYaEnBD"),
 
-// Middlewares - Otros
-const multer = require("../../middlewares/varios/multer");
+	// Otros
+	multer: require("../../middlewares/varios/multer"),
+};
 
 // Middlewares - Consolidados
-const dataEntry = [usAltaTerm, usPenalizaciones, usAptoInput, prodAgregar];
-const dataEntryMasYaEnBD = [...dataEntry, prodYaEnBD];
-const dataEntryMasFA = [...dataEntry, usAutorizFA];
+const dataEntry = [m.usAltaTerm, m.usPenalizaciones, m.usAptoInput, m.prodAgregar];
+const dataEntryMasYaEnBD = [...dataEntry, m.prodYaEnBD];
+const dataEntryMasFA = [...dataEntry, m.usAutorizFA];
 
-// APIs - Validar
-router.get("/api/valida/agregar-pc", API.validaPalabrasClave);
-router.get("/api/valida/agregar-dd", API.validaDatosDuros);
-router.get("/api/valida/agregar-da", API.validaDatosAdics);
-router.get("/api/valida/agregar-fa", API.validaCopiarFA);
+// APIs - Validaciones
+router.get("/api/pa-valida-pc", API.validaPalabrasClave);
+router.get("/api/pa-valida-dd", API.validaDatosDuros);
+router.get("/api/pa-valida-da", API.validaDatosAdics);
+router.get("/api/pa-valida-fa", API.validaCopiarFA);
 
 // APIs - Desambiguar Form
-router.get("/api/desambiguar-busca-info-de-session", API.desambForm.buscaInfoDeSession);
-router.get("/api/desambiguar-busca-los-productos", API.desambForm.buscaProds);
-router.get("/api/desambiguar-reemplaza-las-peliculas-por-su-coleccion", API.desambForm.reemplPeliPorColec);
-router.get("/api/desambiguar-organiza-la-info", API.desambForm.organizaLaInfo);
-router.get("/api/desambiguar-agrega-hallazgos-de-IM-y-FA", API.desambForm.agregaHallazgosDeIMFA);
-router.get("/api/desambiguar-obtiene-el-mensaje", API.desambForm.obtieneElMensaje);
+router.get("/api/pa-busca-info-de-session", API.desambForm.buscaInfoDeSession);
+router.get("/api/pa-busca-los-productos", API.desambForm.buscaProds);
+router.get("/api/pa-reemplaza-las-peliculas-por-su-coleccion", API.desambForm.reemplPeliPorColec);
+router.get("/api/pa-organiza-la-info", API.desambForm.organizaLaInfo);
+router.get("/api/pa-agrega-hallazgos-de-IM-y-FA", API.desambForm.agregaHallazgosDeIMFA);
+router.get("/api/pa-obtiene-el-mensaje", API.desambForm.obtieneElMensaje);
 
 // APIs - Desambiguar - Guardar
-router.get("/api/desambiguar-actualiza-datos-originales", API.desambGuardar.actualizaDatosOrig);
-router.get("/api/desambiguar-averigua-si-la-info-tiene-errores", API.desambGuardar.averiguaSiHayErrores);
+router.get("/api/pa-actualiza-datos-originales", API.desambGuardar.actualizaDatosOrig);
+router.get("/api/pa-averigua-si-la-info-tiene-errores", API.desambGuardar.averiguaSiHayErrores);
 
 // APIs - Varias
-router.get("/api/PC-obtiene-la-cantidad-de-prods", API.cantProductos);
-router.get("/api/obtiene-colecciones", API.averiguaColecciones);
-router.get("/api/obtiene-cantTemps", API.averiguaCantTemps);
-router.get("/api/FA-obtiene-fa-id", API.obtieneFA_id);
-router.get("/api/averigua-si-ya-existe-en-bd", API.averiguaSiYaExisteEnBd);
-router.get("/api/DA-guarda-datos-adics/", API.guardaDatosAdics);
-router.get("/api/convierte-letras-al-castellano/", API.convierteLetrasAlCastellano);
+router.get("/api/pa-obtiene-la-cantidad-de-prods", API.cantProductos); // palabras clave
+router.get("/api/pa-obtiene-colecciones", API.averiguaColecciones); // im
+router.get("/api/pa-obtiene-cant-temps", API.averiguaCantTemps); // im
+router.get("/api/pa-obtiene-fa-id", API.obtieneFA_id); // fa
+router.get("/api/pa-averigua-si-fa-ya-existe-en-bd", API.averiguaSiYaExisteEnBd); // fa
+router.get("/api/pa-guarda-datos-adicionales/", API.guardaDatosAdics); // datos adicionales
 
 // Vistas - Data entry
 router.get("/agregar-pc", dataEntry, vista.palabrasClave.form);
@@ -56,7 +58,7 @@ router.get("/agregar-ds", dataEntry, vista.desambiguar);
 
 // Vistas - Comienzo de "prodYaEnBD"
 router.get("/agregar-dd", dataEntryMasYaEnBD, vista.datosDuros.form);
-router.post("/agregar-dd", dataEntryMasYaEnBD, multer.single("avatar"), vista.datosDuros.guardar);
+router.post("/agregar-dd", dataEntryMasYaEnBD, m.multer.single("avatar"), vista.datosDuros.guardar);
 router.get("/agregar-da", dataEntryMasYaEnBD, vista.datosAdics.form);
 router.post("/agregar-da", dataEntryMasYaEnBD, vista.datosAdics.guardar);
 router.get("/agregar-cn", dataEntryMasYaEnBD, vista.confirma.form);

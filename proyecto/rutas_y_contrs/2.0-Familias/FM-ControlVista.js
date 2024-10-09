@@ -38,7 +38,7 @@ module.exports = {
 			const historialStatus = await procesos.historialDeStatus.obtiene({entidad: datos.entidad, ...datos.registro});
 			const {usuario} = req.session;
 			const revisorPERL = usuario && usuario.rolUsuario.revisorPERL;
-			const anchorEncab = true;
+			const anchorEncab = datos.tema == "fmCrud";
 
 			// Render del formulario
 			return res.render("CMP-0Estructura", {

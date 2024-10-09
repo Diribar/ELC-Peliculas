@@ -240,7 +240,7 @@ module.exports = {
 				// Variables
 				const {TMDB_id, TMDB_entidad} = producto;
 
-				// Busca en las películas y colecciones
+				// Busca en la BD de ELC
 				const prodBD = prodsBD.find(
 					(n) =>
 						n.TMDB_id == TMDB_id && // que coincida el TMDB_id
@@ -251,6 +251,7 @@ module.exports = {
 				// prodYaEnBD
 				if (prodBD) {
 					// Le asigna valores de nuestra BD
+					producto.entidad = prodBD.coleccion_id ? "capitulos" : prodBD.capitulos ? "colecciones" : "peliculas";
 					producto.id = prodBD.id;
 					producto.avatar = prodBD.avatar;
 					if (producto.entidad == "colecciones") {

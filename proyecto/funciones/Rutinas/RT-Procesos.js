@@ -739,13 +739,15 @@ let formatos = {
 	},
 	a: (texto, registro) => {
 		// Variables
-		const operacion = {[creado_id]: "alta", [inactivar_id]: "inactivar", [recuperar_id]: "recuperar"};
+		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(registro.entidad);
+		const operacion = {[creado_id]: "alta/" + siglaFam, [inactivar_id]: "inactivar", [recuperar_id]: "recuperar"};// operaciones de revisión para prioritarios
 
 		// Arma la respuesta
-		let respuesta = '<a href="' + urlHost + "/revision/" + registro.familia + "/";
-		respuesta += operacion[registro.statusRegistro_id];
-		respuesta += "?entidad=" + registro.entidad + "&id=" + registro.id;
-		respuesta += '" style="color: inherit; text-decoration: none">' + texto + "</a>";
+		let respuesta = '<a href="' + urlHost + "/revision/"; // baseUrl
+		respuesta += operacion[registro.statusRegistro_id] + "/"; // tarea
+		respuesta += registro.entidad + "/?id=" + registro.id; // entidad + id
+		respuesta += '" style="color: inherit; text-decoration: none"'; // formato
+		respuesta += ">" + texto + "</a>"; // texto del mensaje
 
 		// Fin
 		return respuesta;
@@ -782,7 +784,7 @@ let nombres = async (reg) => {
 		nombre = comp.nombresPosibles(link[asocProd]);
 
 		// Obtiene el anchor
-		link.href = link.prov.embededPoner ? urlHost + "/links/visualizacion/?link_id=" + link.id : "//" + link.url;
+		link.href = link.prov.embededPoner ? urlHost + "/links/mirar/l/?id=" + link.id : "//" + link.url;
 		anchor = "<a href='" + link.href + "' style='color: inherit; text-decoration: none'>" + nombre + "</a>";
 	}
 

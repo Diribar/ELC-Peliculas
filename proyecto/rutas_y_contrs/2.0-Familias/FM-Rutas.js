@@ -37,8 +37,8 @@ const aptoEliminar = [...aptoCRUD, m.usRolRevPERL];
 const correcs = [m.entValida, m.idValido, m.statusCompara, aptoUsuario, m.permUserReg, m.usRolRevPERL];
 
 // APIs
-router.get("/api/obtiene-info-del-be-familia", API.obtieneInfo);
-router.get("/api/obtiene-registro-familia", API.obtieneRegistro);
+router.get("/api/fm-obtiene-info-del-be", API.obtieneInfo);
+router.get("/api/fm-obtiene-registro", API.obtieneRegistro);
 
 // Vistas - Historial
 router.get("/historial", aptoDetalle, m.statusCompara, vista.form.historial);

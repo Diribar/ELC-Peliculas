@@ -12,7 +12,7 @@ window.addEventListener("load", async () => {
 	};
 	const entidad = document.querySelector("#entidad").innerHTML;
 	const entNombre = entidad == "peliculas" ? "película" : entidad == "colecciones" ? "colección" : "capítulo";
-	const pre = "api/";
+	const pre = "/producto/api/pa-";
 	let statusInicial = true;
 
 	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
@@ -53,18 +53,18 @@ window.addEventListener("load", async () => {
 	let verificaRepetido_FA_id = async () => {
 		// Variables
 		const direccion = document.querySelector(".input[name='direccion']").value;
-		const FA_id = await fetch(pre + "FA-obtiene-fa-id/?direccion=" + direccion).then((n) => n.json());
+		const FA_id = await fetch(pre + "obtiene-fa-id/?direccion=" + direccion).then((n) => n.json());
 		let url, existe;
 
 		// Averigua si existe el registro
 		url = "entidad=" + entidad + "&campo=FA_id&valor=" + FA_id;
-		existe = await fetch(pre + "averigua-si-ya-existe-en-bd/?" + url).then((n) => n.json());
+		existe = await fetch(pre + "averigua-si-fa-ya-existe-en-bd/?" + url).then((n) => n.json());
 
 		// Si no existe y no es una colección, lo busca en la contraparte
 		if (!existe && entidad != "colecciones") {
 			url = "entidad=" + (entidad == "peliculas" ? "capitulos" : "peliculas");
 			url += "&campo=FA_id&valor=" + FA_id;
-			existe = await fetch(pre + "averigua-si-ya-existe-en-bd/?" + url).then((n) => n.json());
+			existe = await fetch(pre + "averigua-si-fa-ya-existe-en-bd/?" + url).then((n) => n.json());
 		}
 
 		// Fin
@@ -105,7 +105,7 @@ window.addEventListener("load", async () => {
 			url += "=";
 			url += encodeURIComponent(DOM.inputs[i].value);
 		}
-		return fetch("api/valida/agregar-fa/" + url).then((n) => n.json());
+		return fetch("/producto/api/pa-valida-fa/" + url).then((n) => n.json());
 	};
 
 	// Status inicial

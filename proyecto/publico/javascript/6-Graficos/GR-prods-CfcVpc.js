@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	const algunosDatos = document.querySelector("#cuadro #algunosDatos");
 
 	// Obtiene información del backend
-	const {aprob, pend} = await fetch("/graficos/api/peliculas-cfc-vpc").then((n) => n.json());
+	const {aprob, pend} = await fetch("/graficos/api/gr-peliculas-cfc-vpc").then((n) => n.json());
 
 	const ejeX = ["cfc-aprob", "cfc-pend", "vpc-pend", "vpc-aprob"];
 	const ejeY = [aprob.cfc, pend.cfc, pend.vpc, aprob.vpc];

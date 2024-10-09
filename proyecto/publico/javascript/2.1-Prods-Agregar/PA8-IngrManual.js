@@ -50,7 +50,7 @@ window.addEventListener("load", async () => {
 				for (let submit of DOM.submits) submit.classList.add("inactivo");
 
 				// Obtiene el listado de las colecciones
-				const colecciones = await fetch("api/obtiene-colecciones").then((n) => n.json());
+				const colecciones = await fetch("/producto/api/pa-obtiene-colecciones").then((n) => n.json());
 
 				// Agrega el id y nombre de las colecciones a las opciones
 				for (let coleccion of colecciones) {
@@ -78,7 +78,7 @@ window.addEventListener("load", async () => {
 			this.limpiaLasOpciones(DOM.temporada);
 
 			// Obtiene la cantidad de temporadas de la colección
-			const ruta = "api/obtiene-cantTemps/?id=";
+			const ruta = "/producto/api/pa-obtiene-cant-temps/?id=";
 			const cantTemporadas = await fetch(ruta + DOM.coleccion_id.value).then((n) => n.json());
 
 			// Agrega las temporadas vigentes más una
@@ -108,7 +108,7 @@ window.addEventListener("load", async () => {
 			this.limpiaLasOpciones(DOM.capitulo);
 
 			// Obtiene los capitulos de la temporada
-			const ruta = "/capitulos/api/obtiene-capitulos/";
+			const ruta = "/capitulos/api/pr-obtiene-capitulos/";
 			const capitulos = await fetch(ruta + "?coleccion_id=" + DOM.coleccion_id.value + "&temporada=" + DOM.temporada.value)
 				.then((n) => n.json())
 				.then((n) => n.map((m) => m.numero));

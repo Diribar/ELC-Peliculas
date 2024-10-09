@@ -40,7 +40,7 @@ module.exports = {
 					entidad,
 					fechaRef: n.editadoEn,
 					fechaRefTexto: comp.fechaHora.diaMes(n.editadoEn),
-					edicID: n.id,
+					edicId: n.id,
 				});
 			});
 
@@ -223,7 +223,7 @@ module.exports = {
 						...n[asociacion],
 						entidad,
 						editadoEn: n.editadoEn,
-						edicID: n.id,
+						edicId: n.id,
 						fechaRef: n.editadoEn,
 						fechaRefTexto: comp.fechaHora.diaMes(n.editadoEn),
 					});
@@ -340,16 +340,16 @@ module.exports = {
 	},
 
 	guardar: {
-		obtieneDatos: async function (req) {
+		obtieneDatos: async (req) => {
 			// Variables
-			const {baseUrl, tarea, siglaFam, entidad} = comp.partesDelUrl(req);
+			const {baseUrl, tarea, entidad} = comp.partesDelUrl(req);
 			const {id, origen, desaprueba} = req.query;
-			let codigo = tarea.slice(1);
-			if (codigo == "alta") codigo += "/" + siglaFam; // 'alta/p', 'rechazar', 'inactivar', 'recuperar'
+			const tema = baseUrl.slice(1);
+			const codigo = tarea.slice(1); // 'alta', 'rechazar', 'inactivar', 'recuperar'
 
 			// Más variables
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const aprobado = !desaprueba || codigo == "alta";
+			const aprobado = !desaprueba || codigo == "alta"; // si aprueba la propuesta del usuario
 			const producto = familia == "producto";
 			const rclv = familia == "rclv";
 
@@ -360,10 +360,15 @@ module.exports = {
 
 			// Obtiene el status final, motivo_id, y comentario
 			const {statusFinal_id, motivo_id} = await FN.statusFinalMasMotivo({codigo, desaprueba, rclv, entidad, original, req});
-			const comentario = await procsFM.comentario({...req.body, codigo, motivo_id, statusFinal_id, entidad, id});
+			const statusOriginal_id = original.statusRegistro_id;
+			const comentario = await procsFM.comentario({
+				...req.body,
+				...{entidad, id},
+				...{tema, codigo, motivo_id},
+				...{statusOriginal_id, statusFinal_id},
+			});
 
 			// Más variables
-			const statusOriginal_id = original.statusRegistro_id;
 			const cola = "/?id=" + id + (origen ? "&origen=" + origen : "");
 			const revId = req.session.usuario.id;
 			const ahora = comp.fechaHora.ahora();
@@ -376,7 +381,7 @@ module.exports = {
 			return {
 				...{entidad, id, origen, original, statusOriginal_id, statusFinal_id},
 				...{codigo, producto, rclv, motivo_id, comentario, aprobado},
-				...{cola, revId, ahora, revisorPERL, petitFamilias, baseUrl, usuario_id, campoDecision},
+				...{cola, revId, ahora, revisorPERL, petitFamilias, tema, usuario_id, campoDecision},
 			};
 		},
 		prodsAsocs: async (entidad, id) => {
@@ -760,7 +765,7 @@ module.exports = {
 					let datos = {entidad, id, nombre, fechaRef, fechaRefTexto, abrev, links};
 
 					// Completa los datos
-					if (rubro == "ED") datos.edicID = n.edicID;
+					if (rubro == "ED") datos.edicId = n.edicId;
 					if (n.entidad == "colecciones") datos.csl = n.csl;
 
 					// Fin
@@ -785,7 +790,7 @@ module.exports = {
 					let datos = {entidad, id, nombre, fechaRef, fechaRefTexto, abrev};
 
 					// Completa los datos
-					if (rubro == "ED") datos.edicID = n.edicID;
+					if (rubro == "ED") datos.edicId = n.edicId;
 
 					// Fin
 					return datos;
@@ -1038,17 +1043,16 @@ let FN = {
 	},
 	statusFinalMasMotivo: async ({codigo, desaprueba, rclv, entidad, original, req}) => {
 		// Variables
-		const statusAprob =
-			codigo.startsWith("alta") || (codigo == "inactivar" && desaprueba) || (codigo == "recuperar" && !desaprueba);
+		const statusAprob = codigo == "alta" || (codigo == "inactivar" && desaprueba) || (codigo == "recuperar" && !desaprueba);
 		const datos = {entidad, ...original, publico: true, epocaOcurrencia: true};
-		const prodCreadoAprob =
+		const impideAprobado =
 			statusAprob && !rclv ? await validacsFM.validacs.consolidado({datos}).then((n) => n.impideAprobado) : null;
 
 		// Obtiene el status final
 		const statusFinal_id = statusAprob
 			? rclv
 				? aprobado_id // si es un RCLV, se aprueba
-				: prodCreadoAprob // si es un producto, revisa si tiene errores
+				: impideAprobado // si es un producto, revisa si tiene errores que impidan su aprobación
 				? creadoAprob_id // si tiene errores que impiden el aprobado, status 'creadoAprob'
 				: entidad == "capitulos"
 				? original.statusColeccion_id // capítulo sin errores, toma el status de su colección

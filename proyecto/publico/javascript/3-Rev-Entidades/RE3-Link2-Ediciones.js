@@ -6,16 +6,16 @@ window.addEventListener("load", async () => {
 		ediciones: document.querySelectorAll(".edicion .inputError"),
 		aprobs: document.querySelectorAll(".edicion .inputError .aprob"),
 		rechs: document.querySelectorAll(".edicion .inputError .rech"),
-		edicsID: document.querySelectorAll(".edicion .edicID"),
+		edicsID: document.querySelectorAll(".edicion .edicId"),
 	};
 	const condicion = "?entidad=links";
-	const motivoGenerico_id = await fetch("/revision/api/motivo-generico-revision").then((n) => n.json());
+	const motivoGenerico_id = await fetch("/revision/api/re-motivo-generico").then((n) => n.json());
 
 	// Decisión tomada
 	for (let indice = 0; indice < DOM.ediciones.length; indice++) {
 		// Variables
 		let url = condicion;
-		url += "&edicID=" + DOM.edicsID[indice].innerHTML;
+		url += "&edicId=" + DOM.edicsID[indice].innerHTML;
 		url += "&campo=" + DOM.inputs[indice].name;
 
 		// Eventos
@@ -32,7 +32,7 @@ window.addEventListener("load", async () => {
 
 // Fórmulas
 let resultado = async (url) => {
-	let ruta = "/revision/api/edicion-link/";
+	let ruta = "/revision/api/re-edicion-link/";
 	let respuesta = await fetch(ruta + url).then((n) => n.json());
 
 	// Si el resultado es 'OK', recarga la vista

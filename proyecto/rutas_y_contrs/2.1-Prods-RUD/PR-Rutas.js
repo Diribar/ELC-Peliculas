@@ -35,27 +35,28 @@ const aptoCalificar = [...aptoDetalle, m.statusCorrecto, ...aptoUsuario];
 const aptoEdicion = [...aptoCalificar, m.permUserReg, m.edicion];
 
 // API - Calificaciones
-router.get("/api/obtiene-las-calificaciones", API.califics.delProducto);
-router.get("/api/obtiene-la-calificacion-del-usuario", API.califics.delUsuarioProducto);
-router.get("/api/elimina-la-calificacion-propia", API.califics.elimina);
+router.get("/api/pr-obtiene-las-calificaciones", API.califics.delProducto);
+router.get("/api/pr-obtiene-la-calificacion-del-usuario", API.califics.delUsuarioProducto);
+router.get("/api/pr-elimina-la-calificacion-propia", API.califics.elimina);
 
 // API - Preferencias por producto
-router.get("/api/obtiene-opciones-de-preferencia", API.prefsDeCampo.obtieneOpciones);
-router.get("/api/guarda-la-preferencia-del-usuario", API.prefsDeCampo.guardaLaPreferencia);
+router.get("/api/pr-obtiene-opciones-de-preferencia", API.prefsDeCampo.obtieneOpciones);
+router.get("/api/pr-guarda-la-preferencia-del-usuario", API.prefsDeCampo.guardaLaPreferencia);
 
 // API - Edición
-router.get("/api/valida-edicion-prod", API.edicion.valida);
-router.get("/api/obtiene-original-y-edicion", API.edicion.obtieneVersionesProd);
-router.get("/api/obtiene-variables-prod", API.edicion.variables);
-router.get("/api/envia-a-req-session", API.edicion.envioParaSession);
-router.get("/api/eliminar-nueva", API.edicion.eliminaNueva);
-router.get("/api/eliminar-guardada", API.edicion.eliminaGuardada);
+router.get("/api/pr-valida-edicion-prod", API.edicion.valida);
+router.get("/api/pr-obtiene-original-y-edicion", API.edicion.obtieneVersionesProd);
+router.get("/api/pr-obtiene-variables-prod", API.edicion.variables);
+router.get("/api/pr-envia-a-req-session", API.edicion.envioParaSession);
+router.get("/api/pr-eliminar-nueva", API.edicion.eliminaNueva);
+router.get("/api/pr-eliminar-guardada", API.edicion.eliminaGuardada);
+router.get("/api/pr-obtiene-rclv", API.edicion.obtieneRclv);
 
 // API - Varios
-router.get("/api/obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
-router.get("/api/obtiene-col-cap", API.obtieneColCap);
-router.get("/api/obtiene-capitulos", API.obtieneCapitulos);
-router.get("/api/obtiene-cap-id", API.obtieneCapId);
+router.get("/api/pr-obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
+router.get("/api/pr-obtiene-col-cap", API.obtieneColCap);
+router.get("/api/pr-obtiene-capitulos", API.obtieneCapitulos);
+router.get("/api/pr-obtiene-cap-id", API.obtieneCapId);
 
 // Vistas
 router.get("/detalle/p", aptoDetalle, m.misDetalleProd, m.capturaInactivar, vista.detalle);

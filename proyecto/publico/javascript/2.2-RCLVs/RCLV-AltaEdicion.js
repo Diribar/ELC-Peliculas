@@ -113,12 +113,9 @@ window.addEventListener("load", async () => {
 		};
 		// Variables compartidas
 		v.camposRCLIC = Array.from(DOM.inputsRCLIC).map((n) => n.name);
-		rutas.obtieneLeyNombre = "/rclv/api/obtiene-leyenda-nombre/?" + entidad + "=true";
 
 		// Variables para personajes
-		if (personajes) {
-			v.prefijos = await fetch("/rclv/api/prefijos-rclv").then((n) => n.json());
-		}
+		if (personajes) v.prefijos = await fetch(prefijos).then((n) => n.json());
 	}
 	if (epocasDelAno) {
 		DOM.dias_del_ano_Fila = document.querySelectorAll("form #calendario tr");
@@ -939,9 +936,11 @@ const hechos = entidad == "hechos";
 const epocasDelAno = entidad == "epocasDelAno";
 const ano = personajes ? "anoNacim" : "anoComienzo";
 const rutas = {
-	obtieneVariables: "/rclv/api/obtiene-variables-edicion-rclv",
-	validacion: "/rclv/api/valida-sector-edicion-rclv/?funcion=",
-	registrosConEsaFecha: "/rclv/api/registros-con-esa-fecha/",
+	obtieneVariables: "/rclv/api/rc-obtiene-variables-edicion",
+	validacion: "/rclv/api/rc-valida-sector-edicion/?funcion=",
+	registrosConEsaFecha: "/rclv/api/rc-registros-con-esa-fecha/",
+	prefijos: "/rclv/api/rc-prefijos",
+	obtieneLeyNombre: "/rclv/api/rc-obtiene-leyenda-nombre/?" + entidad + "=true",
 };
 const linksUrl = ["https://es.wikipedia.org/wiki/", "https://www.google.com/search?q="];
 const googleIMG = {pre: "//google.com/search?q=", post: "&tbm=isch&tbs=isz:l&hl=es-419"};

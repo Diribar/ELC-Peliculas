@@ -69,4 +69,4 @@ window.addEventListener("load", () => {
 // Variables
 const condicion = "?prodEntidad=" + entidad + "&prodId=" + id;
 const revision = location.pathname.includes("/revision/");
-const rutaEliminar = revision ? "/revision/api/alta-baja-link" : "/links/api/inactiva-o-elimina/";
+const rutaEliminar = revision ? "/links/api/lk-alta-baja" : "/links/api/lk-inactiva-o-elimina/";

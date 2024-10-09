@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const {cfc, vpc} = await fetch("/graficos/api/peliculas-epoca-estreno").then((n) => n.json());
+	const {cfc, vpc} = await fetch("/graficos/api/gr-peliculas-epoca-estreno").then((n) => n.json());
 	const ejeX = Object.keys(cfc);
 	let totalCfc = 0;
 	let totalVpc = 0;

@@ -101,9 +101,8 @@ module.exports = {
 			}
 			// Rutina para encontrar el destino en base al 'urlOrigen'
 			else {
-				if (urlOrigen.includes("colecciones")) urlDestino = urlOrigen.replace("colecciones", "capitulos");
-				else if (urlOrigen.includes("capitulos")) urlDestino = urlOrigen.replace("capitulos", "colecciones");
-				if (urlDestino) destino = urlDestino + "/?id=" + prodId;
+				urlDestino = entidad != prodEntidad ? urlOrigen.replace(entidad, prodEntidad) : urlOrigen;
+				destino = urlDestino + "/?id=" + prodId;
 			}
 
 			// Redirecciona a la vista que corresponda
@@ -112,7 +111,8 @@ module.exports = {
 		},
 		rutasAntiguas: function (req, res) {
 			// Variables
-			const {entidad} = req.query; // debe ser 'req.query', porque así son las antiguas
+			let {entidad} = req.query; // debe ser 'req.query', porque así son las antiguas
+			if (!entidad) entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {originalUrl} = req;
 			const ruta = procesos.obtieneRuta(entidad, originalUrl);
 
@@ -132,6 +132,7 @@ module.exports = {
 			// Obtiene la nueva 'cola'
 			let nuevaCola = colaAnt.replace("?entidad=" + entidad, "");
 			nuevaCola = nuevaCola.replace("/&", "/?");
+			if (nuevaCola.includes("link_id=")) nuevaCola = nuevaCola.replace("link_id=", "id=");
 			if (nuevaCola.endsWith("?")) nuevaCola = nuevaCola.slice(0, -1);
 			if (nuevaCola.endsWith("/")) nuevaCola = nuevaCola.slice(0, -1);
 

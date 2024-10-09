@@ -288,7 +288,7 @@ module.exports = {
 		// Variables
 		const familias = this.obtieneDesdeEntidad.familias(entidad);
 		const entidadEdic = this.obtieneDesdeEntidad.entidadEdic(entidad);
-		const edicID = edicion.id;
+		const edicId = edicion.id;
 		let camposNull = {};
 		let camposRevisar = [];
 
@@ -334,16 +334,16 @@ module.exports = {
 		let quedanCampos = !!Object.keys(edicion).length;
 		if (quedanCampos) {
 			// Devuelve el id a la variable de edicion
-			if (edicID) edicion.id = edicID;
+			if (edicId) edicion.id = edicId;
 
 			// Si la edición existe en BD y hubieron campos iguales entre la edición y el original, actualiza la edición
-			if (edicID && Object.keys(camposNull).length) await baseDeDatos.actualizaPorId(entidadEdic, edicID, camposNull);
+			if (edicId && Object.keys(camposNull).length) await baseDeDatos.actualizaPorId(entidadEdic, edicId, camposNull);
 		} else {
 			// Convierte en 'null' la variable de 'edicion'
 			edicion = null;
 
 			// Si había una edición guardada en la BD, la elimina
-			if (edicID) await baseDeDatos.eliminaPorId(entidadEdic, edicID);
+			if (edicId) await baseDeDatos.eliminaPorId(entidadEdic, edicId);
 		}
 
 		// Fin
@@ -1265,11 +1265,14 @@ module.exports = {
 		return;
 	},
 	partesDelUrl: (req) => {
-		// Obtiene la base y el url (sin la base)
+		// Obtiene la base
 		let url = req.baseUrl + req.path;
 		const baseUrl = url.slice(0, url.indexOf("/", 1));
+
+		// Obtiene la tarea
 		url = url.replace(baseUrl, "");
-		const tarea = url.slice(0, url.indexOf("/", 1));
+		const indice = url.indexOf("/", 1);
+		const tarea = indice > -1 ? url.slice(0, indice) : url;
 
 		// Obtiene la siglaFam
 		let {siglaFam} = req.params;
@@ -1277,8 +1280,7 @@ module.exports = {
 			url = url.replace(tarea, ""); // si contiene la tarea, la quita
 			if (url) {
 				siglaFam = url.slice(1); // le quita el "/" del comienzo
-				if (siglaFam.length > 2 || siglaFam[1] != "/") siglaFam = null; // detecta si no es una 'siglaFam'
-				else siglaFam = siglaFam[0]; // obtiene la 'siglaFam'
+				siglaFam = siglaFam[1] == "/" ? siglaFam[0] : null;
 				if (siglaFam && !["p", "r", "l"].includes(siglaFam)) siglaFam = null;
 			}
 		}
@@ -1350,6 +1352,8 @@ let FN = {
 			? "p"
 			: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
 			? "r"
+			: entidad == "links"
+			? "l"
 			: entidad == "usuarios"
 			? "u"
 			: "",

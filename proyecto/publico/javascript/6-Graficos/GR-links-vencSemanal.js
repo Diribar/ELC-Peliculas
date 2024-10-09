@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 	if (!algunosDatos || !grafico) return;
 
 	// Obtiene información del backend
-	const datos = await fetch("/graficos/api/links-vencimiento").then((n) => n.json());
+	const datos = await fetch("/graficos/api/gr-vencimiento-de-links").then((n) => n.json());
 	const {cantLinksVencPorSem: cantLinks, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsEstandar} = datos;
 	const semanaActual = (lunesDeEstaSemana - primerLunesDelAno) / unaSemana + 1;
 	const {promSem} = cantLinks;

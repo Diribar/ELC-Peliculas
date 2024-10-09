@@ -148,11 +148,11 @@ module.exports = {
 				{ant: "/ingreso-fa", act: "fa"},
 			];
 			const ruta = rutas.find((n) => originalUrl.endsWith(n.ant));
-			return ruta ? "/producto/agregar-" + ruta.act : null;
+			return ruta ? {ant: "/producto/agregar/" + ruta.ant, act: "/producto/agregar-" + ruta.act} : null;
 		}
 
 		// Rutas de Familia, Producto RUD y Rclv CRUD
-		if (["/productos", "/rclvs"].some((n) => originalUrl.startsWith(n))) {
+		if (["/producto", "/rclv"].some((n) => originalUrl.startsWith(n))) {
 			// Obtiene las rutas
 			const rutas = [
 				// Familia
@@ -175,11 +175,11 @@ module.exports = {
 
 			// Redirecciona
 			const ruta = rutas.find((n) => originalUrl.startsWith(n.ant));
-			return ruta ? ruta.act : null;
+			return ruta;
 		}
 
 		// Links
-		if (familia == "link") return "/links/mirar/l";
+		if (familia == "link") return {ant: "/links/visualizacion/", act: "/links/mirar/l/"};
 
 		// Revisión de Entidades
 		if (originalUrl.startsWith("/revision")) {
@@ -191,13 +191,13 @@ module.exports = {
 			];
 
 			// Rutas compartidas
-			tareas = ["edicion", "rechazar", "inactivar", "recuperar"];
+			const tareas = ["edicion", "rechazar", "inactivar", "recuperar"];
 			for (let tarea of tareas)
 				rutas.push({ant: "/revision/" + familia + "/" + tarea, act: "/revision/" + tarea + "/" + entidad});
 
 			// Redirecciona
 			const ruta = rutas.find((n) => originalUrl.startsWith(n.ant));
-			return ruta ? ruta.act : null;
+			return ruta;
 		}
 
 		// Fin
