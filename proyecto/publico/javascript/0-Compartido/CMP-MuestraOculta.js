@@ -35,6 +35,3 @@ window.addEventListener("load", () => {
 		if (!DOM.brMostrar.className.includes("ocultar")) DOM.brInput.focus();
 	});
 });
-
-// Event listeners - Recarga la vista si se gira
-screen.orientation.addEventListener("change", () => location.reload());
