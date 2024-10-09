@@ -17,7 +17,7 @@ window.addEventListener("load", () => {
 	// Mensajes de ayuda
 	window.addEventListener("click", (e) => {
 		// Si el click fue 'mmBR'
-		if (typeof e.target.className && e.target.className.includes("mmSG")) return;
+		if (typeof e.target.className == "string" && e.target.className.includes("mmSG")) return;// debe compararse con string, porque hay otros tipos que darían error
 
 		// Si el click es fuera del input deBúsqueda Rápida => toggle u oculta
 		if (![DOM.brInput].includes(e.target))
@@ -28,7 +28,7 @@ window.addEventListener("load", () => {
 						: DOM.mostrar[i].classList.add("ocultar");
 
 		// Si el click fue 'menú Mobile búsqueda rápida', muestra el bloque donde escribirlo
-		if (typeof e.target.className && e.target.className.includes("mmBR"))
+		if (typeof e.target.className == "string" && e.target.className.includes("mmBR"))
 			DOM.brMostrar.classList.remove("ocultar");
 
 		// Foco en búsqueda rápida
