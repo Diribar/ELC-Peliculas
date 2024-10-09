@@ -6,9 +6,7 @@ const procesos = require("./RE-Procesos");
 
 module.exports = {
 	// Productos y RCLV
-	obtieneMotivoGenerico: (req, res) => {
-		return res.json(motivoInfoErronea.id);
-	},
+	obtieneMotivoGenerico: (req, res) => res.json(motivoInfoErronea.id),
 	edicAprobRech: async (req, res) => {
 		// Variables
 		const {entidad, edicId, campo, aprob, motivo_id} = req.query;

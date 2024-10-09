@@ -615,7 +615,7 @@ module.exports = {
 			delete edicion[campo];
 			if (relacInclude) delete edicion[relacInclude]; // Es necesario eliminarla para que no la compare
 
-			// 7. Disminuye la edición a su mínima expresión, y si corresponde la elimina
+			// Disminuye la edición a su mínima expresión, y si corresponde la elimina
 			edicion = await comp.puleEdicion(entidad, originalGuardado, edicion);
 
 			// Fin
