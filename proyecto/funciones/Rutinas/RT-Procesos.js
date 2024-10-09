@@ -14,7 +14,7 @@ module.exports = {
 	},
 	guardaArchivoDeRutinas: function (datos, menu) {
 		// Obtiene la informacion vigente
-		let info = {...rutinasJSON};
+		let info = {...rutinasJson};
 
 		// Averigua si hubo alguna novedad
 		let sonIguales = true;
@@ -60,7 +60,7 @@ module.exports = {
 
 		// Guarda la información actualizada
 		const rutaNombre = path.join(__dirname, "Rutinas.json");
-		rutinasJSON = {...info};
+		rutinasJson = {...info};
 		fs.writeFileSync(rutaNombre, JSON.stringify(info), function writeJSON(err) {
 			if (err) console.log("Actualiza Rutinas JSON:", err, datos);
 			return;
