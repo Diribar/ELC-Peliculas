@@ -30,8 +30,13 @@ header {
 	#menuMobile {
 		.menuOpcion {
 			height: 25px;
-			div {width: 28px; text-align: start;}
+			#imgConsultas {width: 28px;}
+			select {
+				width:145px; background-color: transparent; border: none;
+				-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: ''; /* para ocultar la flecha */
+			}
+
 		}
-		.soloAngosto {display: none;}
+		.soloPortrait {display: none;}
 	}
 }

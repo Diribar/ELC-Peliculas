@@ -2,21 +2,19 @@
 	<% if (locals.tema != "consultas" && (locals.tema != "institucional" || locals.codigo != "inicio")) { %>
 		<!-- Quiero elegir una película -->
 		<a href="/consultas" class="menuOpcion">
-			<div>
-				<img src="/publico/imagenes/Varios/Consultas.jpg" height="20">
-			</div>
+			<div id="imgConsultas"><img src="/publico/imagenes/Varios/Consultas.jpg" height="20"></div>
 			<span>Quiero elegir una película</span>
 		</a>
 		<hr>
 	<% } %>
 
 	<!-- Búsqueda rápida -->
-	<div class="menuOpcion mm_busquedaRapida soloAngosto">
+	<div class="menuOpcion mm_busquedaRapida soloPortrait">
 		<i class="<%= iconos.faSolid %> icono fa-magnifying-glass mm_busquedaRapida"></i>
 		<span class="mm_busquedaRapida">Búsqueda rápida</span>
 	</div>
 	<% if (locals.tema != "institucional" || locals.codigo != "inicio") { %>
-		<hr class=" soloAngosto">
+		<hr class=" soloPortrait">
 	<% } %>
 
 	<!-- Demostración -->
@@ -31,5 +29,17 @@
 			<i class="<%= iconos.faSolid %> icono fa-people-group"></i>
 			<span>ELC - Quiénes somos</span>
 		</a>
+	<% } %>
+	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
+		<!-- Todos los revisores o superior -->
+		<div class="flexRow menuOpcion">
+			<i class="<%= iconos.faSolid %> <%= grafico.icono %> icono"></i>
+			<select id="selectGraficos" onchange="location = this.value;">
+				<option>Gráficos</option>
+				<% for (grafico of graficos) { %>
+					<option value="<%= grafico.url %>"><%= grafico.titulo %></option>
+				<% } %>
+			</select>
+		</div>
 	<% } %>
 </div>
