@@ -84,6 +84,7 @@ main {
 
 /* Quita la flecha de los select <-- se necesita para ver los valores */
 #datosLargos tbody .alta select::-ms-expand, #datosLargos tbody .edicion select::-ms-expand {display: none;}
+/* -webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: ''; para ocultar la flecha */
 
 #datosLargos tbody .inputError {padding-left: 10px; padding-right: 10px;}
 
