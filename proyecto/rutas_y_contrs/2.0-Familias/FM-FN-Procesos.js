@@ -293,7 +293,7 @@ module.exports = {
 			}
 
 			// Reemplaza los campos 'include' vacíos de la edición
-			for (let campo of includesEdic) if (!edicion[campo]) edicion[campo] = edicColec[campo];
+			if (includesEdic) for (let campo of includesEdic) if (!edicion[campo]) edicion[campo] = edicColec[campo];
 		}
 
 		// Fin
