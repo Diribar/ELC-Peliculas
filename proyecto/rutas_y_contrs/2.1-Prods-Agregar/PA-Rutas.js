@@ -26,30 +26,30 @@ const dataEntryMasYaEnBD = [...dataEntry, m.prodYaEnBD];
 const dataEntryMasFA = [...dataEntry, m.usAutorizFA];
 
 // APIs - Validaciones
-router.get("/api/valida-agregar-pc", API.validaPalabrasClave);
-router.get("/api/valida-agregar-dd", API.validaDatosDuros);
-router.get("/api/valida-agregar-da", API.validaDatosAdics);
-router.get("/api/valida-agregar-fa", API.validaCopiarFA);
+router.get("/api/pa-valida-pc", API.validaPalabrasClave);
+router.get("/api/pa-valida-dd", API.validaDatosDuros);
+router.get("/api/pa-valida-da", API.validaDatosAdics);
+router.get("/api/pa-valida-fa", API.validaCopiarFA);
 
 // APIs - Desambiguar Form
-router.get("/api/desambiguar-busca-info-de-session", API.desambForm.buscaInfoDeSession);
-router.get("/api/desambiguar-busca-los-productos", API.desambForm.buscaProds);
-router.get("/api/desambiguar-reemplaza-las-peliculas-por-su-coleccion", API.desambForm.reemplPeliPorColec);
-router.get("/api/desambiguar-organiza-la-info", API.desambForm.organizaLaInfo);
-router.get("/api/desambiguar-agrega-hallazgos-de-IM-y-FA", API.desambForm.agregaHallazgosDeIMFA);
-router.get("/api/desambiguar-obtiene-el-mensaje", API.desambForm.obtieneElMensaje);
+router.get("/api/pa-busca-info-de-session", API.desambForm.buscaInfoDeSession);
+router.get("/api/pa-busca-los-productos", API.desambForm.buscaProds);
+router.get("/api/pa-reemplaza-las-peliculas-por-su-coleccion", API.desambForm.reemplPeliPorColec);
+router.get("/api/pa-organiza-la-info", API.desambForm.organizaLaInfo);
+router.get("/api/pa-agrega-hallazgos-de-IM-y-FA", API.desambForm.agregaHallazgosDeIMFA);
+router.get("/api/pa-obtiene-el-mensaje", API.desambForm.obtieneElMensaje);
 
 // APIs - Desambiguar - Guardar
-router.get("/api/desambiguar-actualiza-datos-originales", API.desambGuardar.actualizaDatosOrig);
-router.get("/api/desambiguar-averigua-si-la-info-tiene-errores", API.desambGuardar.averiguaSiHayErrores);
+router.get("/api/pa-actualiza-datos-originales", API.desambGuardar.actualizaDatosOrig);
+router.get("/api/pa-averigua-si-la-info-tiene-errores", API.desambGuardar.averiguaSiHayErrores);
 
 // APIs - Varias
-router.get("/api/obtiene-la-cantidad-de-prods-pc", API.cantProductos);
-router.get("/api/obtiene-colecciones-im", API.averiguaColecciones);
-router.get("/api/obtiene-cant-temps-im", API.averiguaCantTemps);
-router.get("/api/obtiene-fa-id", API.obtieneFA_id);
-router.get("/api/averigua-si-fa-ya-existe-en-bd", API.averiguaSiYaExisteEnBd);
-router.get("/api/guarda-datos-adics/", API.guardaDatosAdics);
+router.get("/api/pa-obtiene-la-cantidad-de-prods", API.cantProductos); // palabras clave
+router.get("/api/pa-obtiene-colecciones", API.averiguaColecciones); // im
+router.get("/api/pa-obtiene-cant-temps", API.averiguaCantTemps); // im
+router.get("/api/pa-obtiene-fa-id", API.obtieneFA_id); // fa
+router.get("/api/pa-averigua-si-fa-ya-existe-en-bd", API.averiguaSiYaExisteEnBd); // fa
+router.get("/api/pa-guarda-datos-adicionales/", API.guardaDatosAdics); // datos adicionales
 
 // Vistas - Data entry
 router.get("/agregar-pc", dataEntry, vista.palabrasClave.form);
