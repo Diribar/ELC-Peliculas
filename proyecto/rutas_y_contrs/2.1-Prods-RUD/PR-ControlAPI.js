@@ -10,24 +10,27 @@ module.exports = {
 	edicion: {
 		valida: async (req, res) => {
 			// Obtiene los campos
-			let campos = Object.keys(req.query);
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			req.query.entidad = entidad;
+			const campos = Object.keys(req.query);
 
 			// Averigua los errores solamente para esos campos
 			req.query.publico = req.session.usuario.rolUsuario.autTablEnts;
 			req.query.epocaOcurrencia = req.session.usuario.rolUsuario.autTablEnts;
-			let errores = await validacsFM.validacs.consolidado({campos, datos: req.query});
+			const errores = await validacsFM.validacs.consolidado({campos, datos: req.query});
 
 			// Devuelve el resultado
 			return res.json(errores);
 		},
 		obtieneVersionesProd: async (req, res) => {
 			// Variables
-			let {entidad: producto, id: prodId} = req.query;
-			let usuario_id = req.session.usuario.id;
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id: prodId} = req.query;
+			const usuario_id = req.session.usuario.id;
 
 			// Obtiene los datos ORIGINALES y EDITADOS del producto
-			let [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
-				entidad: producto,
+			const [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
+				entidad,
 				entId: prodId,
 				usuario_id,
 				excluirInclude: true,
@@ -38,8 +41,9 @@ module.exports = {
 		},
 		variables: async (req, res) => {
 			// Variables
-			const {entidad, id} = req.query;
-			const {inputVacio, selectVacio, rclvSinElegir} = {...variables};
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id} = req.query;
+			const {inputVacio, selectVacio, rclvSinElegir} = variables;
 
 			// Tipos de actuación
 			const datos = {
@@ -63,17 +67,14 @@ module.exports = {
 		},
 		eliminaGuardada: async (req, res) => {
 			// Obtiene los datos identificatorios del producto
-			const producto = req.query.entidad;
-			const prodId = req.query.id;
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const entId = req.query.id;
 			const usuario_id = req.session.usuario.id;
 
 			// Obtiene los datos ORIGINALES y EDITADOS del producto
 			const [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
-				entidad: producto,
-				entId: prodId,
-				usuario_id,
-				excluirInclude: true,
-				omitirPulirEdic: true,
+				...{entidad, entId, usuario_id},
+				...{excluirInclude: true, omitirPulirEdic: true},
 			});
 
 			// Sólo se puede eliminar la edición si el producto no tiene status "creados_ids" o fue creado por otro usuario
@@ -91,6 +92,11 @@ module.exports = {
 			req.session.edicProd = req.query;
 			res.cookie("edicProd", req.query, {maxAge: unDia});
 			return res.json();
+		},
+		obtieneRclv: async (req, res) => {
+			const {entidad, id} = req.query;
+			const rclv = await baseDeDatos.obtienePorId(entidad, id);
+			return res.json(rclv);
 		},
 	},
 	califics: {

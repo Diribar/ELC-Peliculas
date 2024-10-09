@@ -12,7 +12,7 @@ window.addEventListener("load", async () => {
 	};
 	const entidad = document.querySelector("#entidad").innerHTML;
 	const entNombre = entidad == "peliculas" ? "película" : entidad == "colecciones" ? "colección" : "capítulo";
-	const pre = "api/pa-";
+	const pre = "/producto/api/pa-";
 	let statusInicial = true;
 
 	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
@@ -105,7 +105,7 @@ window.addEventListener("load", async () => {
 			url += "=";
 			url += encodeURIComponent(DOM.inputs[i].value);
 		}
-		return fetch("api/pa-valida-fa/" + url).then((n) => n.json());
+		return fetch("/producto/api/pa-valida-fa/" + url).then((n) => n.json());
 	};
 
 	// Status inicial

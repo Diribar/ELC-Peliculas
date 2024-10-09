@@ -50,6 +50,7 @@ router.get("/api/pr-obtiene-variables-prod", API.edicion.variables);
 router.get("/api/pr-envia-a-req-session", API.edicion.envioParaSession);
 router.get("/api/pr-eliminar-nueva", API.edicion.eliminaNueva);
 router.get("/api/pr-eliminar-guardada", API.edicion.eliminaGuardada);
+router.get("/api/pr-obtiene-rclv", API.edicion.obtieneRclv);
 
 // API - Varios
 router.get("/api/pr-obtiene-cap-ant-y-post", API.obtieneCapAntPostID);
