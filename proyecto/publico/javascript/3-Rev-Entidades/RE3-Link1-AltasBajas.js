@@ -87,5 +87,5 @@ window.addEventListener("load", () => {
 
 // Variables
 const rutaAltaBaja = "/links/api/lk-alta-baja/";
-const rutaSigProd = "/revision/api/siguiente-producto-link/";
+const rutaSigProd = "/revision/api/re-siguiente-producto-link/";
 let sigProd;

@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 		tituloRegs: document.querySelectorAll(".bloques .temas h3"),
 		registros: document.querySelectorAll(".bloques .temas .registros"),
 	};
-	const actualizaVisibles = "/revision/api/actualiza-visibles/?datos=";
+	const actualizaVisibles = "/revision/api/re-actualiza-visibles/?datos=";
 	const circuito = location.pathname.split("tablero-de-")[1];
 
 	// Muestra u oculta

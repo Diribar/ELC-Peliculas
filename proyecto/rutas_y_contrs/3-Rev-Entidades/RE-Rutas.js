@@ -43,15 +43,15 @@ const aptoCRUD = [m.entValida, m.idValido, m.statusCorrecto, ...usuarioBase, m.p
 const aptoEdicion = [...aptoCRUD, m.usRolRevPERL, m.edicionVista];
 
 // APIs - Tablero
-router.get("/api/actualiza-visibles", API.actualizaVisibles);
+router.get("/api/re-actualiza-visibles", API.actualizaVisibles);
 
 // APIs - Producto y RCLV
-router.get("/api/motivo-generico-revision", API.obtieneMotivoGenerico);
-router.get("/api/edicion-aprob-rech", m.edicionAPI, API.edicAprobRech);
+router.get("/api/re-motivo-generico", API.obtieneMotivoGenerico);
+router.get("/api/re-edicion-aprob-rech", m.edicionAPI, API.edicAprobRech);
 
 // APIs- Links
-router.get("/api/edicion-link", m.edicionAPI, API.edicAprobRech);
-router.get("/api/siguiente-producto-link", API.links.sigProd);
+router.get("/api/re-edicion-link", m.edicionAPI, API.edicAprobRech);
+router.get("/api/re-siguiente-producto-link", API.links.sigProd);
 
 // Vistas - Tablero de Control
 router.get("/tablero", usuarioBase, m.usRolAutTablEnts, vista.tableroControl);
