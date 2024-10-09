@@ -274,24 +274,22 @@ module.exports = {
 		if (entidad == "capitulos" && usuario_id) {
 			// Variables
 			const condColec = {coleccion_id: original.coleccion_id, editadoPor_id: usuario_id};
-			const edicColec = await baseDeDatos.obtienePorCondicion("prodsEdicion", condColec);
+			const edicColec = await baseDeDatos.obtienePorCondicion("prodsEdicion", condColec, includesEdic);
 			if (!edicColec) return [original, edicion];
 
 			// Si el 'nombreCastellano' de la colección está editado, lo actualiza en la variable 'original'
 			if (original.coleccion && edicColec.nombreCastellano)
 				original.coleccion.nombreCastellano = edicColec.nombreCastellano;
 
-			// Si es un producto, reemplaza los campos vacíos del original y la edición
-			if (familia == "producto") {
-				const camposEditables = [...variables.camposDD, ...variables.camposDA];
-				for (let campo of camposEditables) {
-					const {nombre} = campo;
-					if (
-						(edicColec[nombre] != null && original[nombre] == null && (!edicion || edicion[nombre] == null)) || // sólo 'edicColec' tiene un valor; 'null' y 'undefined' son equivalentes con el '=='
-						(campo.rclv && edicColec[nombre] > 10 && original[nombre] == 1 && !edicion[nombre]) // es un rclv y sólo 'edicColec' tiene un valor significativo
-					)
-						edicion = {...edicion, [nombre]: edicColec[nombre]};
-				}
+			// Reemplaza los campos vacíos del original y la edición
+			const camposEditables = [...variables.camposDD, ...variables.camposDA];
+			for (let campo of camposEditables) {
+				const {nombre} = campo;
+				if (
+					(edicColec[nombre] != null && original[nombre] == null && (!edicion || edicion[nombre] == null)) || // sólo 'edicColec' tiene un valor; 'null' y 'undefined' son equivalentes con el '=='
+					(campo.rclv && edicColec[nombre] > 10 && original[nombre] == 1 && !edicion[nombre]) // es un rclv y sólo 'edicColec' tiene un valor significativo
+				)
+					edicion = {...edicion, [nombre]: edicColec[nombre]};
 			}
 		}
 
