@@ -20,7 +20,7 @@ module.exports = async (req, res, next) => {
 				? activos_ids
 				: tarea == "inactivar"
 				? aprobados_ids
-				: ["recuperar ", "eliminado"].includes(tarea)
+				: ["recuperar", "eliminado"].includes(tarea)
 				? [inactivo_id]
 				: tarea == "eliminado-por-creador"
 				? [creado_id]

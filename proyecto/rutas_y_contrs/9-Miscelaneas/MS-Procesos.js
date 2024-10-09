@@ -191,7 +191,7 @@ module.exports = {
 			];
 
 			// Rutas compartidas
-			tareas = ["edicion", "rechazar", "inactivar", "recuperar"];
+			const tareas = ["edicion", "rechazar", "inactivar", "recuperar"];
 			for (let tarea of tareas)
 				rutas.push({ant: "/revision/" + familia + "/" + tarea, act: "/revision/" + tarea + "/" + entidad});
 

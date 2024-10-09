@@ -160,7 +160,7 @@ module.exports = {
 			{url: "revision/edicion", titulo: "Revisión de Edicion de"},
 			{url: "revision/rechazar", titulo: "Rechazar"},
 			{url: "revision/inactivar", titulo: "Revisión de Inactivar"},
-			{url: "revision/recuperar", titulo: "Eliminado de Recuperar"},
+			{url: "revision/recuperar", titulo: "Revisión de Recuperar"},
 
 			// Crud
 			{url: "historial", titulo: "Historial de"},
@@ -169,7 +169,7 @@ module.exports = {
 		];
 
 		// Título
-		let titulo = titulos.find((n) => originalUrl.includes("/" + n.url + "/")) + " ";
+		let titulo = titulos.find((n) => originalUrl.includes("/" + n.url + "/")).titulo + " ";
 		titulo += comp.obtieneDesdeEntidad.unaUn(entidad) + " ";
 		titulo += entidadNombre;
 
@@ -209,28 +209,23 @@ module.exports = {
 		if (!datos.motivo_id) return null;
 
 		// Variables
-		let comentario = null;
+		let comentario = datos.comentario;
 
-		// Si el movimiento es 'inactivar' o 'rechazar' y el motivo es 'duplicado', genera el comentario
-		if (["inactivar", "rechazar"].includes(datos.codigo) && datos.motivo_id == motivoDupl_id) {
-			// Variables
+		// Si el motivo es 'duplicado', genera el comentario
+		if (
+			datos.motivo_id == motivoDupl_id &&
+			((datos.tema != "revision" && datos.codigo == "inactivar") || datos.codigo == "rechazar") // crud de inactivar, o rechazar
+		) {
 			const {entDupl, idDupl} = datos;
 			const elLa = comp.obtieneDesdeEntidad.elLa(entDupl);
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entDupl).toLowerCase();
 			comentario = "con" + elLa + entidadNombre + " id " + idDupl;
-			return comentario;
 		}
 
-		// Lo obtiene del formulario
-		if (datos.comentario) comentario = datos.comentario;
-
 		// Si corresponde, lo obtiene del movimiento anterior
-		if (!comentario) {
-			const {comentNeces} = statusMotivos.find((n) => n.id == datos.motivo_id);
-			if ((comentNeces || datos.motivo_id == motivoDupl_id) && datos.statusFinal_id == inactivo_id) {
-				const ultHist = await this.historialDeStatus.ultimoRegistro(datos.entidad, datos.id);
-				if (ultHist && ultHist.comentario) comentario = ultHist.comentario;
-			}
+		if (!comentario && datos.tema == "revision" && [inactivar_id, recuperar_id].includes(datos.statusOriginal_id)) {
+			const ultHist = await this.historialDeStatus.ultimoRegistro(datos.entidad, datos.id);
+			if (ultHist && ultHist.comentario) comentario = ultHist.comentario;
 		}
 
 		// Quita el punto final
@@ -395,23 +390,27 @@ module.exports = {
 			// Acciones para el status posterior a 'creado_id'
 			if (
 				statusRegistro_id > creado_id &&
-				(historialStatus.length == 1 || historialStatus[1].statusOriginal_id != creado_id) // no hay registro siguiente (ej: porque se eliminó c/feedback a usuarios) o sí existe y comienza con un status distinto a como termina el anterior
+				(historialStatus.length == 1 || // no hay registro siguiente (ej: porque se eliminó c/feedback a usuarios)
+					historialStatus[1].statusOriginal_id != creado_id) // existe registro siguiente y comienza con un status distinto a como termina el anterior
 			) {
 				statusOriginal_id = creado_id;
 				statusFinal_id =
-					altaRevisadaEn.getTime() >= statusSugeridoEn.getTime() // si la fecha de revisión es mayor o igual que la sugerida => statusRegistro_id; debería ser 'igual', pero originalmente la revisión no impacta en la de sugerido
-						? statusRegistro_id
-						: altaTermEn // si se terminó de revisar, es porque fue aprobado
+					historialStatus.length > 1
+						? historialStatus[1].statusOriginal_id != creado_id || // hubo un movimiento intermedio
+						  historialStatus[1].statusFinal_id != inactivo_id // no se rechazó de entrada
+							? familia == "producto" // no se rechazó de entrada
+								? creadoAprob_id
+								: aprobado_id
+							: null // se rechazó de entrada
+						: statusRegistro_id <= aprobado_id // cuando no hay historial
 						? familia == "producto"
 							? creadoAprob_id
 							: aprobado_id
-						: historialStatus.length > 1
-						? historialStatus[1].statusOriginal_id // si el historial tiene un registro siguiente, ese registro
-						: statusRegistro_id; // de lo contrario, el status del producto
+						: null; // de lo contrario, el status del producto
 
 				// Si el movimiento ya corresponde al historial, interrumpe la función
-				if (statusFinal_id > aprobado_id) return historialStatus;
-				// Si el siguiente registro en el historial no continúa del anterior, agrega el movimiento al historial
+				if (!statusFinal_id) return historialStatus;
+				// Si el siguiente registro en el historial no continúa del anterior, agrega el movimiento
 				else {
 					statusFinalEn = altaRevisadaEn;
 					statusFinal = FN.statusFinal(statusFinal_id);
@@ -423,12 +422,10 @@ module.exports = {
 			// Acciones para el status posterior a 'creadoAprob_id'
 			if (
 				statusRegistro_id > creadoAprob_id &&
-				historialStatus.length >= 2 && // existen por lo menos dos registros
 				historialStatus[1].statusFinal_id == creadoAprob_id // el registro anterior terminó en 'creadoAprob_id'
 			) {
-				// Si el movimiento ya corresponde al historial, interrumpe la función
-				statusFinal_id = altaTermEn ? aprobado_id : inactivar_id;
-				if (statusFinal_id > aprobado_id) return historialStatus;
+				// Si no se completó el alta, interrumpe la función
+				if (!altaTermEn) return historialStatus;
 
 				// Averigua el 'statusFinalEn'
 				statusFinalEn = altaTermEn
@@ -439,6 +436,7 @@ module.exports = {
 
 				// Agrega el registro al historial
 				statusOriginal_id = creadoAprob_id;
+				statusFinal_id = aprobado_id;
 				statusFinal = FN.statusFinal(statusFinal_id);
 				regHistorial = {entidad, entidad_id, statusOriginal_id, statusFinal_id, statusFinalEn, statusFinal};
 				historialStatus.splice(2, 0, regHistorial);
@@ -457,19 +455,18 @@ module.exports = {
 				const anterior = historialStatus[contador - 1];
 				const siguiente = historialStatus[contador];
 
-				//
+				// Si en el historial se omite un movimiento, lo agrega
 				if (anterior.statusFinal_id != siguiente.statusOriginal_id) {
-					// Genera los datos
-					const actual = {
+					const regAgregar = {
 						statusOriginal_id: anterior.statusFinal_id,
 						statusFinal_id: siguiente.statusOriginal_id,
 						statusFinalEn: siguiente.statusOriginalEn,
 						statusFinal: FN.statusFinal(siguiente.statusOriginal_id),
 					};
-
-					// Agrega el registro
-					historialStatus.splice(contador, 0, actual);
+					historialStatus.splice(contador, 0, regAgregar);
 				}
+
+				// Fin de la rutina
 				contador++;
 				if (contador == 10) break;
 			}
