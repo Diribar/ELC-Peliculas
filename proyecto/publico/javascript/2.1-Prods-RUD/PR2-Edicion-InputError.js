@@ -36,6 +36,7 @@ window.addEventListener("load", async () => {
 
 		// Varios
 		actores: document.querySelector(".inputError input[name=actores"),
+		epocaOcurrencia_id: document.querySelector(".inputError select[name=epocaOcurrencia_id"),
 		flechasDiferencia: document.querySelectorAll(".inputError .fa-arrow-right-long"),
 		linksRCLV: document.querySelectorAll(".inputError i.linkRCLV"),
 		iconosAyuda: document.querySelectorAll(".inputError .ayudaClick"),
@@ -83,7 +84,7 @@ window.addEventListener("load", async () => {
 			let camposResp = Array.from(inputsResp).map((n) => n.name);
 
 			// Prepara la información
-			let objeto = "entidad=" + entidad + "&id=" + id + "&statusRegistro_id=" + statusRegistro_id;
+			let objeto = "id=" + id + "&statusRegistro_id=" + statusRegistro_id;
 			if (v.coleccion_id) objeto += "&coleccion_id=" + v.coleccion_id;
 			for (let campoNombre of v.camposNombre) {
 				const indice = camposResp.indexOf(campoNombre);
@@ -286,7 +287,7 @@ window.addEventListener("load", async () => {
 
 		// Validaciones estándar y obtiene el valor
 		amplio.restringeCaracteres(e);
-		const valor = e.target.value;
+		const {name: nombre, value: valor} = e.target;
 
 		// Acciones si se cambió el país
 		if (e.target == DOM.paisesSelect) {
@@ -295,11 +296,18 @@ window.addEventListener("load", async () => {
 		}
 
 		// Acciones si se cambió el tipo de actuación
-		if (e.target.name == "tipoActuacion_id") {
+		if (nombre == "tipoActuacion_id") {
 			if ([v.anime_id, v.documental_id].includes(Number(valor))) {
 				DOM.actores.value = v.tiposActuacion.find((n) => n.id == valor).nombre;
 				DOM.actores.readOnly = true;
 			} else DOM.actores.readOnly = false;
+		}
+
+		// Acciones si se cambió el personaje
+		if (["personaje_id", "hecho_id"].includes(nombre) && valor != 1) {
+			const entidadRclv = nombre == "personaje_id" ? "personajes" : "hechos";
+			const rclv = await fetch(rutas.obtieneRclv + entidadRclv + "&id=" + valor).then((n) => n.json());
+			DOM.epocaOcurrencia_id.value = rclv.epocaOcurrencia_id;
 		}
 
 		// Acciones si se cambió el avatar
@@ -352,7 +360,7 @@ window.addEventListener("load", async () => {
 				v.esImagen = true;
 
 				// Elimina Session y Cookies
-				fetch("/producto/api/eliminar-nueva");
+				fetch(rutas.eliminaEdicN);
 
 				// Vuelve al status de la versión anterior
 				version[!indice ? "edicN" : "edicG"] = {...version[!indice ? "edicG" : "orig"]};
@@ -380,7 +388,7 @@ window.addEventListener("load", async () => {
 
 	// Obtiene las versiones y si le edición_id no coincide, recarga la vista sin la edición
 	version = await obtieneLasVersiones();
-	if (version.edicG.id != edicID) {
+	if (version.edicG.id != edicId) {
 		location.href = rutas.recargaLaVistaSinEdicion;
 		return;
 	}
@@ -393,17 +401,16 @@ window.addEventListener("load", async () => {
 });
 
 // Variables del url
-const edicID = new URL(location.href).searchParams.get("edicID");
-let origen = new URL(location.href).searchParams.get("origen");
-origen = origen ? "&origen=" + origen : "";
 
 // Rutas
 const rutas = {
-	validar: "/producto/api/valida-edicion-prod/?",
-	versiones: "/producto/api/obtiene-original-y-edicion/?entidad=" + entidad + "&id=" + id,
-	variablesBE: "/producto/api/obtiene-variables-prod/?entidad=" + entidad + "&id=" + id,
-	eliminaEdicG: "/producto/api/eliminar-guardada/?entidad=" + entidad + "&id=" + id,
-	recargaLaVistaSinEdicion: location.pathname + "?entidad=" + entidad + "&id=" + id + origen,
+	validar: "/" + entidad + "/api/pr-valida-edicion-prod/?",
+	versiones: "/" + entidad + "/api/pr-obtiene-original-y-edicion/?id=" + id,
+	variablesBE: "/" + entidad + "/api/pr-obtiene-variables-prod/?id=" + id,
+	eliminaEdicN: "/" + entidad + "/api/pr-eliminar-nueva",
+	eliminaEdicG: "/" + entidad + "/api/pr-eliminar-guardada/?id=" + id,
+	obtieneRclv: "/" + entidad + "/api/pr-obtiene-rclv/?entidad=", // la entidad es distinta a la del url
+	recargaLaVistaSinEdicion: pathname + "?id=" + id + (origen ? "&origen=" + origen : ""),
 };
 
 // Versiones de datos
