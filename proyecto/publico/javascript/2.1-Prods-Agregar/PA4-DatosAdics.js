@@ -48,8 +48,8 @@ window.addEventListener("load", async () => {
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 	};
 	let rutas = {
-		validar: "api/pa-valida-da/?",
-		guardaDatosAdics: "api/pa-guarda-datos-adicionales/?",
+		validar: "/producto/api/pa-valida-da/?",
+		guardaDatosAdics: "/producto/api/pa-guarda-datos-adicionales/?",
 	};
 	const camposRCLV = ["personaje_id", "hecho_id", "tema_id"];
 
