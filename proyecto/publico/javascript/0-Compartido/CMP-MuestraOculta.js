@@ -17,7 +17,7 @@ window.addEventListener("load", () => {
 	// Mensajes de ayuda
 	window.addEventListener("click", (e) => {
 		// Si el click fue 'mmBR'
-		if (typeof e.target.className == "string" && e.target.className.includes("mmSG")) return;// debe compararse con string, porque hay otros tipos que darían error
+		if (typeof e.target.className == "string" && e.target.className.includes("mmSG")) return; // debe compararse con string, porque hay otros tipos que darían error
 
 		// Si el click es fuera del input deBúsqueda Rápida => toggle u oculta
 		if (![DOM.brInput].includes(e.target))
@@ -35,3 +35,6 @@ window.addEventListener("load", () => {
 		if (!DOM.brMostrar.className.includes("ocultar")) DOM.brInput.focus();
 	});
 });
+
+// Event listeners - Recarga la vista si se gira
+screen.orientation.addEventListener("change", () => location.reload());

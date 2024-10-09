@@ -131,10 +131,10 @@ window.addEventListener("load", () => {
 		});
 
 	// Event listeners - Recarga la vista si se gira
-	screen.orientation.addEventListener("change", () => {
-		parado = window.matchMedia("(orientation: portrait)").matches;
-		muestraOculta.startUp();
-	});
+	// screen.orientation.addEventListener("change", () => {
+	// 	parado = window.matchMedia("(orientation: portrait)").matches;
+	// 	muestraOculta.startUp();
+	// });
 
 	// Start-up
 	muestraOculta.startUp();
