@@ -113,7 +113,7 @@ module.exports = {
 			provsEmbeded: linksProvs.filter((n) => n.embededPoner),
 
 			// Otros
-			epocasVarias: epocasOcurrencia.find((n) => n.id == "var"),
+			epocaVarias: epocasOcurrencia.find((n) => n.id == "var"),
 			epocasSinVarias: epocasOcurrencia.filter((n) => n.id != "var"),
 			mesesAbrev: meses.map((n) => n.abrev),
 			motivoInfoErronea: motivosEdics.find((n) => n.codigo == "infoErronea"),

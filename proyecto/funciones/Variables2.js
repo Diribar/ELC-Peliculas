@@ -228,11 +228,13 @@ module.exports = {
 		return resultado;
 	},
 	camposTransfCaps: {
-		sinDifs: [
+		// se transfieren siempre
+		siempre: [
 			...["tipoActuacion_id", "idiomaOriginal_id", "cfc", "bhr", "publico_id"],
 			...["color", "musical", "deporte", "crueldad", "capEnCons"],
 		],
-		conDifs: ["paises_id", "direccion", "guion", "musica", "produccion", "epocaOcurrencia_id", ...rclvs_id],
+		// se transfieren
+		soloVacios: ["paises_id", "direccion", "guion", "musica", "produccion", "epocaOcurrencia_id", ...rclvs_id],
 		actores: "actores",
 	},
 

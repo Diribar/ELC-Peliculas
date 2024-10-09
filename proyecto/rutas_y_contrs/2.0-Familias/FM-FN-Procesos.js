@@ -795,44 +795,6 @@ module.exports = {
 		// Fin
 		return {orig, edic};
 	},
-	transfDatosDeColParaCaps: async (original, edicion, campo) => {
-		// Variables
-		const novedad = {[campo]: edicion[campo]};
-		const {camposTransfCaps} = variables;
-
-		// Si el campo no recibe datos, termina
-		const camposAceptados = Object.values(camposTransfCaps).flat();
-		if (!camposAceptados.includes(campo)) return;
-
-		// Campos que se reemplazan siempre
-		const esActoresSiempre = campo == "actores" && [dibujosAnimados, documental].includes(edicion.actores);
-		if (camposTransfCaps.sinDifs.includes(campo) || esActoresSiempre) {
-			const condicion = {coleccion_id: original.id};
-			await baseDeDatos.actualizaPorCondicion("capitulos", condicion, novedad);
-		}
-
-		// Campos para los que se puede preservar el valor según el caso
-		const esActoresDepende = campo == "actores" && ![dibujosAnimados, documental].includes(edicion.actores);
-		if (camposTransfCaps.conDifs.includes(campo) || esActoresDepende) {
-			// Condición
-			const condicion = {coleccion_id: original.id, [campo]: [original[campo]]}; // si el valor del capítulo coincide coincide con el del original
-			if (original[campo] !== null) condicion[campo].push(null); // se asegura de que reemplace los que tengan valor 'null'
-
-			// Campos particulares
-			const esRclv_id = variables.entidades.rclvs_id.includes(campo);
-			const noEsVarios = esRclv_id && edicion[campo] != 2; // 'rclv_id', salvo que sea 'varios'
-			const esEpocaOcurrencia = campo == "epocaOcurrencia_id";
-			const noEsVarias = esEpocaOcurrencia && edicion.epocaOcurrencia_id != epocasVarias.id; // 'epocaOcurrencia_id', salvo que sea 'varios'
-			const esOtroCampo = !esRclv_id && !esEpocaOcurrencia;
-
-			// Reemplaza los valores
-			if (esOtroCampo || (esRclv_id && !noEsVarios) || (esEpocaOcurrencia && !noEsVarias))
-				await baseDeDatos.actualizaPorCondicion("capitulos", condicion, novedad);
-		}
-
-		// Fin
-		return true;
-	},
 	elimina: {
 		demasEdiciones: async ({entidad, original, id}) => {
 			// Revisa cada registro de edición y decide si corresponde:
