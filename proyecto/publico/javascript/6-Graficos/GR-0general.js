@@ -52,10 +52,10 @@ const FN_charts = {
 
 			// Área y leyenda
 			chartArea: {
-				left: mostrarLeyenda ? "15%" : "5%",
-				right: "5%",
 				top: "15%",
 				bottom: mostrarLeyenda ? "20%" : "12%",
+				left: mostrarLeyenda ? "15%" : "30",
+				right: "20",
 			}, // reemplaza el ancho y alto
 			legend: {
 				position: mostrarLeyenda > 200 ? "bottom" : "none",
