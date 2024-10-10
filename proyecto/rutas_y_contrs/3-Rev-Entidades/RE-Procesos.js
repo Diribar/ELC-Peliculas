@@ -680,39 +680,6 @@ module.exports = {
 			return informacion;
 		},
 		obtieneSigProd: async (datos) => FN_links.obtieneSigProd(datos),
-		variables: ({link, req}) => {
-			const {IN, aprob, motivo_id} = req.query;
-			const id = link.id;
-			const revId = req.session.usuario.id;
-			const decisAprob = aprob == "SI";
-			const campoDecision = "links" + (decisAprob ? "Aprob" : "Rech");
-			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
-			const anoEstreno = link[asocProd].anoEstreno;
-			const ahora = comp.fechaHora.ahora();
-			const fechaVencim = FN_links.fechaVencim({link, IN, ahora});
-			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
-			const statusCreado = link.statusRegistro_id == creado_id;
-
-			// Variables para el historial
-			const {statusRegistro_id: statusOriginal_id, statusSugeridoPor_id: statusOriginalPor_id} = link;
-			const statusFinal_id = statusRegistro_id;
-
-			// Arma los datos
-			let datosLink = {
-				...{fechaVencim, anoEstreno, statusSugeridoPor_id: revId, statusSugeridoEn: ahora, statusRegistro_id},
-				motivo_id: statusRegistro_id == inactivo_id ? (motivo_id ? motivo_id : link.motivo_id) : null,
-			};
-			if (statusCreado) {
-				datosLink.altaRevisadaPor_id = revId;
-				datosLink.altaRevisadaEn = ahora;
-				datosLink.leadTimeCreacion = comp.obtieneLeadTime(link.creadoEn, ahora);
-			}
-
-			// Fin
-			let respuesta = {id, statusRegistro_id, statusCreado, decisAprob, datosLink, campoDecision};
-			respuesta = {...respuesta, motivo_id, revId, statusOriginalPor_id, statusOriginal_id, statusFinal_id};
-			return respuesta;
-		},
 	},
 
 	// Varios
@@ -937,29 +904,6 @@ let FN_links = {
 
 		// Fin
 		return sigProd;
-	},
-	fechaVencim: ({link, ahora, IN}) => {
-		// Resultado para rechazado
-		if (IN != "SI") return null;
-
-		// Resultado para 'creado'
-		const ahoraTiempo = ahora.getTime();
-		if (comp.linksVencPorSem.condicCreado(link)) return new Date(ahoraTiempo + linksVU_primRev);
-
-		// Variables - si es una categoría estándar, averigua su semana
-		const entidad = comp.linksVencPorSem.condicEstrRec(link) ? "estrRec" : link.capitulo_id ? "capitulos" : "pelisColes";
-
-		// Obtiene la cantidad de links que vence cada semana
-		const cantLinksVencsPorSemMayorCorte = Object.values(cantLinksVencPorSem)
-			.slice(0, -1) // descarta los registros que no pertenecen a semanas
-			.slice(linkSemInicial) // descarta los registros de las semanas anteriores a linkSemInicial
-			.map((n) => n[entidad]);
-
-		// Obtiene la semana a la cual agregarle una fecha de vencimiento, comenzando desde la más reciente
-		const semana = cantLinksVencsPorSemMayorCorte.findIndex((n) => n < cantLinksVencPorSem.promSem[entidad]) + linkSemInicial;
-
-		// Fin
-		return new Date(ahoraTiempo + semana * unaSemana);
 	},
 };
 let FN_edicion = {
