@@ -1,12 +1,12 @@
 <% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
 	<!-- Todos los revisores o superior -->
 	<div class="mostrarClick menuForm menuFondo ocultar">
-		<% for (grafico of graficos) { %>
-		<a href="/graficos/<%= grafico.url %>" class="menuOpcion<%- grafico.resaltar ? ' resaltar' : '' %>">
-			<i class="<%= iconos.faSolid %> <%= grafico.icono %> icono"></i>
-			<span><%= grafico.titulo %></span>
+		<% for (codigo in graficos) { %>
+		<a href="/graficos/<%= graficos[codigo].url %>" class="menuOpcion<%- graficos[codigo].resaltar ? ' resaltar' : '' %>">
+			<i class="<%= iconos.faSolid %> <%= graficos[codigo].icono %> icono"></i>
+			<span><%= graficos[codigo].titulo %></span>
 		</a>
-		<% if (grafico.hr) { %><hr><% } %>
+		<% if (graficos[codigo].hr) { %><hr><% } %>
 		<% } %>
 	</div>
 <% } %>
