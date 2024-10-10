@@ -1,47 +1,51 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Variables
-	const algunosDatos = document.querySelector("#cuadro #algunosDatos");
-
-	// Obtiene información del backend
+	// Obtiene datos del BE
 	const {aprob, pend} = await fetch(ruta).then((n) => n.json());
 
+	// Variables
+	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
 	const ejeX = ["cfc-aprob", "cfc-pend", "vpc-pend", "vpc-aprob"];
 	const ejeY = [aprob.cfc, pend.cfc, pend.vpc, aprob.vpc];
-	const suma = ejeY.reduce((acum, n) =>  acum + n);
 
-	// Aspectos de la imagen de Google
-	google.charts.load("current", {packages: ["corechart"]});
-	google.charts.setOnLoadCallback(drawGraphic);
+	// Genera el resultado
+	const resultado = [["Status", "Cant. de Películas"]];
+	for (let i = 0; i < ejeX.length; i++) resultado.push([ejeX[i], ejeY[i]]);
 
-	// https://developers.google.com/chart/interactive/docs/gallery/columnchart
-	function drawGraphic() {
-		// Consolida el resultado
-		const resultado = [["Status", "Cant. de Películas"]];
-		for (let i = 0; i < ejeX.length; i++) resultado.push([ejeX[i], ejeY[i]]);
-
-		// Especifica la información
-		const data = google.visualization.arrayToDataTable(resultado);
-
-		// Opciones del gráfico
-		const gris = "rgb(100, 100, 100)";
-		const azul = "rgb(37, 64, 97)";
-
-		const options = {
-			backgroundColor: "rgb(255,242,204)",
-			colors: [gris, gris, azul, azul],
-			fontSize: 10,
-			chartArea: {height: "80%"},
-			pieSliceText: "value",
-			legend: {position: "labeled"},
-			slices: {1: {offset: 0.1}, 2: {offset: 0.1}},
-		};
+	const dibujarGrafico = () => {
+		// Opciones
+		const {grafico, opciones} = FN_charts.opciones(DOM, "pie");
 
 		// Hace visible el gráfico
-		const grafico = new google.visualization.PieChart(document.querySelector("#grafico"));
-		grafico.draw(data, options);
+		const data = new google.visualization.arrayToDataTable(resultado);
+		grafico.draw(data, opciones);
 
-		// Agrega algunos datos relevantes
-		algunosDatos.innerHTML = "Total: " + suma;
-	}
+		// Fin
+		return;
+	};
+
+	// Dibuja el gráfico
+	google.charts.setOnLoadCallback(dibujarGrafico);
+
+	// Fin
+	return;
 });
+// https://developers.google.com/chart/interactive/docs/gallery/columnchart
+
+// // Opciones del gráfico
+// const gris = "rgb(100, 100, 100)";
+// const azul = "rgb(37, 64, 97)";
+
+// const options = {
+// 	backgroundColor: "rgb(255,242,204)",
+// 	colors: [gris, gris, azul, azul],
+// 	fontSize: 10,
+// 	chartArea: {height: "80%"},
+// 	pieSliceText: "value",
+// 	legend: {position: "labeled"},
+// 	slices: {1: {offset: 0.1}, 2: {offset: 0.1}},
+// };
+// Agrega algunos datos relevantes
+// const algunosDatos = document.querySelector("#cuadro #algunosDatos");
+// const suma = ejeY.reduce((acum, n) =>  acum + n);
+// algunosDatos.innerHTML = "Total: " + suma;
