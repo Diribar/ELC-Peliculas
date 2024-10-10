@@ -57,3 +57,35 @@ window.addEventListener("load", async () => {
 	return;
 });
 // https://developers.google.com/chart/interactive/docs/gallery/columnchart
+
+			// // Temas generales
+			// isStacked: true, // columnas apiladas
+			// backgroundColor: "rgb(255,242,204)",
+			// chartArea: {width: "80%", height: "70%"},
+			// fontSize: 14,
+			// legend: "none",
+			// animation: {
+			// 	duration: 100,
+			// 	easing: "out",
+			// 	startup: true,
+			// },
+
+			// // Título
+			// title: "Prom. Semanal: " + cantLinks.promSem.prods,
+			// titleTextStyle: {color: "brown", fontSize: 18},
+
+			// // Ejes
+			// hAxis: {
+			// 	scaleType: "number",
+			// 	format: "decimal",
+			// 	baselineColor: "none", // para que desaparezca el eje vertical
+			// 	ticks,
+			// },
+			// vAxis: {
+			// 	fontSize: 20,
+			// 	viewWindow: {min: 0, max: maxEjeY},
+			// 	// gridlines: {count: 8},
+			// },
+
+			// // Particularidades
+			// colors: ["rgb(37,64,97)", "rgb(31,73,125)", "rgb(79,98,40)"],
