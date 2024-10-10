@@ -24,7 +24,10 @@
 	#cuerpoFooter {position: absolute; height: 100%;}
 	#cuerpoFooter #cuerpo {
 		width: 100vw !important; max-width: 100vw;
-		#centro {width: 90%; align-self: center;}
+		#centro #zonaDeGraficos {
+			padding: 0px 15px;
+			#cuadro {padding: 15px 15px;}
+		}
 	}
 }
 

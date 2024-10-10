@@ -1,19 +1,14 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Variables
-	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
-	const alturaGrafico = DOM.grafico.offsetHeight;
-	const anchoGrafico = DOM.grafico.offsetWidth;
-
-	const grupos = ["Logins", "Us. s/Login", "Visitas"];
-	let cantidades = {logins: 0, usSinLogin: 0, visitas: 0};
-	let promedio = {};
-	let leyendaTitulo = "";
-
 	// Obtiene datos del BE
 	const {navegsAcums, coloresConfigs: colores} = await fetch("/graficos/api/gr-usuarios-clientes-acums").then((n) => n.json());
 
-	// Obtiene los colores
+	// Variables
+	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
+	const grupos = ["Logins", "Us. s/Login", "Visitas"];
+	let promedio = {};
+
+	// Establece los colores
 	const color = {
 		logins: colores.azul,
 		usSinLogin: colores.celeste,
@@ -22,45 +17,43 @@ window.addEventListener("load", async () => {
 	const coloresRelleno = Object.values(color).map((n) => n[1]);
 	const coloresBorde = Object.values(color).map((n) => n[3]);
 
-	// Aspectos de la imagen de Google
-	google.charts.load("current", {packages: ["corechart"]});
-	google.charts.setOnLoadCallback(drawGraphic);
+	// Genera la información
+	const resultado = [["Fecha", ...grupos.map((grupo) => [grupo, {role: "style"}]).flat()]];
+	const cantidades = {logins: 0, usSinLogin: 0, visitas: 0};
+	for (let navegsPorDia of navegsAcums) {
+		// Alimenta los datos del gráfico
+		const {fecha, logins, usSinLogin, visitas} = navegsPorDia;
+		resultado.push([
+			" " + fecha + " ",
+			...[logins, "stroke-color: " + coloresBorde[0]],
+			...[usSinLogin, "stroke-color: " + coloresBorde[1]],
+			...[visitas, "stroke-color: " + coloresBorde[2]],
+		]);
 
-	// https://developers.google.com/chart/interactive/docs/gallery/columnchart
-	function drawGraphic() {
-		// Variables
-		let resultado = [["Fecha", ...grupos.map((grupo) => [grupo, {role: "style"}]).flat()]];
+		// Agrega las cantidades
+		cantidades.logins += logins;
+		cantidades.usSinLogin += usSinLogin;
+		cantidades.visitas += visitas;
+	}
 
-		// Genera la información
-		for (let navegsPorDia of navegsAcums) {
-			// Alimenta los datos del gráfico
-			const {fecha, logins, usSinLogin, visitas} = navegsPorDia;
-			resultado.push([
-				" " + fecha + " ",
-				...[logins, "stroke-color: " + coloresBorde[0]],
-				...[usSinLogin, "stroke-color: " + coloresBorde[1]],
-				...[visitas, "stroke-color: " + coloresBorde[2]],
-			]);
+	// Obtiene los promedios
+	for (let metodo of Object.keys(cantidades))
+		promedio[metodo] = Math.round((cantidades[metodo] / navegsAcums.length) * 10) / 10;
+	promedio.total = Object.values(promedio).reduce((acum, n) => acum + n);
+	resultado[0].push("Promedio");
+	for (let i = 1; i < resultado.length; i++) resultado[i].push(promedio.total);
 
-			// Agrega las cantidades
-			cantidades.logins += logins;
-			cantidades.usSinLogin += usSinLogin;
-			cantidades.visitas += visitas;
-		}
+	// Titulo general
+	let leyendaTitulo = promedio.total.toLocaleString("pt");
+	grupos.forEach((grupo, i) => (leyendaTitulo += " | " + grupo + ": " + Object.values(promedio)[i].toLocaleString("pt")));
 
-		// Obtiene los promedios
-		for (let metodo of Object.keys(cantidades))
-			promedio[metodo] = Math.round((cantidades[metodo] / navegsAcums.length) * 10) / 10;
-		promedio.total = Object.values(promedio).reduce((acum, n) => acum + n);
-		resultado[0].push("Promedio");
-		for (let i = 1; i < resultado.length; i++) resultado[i].push(promedio.total);
+	const drawGraphic = () => {
+		// Variables que cambian con la rotación del mobil
+		const alturaGrafico = DOM.grafico.offsetHeight;
+		const anchoGrafico = DOM.grafico.offsetWidth;
 
-		// Opciones del gráfico - Titulo general
-		leyendaTitulo += promedio.total.toLocaleString("pt");
-		grupos.forEach((grupo, i) => (leyendaTitulo += " | " + grupo + ": " + Object.values(promedio)[i].toLocaleString("pt")));
-		if (anchoGrafico < 600) leyendaTitulo = leyendaTitulo.split("|")[0];
+		const tituloGral = anchoGrafico > 600 ? leyendaTitulo : leyendaTitulo.split("|")[0];
 
-		const data = google.visualization.arrayToDataTable(resultado);
 		const mostrarLeyenda = anchoGrafico > 600 && alturaGrafico > 200;
 		const options = {
 			// Temas generales
@@ -72,7 +65,7 @@ window.addEventListener("load", async () => {
 			legend: {position: mostrarLeyenda > 200 ? "bottom" : "none", textStyle: {fontSize: 12}},
 
 			// Título
-			title: "Prom.: " + leyendaTitulo,
+			title: "Prom.: " + tituloGral,
 			titleTextStyle: {color: "brown", fontSize: Math.min(Math.max(alturaGrafico / 20, 13), 18)},
 
 			// Ejes
@@ -96,7 +89,22 @@ window.addEventListener("load", async () => {
 		};
 
 		// Hace visible el gráfico
-		const grafico = new google.visualization.ColumnChart(document.querySelector("#grafico"));
+		const grafico = new google.visualization.ColumnChart(DOM.grafico);
+		const data = new google.visualization.arrayToDataTable(resultado);
 		grafico.draw(data, options);
-	}
+
+		// Fin
+		return;
+	};
+
+	// Aspectos de la imagen de Google
+	google.charts.load("current", {packages: ["corechart"]});
+	google.charts.setOnLoadCallback(drawGraphic);
+
+	// Event listeners - Recarga la vista si se gira
+	screen.orientation.addEventListener("change", () => {
+		DOM.grafico.classList.add("ocultar");
+		location.reload();
+	});
 });
+// https://developers.google.com/chart/interactive/docs/gallery/columnchart
