@@ -20,6 +20,9 @@ window.addEventListener("load", async () => {
 	const dibujarGrafico = () => {
 		// Opciones
 		const {grafico, opciones} = FN_charts.opciones(DOM, "columnas");
+		opciones.title = "Cantidad: " + totalCfc + " CFC + " + totalVpc + " VPC = " + (totalCfc + totalVpc) + " Total";
+		opciones.colors= ["rgb(255, 230, 153)", "rgb(220, 230, 242)"]
+		opciones.vAxis.title= "Cant. películas y colecciones"
 
 		// Hace visible el gráfico
 		const data = new google.visualization.arrayToDataTable(resultado);
@@ -27,7 +30,7 @@ window.addEventListener("load", async () => {
 
 		// Fin
 		return;
-	}
+	};
 
 	// Dibuja el gráfico
 	google.charts.setOnLoadCallback(dibujarGrafico);
@@ -35,27 +38,5 @@ window.addEventListener("load", async () => {
 	// Fin
 	return;
 });
-	// https://developers.google.com/chart/interactive/docs/gallery/columnchart
+// https://developers.google.com/chart/interactive/docs/gallery/columnchart
 
-	// title: "Cantidad: " + totalCfc + " CFC + " + totalVpc + " VPC = " + (totalCfc + totalVpc)+" Total",
-	// backgroundColor: "rgb(255,242,204)",
-	// fontSize: 10,
-	// animation: {
-	// 	duration: 100,
-	// 	easing: "out",
-	// 	startup: true,
-	// },
-	// chartArea: {width: "80%", height: "70%"},
-	// colors: ["rgb(255, 230, 153)", "rgb(220, 230, 242)"],
-	// //legend: "none",
-	// hAxis: {
-	// 	format: "decimal",
-	// 	scaleType: "number",
-	// 	title: "Época",
-	// },
-	// vAxis: {
-	// 	fontSize: 20,
-	// 	title: "Cantidad de películas y colecciones",
-	// 	viewWindow: {min: 0},
-	// },
-	// isStacked: true, // columnas apiladas
