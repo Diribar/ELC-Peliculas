@@ -8,8 +8,8 @@ header {
 		/* Opciones */
 		.menuOpcion {
 			display: flex; flex-direction: row; align-items: center; padding: 4px 16px;
-			&.resaltar {background-color: var(--gris-intermedio);}
-			&:hover {background-color: var(--gris-oscuro); color: snow;}
+			&.resaltar {background-color: var(--celeste-oscuro);}
+			&:hover {background-color: var(--gris-intermedio);}
 
 			/* Íconos que acompañan al menú */
 			.icono {
