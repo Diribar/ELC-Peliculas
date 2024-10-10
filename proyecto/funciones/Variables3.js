@@ -160,7 +160,7 @@ module.exports = {
 				orden: 3,
 				codigo: "prodsPorPublico",
 				rubro: "prods",
-				titulo: "Películas - Público",
+				titulo: "Películas - Público recomendado",
 				url: "peliculas-publico",
 				icono: iconos.chart,
 			},
