@@ -40,8 +40,8 @@
 			</label>
 			<select id="selectGraficos" class="mmSG" onchange="location = this.value;">
 				<option selected class="ocultar">Gráficos</option>
-				<% for (let grafico of graficos) { %>
-					<option value="/graficos/<%= grafico.url %>"><%= grafico.titulo %></option>
+				<% for (let codigo in graficos) { %>
+					<option value="/graficos/<%= graficos[codigo].url %>"><%= graficos[codigo].titulo %></option>
 				<% } %>
 			</select>
 		</div>
