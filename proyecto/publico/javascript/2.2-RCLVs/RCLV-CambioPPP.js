@@ -6,10 +6,6 @@ window.addEventListener("load", async () => {
 	const anchors = document.querySelectorAll(".prodsNuevos a");
 
 	// Variables varias
-	const rutas = {
-		obtieneVariables: "/rclv/api/rc-obtiene-variables-detalle",
-		pppRutaGuardar: "/producto/api/pr-guarda-la-preferencia-del-usuario",
-	};
 	const v = await fetch(rutas.obtieneVariables).then((n) => n.json());
 	let entidades = [];
 	let ids = [];
@@ -60,3 +56,8 @@ window.addEventListener("load", async () => {
 		});
 	});
 });
+
+const rutas = {
+	obtieneVariables: "/rclv/api/rc-obtiene-variables-detalle",
+	pppRutaGuardar: "/producto/api/pr-guarda-la-preferencia-del-usuario",
+};
