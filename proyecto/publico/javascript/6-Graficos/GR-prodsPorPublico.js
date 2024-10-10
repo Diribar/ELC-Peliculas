@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	const [resultado,publicos] = await fetch("/graficos/api/gr-peliculas-publico").then((n) => n.json());
+	const [resultado,publicos] = await fetch(ruta).then((n) => n.json());
 
 	// Configura los valores de los ejes
 	let ejeX = [];
