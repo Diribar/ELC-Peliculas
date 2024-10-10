@@ -1,22 +1,23 @@
 /* General */
-#cuerpo {flex-direction: column;}
-#cuerpo #centro {display: flex; flex-direction: row; justify-content: flex-start; align-items: center; flex-grow: 1;}
+#cuerpo {
+	flex-direction: column;
+	#centro {
+		display: flex; flex-direction: row; justify-content: flex-start; align-items: center; flex-grow: 1;
 
-/* Zona de Vitreaux */
-#cuerpo #zonaDeVitreaux {display: flex; flex-direction: column; justify-content: center;}
+		/* Zona de gráficos */
+		#zonaDeGraficos {
+			display: flex; flex-direction: row; justify-content: center; align-items: center; flex-grow: 1;
+			height: 100%;
 
-/* Zona de gráficos */
-#cuerpo #zonaDeGraficos {
-	display: flex; flex-direction: row; justify-content: center; align-items: center; flex-grow: 1;
-	padding: 20px 50px; height: 100%;
-
-	#cuadro {
-		display: flex; flex-direction: column; justify-content: center; align-items: center;
-		width: 100%; max-width: 700px;
-		height: min(450px, calc(var(--alturaViewPort) * 0.7));
-		max-height: 100%;
-		padding: 30px 20px; border-radius: 15px; background: var(--celeste-claro);
-		#grafico {width: 100%; height: 100%;}
-		#algunosDatos:has(:not(:empty)) {align-self: flex-end; margin-top: 10px; background: var(--amarillo-claro);}
+			#cuadro {
+				display: flex; flex-direction: column; justify-content: center; align-items: center;
+				width: 100%; max-width: 700px;
+				height: min(450px, calc(var(--alturaViewPort) * 0.7));
+				max-height: 100%;
+				border-radius: 15px; background: var(--celeste-claro);
+				#grafico {width: 100%; height: 100%; border-radius: 15px; overflow: hidden;}
+				#algunosDatos:has(:not(:empty)) {align-self: flex-end; margin-top: 10px; background: var(--amarillo-claro);}
+			}
+		}
 	}
 }
