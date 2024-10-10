@@ -138,6 +138,7 @@ module.exports = {
 		const graficos = [
 			// Usuarios
 			{
+				orden: 1,
 				codigo: "clientesDiarios",
 				rubro: "clientes",
 				titulo: "Clientes Diarios",
@@ -148,6 +149,7 @@ module.exports = {
 
 			// Productos
 			{
+				orden: 3,
 				codigo: "prodsCfcVpc",
 				rubro: "prods",
 				titulo: "Películas - CFC / VPC",
@@ -155,6 +157,7 @@ module.exports = {
 				icono: iconos.chart,
 			},
 			{
+				orden: 3,
 				codigo: "prodsPorPublico",
 				rubro: "prods",
 				titulo: "Películas - Público",
@@ -162,6 +165,7 @@ module.exports = {
 				icono: iconos.chart,
 			},
 			{
+				orden: 3,
 				codigo: "prodsPorEpocaEstr",
 				rubro: "prods",
 				titulo: "Películas - Época de estreno",
@@ -172,6 +176,7 @@ module.exports = {
 
 			// RCLVs
 			{
+				orden: 4,
 				codigo: "rclvsRangosSinEfems",
 				rubro: "rclvs",
 				titulo: "RCLVs - Rangos sin Efemérides",
@@ -181,6 +186,7 @@ module.exports = {
 
 			// Links
 			{
+				orden: 2,
 				codigo: "linksVencim",
 				rubro: "links",
 				titulo: "Links - Vencimiento Semanal",
@@ -190,6 +196,7 @@ module.exports = {
 				hr: true,
 			},
 			{
+				orden: 4,
 				codigo: "linksPorProv",
 				rubro: "links",
 				titulo: "Links - Proveedores",
@@ -197,6 +204,7 @@ module.exports = {
 				icono: iconos.chart,
 			},
 		];
+		graficos.sort((a, b) => a.orden - b.orden);
 		respuesta.graficos = {};
 		for (let grafico of graficos) {
 			respuesta.graficos[grafico.codigo] = grafico;
