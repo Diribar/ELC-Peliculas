@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Obtiene datos del BE
-	const {navegsAcums, coloresConfigs: colores} = await fetch(ruta).then((n) => n.json());
+	const navegsAcums = await fetch(ruta).then((n) => n.json());
 
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
@@ -47,51 +47,22 @@ window.addEventListener("load", async () => {
 	let leyendaTitulo = promedio.total.toLocaleString("pt");
 	grupos.forEach((grupo, i) => (leyendaTitulo += " | " + grupo + ": " + Object.values(promedio)[i].toLocaleString("pt")));
 
-	const drawGraphic = () => {
+	const dibujarGrafico = () => {
 		// Variables que cambian con la rotación del mobil
 		const alturaGrafico = DOM.grafico.offsetHeight;
 		const anchoGrafico = DOM.grafico.offsetWidth;
 
+		// Opciones
+		const opciones = FN_opciones.columnas(alturaGrafico, anchoGrafico);
 		const tituloGral = anchoGrafico > 600 ? leyendaTitulo : leyendaTitulo.split("|")[0];
-
-		const mostrarLeyenda = anchoGrafico > 600 && alturaGrafico > 200;
-		const options = {
-			// Temas generales
-			seriesType: "bars",
-			isStacked: true, // columnas apiladas
-			backgroundColor: "rgb(255,242,204)",
-			chartArea: {left: "15%", right: "5%", top: "15%", bottom: mostrarLeyenda ? "20%" : "12%"}, // reemplaza el ancho y alto
-			fontSize: 14,
-			legend: {position: mostrarLeyenda > 200 ? "bottom" : "none", textStyle: {fontSize: 12}},
-
-			// Título
-			title: "Prom.: " + tituloGral,
-			titleTextStyle: {color: "brown", fontSize: Math.min(Math.max(alturaGrafico / 20, 13), 18)},
-
-			// Ejes
-			hAxis: {
-				textPosition: alturaGrafico > 200 ? "auto" : "none",
-				maxAlternation: 1, // todos los valores en una misma fila
-				slantedText: false, // todos los valores en dirección horizontal
-				textStyle: {fontSize: 12},
-			},
-			vAxis: {
-				viewWindow: {min: 0},
-				title: "Cantidad de personas",
-				titleTextStyle: {fontSize: anchoGrafico > 600 ? Math.min(Math.max(alturaGrafico / 20, 12), 18) : 1},
-				titleTextPosition: anchoGrafico < 600 ? "none" : "auto",
-				textStyle: {fontSize: Math.min(Math.max(alturaGrafico / 20, 10), 14)},
-			},
-
-			// Particularidades
-			colors: coloresRelleno,
-			series: {3: {type: "line"}},
-		};
+		opciones.title = "Prom.: " + tituloGral;
+		opciones.colors = coloresRelleno;
+		opciones.series = {3: {type: "line"}};
 
 		// Hace visible el gráfico
 		const grafico = new google.visualization.ColumnChart(DOM.grafico);
 		const data = new google.visualization.arrayToDataTable(resultado);
-		grafico.draw(data, options);
+		grafico.draw(data, opciones);
 
 		// Fin
 		return;
@@ -99,12 +70,6 @@ window.addEventListener("load", async () => {
 
 	// Aspectos de la imagen de Google
 	google.charts.load("current", {packages: ["corechart"]});
-	google.charts.setOnLoadCallback(drawGraphic);
-
-	// Event listeners - Recarga la vista si se gira
-	screen.orientation.addEventListener("change", () => {
-		DOM.grafico.classList.add("ocultar");
-		location.reload();
-	});
+	google.charts.setOnLoadCallback(dibujarGrafico);
 });
 // https://developers.google.com/chart/interactive/docs/gallery/columnchart
