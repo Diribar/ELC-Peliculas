@@ -34,15 +34,6 @@ module.exports = {
 		},
 		"derechos-de-autor": {titulo: "ELC | Derechos de Autor", codigo: "derechosAutor", icono: "fa-copyright"},
 	},
-	graficos: [
-		{titulo: "Usuarios - Visitas diarias", url: "usuarios-clientes-acums", icono: iconos.columnas, resaltar: true},
-		{titulo: "Links - Vencimiento Semanal", url: "vencimiento-de-links", icono: iconos.columnas, resaltar: true, hr: true},
-		{titulo: "Películas - CFC / VPC", url: "peliculas-cfc-vpc", icono: iconos.chart},
-		{titulo: "Películas - Público", url: "peliculas-publico", icono: iconos.chart},
-		{titulo: "Películas - Época de estreno", url: "peliculas-epoca-estreno", icono: iconos.columnas, hr: true},
-		{titulo: "Links - Por Proveedor", url: "links-por-proveedor", icono: iconos.chart},
-		{titulo: "RCLVs - Rangos sin Efemérides", url: "rclvs-rangos-sin-efemerides", icono: iconos.columnas},
-	],
 
 	// Productos
 	dibujosAnimados: "Dibujos Animados",

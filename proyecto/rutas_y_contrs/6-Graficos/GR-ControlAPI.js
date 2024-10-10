@@ -2,7 +2,7 @@
 
 module.exports = {
 	// Usuarios
-	navegsAcums: async (req, res) => {
+	clientesDiarios: async (req, res) => {
 		const navegsAcums = await baseDeDatos.obtieneTodosConOrden("navegsAcums", "fecha");
 		return res.json({navegsAcums, coloresConfigs});
 	},

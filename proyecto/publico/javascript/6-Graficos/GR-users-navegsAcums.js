@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Obtiene datos del BE
-	const {navegsAcums, coloresConfigs: colores} = await fetch("/graficos/api/gr-usuarios-clientes-acums").then((n) => n.json());
+	const {navegsAcums, coloresConfigs: colores} = await fetch(ruta).then((n) => n.json());
 
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
