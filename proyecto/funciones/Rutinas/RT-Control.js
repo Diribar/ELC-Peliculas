@@ -15,7 +15,7 @@ module.exports = {
 		await this.FechaHoraUTC();
 
 		// Stoppers
-		const info = {...rutinasJSON};
+		const info = {...rutinasJson};
 		if (!Object.keys(info).length) return;
 		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
@@ -40,7 +40,7 @@ module.exports = {
 	FechaHoraUTC: async function () {
 		// Variables
 		hoy = new Date().toISOString().slice(0, 10);
-		const info = {...rutinasJSON};
+		const info = {...rutinasJson};
 		const minutos = new Date().getMinutes();
 
 		// Filtros
@@ -80,7 +80,7 @@ module.exports = {
 		comp.variablesSemanales();
 
 		// Obtiene la información del archivo JSON
-		let info = {...rutinasJSON};
+		let info = {...rutinasJson};
 		if (!Object.keys(info).length) return;
 		if (!info.RutinasSemanales || !Object.keys(info.RutinasSemanales).length) return;
 		const rutinasSemanales = info.RutinasSemanales;
@@ -110,13 +110,16 @@ module.exports = {
 		return;
 	},
 	RutinasHorarias: async function () {
+		// No aplica para el entorno de pruebas
+		if (entorno == "pruebas") return;
+
 		// Obtiene la información del archivo JSON
-		const info = {...rutinasJSON};
+		const {RutinasHorarias} = rutinasJson;
 
 		// Actualiza todas las rutinas horarias
 		console.log();
 		console.log("Rutinas horarias:");
-		for (let rutina of info.RutinasHorarias) {
+		for (let rutina of RutinasHorarias) {
 			const comienzo = Date.now();
 			await this.rutinas[rutina]();
 			const duracion = Date.now() - comienzo;
@@ -128,13 +131,16 @@ module.exports = {
 		return;
 	},
 	RutinasDiarias: async function () {
+		// Actualiza las variables diarias
 		procesos.variablesDiarias();
 
-		// Obtiene la información del archivo JSON
-		const info = {...rutinasJSON};
-
 		// Actualiza todas las rutinas diarias
-		for (let rutinaDiaria in info.RutinasDiarias) {
+		const {RutinasDiarias} = rutinasJson;
+		for (let rutinaDiaria in RutinasDiarias) {
+			// No aplica para el entorno de pruebas
+			if (entorno == "pruebas" && rutinaDiaria != "imagenDerecha") continue; // sólo se debe ejecutar la rutina 'imagenDerecha'
+
+			// Realiza la rutina
 			const comienzo = Date.now();
 			await this.rutinas[rutinaDiaria](); // ejecuta la rutina
 			const duracion = Date.now() - comienzo;
@@ -146,11 +152,12 @@ module.exports = {
 		return;
 	},
 	RutinasSemanales: async function () {
-		// Obtiene la información del archivo JSON
-		const info = {...rutinasJSON};
+		// No aplica para el entorno de pruebas
+		if (entorno == "pruebas") return;
 
 		// Actualiza las rutinasSemanales
-		for (let rutinaSemanal in info.RutinasSemanales) {
+		const {RutinasSemanales} = rutinasJson;
+		for (let rutinaSemanal in RutinasSemanales) {
 			const comienzo = Date.now();
 			await this.rutinas[rutinaSemanal]();
 			const duracion = Date.now() - comienzo;
@@ -202,7 +209,7 @@ module.exports = {
 				const otrosDatos = {regsStatusUs, regsEdicUs, usuario};
 				const mailEnviado =
 					usuario.id != usAutom_id && // si es el usuario automático, no envía el mail
-					(nodeEnv != "development" || [1, 11].includes(usuario.id)) // en development, sólo envía el mail a los usuarios del programador
+					(entorno != "development" || [1, 11].includes(usuario.id)) // en development, sólo envía el mail a los usuarios del programador
 						? comp
 								.enviaMail({asunto, email, comentario: cuerpoMail}) // Envía el mail
 								.then((mailEnv) => procesos.mailDeFeedback.eliminaRegs.consolidado({mailEnv, ...otrosDatos}))
@@ -262,7 +269,7 @@ module.exports = {
 		// Gestiones diarias
 		imagenDerecha: async () => {
 			// Variables
-			let info = {...rutinasJSON};
+			let {ImagenesDerecha: imgsYaProcs} = rutinasJson;
 			const milisegs = Date.now() + (new Date().getTimezoneOffset() / 60) * unaHora;
 			const fechaInicial = milisegs - 2 * unDia; // Arranca desde 2 días atrás
 			const cantFechas = 5; // Incluye 5 días
@@ -282,8 +289,7 @@ module.exports = {
 				fechas.push(fechaArchivo);
 
 				// Obtiene los títulos ya vigentes de las 'ImagenesDerecha'
-				if (info.ImagenesDerecha && info.ImagenesDerecha[fechaArchivo])
-					ImagenesDerecha[fechaArchivo] = info.ImagenesDerecha[fechaArchivo];
+				if (imgsYaProcs && imgsYaProcs[fechaArchivo]) ImagenesDerecha[fechaArchivo] = imgsYaProcs[fechaArchivo];
 				// Obtiene los títulos nuevos de las 'ImagenesDerecha' y descarga los archivos
 				else {
 					// Variables
@@ -349,7 +355,7 @@ module.exports = {
 				await baseDeDatos.agregaRegistro("navegsAcums", {
 					...{fecha: proximaFecha, diaSem, anoMes},
 					...{logins, usSinLogin, visitas},
-					...fidelidades
+					...fidelidades,
 				});
 
 				// Obtiene la fecha siguiente
@@ -380,7 +386,7 @@ module.exports = {
 			const fidelidades = procesos.fidelidades(clientes);
 
 			// Guarda los resultados
-			await baseDeDatos.agregaRegistro("fidelidadClientes", {fecha: hoy, diaSem, anoMes,...fidelidades});
+			await baseDeDatos.agregaRegistro("fidelidadClientes", {fecha: hoy, diaSem, anoMes, ...fidelidades});
 
 			// Fin
 			return;
@@ -799,8 +805,8 @@ const stoppersFeedbackParaUsers = (usuario) => {
 	const zonaHoraria = usuario.pais.zonaHoraria;
 	const ahoraUsuario = ahora.getTime() + zonaHoraria * unaHora;
 	if (
-		(nodeEnv != "development" && new Date(ahoraUsuario).getUTCHours()) || // Producción: saltea si para el usuario no son las 0hs
-		(nodeEnv == "development" && !new Date(ahoraUsuario).getUTCHours()) // Development: saltea si para el usuario son las 0hs
+		(entorno != "development" && new Date(ahoraUsuario).getUTCHours()) || // Producción: saltea si para el usuario no son las 0hs
+		(entorno == "development" && !new Date(ahoraUsuario).getUTCHours()) // Development: saltea si para el usuario son las 0hs
 	)
 		return true;
 

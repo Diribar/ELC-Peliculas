@@ -6,9 +6,7 @@ const procesos = require("./RE-Procesos");
 
 module.exports = {
 	// Productos y RCLV
-	obtieneMotivoGenerico: (req, res) => {
-		return res.json(motivoInfoErronea.id);
-	},
+	obtieneMotivoGenerico: (req, res) => res.json(motivoInfoErronea.id),
 	edicAprobRech: async (req, res) => {
 		// Variables
 		const {entidad, edicId, campo, aprob, motivo_id} = req.query;
@@ -76,26 +74,24 @@ module.exports = {
 	},
 
 	// Links
-	links: {
-		sigProd: async (req, res) => {
-			// Variables
-			const {entidad, id} = req.query;
-			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-			const revId = req.session.usuario.id;
-			let sigProd = true;
+	sigProdLinks: async (req, res) => {
+		// Variables
+		const {entidad, id} = req.query;
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const revId = req.session.usuario.id;
+		let sigProd = true;
 
-			// Si algún link del producto está en status inestable, indica que no se debe pasar al siguiente producto
-			const links = await baseDeDatos.obtienePorId(entidad, id, "links").then((n) => n.links);
-			for (let link of links) if (!estables_ids.includes(link.statusRegistro_id)) sigProd = null;
+		// Si algún link del producto está en status inestable, indica que no se debe pasar al siguiente producto
+		const links = await baseDeDatos.obtienePorId(entidad, id, "links").then((n) => n.links);
+		for (let link of links) if (!estables_ids.includes(link.statusRegistro_id)) sigProd = null;
 
-			// Si queda alguna edición de link del producto, indica que no se debe pasar al siguiente producto
-			if (sigProd) sigProd = !(await baseDeDatos.obtienePorCondicion("linksEdicion", {[campo_id]: id}));
+		// Si queda alguna edición de link del producto, indica que no se debe pasar al siguiente producto
+		if (sigProd) sigProd = !(await baseDeDatos.obtienePorCondicion("linksEdicion", {[campo_id]: id}));
 
-			// Averigua el producto siguiente
-			if (sigProd) sigProd = await procesos.tablRevision.obtieneSigProd_Links(revId);
+		// Averigua el producto siguiente
+		if (sigProd) sigProd = await procesos.tablRevision.obtieneSigProd_Links(revId);
 
-			// Fin
-			return res.json(sigProd);
-		},
+		// Fin
+		return res.json(sigProd);
 	},
 };

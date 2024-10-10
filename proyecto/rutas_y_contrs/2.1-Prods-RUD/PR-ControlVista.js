@@ -210,7 +210,7 @@ module.exports = {
 					if (entidad == "colecciones")
 						for (let prop in req.body)
 							if (original[prop] != req.body[prop])
-								await procsFM.transfDatosDeColParaCaps(original, req.body, prop);
+								await procesos.transfDatosDeColParaCaps(original, req.body, prop);
 
 					// Varias
 					let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: prodComb, id}); // Elimina otras ediciones que tengan los mismos valores

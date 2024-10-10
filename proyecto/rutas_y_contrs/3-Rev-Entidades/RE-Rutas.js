@@ -51,7 +51,7 @@ router.get("/api/re-edicion-aprob-rech", m.edicionAPI, API.edicAprobRech);
 
 // APIs- Links
 router.get("/api/re-edicion-link", m.edicionAPI, API.edicAprobRech);
-router.get("/api/re-siguiente-producto-link", API.links.sigProd);
+router.get("/api/re-siguiente-producto-link", API.sigProdLinks);
 
 // Vistas - Tablero de Control
 router.get("/tablero", usuarioBase, m.usRolAutTablEnts, vista.tableroControl);

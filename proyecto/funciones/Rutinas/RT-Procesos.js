@@ -14,7 +14,7 @@ module.exports = {
 	},
 	guardaArchivoDeRutinas: function (datos, menu) {
 		// Obtiene la informacion vigente
-		let info = {...rutinasJSON};
+		let info = {...rutinasJson};
 
 		// Averigua si hubo alguna novedad
 		let sonIguales = true;
@@ -60,7 +60,7 @@ module.exports = {
 
 		// Guarda la información actualizada
 		const rutaNombre = path.join(__dirname, "Rutinas.json");
-		rutinasJSON = {...info};
+		rutinasJson = {...info};
 		fs.writeFileSync(rutaNombre, JSON.stringify(info), function writeJSON(err) {
 			if (err) console.log("Actualiza Rutinas JSON:", err, datos);
 			return;
@@ -569,8 +569,7 @@ module.exports = {
 		const {FechaUTC, HoraUTC} = this.fechaHoraUTC();
 
 		// Feedback del proceso
-		if (campo != "feedbackParaUsers" || nodeEnv != "development")
-			console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(7, " "), "-", campo);
+		console.log(FechaUTC, HoraUTC + "hs. -", (duracion + "ms").padStart(7, " "), "-", campo);
 
 		// Fin
 		return;
@@ -740,7 +739,7 @@ let formatos = {
 	a: (texto, registro) => {
 		// Variables
 		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(registro.entidad);
-		const operacion = {[creado_id]: "alta/" + siglaFam, [inactivar_id]: "inactivar", [recuperar_id]: "recuperar"};// operaciones de revisión para prioritarios
+		const operacion = {[creado_id]: "alta/" + siglaFam, [inactivar_id]: "inactivar", [recuperar_id]: "recuperar"}; // operaciones de revisión para prioritarios
 
 		// Arma la respuesta
 		let respuesta = '<a href="' + urlHost + "/revision/"; // baseUrl

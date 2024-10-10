@@ -2,6 +2,7 @@
 // Variables
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const validacsFM = require("../2.0-Familias/FM-FN-Validar");
+const procesos = require("../2.1-Prods-RUD/PR-FN-Procesos");
 const anchoMaxTablero = 32;
 
 module.exports = {
@@ -572,7 +573,7 @@ module.exports = {
 				await baseDeDatos.actualizaPorId(entidad, original.id, datos);
 
 				// 3. Si es una colección, revisa si corresponde actualizar ese campo en sus capítulos
-				if (entidad == "colecciones") await procsFM.transfDatosDeColParaCaps(original, edicion, campo);
+				if (entidad == "colecciones") await procesos.transfDatosDeColParaCaps(original, edicion, campo);
 			}
 
 			// Acciones si el campo fue sugerido por el usuario
@@ -615,7 +616,7 @@ module.exports = {
 			delete edicion[campo];
 			if (relacInclude) delete edicion[relacInclude]; // Es necesario eliminarla para que no la compare
 
-			// 7. Disminuye la edición a su mínima expresión, y si corresponde la elimina
+			// Disminuye la edición a su mínima expresión, y si corresponde la elimina
 			edicion = await comp.puleEdicion(entidad, originalGuardado, edicion);
 
 			// Fin

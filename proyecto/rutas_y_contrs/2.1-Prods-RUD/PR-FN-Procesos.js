@@ -137,6 +137,42 @@ module.exports = {
 		// Fin
 		return interesDelUsuario;
 	},
+	transfDatosDeColParaCaps: async (original, edicion, campo) => {
+		// Variables
+		const novedad = {[campo]: edicion[campo]};
+		const {camposTransfCaps} = variables;
+
+		// Si el campo no recibe datos, termina
+		const camposAceptados = Object.values(camposTransfCaps).flat();
+		if (!camposAceptados.includes(campo)) return;
+
+		// Campos que se reemplazan siempre
+		const esActoresSiempre = campo == "actores" && [dibujosAnimados, documental].includes(edicion.actores);
+		if (camposTransfCaps.siempre.includes(campo) || esActoresSiempre) {
+			const condicion = {coleccion_id: original.id};
+			await baseDeDatos.actualizaPorCondicion("capitulos", condicion, novedad);
+		}
+
+		// Campos para los que se puede preservar el valor según el caso
+		const esActoresDepende = campo == "actores" && ![dibujosAnimados, documental].includes(edicion.actores);
+		if (camposTransfCaps.soloVacios.includes(campo) || esActoresDepende) {
+			// Condición - se asegura de que reemplacen:
+			const condicion = {coleccion_id: original.id, [campo]: [null]}; // los que tengan valor null
+			if (original[campo]) condicion[campo].push(original[campo]); // los que coincidan con la colección original
+
+			// Campos particulares
+			const noEsPersonajeNiEpocaOcurr = !["personaje_id", "epocaOcurrencia_id"].includes(campo);
+			const esPersonajeNoVarios = campo == "personaje_id" && edicion[campo] != 2;
+			const esEpocaOcurrNoVarios = campo == "epocaOcurrencia_id" && edicion[campo] != epocaVarias.id;
+
+			// Reemplaza los valores
+			if (noEsPersonajeNiEpocaOcurr || esPersonajeNoVarios || esEpocaOcurrNoVarios)
+				await baseDeDatos.actualizaPorCondicion("capitulos", condicion, novedad);
+		}
+
+		// Fin
+		return true;
+	},
 };
 let FN = {
 	trailer: (links) => {
