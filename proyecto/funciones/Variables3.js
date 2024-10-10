@@ -136,6 +136,7 @@ module.exports = {
 
 		// Gráficos
 		const graficos = [
+			// Usuarios
 			{
 				codigo: "clientesDiarios",
 				rubro: "clientes",
@@ -144,15 +145,8 @@ module.exports = {
 				icono: iconos.columnas,
 				resaltar: true,
 			},
-			{
-				codigo: "linksVencim",
-				rubro: "links",
-				titulo: "Links - Vencimiento Semanal",
-				url: "vencimiento-de-links",
-				icono: iconos.columnas,
-				resaltar: true,
-				hr: true,
-			},
+
+			// Productos
 			{
 				codigo: "prodsCfcVpc",
 				rubro: "prods",
@@ -175,19 +169,32 @@ module.exports = {
 				icono: iconos.columnas,
 				hr: true,
 			},
-			{
-				codigo: "linksPorProv",
-				rubro: "links",
-				titulo: "Links - Proveedores",
-				url: "links-por-proveedor",
-				icono: iconos.chart,
-			},
+
+			// RCLVs
 			{
 				codigo: "rclvsRangosSinEfems",
 				rubro: "rclvs",
 				titulo: "RCLVs - Rangos sin Efemérides",
 				url: "rclvs-rangos-sin-efemerides",
 				icono: iconos.columnas,
+			},
+
+			// Links
+			{
+				codigo: "linksVencim",
+				rubro: "links",
+				titulo: "Links - Vencimiento Semanal",
+				url: "vencimiento-de-links",
+				icono: iconos.columnas,
+				resaltar: true,
+				hr: true,
+			},
+			{
+				codigo: "linksPorProv",
+				rubro: "links",
+				titulo: "Links - Proveedores",
+				url: "links-por-proveedor",
+				icono: iconos.chart,
 			},
 		];
 		respuesta.graficos = {};

@@ -11,7 +11,7 @@ const combinados = [usAltaTerm, usRolAutTablEnts];
 
 // API y Vistas
 for (let codigo in graficos) router.get("/api/gr-" + graficos[codigo].url, API[codigo]);
-for (let codigo in graficos) router.get("/api/" + graficos[codigo].url, combinados, vista[codigo]);
+for (let codigo in graficos) router.get("/" + graficos[codigo].url, combinados, vista[codigo]);
 
 // Fin
 module.exports = router;
