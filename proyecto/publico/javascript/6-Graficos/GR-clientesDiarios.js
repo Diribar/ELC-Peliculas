@@ -53,23 +53,24 @@ window.addEventListener("load", async () => {
 		const anchoGrafico = DOM.grafico.offsetWidth;
 
 		// Opciones
-		const opciones = FN_opciones.columnas(alturaGrafico, anchoGrafico);
+		const opciones = FN_charts.formato.columnas(alturaGrafico, anchoGrafico);
 		const tituloGral = anchoGrafico > 600 ? leyendaTitulo : leyendaTitulo.split("|")[0];
 		opciones.title = "Prom.: " + tituloGral;
 		opciones.colors = coloresRelleno;
 		opciones.series = {3: {type: "line"}};
 
 		// Hace visible el gráfico
-		const grafico = new google.visualization.ColumnChart(DOM.grafico);
-		const data = new google.visualization.arrayToDataTable(resultado);
+		const {grafico, data} = FN_charts.google(DOM, resultado);
 		grafico.draw(data, opciones);
 
 		// Fin
 		return;
 	};
 
-	// Aspectos de la imagen de Google
-	google.charts.load("current", {packages: ["corechart"]});
+	// Dibuja el gráfico
 	google.charts.setOnLoadCallback(dibujarGrafico);
+
+	// Fin
+	return;
 });
 // https://developers.google.com/chart/interactive/docs/gallery/columnchart
