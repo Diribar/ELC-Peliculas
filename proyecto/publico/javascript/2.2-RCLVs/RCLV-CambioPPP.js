@@ -7,13 +7,15 @@ window.addEventListener("load", async () => {
 
 	// Variables varias
 	const v = await fetch(rutas.obtieneVariables).then((n) => n.json());
-	let entidades = [];
+	let entsProd = [];
 	let ids = [];
 
-	// Obtiene las entidades e ids
+	// Obtiene las entsProd e ids de cada botón
 	for (let anchor of anchors) {
-		entidades.push(new URL(anchor.href).searchParams.get("entidad"));
-		ids.push(new URL(anchor.href).searchParams.get("id"));
+		const entProd = entidades.find((n) => anchor.href.includes(n));
+		const idProd = new URL(anchor.href).searchParams.get("id");
+		entsProd.push(entProd);
+		ids.push(idProd);
 	}
 
 	// Funciones
@@ -35,7 +37,7 @@ window.addEventListener("load", async () => {
 		// Actualiza la preferencia
 		iconosPPP[indice].classList.add("inactivo");
 		await fetch(
-			rutas.pppRutaGuardar + "/?entidad=" + entidades[indice] + "&entidad_id=" + ids[indice] + "&ppp_id=" + pppNueva_id
+			rutas.pppRutaGuardar + "/?entidad=" + entsProd[indice] + "&entidad_id=" + ids[indice] + "&ppp_id=" + pppNueva_id
 		);
 		iconosPPP[indice].classList.remove("inactivo");
 
