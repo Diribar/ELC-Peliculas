@@ -1,36 +1,12 @@
 <% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
 	<!-- Todos los revisores o superior -->
 	<div class="mostrarClick menuForm menuFondo ocultar">
-		<a href="/graficos/usuarios-clientes-acums" class="menuOpcion resaltar">
-			<i class="<%= iconos.faSolid %> <%= iconos.calificar %> icono"></i>
-			<span>Usuarios - Visitas diarias</span>
+		<% for (codigo in graficos) { %>
+		<a href="/graficos/<%= graficos[codigo].url %>" class="menuOpcion<%- graficos[codigo].resaltar ? ' resaltar' : '' %>">
+			<i class="<%= iconos.faSolid %> <%= graficos[codigo].icono %> icono"></i>
+			<span><%= graficos[codigo].titulo %></span>
 		</a>
-		<hr>
-		<a href="/graficos/peliculas-cfc-vpc" class="menuOpcion">
-			<i class="<%= iconos.faSolid %> fa-chart-pie icono"></i>
-			<span>Películas - CFC / VPC</span>
-		</a>
-		<a href="/graficos/peliculas-publico" class="menuOpcion">
-			<i class="<%= iconos.faSolid %> fa-chart-pie icono"></i>
-			<span>Películas - Público</span>
-		</a>
-		<a href="/graficos/peliculas-epoca-estreno" class="menuOpcion">
-			<i class="<%= iconos.faSolid %> <%= iconos.calificar %> icono"></i>
-			<span>Películas - Época de estreno</span>
-		</a>
-		<hr>
-		<a href="/graficos/vencimiento-de-links" class="menuOpcion resaltar">
-			<i class="<%= iconos.faSolid %> <%= iconos.calificar %> icono"></i>
-			<span>Links - Vencimiento Semanal</span>
-		</a>
-		<a href="/graficos/links-por-proveedor" class="menuOpcion">
-			<i class="<%= iconos.faSolid %> fa-chart-pie icono"></i>
-			<span>Links - Por Proveedor</span>
-		</a>
-		<hr>
-		<a href="/graficos/rclvs-rangos-sin-efemerides" class="menuOpcion">
-			<i class="<%= iconos.faSolid %> <%= iconos.calificar %> icono"></i>
-			<span>RCLVs - Rangos sin Efemérides</span>
-		</a>
+		<% if (graficos[codigo].hr) { %><hr><% } %>
+		<% } %>
 	</div>
 <% } %>

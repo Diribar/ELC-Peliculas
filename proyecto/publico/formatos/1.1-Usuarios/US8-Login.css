@@ -1,16 +1,23 @@
 /* General */
-#cuerpo form {
+#cuerpo #dataEntry {
 	padding-right: 25px;
 	#datos {
 		margin-bottom: 15px;
+		.labelInput input {text-align: center;}
 		#eye {right: 10px; position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 	}
 }
 
 /* Parado */
 @media (orientation: portrait) {
-	#cuerpo form .labelInput {justify-content: center;}
-	#cuerpo form {min-width: min-content; width: 85vw;}
-	#cuerpo form label {display: none;}
-	#cuerpoFooterImgDer #imgDerecha img {display: none;}
+	#cuerpoFooterImgDer {
+		#cuerpo #dataEntry {
+			min-width: min-content; width: 85vw;
+			.labelInput {
+				justify-content: center;
+				label {display: none;}
+			}
+		}
+		#imgDerecha img {display: none;}
+	}
 }

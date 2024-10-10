@@ -18,7 +18,7 @@ const edicId = new URL(location.href).searchParams.get("edicId");
 const origen = new URL(location.href).searchParams.get("origen");
 
 // Funciones
-let keyPressed = (e) => {
+const keyPressed = (e) => {
 	// Variables
 	const localName = e.target.localName;
 	const type = e.target.type;
@@ -34,7 +34,7 @@ let keyPressed = (e) => {
 	// Fin
 	return;
 };
-let amplio = {
+const amplio = {
 	restringeCaracteres: (e, respetarMinusc) => {
 		if (e.target.value) {
 			// Variables
@@ -78,7 +78,7 @@ let amplio = {
 	},
 };
 
-let basico = {
+const basico = {
 	restringeCaracteres: (e, respetarMinusc) => {
 		// Primeras tareas
 		amplio.restringeCaracteres(e, respetarMinusc);
@@ -121,7 +121,7 @@ let basico = {
 	},
 };
 
-let desplazamHoriz = () => {
+const desplazamHoriz = () => {
 	// Definir variables
 	let cuerpo = document.querySelector("#cuerpo");
 	let izquierda = document.querySelector(".fa-caret-left");
@@ -217,11 +217,11 @@ let desplazamHoriz = () => {
 	ocultaIconosMovim();
 };
 
-let pierdeTiempo = (ms) => {
+const pierdeTiempo = (ms) => {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-let revisaAvatar = async ({DOM, v, FN, version, indice}) => {
+const revisaAvatar = async ({DOM, v, FN, version, indice}) => {
 	// 1. Acciones si se omitió ingresar un archivo
 	if (!DOM.inputAvatar.value) {
 		// Vuelve a la imagen original
@@ -285,7 +285,7 @@ let revisaAvatar = async ({DOM, v, FN, version, indice}) => {
 	};
 };
 
-let contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
+const contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
 	// Mensajes - crea el sector
 	DOM.mensajes = document.createElement("ul");
 	DOM.mensajes.id = "mensajes";
@@ -323,7 +323,7 @@ let contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
 	return;
 };
 
-let obtieneSiglaFam = () =>
+const obtieneSiglaFam = () =>
 	["peliculas", "colecciones", "capitulos", "prodsEdicion"].includes(entidad)
 		? "p"
 		: ["personajes", "hechos", "temas", "eventos", "epocasDelAno", "rclvsEdicion"].includes(entidad)

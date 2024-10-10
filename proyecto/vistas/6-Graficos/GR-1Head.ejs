@@ -1,18 +1,11 @@
 <!-- General -->
-<script src="https://www.gstatic.com/charts/loader.js"></script>
 <link rel="stylesheet" href="/publico/formatos/6-Graficos/GR-Graficos.css">
+<link rel="stylesheet" href="/publico/formatos/6-Graficos/GR-MediaQuery.css">
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="/publico/javascript/6-Graficos/GR-0general.js"></script>
 
-<!-- Usuarios -->
-<% if (codigo == "navegsAcums") { %><script src="/publico/javascript/6-Graficos/GR-users-navegsAcums.js"></script><% } %>
-
-<!-- Productos -->
-<% if (codigo == "prodsCfcVpc") { %><script src="/publico/javascript/6-Graficos/GR-prods-cfcVpc.js"></script><% } %>
-<% if (codigo == "prodsPorPublico") { %><script src="/publico/javascript/6-Graficos/GR-prods-porPublRecom.js"></script><% } %>
-<% if (codigo == "prodsPorEpocaEstr") { %><script src="/publico/javascript/6-Graficos/GR-prods-porEpocaEstr.js"></script><% } %>
-
-<!-- RCLVs -->
-<% if (codigo == "rclvsRangosSinEfems") { %><script src="/publico/javascript/6-Graficos/GR-rclvs-rangosSinEfems.js"></script><% } %>
-
-<!-- Links -->
-<% if (codigo == "linksVencim") { %><script src="/publico/javascript/6-Graficos/GR-links-vencSemanal.js"></script><% } %>
-<% if (codigo == "linksPorProv") { %><script src="/publico/javascript/6-Graficos/GR-links-porProv.js"></script><% } %>
+<% for (let codGrafico in graficos) { %>
+	<% if (codigo == codGrafico) { %>
+		<script src="/publico/javascript/6-Graficos/GR-<%= codGrafico %>.js"></script>
+	<% } %>
+<% } %>

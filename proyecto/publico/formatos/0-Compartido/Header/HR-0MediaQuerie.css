@@ -5,7 +5,10 @@
 
 /* Acostado */
 @media (orientation: landscape) and (height <= 600px) {
-    header .ocultoMobile {display: none ;}
+    header {
+        .ocultoMobile {display: none;}
+        #menuMobile {width: 208px;}
+    }
 }
 
 /* Parado */
@@ -13,8 +16,9 @@
     header {
         :is(.ocultoMobile, .ocultoMobileParado) {display: none !important;}
         #menuMobile {
-            div.soloAngosto {display: flex;}
-            hr.soloAngosto {display: block;}
+            width: 208px;
+            div.soloPortrait {display: flex;}
+            hr.soloPortrait {display: block;}
         }
         :is(#izquierda, #derecha) {margin: 0;}
         #tituloHeader {left: 47%;}

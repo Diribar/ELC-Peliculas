@@ -110,8 +110,8 @@ module.exports = {
 		return;
 	},
 	RutinasHorarias: async function () {
-		// No aplica para el entorno de pruebas
-		if (entorno == "pruebas") return;
+		// No aplica para el entorno de test
+		if (entorno == "test") return;
 
 		// Obtiene la información del archivo JSON
 		const {RutinasHorarias} = rutinasJson;
@@ -137,8 +137,8 @@ module.exports = {
 		// Actualiza todas las rutinas diarias
 		const {RutinasDiarias} = rutinasJson;
 		for (let rutinaDiaria in RutinasDiarias) {
-			// No aplica para el entorno de pruebas
-			if (entorno == "pruebas" && rutinaDiaria != "imagenDerecha") continue; // sólo se debe ejecutar la rutina 'imagenDerecha'
+			// No aplica para el entorno de test
+			if (entorno == "test" && rutinaDiaria != "imagenDerecha") continue; // sólo se debe ejecutar la rutina 'imagenDerecha'
 
 			// Realiza la rutina
 			const comienzo = Date.now();
@@ -152,8 +152,8 @@ module.exports = {
 		return;
 	},
 	RutinasSemanales: async function () {
-		// No aplica para el entorno de pruebas
-		if (entorno == "pruebas") return;
+		// No aplica para el entorno de test
+		if (entorno == "test") return;
 
 		// Actualiza las rutinasSemanales
 		const {RutinasSemanales} = rutinasJson;

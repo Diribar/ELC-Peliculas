@@ -2,34 +2,48 @@
 	<% if (locals.tema != "consultas" && (locals.tema != "institucional" || locals.codigo != "inicio")) { %>
 		<!-- Quiero elegir una película -->
 		<a href="/consultas" class="menuOpcion">
-			<div>
-				<img src="/publico/imagenes/Varios/Consultas.jpg" height="20">
-			</div>
+			<div id="imgConsultas"><img src="/publico/imagenes/Varios/Consultas.jpg" height="20"></div>
 			<span>Quiero elegir una película</span>
 		</a>
 		<hr>
 	<% } %>
 
 	<!-- Búsqueda rápida -->
-	<div class="menuOpcion mm_busquedaRapida soloAngosto">
-		<i class="<%= iconos.faSolid %> icono fa-magnifying-glass mm_busquedaRapida"></i>
-		<span class="mm_busquedaRapida">Búsqueda rápida</span>
+	<div class="menuOpcion mmBR soloPortrait">
+		<i class="<%= iconos.faSolid %> icono fa-magnifying-glass mmBR"></i>
+		<span class="mmBR">Búsqueda rápida</span>
 	</div>
 	<% if (locals.tema != "institucional" || locals.codigo != "inicio") { %>
-		<hr class=" soloAngosto">
+		<hr class=" soloPortrait">
 	<% } %>
 
 	<!-- Demostración -->
-	<div class="menuOpcion mm_demo ocultar">
-		<i class="<%= iconos.faSolid %> fa-play icono mm_demo"></i>
-		<span class="mm_demo">Ejemplo de uso</span>
+	<div class="menuOpcion mmVD ocultar">
+		<i class="<%= iconos.faSolid %> fa-play icono mmVD"></i>
+		<span class="mmVD">Ejemplo de uso</span>
 	</div>
 	<hr class="ocultar">
+
 	<% if (locals.tema != "institucional" || locals.codigo != "inicio") { %>
 		<!-- Quiénes somos -->
 		<a href="/institucional/quienes-somos" class="menuOpcion">
 			<i class="<%= iconos.faSolid %> icono fa-people-group"></i>
 			<span>ELC - Quiénes somos</span>
 		</a>
+		<hr>
+	<% } %>
+	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
+		<!-- Todos los revisores o superior -->
+		<div class="flexRow menuOpcion mmSG">
+			<label for="selectGraficos" class="mmSG">
+				<i class="<%= iconos.faSolid %> <%= iconos.graficos %> icono"></i>
+			</label>
+			<select id="selectGraficos" class="mmSG" onchange="location = this.value;">
+				<option selected class="ocultar">Gráficos</option>
+				<% for (let codigo in graficos) { %>
+					<option value="/graficos/<%= graficos[codigo].url %>"><%= graficos[codigo].titulo %></option>
+				<% } %>
+			</select>
+		</div>
 	<% } %>
 </div>

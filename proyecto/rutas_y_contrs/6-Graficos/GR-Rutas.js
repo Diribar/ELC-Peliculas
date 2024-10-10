@@ -9,23 +9,9 @@ const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
 const usRolAutTablEnts = require("../../middlewares/porUsuario/usRolAutTablEnts");
 const combinados = [usAltaTerm, usRolAutTablEnts];
 
-// API
-router.get("/api/gr-usuarios-clientes-acums", API.navegsAcums);
-router.get("/api/gr-peliculas-cfc-vpc", API.prodsCfcVpc);
-router.get("/api/gr-peliculas-publico", API.prodsPorPublico);
-router.get("/api/gr-peliculas-epoca-estreno", API.prodsPorEpocaEstr);
-router.get("/api/gr-rclvs-rangos-sin-efemerides", API.rclvsRangosSinEfems);
-router.get("/api/gr-vencimiento-de-links", API.linksVencim);
-router.get("/api/gr-links-por-proveedor", API.linksPorProv);
-
-// Vistas
-router.get("/usuarios-clientes-acums", combinados, vista.navegsAcums);
-router.get("/peliculas-cfc-vpc", combinados, vista.prodsCfcVpc);
-router.get("/peliculas-publico", combinados, vista.prodsPorPublico);
-router.get("/peliculas-epoca-estreno", combinados, vista.prodsPorEpocaEstr);
-router.get("/rclvs-rangos-sin-efemerides", combinados, vista.rclvsRangosSinEfems);
-router.get("/vencimiento-de-links", combinados, vista.linksVencim);
-router.get("/links-por-proveedor", combinados, vista.linksPorProv);
+// API y Vistas
+for (let codigo in graficos) router.get("/api/gr-" + graficos[codigo].url, API[codigo]);
+for (let codigo in graficos) router.get("/" + graficos[codigo].url, combinados, vista[codigo]);
 
 // Fin
 module.exports = router;

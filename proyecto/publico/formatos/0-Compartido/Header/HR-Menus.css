@@ -30,8 +30,14 @@ header {
 	#menuMobile {
 		.menuOpcion {
 			height: 25px;
-			div {width: 28px; text-align: start;}
+			#imgConsultas {width: 28px;}
+			&:has(select) i {margin-right: 3px;}
+			select {
+				width: 100%; background-color: transparent; border: none;
+				option {color: var(--azul-oscuro); font-size: 20px;}
+			}
+
 		}
-		.soloAngosto {display: none;}
+		.soloPortrait {display: none;}
 	}
 }

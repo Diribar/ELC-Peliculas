@@ -15,8 +15,8 @@ const iconos = {
 
 	// Ocasionales
 	...{agregar: "fa-circle-plus", calificar: "fa-chart-simple", eliminar: "fa-trash-can"},
-	...{edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
-	detalle: "fa-circle-info",
+	...{detalle: "fa-circle-info", edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
+	...{graficos: "fa-chart-line", chart: "fa-chart-pie", columnas: "fa-chart-simple"},
 };
 
 module.exports = {
@@ -108,16 +108,6 @@ module.exports = {
 		{descripcion: "Comentario sobre una película", codigo: "producto"},
 		{descripcion: "Otro motivo", codigo: "varios"},
 	],
-	coloresConfigs: {
-		azul: ["#8BC1F7", "#519DE9", "#06C", "#004B95", "#002F5D"], // 1. Blue
-		celeste: ["#A2D9D9", "#73C5C5", "#009596", "#005F60", "#003737"], // 3. Cyan
-		purpura: ["#B2B0EA", "#8481DD", "#5752D1", "#3C3D99", "#2A265F"], // 4. Purple
-		dorado: ["#F9E0A2", "#F6D173", "#F4C145", "#F0AB00", "#C58C00"], // 5. Gold
-		naranja: ["#F4B678", "#EF9234", "#EC7A08", "#C46100", "#8F4700"], // 6. Orange
-		verde: ["#BDE2B9", "#7CC674", "#4CB140", "#38812F", "#23511E"], // 2. Green
-		rojo: ["#C9190B", "#A30000", "#7D1007", "#470000", "#2C0000"], // 7. Red
-		negro: ["#F0F0F0", "#D2D2D2", "#B8BBBE", "#8A8D90", "#6A6E73"], // 8. Black
-	},
 	eliminarCuandoSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
 	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "Zabbix"],
 };

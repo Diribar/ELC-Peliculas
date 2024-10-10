@@ -6,6 +6,7 @@ module.exports = (sequelize, dt) => {
 		mayores: {type: dt.BOOLEAN},
 		familia: {type: dt.BOOLEAN},
 		menores: {type: dt.BOOLEAN},
+		grupo:{type: dt.STRING(15)},
 	};
 	const config = {
 		tableName: "prod_publicos",
