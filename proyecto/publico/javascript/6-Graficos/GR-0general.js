@@ -65,7 +65,9 @@ const FN_opciones = {
 };
 
 // Event listeners - Recarga la vista si se gira
-screen.orientation.addEventListener("change", () => {
-	DOM.grafico.classList.add("ocultar");
-	location.reload();
-});
+window.addEventListener("load", async () =>
+	screen.orientation.addEventListener("change", () => {
+		document.querySelector("#zonaDeGraficos #cuadro #grafico").classList.add("ocultar");
+		location.reload();
+	})
+);
