@@ -5,8 +5,7 @@ window.addEventListener("load", async () => {
 
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
-	const ejeX = ["cfc-aprob", "cfc-pend", "vpc-pend", "vpc-aprob"];
-	const ejeY = [aprob.cfc, pend.cfc, pend.vpc, aprob.vpc];
+	const {ejeX, ejeY} = ordenaDatos(aprob, pend);
 
 	// Genera el resultado
 	const resultado = [["Status", "Cant. de Películas"]];
@@ -15,6 +14,9 @@ window.addEventListener("load", async () => {
 	const dibujarGrafico = () => {
 		// Opciones
 		const {grafico, opciones} = FN_charts.opciones(DOM, "pie");
+		const suma = ejeY.reduce((acum, n) =>  acum + n);
+		opciones.title = "Total: " + suma;
+
 
 		// Hace visible el gráfico
 		const data = new google.visualization.arrayToDataTable(resultado);
@@ -30,22 +32,34 @@ window.addEventListener("load", async () => {
 	// Fin
 	return;
 });
-// https://developers.google.com/chart/interactive/docs/gallery/columnchart
 
+const ordenaDatos = (aprob, pend) => {
+	// Variables
+	const objeto = {
+		"cfc-aprob": aprob.cfc,
+		"cfc-pend": pend.cfc,
+		"vpc-pend": pend.vpc,
+		"vpc-aprob": aprob.vpc,
+	};
+	const metodos = Object.keys(objeto);
+	const valores = Object.values(objeto).sort((a, b) => b - a);
+
+	// Los ordena
+	const nuevoObjeto = {};
+	for (let valor of valores) {
+		const metodo = metodos.find((n) => objeto[n] == valor);
+		nuevoObjeto[metodo] = valor;
+	}
+	const ejeX = Object.keys(nuevoObjeto);
+	const ejeY = Object.values(nuevoObjeto);
+
+	// Fin
+	return {ejeX, ejeY};
+};
+// https://developers.google.com/chart/interactive/docs/gallery/columnchart
 // // Opciones del gráfico
 // const gris = "rgb(100, 100, 100)";
 // const azul = "rgb(37, 64, 97)";
 
 // const options = {
-// 	backgroundColor: "rgb(255,242,204)",
 // 	colors: [gris, gris, azul, azul],
-// 	fontSize: 10,
-// 	chartArea: {height: "80%"},
-// 	pieSliceText: "value",
-// 	legend: {position: "labeled"},
-// 	slices: {1: {offset: 0.1}, 2: {offset: 0.1}},
-// };
-// Agrega algunos datos relevantes
-// const algunosDatos = document.querySelector("#cuadro #algunosDatos");
-// const suma = ejeY.reduce((acum, n) =>  acum + n);
-// algunosDatos.innerHTML = "Total: " + suma;
