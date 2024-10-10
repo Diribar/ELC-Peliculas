@@ -48,19 +48,20 @@ window.addEventListener("load", async () => {
 	grupos.forEach((grupo, i) => (leyendaTitulo += " | " + grupo + ": " + Object.values(promedio)[i].toLocaleString("pt")));
 
 	const dibujarGrafico = () => {
-		// Variables que cambian con la rotación del mobil
-		const alturaGrafico = DOM.grafico.offsetHeight;
-		const anchoGrafico = DOM.grafico.offsetWidth;
-
 		// Opciones
-		const opciones = FN_charts.formato.columnas(alturaGrafico, anchoGrafico);
+		const {grafico, opciones} = FN_charts.opciones(DOM, "columnas");
+
+		// Título general
+		const anchoGrafico = DOM.grafico.offsetWidth;
 		const tituloGral = anchoGrafico > 600 ? leyendaTitulo : leyendaTitulo.split("|")[0];
+
+		// Otras opciones particulares
 		opciones.title = "Prom.: " + tituloGral;
 		opciones.colors = coloresRelleno;
 		opciones.series = {3: {type: "line"}};
 
 		// Hace visible el gráfico
-		const {grafico, data} = FN_charts.google(DOM, resultado);
+		const data = new google.visualization.arrayToDataTable(resultado);
 		grafico.draw(data, opciones);
 
 		// Fin
