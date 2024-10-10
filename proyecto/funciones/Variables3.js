@@ -195,7 +195,6 @@ module.exports = {
 			respuesta.graficos[grafico.codigo] = grafico;
 			delete respuesta.graficos[grafico.codigo].codigo;
 		}
-		// console.log(176,respuesta.graficos);
 
 		// Fin
 		return respuesta;
