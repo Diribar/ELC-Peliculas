@@ -14,7 +14,7 @@ window.addEventListener("load", async () => {
 	const ano52Sems = new Date(lunesSemana53).getUTCFullYear() > new Date(primerLunesDelAno).getUTCFullYear();
 
 	// Genera el resultado
-	let resultado = [["Semana", "Caps.", "PelisColes.", "Ilimitado", {role: "annotation"}]];
+	let resultado = [["Semana", "Caps.", "PelisColes.", "Estr. Rec.", {role: "annotation"}]];
 	let restar = 0;
 	let ticks = [];
 	for (let ejeX = 0; ejeX <= linksSemsEstandar; ejeX++) {
@@ -34,6 +34,10 @@ window.addEventListener("load", async () => {
 	const dibujarGrafico = () => {
 		// Opciones
 		const {grafico, opciones} = FN_charts.opciones(DOM, "columnas");
+		opciones.colors = ["rgb(37,64,97)", "rgb(31,73,125)", "rgb(79,98,40)"];
+		opciones.vAxis.viewWindow = {min: 0, max: maxEjeY};
+		opciones.hAxis.ticks = ticks;
+		opciones.title = "Prom. Semanal: " + cantLinks.promSem.prods;
 
 		// Opciones del gráfico
 		if (revision) opciones.hAxis.textColor = "none";
@@ -58,34 +62,5 @@ window.addEventListener("load", async () => {
 });
 // https://developers.google.com/chart/interactive/docs/gallery/columnchart
 
-			// // Temas generales
-			// isStacked: true, // columnas apiladas
-			// backgroundColor: "rgb(255,242,204)",
-			// chartArea: {width: "80%", height: "70%"},
-			// fontSize: 14,
-			// legend: "none",
-			// animation: {
-			// 	duration: 100,
-			// 	easing: "out",
-			// 	startup: true,
-			// },
-
-			// // Título
-			// title: "Prom. Semanal: " + cantLinks.promSem.prods,
-			// titleTextStyle: {color: "brown", fontSize: 18},
-
-			// // Ejes
-			// hAxis: {
-			// 	scaleType: "number",
-			// 	format: "decimal",
-			// 	baselineColor: "none", // para que desaparezca el eje vertical
-			// 	ticks,
-			// },
-			// vAxis: {
-			// 	fontSize: 20,
-			// 	viewWindow: {min: 0, max: maxEjeY},
-			// 	// gridlines: {count: 8},
-			// },
-
-			// // Particularidades
-			// colors: ["rgb(37,64,97)", "rgb(31,73,125)", "rgb(79,98,40)"],
+// // Temas generales
+// legend: "none",

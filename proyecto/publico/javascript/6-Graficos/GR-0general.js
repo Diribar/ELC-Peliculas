@@ -46,6 +46,7 @@ const FN_charts = {
 			isStacked: true, // columnas apiladas
 			backgroundColor: "rgb(255,242,204)",
 			fontSize: 14,
+			animation: {duration: 100, easing: "out", startup: true},
 
 			// Título
 			titleTextStyle: {color: "brown", fontSize: tamanoLetra(13, 18)},
@@ -58,21 +59,24 @@ const FN_charts = {
 				right: "20",
 			}, // reemplaza el ancho y alto
 			legend: {
-				position: mostrarLeyenda > 200 ? "bottom" : "none",
-				textStyle: {fontSize: 12},
+				position: mostrarLeyenda ? "bottom" : "none",
+				textStyle: {fontSize: tamanoLetra(10, 14)},
 			},
 
 			// Ejes
 			hAxis: {
+				baselineColor: "none", // para que desaparezca el eje vertical
 				maxAlternation: 1, // todos las etiquetas en una misma fila
 				slantedText: false, // todos las etiquetas en dirección horizontal
-				textStyle: {fontSize: 12},
+				textStyle: {fontSize: tamanoLetra(10, 14)},
 				textPosition: muestraEjeX ? "auto" : "none",
+				// scaleType: "number",
+				// format: "decimal",
 			},
 			vAxis: {
+				gridlines: {count: 6}, // cuántos gridlines
 				viewWindow: {min: 0},
 				titleTextStyle: {fontSize: muestraEjeY ? tamanoLetra(12, 18) : 1},
-				titleTextPosition: anchoGrafico < 600 ? "none" : "auto",
 				textStyle: {fontSize: tamanoLetra(10, 14)},
 			},
 		};
