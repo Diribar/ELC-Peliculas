@@ -12,11 +12,9 @@ window.addEventListener("load", async () => {
 	const resultado = [["Prov.", "Cant. de Links"]];
 	for (let i = 0; i < ejeX.length; i++) resultado.push([ejeX[i], ejeY[i]]);
 
-	// https://developers.google.com/chart/interactive/docs/gallery/piechart
 	const dibujarGrafico = () => {
 		// Opciones
 		const {grafico, opciones} = FN_charts.opciones(DOM, "pie");
-
 
 		// Hace visible el gráfico
 		const data = new google.visualization.arrayToDataTable(resultado);
@@ -32,3 +30,4 @@ window.addEventListener("load", async () => {
 	// Fin
 	return;
 });
+// https://developers.google.com/chart/interactive/docs/gallery/piechart
