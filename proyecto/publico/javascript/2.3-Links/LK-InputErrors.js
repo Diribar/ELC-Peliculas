@@ -30,7 +30,7 @@ window.addEventListener("load", async () => {
 	};
 	let v = {
 		// Generales
-		colecciones: new URL(location.href).searchParams.get("entidad") == "colecciones",
+		colecciones: entidad == "colecciones",
 		camposInput: Array.from(DOM.camposInput).map((n) => n.name),
 
 		// Rutas

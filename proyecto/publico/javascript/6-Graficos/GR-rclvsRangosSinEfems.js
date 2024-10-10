@@ -13,6 +13,9 @@ window.addEventListener("load", async () => {
 	const dibujarGrafico = () => {
 		// Opciones
 		const {grafico, opciones} = FN_charts.opciones(DOM, "columnas");
+		opciones.colors = ["firebrick"];
+		opciones.legend = {position: "none"};
+		opciones.vAxis.title = "Días";
 
 		// Hace visible el gráfico
 		const data = new google.visualization.arrayToDataTable(resultado);
@@ -20,7 +23,7 @@ window.addEventListener("load", async () => {
 
 		// Fin
 		return;
-	}
+	};
 
 	// Dibuja el gráfico
 	google.charts.setOnLoadCallback(dibujarGrafico);
@@ -29,28 +32,3 @@ window.addEventListener("load", async () => {
 	return;
 });
 // https://developers.google.com/chart/interactive/docs/gallery/columnchart
-// const options = {
-// 	backgroundColor: "rgb(255,242,204)",
-// 	fontSize: 10,
-// 	animation: {
-// 		duration: 100,
-// 		easing: "out",
-// 		startup: true,
-// 	},
-// 	chartArea: {width: "80%", height: "70%"},
-// 	// colors: ["firebrick", "rgb(31,73,125)", "rgb(79,98,40)"],
-// 	animation: {
-// 		duration: 100,
-// 		easing: "out",
-// 		startup: true,
-// 	},
-// 	chartArea: {width: "80%", height: "70%"},
-// 	// colors: ["firebrick", "rgb(31,73,125)", "rgb(79,98,40)"],
-// 	colors: ["rgb(31,73,125)"],
-// 	legend: {position: "none"},
-// 	vAxis: {
-// 		fontSize: 20,
-// 		title: "Días sin efemérides",
-// 		viewWindow: {min: 0},
-// 	},
-// };

@@ -6,22 +6,20 @@ window.addEventListener("load", async () => {
 	const anchors = document.querySelectorAll(".prodsNuevos a");
 
 	// Variables varias
-	const rutas = {
-		obtieneVariables: "/rclv/api/rc-obtiene-variables-detalle",
-		pppRutaGuardar: "/producto/api/pr-guarda-la-preferencia-del-usuario",
-	};
 	const v = await fetch(rutas.obtieneVariables).then((n) => n.json());
-	let entidades = [];
-	let ids = [];
+	const entsProd = [];
+	const idsProd = [];
 
-	// Obtiene las entidades e ids
-	for (let anchor of anchors) {
-		entidades.push(new URL(anchor.href).searchParams.get("entidad"));
-		ids.push(new URL(anchor.href).searchParams.get("id"));
+	// Obtiene las 'entProd' e 'idProd' de cada botón
+	for (const anchor of anchors) {
+		const entProd = entidades.find((n) => anchor.href.includes(n));
+		const idProd = new URL(anchor.href).searchParams.get("id");
+		entsProd.push(entProd);
+		idsProd.push(idProd);
 	}
 
 	// Funciones
-	let cambiosEnPpp = async (indice) => {
+	const cambiosEnPpp = async (indice) => {
 		// Opción actual
 		const pppActual = v.pppOpcsArray.find((n) => iconosPPP[indice].className.endsWith(n.icono));
 		const pppActual_id = pppActual.id;
@@ -39,7 +37,7 @@ window.addEventListener("load", async () => {
 		// Actualiza la preferencia
 		iconosPPP[indice].classList.add("inactivo");
 		await fetch(
-			rutas.pppRutaGuardar + "/?entidad=" + entidades[indice] + "&entidad_id=" + ids[indice] + "&ppp_id=" + pppNueva_id
+			rutas.pppRutaGuardar + "/?entidad=" + entsProd[indice] + "&entidad_id=" + idsProd[indice] + "&ppp_id=" + pppNueva_id
 		);
 		iconosPPP[indice].classList.remove("inactivo");
 
@@ -60,3 +58,8 @@ window.addEventListener("load", async () => {
 		});
 	});
 });
+
+const rutas = {
+	obtieneVariables: "/rclv/api/rc-obtiene-variables-detalle",
+	pppRutaGuardar: "/producto/api/pr-guarda-la-preferencia-del-usuario",
+};

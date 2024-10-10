@@ -13,7 +13,7 @@ window.addEventListener("load", async () => {
 	if (!entidad && pathname.includes("/revision/usuarios")) entidad = "usuarios";
 
 	// Horario Inicial
-	const datos = await fetch("/api/cmp-horario-inicial/?entidad=" + entidad + "&id=" + entId).then((n) => n.json());
+	const datos = await fetch("/api/cmp-horario-inicial/?entidad=" + entidad + "&id=" + id).then((n) => n.json());
 	const {capturadoEn, creadoEn, capturadoPor_id, usuario_id} = datos;
 	let horarioInicial = !capturadoEn ? creadoEn : capturadoPor_id == usuario_id ? capturadoEn : new Date();
 	horarioInicial = new Date(horarioInicial);
@@ -92,7 +92,7 @@ window.addEventListener("load", async () => {
 				? ["/revision/usuarios/tablero-de-usuarios", "fa-thumbs-up", "Entendido"]
 				: pathname.startsWith("/revision/")
 				? ["/revision/tablero", "fa-thumbs-up", "Entendido"]
-				: ["/" + entidad + "/detalle/" + siglaFam + "/?id=" + entId, "fa-circle-info", "Ir a Detalle"];
+				: ["/" + entidad + "/detalle/" + siglaFam + "/?id=" + id, "fa-circle-info", "Ir a Detalle"];
 
 			// Crea el cartel en el DOM
 			contenidoDelCartelGenerico({DOM, mensajes, clase, titulo, link});
@@ -129,5 +129,4 @@ window.addEventListener("load", async () => {
 
 // Variables
 const tipoUsuario = pathname.startsWith("/revision/") ? "revisores" : "usuarios";
-const entId = new URL(location.href).searchParams.get("id");
 let minutosDispon, segundosDispon;

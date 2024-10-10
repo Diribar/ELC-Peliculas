@@ -8,15 +8,6 @@ window.addEventListener("load", async () => {
 		eliminar: document.querySelectorAll("form #eliminar"),
 		resultado: document.querySelector("form #consolidado #valor"),
 	};
-	let v = {
-		entidad: new URL(location.href).searchParams.get("entidad"),
-		entId: new URL(location.href).searchParams.get("id"),
-	};
-	let rutas = {
-		califGuardada: "/producto/api/pr-obtiene-la-calificacion-del-usuario/?entidad=" + v.entidad + "&id=" + v.entId,
-		eliminaCalifPropia: "/producto/api/pr-elimina-la-calificacion-propia/?entidad=" + v.entidad + "&id=" + v.entId,
-	};
-
 	const {califGuardada, atributosCalific, calCriterios} = await fetch(rutas.califGuardada).then((n) => n.json());
 
 	// Funciones
@@ -47,8 +38,8 @@ window.addEventListener("load", async () => {
 			const campo_id = criterio.atributo_id;
 			const campo = criterio.atributo;
 			const ponderacion = criterio.ponderacion;
-			const ID = Array.from(DOM.calificaciones).find((n) => n.name == campo_id).value;
-			const atributoCalif = atributosCalific[campo].find((n) => n.id == ID);
+			const calificacion_id = Array.from(DOM.calificaciones).find((n) => n.name == campo_id).value;
+			const atributoCalif = atributosCalific[campo].find((n) => n.id == calificacion_id);
 			const valor = atributoCalif.valor;
 			resultado += (valor * ponderacion) / 100;
 		}
@@ -79,3 +70,7 @@ window.addEventListener("load", async () => {
 	// Fin
 	revisaErrores();
 });
+const rutas = {
+	califGuardada: "/producto/api/pr-calificacion-del-usuario/?entidad=" + entidad + "&id=" + id,
+	eliminaCalifPropia: "/producto/api/pr-elimina-la-calificacion/?entidad=" + entidad + "&id=" + id,
+};
