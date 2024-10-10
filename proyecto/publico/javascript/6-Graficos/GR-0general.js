@@ -1,3 +1,4 @@
+"use strict";
 // Variables
 const ruta = pathname.replace("/graficos/", "/graficos/api/gr-");
 const colores = {

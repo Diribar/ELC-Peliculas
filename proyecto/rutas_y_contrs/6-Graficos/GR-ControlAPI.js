@@ -17,8 +17,8 @@ module.exports = {
 
 		// Obtiene los productos
 		for (const entidad of ["peliculas", "colecciones"])
-			productos.push(baseDeDatos.obtieneTodosPorCondicion(entidad, {statusRegistro_id: aprobado_id}, "publico"));
-		productos = await Promise.all(productos).then(([a, b]) => [...a, ...b]);
+			productos.push(baseDeDatos.obtieneTodosPorCondicion(entidad, {statusRegistro_id: aprobados_ids}, "publico"));
+		productos = await Promise.all(productos).then((n) => n.flat());
 
 		// Cuenta las cantidades
 		let prods = {cfc: productos.filter((n) => n.cfc), vpc: productos.filter((n) => !n.cfc)};
