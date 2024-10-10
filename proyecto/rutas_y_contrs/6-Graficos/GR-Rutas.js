@@ -9,11 +9,9 @@ const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
 const usRolAutTablEnts = require("../../middlewares/porUsuario/usRolAutTablEnts");
 const combinados = [usAltaTerm, usRolAutTablEnts];
 
-// API
+// API y Vistas
 for (let codigo in graficos) router.get("/api/gr-" + graficos[codigo].url, API[codigo]);
-
-// Vistas
-for (let codigo in graficos) router.get("/api/" + graficos[codigo].url, vista[codigo]);
+for (let codigo in graficos) router.get("/api/" + graficos[codigo].url, combinados, vista[codigo]);
 
 // Fin
 module.exports = router;
