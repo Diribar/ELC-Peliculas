@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let DOM = {
+	const DOM = {
 		filasDatos: document.querySelectorAll("tbody tr.yaExistentes"),
 		filasEdicion: document.querySelectorAll("tbody tr.edicion"),
 		inputs: document.querySelectorAll("tbody .input"),
@@ -17,17 +17,13 @@ window.addEventListener("load", async () => {
 		botonesDeshacer: document.querySelectorAll("tbody .yaExistentes i.deshacer"),
 		botonesGuardar: document.querySelectorAll("tbody tr td button"),
 	};
-	let v = {
-		prodEntidad: new URL(location.href).searchParams.get("entidad"),
-		prodId: new URL(location.href).searchParams.get("id"),
-		columnas: DOM.inputs.length / (DOM.filasDatos.length + 1),
-	};
+	const columnas = DOM.inputs.length / (DOM.filasDatos.length + 1);
 
 	// Formulas
-	let obtieneDataEntry = (fila) => {
-		let objeto = "?prodEntidad=" + v.prodEntidad + "&prodId=" + v.prodId;
-		for (let columna = 0; columna < v.columnas; columna++) {
-			let indice = fila * v.columnas + columna;
+	const obtieneDataEntry = (fila) => {
+		let objeto = "?prodEntidad=" + entidad + "&prodId=" + id;
+		for (let columna = 0; columna < columnas; columna++) {
+			let indice = fila * columnas + columna;
 			objeto += "&" + DOM.inputs[indice].name + "=" + encodeURIComponent(DOM.inputs[indice].value);
 		}
 		return objeto;
@@ -61,7 +57,7 @@ window.addEventListener("load", async () => {
 			if (botonRecuperar.className.includes("inactivo")) return;
 			botonRecuperar.classList.add("inactivo");
 			// Obtiene los datos del link
-			let objeto = "?v.prodEntidad=" + v.prodEntidad + "&v.prodId=" + v.prodId;
+			let objeto = "?prodEntidad=" + entidad + "&prodId=" + id;
 			objeto += "&url=" + DOM.urlInputs[fila].value;
 			// Submit
 			let respuesta = await fetch("/links/api/lk-recuperar/" + objeto).then((n) => n.json());
@@ -76,7 +72,7 @@ window.addEventListener("load", async () => {
 			if (botonDeshacer.className.includes("inactivo")) return;
 			botonDeshacer.classList.add("inactivo");
 			// Obtiene los datos del link
-			let objeto = "?v.prodEntidad=" + v.prodEntidad + "&v.prodId=" + v.prodId;
+			let objeto = "?prodEntidad=" + entidad + "&prodId=" + id;
 			objeto += "&url=" + DOM.urlInputs[fila].value;
 			// Submit
 			let respuesta = await fetch("/links/api/lk-deshacer/" + objeto).then((n) => n.json());
