@@ -24,6 +24,7 @@ const FN_charts = {
 		// Genera el tipo de gráfico
 		const tipoGrafico = {
 			columnas: "ColumnChart",
+			pie: "PieChart",
 		};
 		const grafico = new google.visualization[tipoGrafico[tipo]](DOM.grafico);
 
