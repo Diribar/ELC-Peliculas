@@ -36,8 +36,8 @@ const aptoEdicion = [...aptoCalificar, m.permUserReg, m.edicion];
 
 // API - Calificaciones
 router.get("/api/pr-obtiene-las-calificaciones", API.califics.delProducto);
-router.get("/api/pr-obtiene-la-calificacion-del-usuario", API.califics.delUsuarioProducto);
-router.get("/api/pr-elimina-la-calificacion-propia", API.califics.elimina);
+router.get("/api/pr-calificacion-del-usuario", API.califics.delUsuarioProducto);
+router.get("/api/pr-elimina-la-calificacion", API.califics.elimina);
 
 // API - Preferencias por producto
 router.get("/api/pr-obtiene-opciones-de-preferencia", API.prefsDeCampo.obtieneOpciones);
