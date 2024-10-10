@@ -8,11 +8,6 @@ window.addEventListener("load", async () => {
 		eliminar: document.querySelectorAll("form #eliminar"),
 		resultado: document.querySelector("form #consolidado #valor"),
 	};
-	let v = {
-
-		entId: new URL(location.href).searchParams.get("id"),
-	};
-
 	const {califGuardada, atributosCalific, calCriterios} = await fetch(rutas.califGuardada).then((n) => n.json());
 
 	// Funciones
