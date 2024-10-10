@@ -7,11 +7,11 @@ window.addEventListener("load", async () => {
 
 	// Variables varias
 	const v = await fetch(rutas.obtieneVariables).then((n) => n.json());
-	let entsProd = [];
-	let ids = [];
+	const entsProd = [];
+	const ids = [];
 
-	// Obtiene las entsProd e ids de cada botón
-	for (let anchor of anchors) {
+	// Obtiene las 'entProd' e 'idProd' de cada botón
+	for (const anchor of anchors) {
 		const entProd = entidades.find((n) => anchor.href.includes(n));
 		const idProd = new URL(anchor.href).searchParams.get("id");
 		entsProd.push(entProd);
@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 	}
 
 	// Funciones
-	let cambiosEnPpp = async (indice) => {
+	const cambiosEnPpp = async (indice) => {
 		// Opción actual
 		const pppActual = v.pppOpcsArray.find((n) => iconosPPP[indice].className.endsWith(n.icono));
 		const pppActual_id = pppActual.id;
