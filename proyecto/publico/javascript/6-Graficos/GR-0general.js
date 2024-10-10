@@ -86,55 +86,24 @@ const FN_charts = {
 	},
 	pie: (alturaGrafico, anchoGrafico) => {
 		// Variables
-		const muestraEjeX = alturaGrafico > 200;
-		const muestraEjeY = anchoGrafico > 600;
-		const mostrarLeyenda = muestraEjeY && muestraEjeX;
 		const tamanoLetra = (min, max) => Math.min(Math.max(alturaGrafico / 20, min), max);
 
 		// Opciones
 		const opciones = {
+			// General
 			backgroundColor: "rgb(255,242,204)",
-			fontSize: 10,
+			fontSize: 14,
+
+			// Título
+			titleTextStyle: {color: "brown", fontSize: tamanoLetra(13, 18)},
+
+			// Área y leyenda
 			chartArea: {height: "80%"},
-			pieSliceText: "value",
+			legend: {position: "labeled"}, // leyendas conectadas con el gráfico
+
 			sliceVisibilityThreshold: 0.05, // agrupa los que son menores al 5%
-			legend: {position: "labeled"},
-
-			// Temas generales
-			// seriesType: "bars",
-			// isStacked: true, // columnas apiladas
-			// backgroundColor: "rgb(255,242,204)",
-			// fontSize: 14,
-
-			// // Título
-			// titleTextStyle: {color: "brown", fontSize: tamanoLetra(13, 18)},
-
-			// // Área y leyenda
-			// chartArea: {
-			// 	left: mostrarLeyenda ? "15%" : "5%",
-			// 	right: "5%",
-			// 	top: "15%",
-			// 	bottom: mostrarLeyenda ? "20%" : "12%",
-			// }, // reemplaza el ancho y alto
-			// legend: {
-			// 	position: mostrarLeyenda > 200 ? "bottom" : "none",
-			// 	textStyle: {fontSize: 12},
-			// },
-
-			// // Ejes
-			// hAxis: {
-			// 	maxAlternation: 1, // todos los valores en una misma fila
-			// 	slantedText: false, // todos los valores en dirección horizontal
-			// 	textStyle: {fontSize: 12},
-			// 	textPosition: muestraEjeX ? "auto" : "none",
-			// },
-			// vAxis: {
-			// 	viewWindow: {min: 0},
-			// 	title: "Cantidad de personas",
-			// 	titleTextStyle: {fontSize: muestraEjeY ? tamanoLetra(12, 18) : 1},
-			// 	titleTextPosition: anchoGrafico < 600 ? "none" : "auto",
-			// 	textStyle: {fontSize: tamanoLetra(10, 14)},
-			// },
+			pieSliceText: "value",
+			slices: {0: {offset: 0.05}},
 		};
 
 		// Fin
