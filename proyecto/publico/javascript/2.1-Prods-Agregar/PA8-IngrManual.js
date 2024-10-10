@@ -14,7 +14,6 @@ window.addEventListener("load", async () => {
 		submits: document.querySelectorAll(".submit"),
 	};
 	let v = {
-		entidad: new URL(location.href).searchParams.get("entidad"),
 		coleccion_id: new URL(location.href).searchParams.get("coleccion_id"),
 		temporada: new URL(location.href).searchParams.get("temporada"),
 		capitulo: new URL(location.href).searchParams.get("capitulo"),
