@@ -43,8 +43,8 @@ window.addEventListener("load", async () => {
 			const campo_id = criterio.atributo_id;
 			const campo = criterio.atributo;
 			const ponderacion = criterio.ponderacion;
-			const ID = Array.from(DOM.calificaciones).find((n) => n.name == campo_id).value;
-			const atributoCalif = atributosCalific[campo].find((n) => n.id == ID);
+			const calificacion_id = Array.from(DOM.calificaciones).find((n) => n.name == campo_id).value;
+			const atributoCalif = atributosCalific[campo].find((n) => n.id == calificacion_id);
 			const valor = atributoCalif.valor;
 			resultado += (valor * ponderacion) / 100;
 		}
@@ -76,6 +76,6 @@ window.addEventListener("load", async () => {
 	revisaErrores();
 });
 const rutas = {
-	califGuardada: "/producto/api/pr-obtiene-la-calificacion-del-usuario/?entidad=" + entidad + "&id=" + id,
-	eliminaCalifPropia: "/producto/api/pr-elimina-la-calificacion-propia/?entidad=" + entidad + "&id=" + id,
+	califGuardada: "/producto/api/pr-calificacion-del-usuario/?entidad=" + entidad + "&id=" + id,
+	eliminaCalifPropia: "/producto/api/pr-elimina-la-calificacion/?entidad=" + entidad + "&id=" + id,
 };
