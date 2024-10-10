@@ -64,14 +64,13 @@ const FN_charts = {
 
 			// Ejes
 			hAxis: {
-				maxAlternation: 1, // todos los valores en una misma fila
-				slantedText: false, // todos los valores en dirección horizontal
+				maxAlternation: 1, // todos las etiquetas en una misma fila
+				slantedText: false, // todos las etiquetas en dirección horizontal
 				textStyle: {fontSize: 12},
 				textPosition: muestraEjeX ? "auto" : "none",
 			},
 			vAxis: {
 				viewWindow: {min: 0},
-				title: "Cantidad de personas",
 				titleTextStyle: {fontSize: muestraEjeY ? tamanoLetra(12, 18) : 1},
 				titleTextPosition: anchoGrafico < 600 ? "none" : "auto",
 				textStyle: {fontSize: tamanoLetra(10, 14)},

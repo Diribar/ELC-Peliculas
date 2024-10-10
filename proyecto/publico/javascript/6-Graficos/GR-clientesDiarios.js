@@ -59,6 +59,7 @@ window.addEventListener("load", async () => {
 		opciones.title = "Prom.: " + tituloGral;
 		opciones.colors = coloresRelleno;
 		opciones.series = {3: {type: "line"}};
+		opciones.vAxis.title = "Cantidad de personas";
 
 		// Hace visible el gráfico
 		const data = new google.visualization.arrayToDataTable(resultado);
