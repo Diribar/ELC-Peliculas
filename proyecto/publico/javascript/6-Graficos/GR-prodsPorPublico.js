@@ -42,11 +42,6 @@ window.addEventListener("load", async () => {
 // const azul = "rgb(37, 64, 97)";
 
 // const options = {
-// 	backgroundColor: "rgb(255,242,204)",
 // 	colors: [gris, gris, azul, azul, "green", "green"],
-// 	fontSize: 10,
-// 	chartArea: {height: "80%"},
-// 	pieSliceText: "value",
-// 	sliceVisibilityThreshold: 0.1,
-// 	legend: {position: "labeled"},
+
 // };
