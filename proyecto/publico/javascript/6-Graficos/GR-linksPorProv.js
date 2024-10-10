@@ -1,35 +1,34 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Variables
+	// Obtiene datos del BE
 	const linksPorProv = await fetch("/graficos/api/gr-links-por-proveedor").then((n) => n.json());
+
+	// Variables
+	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
 	let ejeX = linksPorProv.map((n) => n.nombre);
 	const ejeY = linksPorProv.map((n) => n.links);
 
-	// Aspectos de la imagen de Google
-	google.charts.load("current", {packages: ["corechart"]});
-	google.charts.setOnLoadCallback(drawGraphic);
+	// Consolida el resultado
+	const resultado = [["Prov.", "Cant. de Links"]];
+	for (let i = 0; i < ejeX.length; i++) resultado.push([ejeX[i], ejeY[i]]);
 
 	// https://developers.google.com/chart/interactive/docs/gallery/piechart
-	function drawGraphic() {
-		// Consolida el resultado
-		const resultado = [["Prov.", "Cant. de Links"]];
-		for (let i = 0; i < ejeX.length; i++) resultado.push([ejeX[i], ejeY[i]]);
+	const dibujarGrafico = () => {
+		// Opciones
+		const {grafico, opciones} = FN_charts.opciones(DOM, "pie");
 
-		// Especifica la información
-		const data = google.visualization.arrayToDataTable(resultado);
-
-		// Opciones del gráfico
-		const options = {
-			backgroundColor: "rgb(255,242,204)",
-			fontSize: 10,
-			chartArea: {height: "80%"},
-			pieSliceText: "value",
-			sliceVisibilityThreshold: 0.05, // agrupa los que son menores al 5%
-			legend: {position: "labeled"},
-		};
 
 		// Hace visible el gráfico
-		const grafico = new google.visualization.PieChart(document.querySelector("#grafico"));
-		grafico.draw(data, options);
-	}
+		const data = new google.visualization.arrayToDataTable(resultado);
+		grafico.draw(data, opciones);
+
+		// Fin
+		return;
+	};
+
+	// Dibujar el gráfico
+	google.charts.setOnLoadCallback(dibujarGrafico);
+
+	// Fin
+	return;
 });
