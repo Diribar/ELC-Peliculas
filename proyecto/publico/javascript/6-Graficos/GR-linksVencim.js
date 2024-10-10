@@ -61,6 +61,3 @@ window.addEventListener("load", async () => {
 	return;
 });
 // https://developers.google.com/chart/interactive/docs/gallery/columnchart
-
-// // Temas generales
-// legend: "none",

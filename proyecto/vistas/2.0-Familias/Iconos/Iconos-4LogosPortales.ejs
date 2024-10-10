@@ -5,20 +5,15 @@
 		#logoPortales a.logos.true img {border: 3px solid var(--verde-oscuro)}
 	</style>
 	<div id="logoPortales" class="iconos">
-		<!-- TMDB -->
-		<% tmdb = registro.nombreOriginal ? "search?language=es&query=" + registro.nombreOriginal : "" %>
-		<a class="logos <%= registro.fuente=='TMDB' %>" href="//themoviedb.org/<%= tmdb %>" target="_blank" tabindex="-1">
-			<img src="/publico/imagenes/Logos/BD-TMDB.jpg" title="The Movie Database">
+		<!-- IMDB -->
+		<% imdb = registro.IMDB_id ? "title/"+registro.IMDB_id+"/technical" : (registro.nombreOriginal ? "find?q="+registro.nombreOriginal : "") %>
+		<a class="logos" href="//imdb.com/<%= imdb %>" target="_blank" tabindex="-1">
+			<img src="/publico/imagenes/Logos/BD-IMDB.jpg" title="Internet Movie Database">
 		</a>
 		<!-- FA -->
 		<% fa = registro.nombreOriginal ? "search.php?stext=" + registro.nombreOriginal : "" %>
 		<a class="logos <%= registro.fuente=='FA' %>" href="//filmaffinity.com/es/<%= fa %>" target="_blank" tabindex="-1">
 			<img src="/publico/imagenes/Logos/BD-FA.jpg" title="Film Affinity">
-		</a>
-		<!-- IMDB -->
-		<% imdb = registro.IMDB_id ? "title/"+registro.IMDB_id+"/technical" : (registro.nombreOriginal ? "find?q="+registro.nombreOriginal : "") %>
-		<a class="logos" href="//imdb.com/<%= imdb %>" target="_blank" tabindex="-1">
-			<img src="/publico/imagenes/Logos/BD-IMDB.jpg" title="Internet Movie Database">
 		</a>
 		<!-- Wikipedia -->
 		<% wiki = registro.nombreCastellano ? registro.nombreCastellano.toLowerCase() : "" %>
@@ -29,6 +24,11 @@
 		<% google = registro.nombreCastellano ? ("search?q=" + registro.nombreCastellano.toLowerCase()) : "" %>
 		<a class="logos <%= registro.fuente=='IM' %>" href="//google.com/<%= google %>" target="_blank" tabindex="-1">
 			<img src="/publico/imagenes/Logos/BD-Google.jpg" title="Google">
+		</a>
+		<!-- TMDB -->
+		<% tmdb = registro.nombreOriginal ? "search?language=es&query=" + registro.nombreOriginal : "" %>
+		<a class="logos <%= registro.fuente=='TMDB' %>" href="//themoviedb.org/<%= tmdb %>" target="_blank" tabindex="-1">
+			<img src="/publico/imagenes/Logos/BD-TMDB.jpg" title="The Movie Database">
 		</a>
 	</div>
 <% } %>

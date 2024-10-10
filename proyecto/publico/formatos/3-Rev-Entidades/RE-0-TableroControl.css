@@ -4,6 +4,5 @@
 	#cuadro {
 		border-radius: 15px; overflow: hidden; transition: 300ms;
 		&:has(a):hover {scale: 1.05}
-		#algunosDatos {text-align: center; background: var(--amarillo-claro);}
 	}
 }
