@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 10/oct",
-	"HoraUTC": "10:39",
+	"FechaUTC": "Vie. 11/oct",
+	"HoraUTC": "0:39",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 7/oct",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"08-oct-24": {},
 		"09-oct-24": {"leyenda": "Hoy recordamos a Abraham, santo", "entidad": "personajes", "id": 165},
 		"10-oct-24": {},
 		"11-oct-24": {"leyenda": "Hoy recordamos al papa Juan XXIII, santo", "entidad": "personajes", "id": 22},
-		"12-oct-24": {"leyenda": "Hoy recordamos al beato Carlo Acutis", "entidad": "personajes", "id": 196}
+		"12-oct-24": {"leyenda": "Hoy recordamos al beato Carlo Acutis", "entidad": "personajes", "id": 196},
+		"13-oct-24": {"leyenda": "Hoy recordamos el comienzo de La tragedia de los Andes", "entidad": "hechos", "id": 78}
 	}
 }
