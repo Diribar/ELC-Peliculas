@@ -16,7 +16,7 @@ const iconos = {
 	// Ocasionales
 	...{agregar: "fa-circle-plus", calificar: "fa-chart-simple", eliminar: "fa-trash-can"},
 	...{detalle: "fa-circle-info", edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
-	...{graficos: "fa-chart-line", chart: "fa-chart-pie", columnas: "fa-chart-simple"},
+	...{graficos: "fa-chart-line", chart: "fa-chart-pie", columnas: "fa-chart-simple", area: "fa-chart-area"},
 };
 
 module.exports = {
@@ -37,24 +37,21 @@ module.exports = {
 
 	// Gráficos
 	graficos: {
-		// Prioritarios
+		// Usuarios
 		clientesDiarios: {
-			codigo: "clientesDiarios",
 			rubro: "clientes",
 			titulo: "Clientes Diarios",
 			url: "usuarios-clientes-acums",
 			icono: iconos.columnas,
 			resaltar: true,
 		},
-		linksVencim: {
-			orden: 2,
-			rubro: "links",
-			titulo: "Links - Vencimiento Semanal",
-			url: "vencimiento-de-links",
-			icono: iconos.columnas,
-			resaltar: true,
-			hr: true,
-		},
+		// fidelidadClientes: {
+		// 	rubro: "clientes",
+		// 	titulo: "Fidelidad de Clientes",
+		// 	url: "usuarios-fidelidad-clientes",
+		// 	icono: iconos.area,
+		// 	resaltar: true,
+		// },
 
 		// Productos
 		prodsCfcVpc: {
@@ -86,6 +83,14 @@ module.exports = {
 		},
 
 		// Links
+		linksVencim: {
+			rubro: "links",
+			titulo: "Links - Vencimiento Semanal",
+			url: "vencimiento-de-links",
+			icono: iconos.columnas,
+			resaltar: true,
+			hr: true,
+		},
 		linksPorProv: {
 			rubro: "links",
 			titulo: "Links - Proveedores",
