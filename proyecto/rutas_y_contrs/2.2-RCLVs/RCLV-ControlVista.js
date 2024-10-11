@@ -161,9 +161,8 @@ module.exports = {
 		// Puede venir de agregarProd, edicionProd, detalleRCLV, revision
 		guardar: async (req, res) => {
 			// Variables
-			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {tarea, entidad} = comp.partesDelUrl(req);
 			const {id, prodEntidad, prodId, eliminarEdic} = req.query;
-			const {tarea} = comp.partesDelUrl(req);
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const origen = req.query.origen ? req.query.origen : "DT";
 			const usuario_id = req.session.usuario.id;
@@ -175,7 +174,7 @@ module.exports = {
 				else if (typeof req.body[prop] == "string") req.body[prop] = req.body[prop].trim();
 
 			// Obtiene los datos
-			let datos = {...req.body, ...req.query, imgOpcional: true};
+			const datos = {entidad, ...req.body, ...req.query, imgOpcional: true};
 
 			// Si recibimos un avatar, se completa la información
 			if (req.file) {
