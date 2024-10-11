@@ -137,7 +137,11 @@ module.exports = {
 			const originalUrl = req.originalUrl;
 			const opcsHoyEstamos =
 				dataEntry.genero_id && dataEntry.hoyEstamos_id
-					? hoyEstamos.filter((n) => n.entidad == entidad && (n.genero_id == dataEntry.genero_id || !n.genero_id))
+					? hoyEstamos.filter(
+							(n) =>
+								(n.entidad == entidad || !n.entidad) && // la entidad coincide o es universal
+								(n.genero_id == dataEntry.genero_id || !n.genero_id) // el genero coincide o es universal
+					  )
 					: [];
 			const opcsLeyNombre =
 				dataEntry.nombre && dataEntry.leyNombre
