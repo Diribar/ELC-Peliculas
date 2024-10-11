@@ -3,11 +3,11 @@
 module.exports = {
 	// Usuarios
 	clientesDiarios: async (req, res) => {
-		const navegsAcums = await baseDeDatos.obtieneTodosConOrden("navegsAcums", "fecha");
-		return res.json(navegsAcums);
+		const navegsHistorial = await baseDeDatos.obtieneTodosConOrden("navegsHistorial", "fecha");
+		return res.json(navegsHistorial);
 	},
-	fidelidadClientes:async(req,res)=>{
-		const datos=await baseDeDatos.obtieneTodosConOrden("navegsAcums", "fecha");
+	fidelidadClientes: async (req, res) => {
+		const datos = await baseDeDatos.obtieneTodosConOrden("navegsHistorial", "fecha");
 		return res.json(datos);
 	},
 
