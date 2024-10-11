@@ -137,7 +137,7 @@ module.exports = {
 			const originalUrl = req.originalUrl;
 			const opcsHoyEstamos =
 				dataEntry.genero_id && dataEntry.hoyEstamos_id
-					? hoyEstamos.filter((n) => n.entidad == entidad && n.genero_id == dataEntry.genero_id)
+					? hoyEstamos.filter((n) => n.entidad == entidad && (n.genero_id == dataEntry.genero_id || !n.genero_id))
 					: [];
 			const opcsLeyNombre =
 				dataEntry.nombre && dataEntry.leyNombre
@@ -149,6 +149,7 @@ module.exports = {
 			const cartelRechazo = tema == "revisionEnts";
 
 			// Ir a la vista
+			// return res.send({dataEntry});
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, origen, titulo},
 				...{entidad, id, prodEntidad, prodId, edicId, familia: "rclv", ent, familia},
