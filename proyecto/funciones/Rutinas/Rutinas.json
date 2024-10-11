@@ -44,7 +44,6 @@
 		"eliminaMisConsultasExcedente": "SI",
 		"eliminaCalifsSinPPP": "SI",
 		"eliminaRegsSinEntidad_id": "SI",
-		"eliminaNavegsAcumsRep": "SI",
 		"eliminaRegsDelHistStatus": "SI",
 		"idDeTablas": "SI"
 	},
