@@ -45,13 +45,13 @@ module.exports = {
 			icono: iconos.columnas,
 			resaltar: true,
 		},
-		// fidelidadClientes: {
-		// 	rubro: "clientes",
-		// 	titulo: "Fidelidad de Clientes",
-		// 	url: "usuarios-fidelidad-clientes",
-		// 	icono: iconos.area,
-		// 	resaltar: true,
-		// },
+		fidelidadClientes: {
+			rubro: "clientes",
+			titulo: "Fidelidad de Clientes",
+			url: "usuarios-fidelidad-clientes",
+			icono: iconos.area,
+			resaltar: true,
+		},
 
 		// Productos
 		prodsCfcVpc: {
