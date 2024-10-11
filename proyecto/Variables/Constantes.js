@@ -35,6 +35,65 @@ module.exports = {
 		"derechos-de-autor": {titulo: "ELC | Derechos de Autor", codigo: "derechosAutor", icono: "fa-copyright"},
 	},
 
+	// Gráficos
+	graficos: {
+		// Prioritarios
+		clientesDiarios: {
+			codigo: "clientesDiarios",
+			rubro: "clientes",
+			titulo: "Clientes Diarios",
+			url: "usuarios-clientes-acums",
+			icono: iconos.columnas,
+			resaltar: true,
+		},
+		linksVencim: {
+			orden: 2,
+			rubro: "links",
+			titulo: "Links - Vencimiento Semanal",
+			url: "vencimiento-de-links",
+			icono: iconos.columnas,
+			resaltar: true,
+			hr: true,
+		},
+
+		// Productos
+		prodsCfcVpc: {
+			rubro: "prods",
+			titulo: "Películas - CFC / VPC",
+			url: "peliculas-cfc-vpc",
+			icono: iconos.chart,
+		},
+		prodsPorPublico: {
+			rubro: "prods",
+			titulo: "Películas - Público recomendado",
+			url: "peliculas-publico",
+			icono: iconos.chart,
+		},
+		prodsPorEpocaEstr: {
+			rubro: "prods",
+			titulo: "Películas - Época de estreno",
+			url: "peliculas-epoca-estreno",
+			icono: iconos.columnas,
+			hr: true,
+		},
+
+		// RCLVs
+		rclvsRangosSinEfems: {
+			rubro: "rclvs",
+			titulo: "RCLVs - Rangos sin Efemérides",
+			url: "rclvs-rangos-sin-efemerides",
+			icono: iconos.columnas,
+		},
+
+		// Links
+		linksPorProv: {
+			rubro: "links",
+			titulo: "Links - Proveedores",
+			url: "links-por-proveedor",
+			icono: iconos.chart,
+		},
+	},
+
 	// Productos
 	dibujosAnimados: "Dibujos Animados",
 	documental: "Documental",
