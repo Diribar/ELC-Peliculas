@@ -3,7 +3,9 @@
 
 module.exports = async (req, res, next) => {
 	// Si es una de las aplicaciones triviales, avanza
+	if (entorno != "development") console.log(req.headers["user-agent"]);
 	if (requestsTriviales.some((n) => req.headers["user-agent"].startsWith(n))) return next(); // si es una de las aplicaciones triviales
+	if (!req.headers["user-agent"]) return next(); // si no se conoce el origen
 
 	// Variables
 	let {usuario, cliente} = req.session;
