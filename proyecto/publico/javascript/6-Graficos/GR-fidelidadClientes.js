@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Obtiene datos del BE
-	const navegsAcums = await fetch(ruta).then((n) => n.json());
+	const navegsHistorial = await fetch(ruta).then((n) => n.json());
 
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
@@ -28,7 +28,7 @@ window.addEventListener("load", async () => {
 
 	// Genera la información
 	const resultado = [["Fecha", ...grupos.map((grupo) => [grupo, {role: "style"}]).flat()]];
-	for (let navegDelDia of navegsAcums) {
+	for (let navegDelDia of navegsHistorial) {
 		// Alimenta los datos del gráfico
 		const {fecha, altasDelDia, transicion, unoATres, unoADiez, masDeDiez, masDeTreinta} = navegDelDia;
 		resultado.push([
