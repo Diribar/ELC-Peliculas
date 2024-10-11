@@ -336,7 +336,7 @@ module.exports = {
 
 			// RCLV - actualiza prodsAprob en RCLVs <-- esto tiene que estar después del guardado de la edición
 			if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id)
-				validacsFM.accionesPorCambioDeStatus(entidad, registro); // No es necesario el 'await', el proceso no necesita ese resultado
+				procsFM.accionesPorCambioDeStatus(entidad, registro); // No es necesario el 'await', el proceso no necesita ese resultado
 
 			// SESSION Y COOKIES - Establece como vista anterior la vista del primer paso
 			req.session.urlActual = "/";

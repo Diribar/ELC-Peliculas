@@ -470,7 +470,7 @@ module.exports = {
 			if (datosHist.penalizac) comp.penalizacAcum(usuario_id, motivo, petitFamilias);
 
 			// CONSECUENCIAS - Acciones para producto (rclvs y links) --> debe estar después de que se grabó el original
-			if (producto) await validacsFM.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
+			if (producto) await procsFM.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
 
 			// CONSECUENCIAS - Si se aprobó un 'recuperar' que no es un capítulo, y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 			if (codigo == "recuperar" && aprobado && entidad != "capitulo" && original.avatar && original.avatar.includes("/"))
@@ -513,7 +513,7 @@ module.exports = {
 			});
 
 			// 3. Acciones si se terminó de revisar la edición de un producto
-			if (!edicion && entidadEdic == "prodsEdicion") await validacsFM.statusAprob({entidad, registro: originalGuardado});
+			if (!edicion && entidadEdic == "prodsEdicion") await procsProd.statusAprob({entidad, registro: originalGuardado});
 
 			// Fin
 			if (edicion) return res.redirect(req.originalUrl);

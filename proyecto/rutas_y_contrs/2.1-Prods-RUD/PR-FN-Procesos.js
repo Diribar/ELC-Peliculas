@@ -1,7 +1,7 @@
 "use strict";
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
-	// Producto
 	bloqueIzq: (producto) => {
 		// Variables
 		const paisesNombre = producto.paises_id ? comp.paises_idToNombre(producto.paises_id) : null;
@@ -169,6 +169,45 @@ module.exports = {
 			if (noEsPersonajeNiEpocaOcurr || esPersonajeNoVarios || esEpocaOcurrNoVarios)
 				await baseDeDatos.actualizaPorCondicion("capitulos", condicion, novedad);
 		}
+
+		// Fin
+		return true;
+	},
+	statusAprob: async function ({entidad, registro}) {
+		// Variables
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+
+		// Primera respuesta
+		let statusAprob = familias != "productos" || registro.statusRegistro_id != creadoAprob_id;
+		if (statusAprob) return true;
+
+		// Si hay errores, devuelve falso e interrumpe la función
+		const errores = await this.validacs.consolidado({datos: {...registro, entidad}});
+		if (errores.impideAprobado) return false;
+
+		// 1. Cambia el status del registro
+		const ahora = comp.fechaHora.ahora();
+		let datos = {statusRegistro_id: aprobado_id};
+		if (!registro.altaTermEn)
+			datos = {
+				...datos,
+				altaTermEn: ahora,
+				leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
+				statusSugeridoPor_id: usAutom_id,
+				statusSugeridoEn: ahora,
+			};
+		await baseDeDatos.actualizaPorId(entidad, registro.id, datos);
+
+		// 2. Actualiza el campo 'prodAprob' en los links
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const condicion = {[campo_id]: registro.id};
+		baseDeDatos.actualizaPorCondicion("links", condicion, {prodAprob: true});
+
+		// 3. Si es una colección, revisa si corresponde aprobar capítulos
+		if (entidad == "colecciones") await this.capsAprobs(registro.id);
+
+		// 4. Actualiza 'prodsEnRCLV' en sus RCLVs
+		procsFM.accionesPorCambioDeStatus(entidad, {...registro, ...datos});
 
 		// Fin
 		return true;

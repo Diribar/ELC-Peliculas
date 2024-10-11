@@ -292,9 +292,9 @@ module.exports = {
 					edicion[nombre] = edicColec[nombre];
 			}
 
-			// Reemplaza los campos 'include' vacíos de la edición
-			if (includesEdic)
-				for (let campo of includesEdic) if (!edicion[campo] && edicColec[campo]) edicion[campo] = edicColec[campo];
+			// // Reemplaza los campos 'include' vacíos de la edición
+			// if (includesEdic)
+			// 	for (let campo of includesEdic) if (!edicion[campo] && edicColec[campo]) edicion[campo] = edicColec[campo];
 		}
 
 		// Fin
@@ -615,6 +615,53 @@ module.exports = {
 
 		// Fin
 		return prodsDelRCLV;
+	},
+	accionesPorCambioDeStatus: async (entidad, registro) => {
+		// Variables
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+
+		// prodsEnRCLV
+		if (familias == "productos") {
+			// Variables
+			const prodAprob = activos_ids.includes(registro.statusRegistro_id); // antes era 'aprobados_ids'
+
+			// Actualiza prodAprob en sus links
+			if (registro.links && registro.links.length) {
+				const campo_id = entidad == "colecciones" ? "grupoCol_id" : comp.obtieneDesdeEntidad.campo_id(entidad);
+				await baseDeDatos.actualizaPorCondicion("links", {[campo_id]: registro.id}, {prodAprob});
+			}
+
+			// Rutina por entidad RCLV
+			const entidadesRCLV = variables.entidades.rclvs;
+			for (let entidadRCLV of entidadesRCLV) {
+				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
+				if (registro[campo_id] && registro[campo_id] != 1)
+					prodAprob
+						? baseDeDatos.actualizaPorId(entidadRCLV, registro[campo_id], {prodsAprob: true})
+						: comp.actualizaProdsEnRCLV({entidad: entidadRCLV, id: registro[campo_id]});
+			}
+		}
+
+		// linksEnProds
+		if (familias == "links") {
+			// Obtiene los datos identificatorios del producto
+			const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(registro);
+			const campo_id = comp.obtieneDesdeCampo_id.campo_idProd(registro);
+			const prodId = registro[campo_id];
+
+			// Actualiza el producto
+			await comp.linksEnProd({entidad: prodEntidad, id: prodId});
+			if (prodEntidad == "capitulos") {
+				const colID = await baseDeDatos.obtienePorId("capitulos", prodId).then((n) => n.coleccion_id);
+				comp.actualizaCalidadesDeLinkEnCole(colID);
+			}
+		}
+
+		// Actualiza la variable de links vencidos
+		await comp.linksVencPorSem.actualizaCantLinksPorSem();
+
+		// Fin
+		return;
 	},
 
 	grupos: {

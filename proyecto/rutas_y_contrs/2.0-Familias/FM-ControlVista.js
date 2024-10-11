@@ -1,7 +1,6 @@
 "use strict";
 // Variables
 const procesos = require("./FM-FN-Procesos");
-const validacs = require("./FM-FN-Validar");
 
 module.exports = {
 	form: {
@@ -179,7 +178,7 @@ module.exports = {
 			if (entidad == "capitulos") comp.actualizaCalidadesDeLinkEnCole(original.coleccion_id);
 
 			// 4. Actualiza los RCLV, en el campo 'prodsAprob'
-			validacs.accionesPorCambioDeStatus(entidad, original);
+			procesos.accionesPorCambioDeStatus(entidad, original);
 		}
 
 		// Fin
