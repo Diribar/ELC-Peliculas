@@ -4,8 +4,7 @@ window.addEventListener("load", async () => {
 	const datos = await fetch(ruta).then((n) => n.json());
 
 	// Variables
-	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
-	const revision = location.pathname.includes("/revision");
+	const DOM = {grafico: document.querySelector("#cuadro #grafico")};
 	const {cantLinksVencPorSem: cantLinks, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsEstandar} = datos;
 	const semanaActual = (lunesDeEstaSemana - primerLunesDelAno) / unaSemana + 1;
 	const {promSem} = cantLinks;
