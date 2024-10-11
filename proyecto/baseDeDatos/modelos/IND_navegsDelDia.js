@@ -8,7 +8,7 @@ module.exports = (sequelize, dt) => {
 		diasNaveg: {type: dt.INTEGER}, // para la estadística
 	};
 	const config = {
-		tableName: "aux_navegs_del_dia",
+		tableName: "ind_navegs_del_dia",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
