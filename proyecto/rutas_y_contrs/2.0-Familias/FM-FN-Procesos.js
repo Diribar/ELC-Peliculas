@@ -971,7 +971,7 @@ module.exports = {
 					// Acciones por cada PRODUCTO
 					for (let original of prodsPorEnts[i]) {
 						// Si hay errores, le cambia el status
-						const errores = await this.validacs.consolidado({datos: {...original, entidad}});
+						const errores = await validacs.consolidado({datos: {...original, entidad}});
 						if (errores.impideAprobado)
 							baseDeDatos.actualizaPorId(entidad, original.id, {statusRegistro_id: creadoAprob_id});
 					}
