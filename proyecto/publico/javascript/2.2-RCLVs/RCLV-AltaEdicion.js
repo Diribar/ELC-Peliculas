@@ -127,7 +127,7 @@ window.addEventListener("load", async () => {
 	}
 
 	// Funciones
-	let FN = {
+	const FN = {
 		impactos: {
 			nombre: {
 				logos: () => {
@@ -287,7 +287,7 @@ window.addEventListener("load", async () => {
 			genero: {
 				consolidado: async function () {
 					// Obtiene el genero_id
-					v.genero_id = FN_opcElegida(DOM.generos_id);
+					v.genero_id = FN_aux.opcElegida(DOM.generos_id);
 					if (v.genero_id == "MF") DOM.plural_id.checked = true; // si se eligieron ambos, se active 'plural'
 					if (v.genero_id) v.genero_id += DOM.plural_id.checked ? "P" : "S";
 					else DOM.plural_id.checked = false;
@@ -336,9 +336,9 @@ window.addEventListener("load", async () => {
 			epocaOcurrencia: {
 				personajes: async () => {
 					// Obtiene la opción elegida
-					const epocaOcurrencia_id = FN_opcElegida(DOM.epocasOcurrencia_id);
+					const epocaOcurrencia_id = FN_aux.opcElegida(DOM.epocasOcurrencia_id);
 					// Obtiene el año
-					const ano = FN_ano(DOM.ano.value);
+					const ano = FN_aux.ano(DOM.ano.value);
 
 					// Si 'pst' y Año > 1100, muestra sectorApMar. Si no, lo oculta
 					// Es necesario dejar la condición 'pst', para que oculte  si el usuario cambia
@@ -350,8 +350,8 @@ window.addEventListener("load", async () => {
 				},
 				hechos: async () => {
 					// Variables
-					const epocaOcurrencia_id = FN_opcElegida(DOM.epocasOcurrencia_id);
-					const ano = FN_ano(DOM.ano.value);
+					const epocaOcurrencia_id = FN_aux.opcElegida(DOM.epocasOcurrencia_id);
+					const ano = FN_aux.ano(DOM.ano.value);
 
 					// Si 'pst' y Año > 1100, muestra sectorApMar. Si no, lo oculta
 					// Es necesario dejar la condición 'pst', para que lo oculte si el usuario lo combina con otra opción
@@ -465,10 +465,10 @@ window.addEventListener("load", async () => {
 
 				// Le agrega lo referido a la aparición mariana
 				if (hechos) {
-					const soloCfc = FN_opcElegida(DOM.soloCfc);
-					const epocaOcurrencia_id = FN_opcElegida(DOM.epocasOcurrencia_id);
-					const ano = FN_ano(DOM.ano.value);
-					const ama = FN_opcElegida(DOM.ama);
+					const soloCfc = FN_aux.opcElegida(DOM.soloCfc);
+					const epocaOcurrencia_id = FN_aux.opcElegida(DOM.epocasOcurrencia_id);
+					const ano = FN_aux.ano(DOM.ano.value);
+					const ama = FN_aux.opcElegida(DOM.ama);
 					if (soloCfc == 1 && epocaOcurrencia_id == "pst" && ano > 1100 && ama == 1) params += "&ama=1";
 				}
 
@@ -549,13 +549,13 @@ window.addEventListener("load", async () => {
 			},
 			epocaOcurrencia: async () => {
 				// Variables
-				const epocaOcurrencia_id = FN_opcElegida(DOM.epocasOcurrencia_id);
+				const epocaOcurrencia_id = FN_aux.opcElegida(DOM.epocasOcurrencia_id);
 				let params = "epocaOcurrencia";
 				params += "&entidad=" + entidad;
 				params += "&epocaOcurrencia_id=" + epocaOcurrencia_id;
 
 				// Agrega los demás parámetros
-				if (epocaOcurrencia_id == "pst") params += "&" + anoTipo + "=" + FN_ano(DOM.ano.value);
+				if (epocaOcurrencia_id == "pst") params += "&" + anoTipo + "=" + FN_aux.ano(DOM.ano.value);
 
 				// OK y Errores
 				errores.epocaOcurrencia = await fetch(rutas.validacion + params).then((n) => n.json());
@@ -567,7 +567,7 @@ window.addEventListener("load", async () => {
 			RCLIC: {
 				personajes: async () => {
 					// Variables
-					const categoria_id = FN_opcElegida(DOM.categorias_id);
+					const categoria_id = FN_aux.opcElegida(DOM.categorias_id);
 					let params = "RCLIC_personajes";
 					params += "&categoria_id=" + categoria_id;
 
@@ -581,17 +581,17 @@ window.addEventListener("load", async () => {
 								if (campo.value) params += "&" + campo.name + "=" + campo.value;
 
 							// Agrega la epocaOcurrencia_id
-							const epocaOcurrencia_id = FN_opcElegida(DOM.epocasOcurrencia_id);
+							const epocaOcurrencia_id = FN_aux.opcElegida(DOM.epocasOcurrencia_id);
 							params += "&epocaOcurrencia_id=" + epocaOcurrencia_id;
 
 							// Acciones si la epocaOcurrencia_id es 'pst'
 							if (epocaOcurrencia_id == "pst") {
 								// Agrega el año
-								const ano = FN_ano(DOM.ano.value);
+								const ano = FN_aux.ano(DOM.ano.value);
 								params += "&anoNacim=" + ano;
 
 								// Agrega lo referido a la aparición mariana
-								if (ano > 1100) params += "&apMar_id=" + FN_opcElegida(DOM.apMar_id);
+								if (ano > 1100) params += "&apMar_id=" + FN_aux.opcElegida(DOM.apMar_id);
 							}
 						}
 					}
@@ -605,7 +605,7 @@ window.addEventListener("load", async () => {
 				},
 				hechos: async () => {
 					// Variables
-					const soloCfc = FN_opcElegida(DOM.soloCfc);
+					const soloCfc = FN_aux.opcElegida(DOM.soloCfc);
 					let params = "RCLIC_hechos";
 
 					// Obtiene el 'soloCfc'
@@ -613,15 +613,15 @@ window.addEventListener("load", async () => {
 
 					if (soloCfc == 1) {
 						// Agrega los datos de epocaOcurrencia_id y año
-						const epocaOcurrencia_id = FN_opcElegida(DOM.epocasOcurrencia_id);
+						const epocaOcurrencia_id = FN_aux.opcElegida(DOM.epocasOcurrencia_id);
 						params += "&epocaOcurrencia_id=" + epocaOcurrencia_id;
 
 						if (epocaOcurrencia_id == "pst") {
-							const ano = FN_ano(DOM.ano.value);
+							const ano = FN_aux.ano(DOM.ano.value);
 							// Agrega el año
 							params += "&anoComienzo=" + ano;
 							// Agrega lo referido a la aparición mariana
-							if (ano > 1100) params += "&ama=" + FN_opcElegida(DOM.ama);
+							if (ano > 1100) params += "&ama=" + FN_aux.opcElegida(DOM.ama);
 						}
 					}
 
@@ -704,8 +704,8 @@ window.addEventListener("load", async () => {
 			}
 
 			// Genero
-			if (FN_opcElegida(DOM.generos_id)) await this.impactos.genero.consolidado();
-			if (FN_opcElegida(DOM.generos_id) || (forzar && errores.genero_id === undefined)) await this.validacs.genero();
+			if (FN_aux.opcElegida(DOM.generos_id)) await this.impactos.genero.consolidado();
+			if (FN_aux.opcElegida(DOM.generos_id) || (forzar && errores.genero_id === undefined)) await this.validacs.genero();
 
 			// Carpeta Avatars
 			if (DOM.carpetaAvatars && (DOM.carpetaAvatars.value || (forzar && errores.carpetaAvatars === undefined)))
@@ -717,15 +717,15 @@ window.addEventListener("load", async () => {
 
 			// Época
 			if (DOM.epocasOcurrencia_id.length) {
-				if (FN_opcElegida(DOM.epocasOcurrencia_id)) await this.impactos.epocaOcurrencia[entidad]();
-				if (FN_opcElegida(DOM.epocasOcurrencia_id) || (forzar && errores.epocaOcurrencia === undefined))
+				if (FN_aux.opcElegida(DOM.epocasOcurrencia_id)) await this.impactos.epocaOcurrencia[entidad]();
+				if (FN_aux.opcElegida(DOM.epocasOcurrencia_id) || (forzar && errores.epocaOcurrencia === undefined))
 					await this.validacs.epocaOcurrencia();
 			}
 
 			// RCLIC
 			if (
-				(personajes && FN_opcElegida(DOM.categorias_id)) ||
-				(hechos && FN_opcElegida(DOM.soloCfc)) ||
+				(personajes && FN_aux.opcElegida(DOM.categorias_id)) ||
+				(hechos && FN_aux.opcElegida(DOM.soloCfc)) ||
 				(forzar && (personajes || hechos) && errores.RCLIC === undefined)
 			)
 				await this.validacs.RCLIC[entidad]();
@@ -871,7 +871,7 @@ window.addEventListener("load", async () => {
 			await FN.validacs.genero();
 
 			// Si corresponde, valida RCLIC
-			if (personajes && OK.genero_id && FN_opcElegida(DOM.categorias_id) == "CFC") await FN.validacs.RCLIC.personajes();
+			if (personajes && OK.genero_id && FN_aux.opcElegida(DOM.categorias_id) == "CFC") await FN.validacs.RCLIC.personajes();
 		}
 
 		// sector Carpeta Avatars
@@ -889,8 +889,8 @@ window.addEventListener("load", async () => {
 			if (e.target.value == "pst") DOM.ano.focus();
 			// Si corresponde, valida RCLIC
 			if (OK.epocaOcurrencia) {
-				if (personajes && FN_opcElegida(DOM.categorias_id) == "CFC") await FN.validacs.RCLIC.personajes();
-				if (hechos && FN_opcElegida(DOM.soloCfc) == 1) await FN.validacs.RCLIC.hechos();
+				if (personajes && FN_aux.opcElegida(DOM.categorias_id) == "CFC") await FN.validacs.RCLIC.personajes();
+				if (hechos && FN_aux.opcElegida(DOM.soloCfc) == 1) await FN.validacs.RCLIC.hechos();
 			}
 		}
 
@@ -950,17 +950,19 @@ let errores = {};
 let v;
 
 // Funciones
-let FN_opcElegida = (opciones) => {
-	// Radio
-	if (opciones[0].type == "radio") {
-		for (var opcion of opciones) if (opcion.checked) return opcion.value;
-		return "";
-	}
-	// Check
-	else {
-		let valor = "";
-		for (var opcion of opciones) if (opcion.checked) valor += opcion.value;
-		return valor;
-	}
+const FN_aux = {
+	opcElegida: (opciones) => {
+		// Radio
+		if (opciones[0].type == "radio") {
+			for (var opcion of opciones) if (opcion.checked) return opcion.value;
+			return "";
+		}
+		// Check
+		else {
+			let valor = "";
+			for (var opcion of opciones) if (opcion.checked) valor += opcion.value;
+			return valor;
+		}
+	},
+	ano: (ano) => (ano ? parseInt(ano) : 0),
 };
-let FN_ano = (ano) => (ano ? parseInt(ano) : 0);
