@@ -3,7 +3,7 @@
 const revision = pathname.includes("/revision");
 const ruta = !revision
 	? pathname.replace("/graficos/", "/graficos/api/gr-") // cuando la ruta no es de revisión
-	: "/graficos/api/gr-vencimiento-de-links";// en revisión se usa esa ruta
+	: "/graficos/api/gr-vencimiento-de-links"; // en revisión se usa esa ruta
 const colores = {
 	azul: ["#8BC1F7", "#519DE9", "#06C", "#004B95", "#002F5D"], // 1. Blue
 	celeste: ["#A2D9D9", "#73C5C5", "#009596", "#005F60", "#003737"], // 3. Cyan
@@ -20,15 +20,24 @@ google.charts.load("current", {packages: ["corechart"]});
 const FN_charts = {
 	// Formatos de gráfico
 	opciones: function (DOM, tipo) {
-		// Opciones
+		// Variables
 		const alturaGrafico = DOM.grafico.offsetHeight;
 		const anchoGrafico = DOM.grafico.offsetWidth;
+
+		// Funciones
+		const tamanoLetra = (min, max) => Math.min(Math.max(alturaGrafico / 20, min), max);
+
+		// Obtiene las opciones
 		const opciones = this[tipo](alturaGrafico, anchoGrafico);
+		opciones.titleTextStyle = {color: "brown", fontSize: tamanoLetra(13, 18)};
+		opciones.backgroundColor = "rgb(255,242,204)";
+		opciones.fontSize = 14;
 
 		// Genera el tipo de gráfico
 		const tipoGrafico = {
 			columnas: "ColumnChart",
 			pie: "PieChart",
+			area: "AreaChart",
 		};
 		const grafico = new google.visualization[tipoGrafico[tipo]](DOM.grafico);
 
@@ -47,12 +56,7 @@ const FN_charts = {
 			// Temas generales
 			seriesType: "bars",
 			isStacked: true, // columnas apiladas
-			backgroundColor: "rgb(255,242,204)",
-			fontSize: 14,
 			animation: {duration: 100, easing: "out", startup: true},
-
-			// Título
-			titleTextStyle: {color: "brown", fontSize: tamanoLetra(13, 18)},
 
 			// Área y leyenda
 			chartArea: {
@@ -87,19 +91,9 @@ const FN_charts = {
 		// Fin
 		return opciones;
 	},
-	pie: (alturaGrafico, anchoGrafico) => {
-		// Variables
-		const tamanoLetra = (min, max) => Math.min(Math.max(alturaGrafico / 20, min), max);
-
+	pie: (alturaGrafico) => {
 		// Opciones
 		const opciones = {
-			// General
-			backgroundColor: "rgb(255,242,204)",
-			fontSize: 14,
-
-			// Título
-			titleTextStyle: {color: "brown", fontSize: tamanoLetra(13, 18)},
-
 			// Área y leyenda
 			chartArea: {height: "80%"},
 			legend: {position: "labeled"}, // leyendas conectadas con el gráfico
@@ -107,6 +101,52 @@ const FN_charts = {
 			sliceVisibilityThreshold: 0.05, // agrupa los que son menores al 5%
 			pieSliceText: "value",
 			slices: {0: {offset: 0.05}},
+		};
+
+		// Fin
+		return opciones;
+	},
+	area: (alturaGrafico, anchoGrafico) => {
+		// Variables
+		const muestraEjeX = alturaGrafico > 200;
+		const muestraEjeY = anchoGrafico > 600;
+		const mostrarLeyenda = muestraEjeY && muestraEjeX;
+		const tamanoLetra = (min, max) => Math.min(Math.max(alturaGrafico / 20, min), max);
+
+		// Opciones
+		const opciones = {
+			// Temas generales
+			isStacked: true, // columnas apiladas
+			animation: {duration: 100, easing: "out", startup: true},
+
+			// Área y leyenda
+			chartArea: {
+				top: "15%",
+				bottom: mostrarLeyenda ? "20%" : "12%",
+				left: mostrarLeyenda ? "15%" : "30",
+				right: "20",
+			}, // reemplaza el ancho y alto
+			legend: {
+				position: mostrarLeyenda ? "bottom" : "none",
+				textStyle: {fontSize: tamanoLetra(10, 14)},
+			},
+
+			// Ejes
+			hAxis: {
+				baselineColor: "none", // para que desaparezca el eje vertical
+				maxAlternation: 1, // todos las etiquetas en una misma fila
+				slantedText: false, // todos las etiquetas en dirección horizontal
+				textStyle: {fontSize: tamanoLetra(10, 14)},
+				textPosition: muestraEjeX ? "auto" : "none",
+				// scaleType: "number",
+				// format: "decimal",
+			},
+			vAxis: {
+				gridlines: {count: 6}, // cuántos gridlines
+				viewWindow: {min: 0},
+				titleTextStyle: {fontSize: muestraEjeY ? tamanoLetra(12, 18) : 1},
+				textStyle: {fontSize: tamanoLetra(10, 14)},
+			},
 		};
 
 		// Fin
