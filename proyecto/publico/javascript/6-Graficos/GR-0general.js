@@ -1,6 +1,9 @@
 "use strict";
 // Variables
-const ruta = pathname.replace("/graficos/", "/graficos/api/gr-");
+const revision = pathname.includes("/revision");
+const ruta = !revision
+	? pathname.replace("/graficos/", "/graficos/api/gr-") // cuando la ruta no es de revisión
+	: "/graficos/api/gr-vencimiento-de-links";// en revisión se usa esa ruta
 const colores = {
 	azul: ["#8BC1F7", "#519DE9", "#06C", "#004B95", "#002F5D"], // 1. Blue
 	celeste: ["#A2D9D9", "#73C5C5", "#009596", "#005F60", "#003737"], // 3. Cyan
