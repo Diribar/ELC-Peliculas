@@ -6,6 +6,10 @@ module.exports = {
 		const navegsAcums = await baseDeDatos.obtieneTodosConOrden("navegsAcums", "fecha");
 		return res.json(navegsAcums);
 	},
+	fidelidadClientes:async(req,res)=>{
+		const datos=await baseDeDatos.obtieneTodosConOrden("navegsAcums", "fecha");
+		return res.json(datos);
+	},
 
 	// Productos
 	prodsPorPublico: async (req, res) => {
@@ -113,7 +117,9 @@ module.exports = {
 		return res.json(provs);
 	},
 };
-let obtieneEfemerides = async () => {
+
+// Funciones
+const obtieneEfemerides = async () => {
 	// Variables
 	const entsRCLV = variables.entidades.rclvs.slice(0, -1);
 	const include = ["personajes", "hechos", "temas", "eventos"];
