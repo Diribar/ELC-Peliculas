@@ -52,14 +52,14 @@ module.exports = {
 			datos.creadoPor_id = usuario_id;
 			datos.statusSugeridoPor_id = usuario_id;
 			link = await baseDeDatos.agregaRegistro("links", datos);
-			await procsFM.accionesPorCambioDeStatus("links", link);
+			await procsFM.accsEnDepsPorCambioDeStatus("links", link);
 			mensaje = "Link creado";
 		}
 		// Si es un link propio y en status creado, lo actualiza
 		else if (link.creadoPor_id == usuario_id && link.statusRegistro_id == creado_id) {
 			await baseDeDatos.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
-			await procsFM.accionesPorCambioDeStatus("links", link);
+			await procsFM.accsEnDepsPorCambioDeStatus("links", link);
 			mensaje = "Link actualizado";
 		}
 		// Guarda la edición
@@ -95,7 +95,7 @@ module.exports = {
 			baseDeDatos.eliminaPorCondicion("statusHistorial", {entidad: "links", entidad_id: link.id}); // elimina el historial de cambios de status
 			baseDeDatos.eliminaPorCondicion("histEdics", {entidad: "links", entidad_id: link.id}); // elimina el historial de cambios de edición
 			link.statusRegistro_id = inactivo_id;
-			await procsFM.accionesPorCambioDeStatus("links", link);
+			await procsFM.accsEnDepsPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 		}
 		// El link existe y no tiene status 'aprobado'
@@ -114,7 +114,7 @@ module.exports = {
 			};
 			await baseDeDatos.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
-			await procsFM.accionesPorCambioDeStatus("links", link);
+			await procsFM.accsEnDepsPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 		}
 
@@ -147,7 +147,7 @@ module.exports = {
 			};
 			await baseDeDatos.actualizaPorId("links", link.id, datos);
 			link = {...link, ...datos};
-			await procsFM.accionesPorCambioDeStatus("links", link);
+			await procsFM.accsEnDepsPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "Link recuperado", activos: true, ocultar: true};
 		}
 
@@ -187,7 +187,7 @@ module.exports = {
 
 			// Actualiza los campos del producto asociado
 			link = {...link, ...nuevosDatos};
-			await procsFM.accionesPorCambioDeStatus("links", link);
+			await procsFM.accsEnDepsPorCambioDeStatus("links", link);
 
 			// Respuesta
 			respuesta = {mensaje: "Link llevado a su status anterior", activos: true, pasivos: true, ocultar: true};
@@ -239,7 +239,7 @@ module.exports = {
 		}
 
 		// CONSECUENCIAS - Actualiza los productos en los campos de 'links'
-		await procsFM.accionesPorCambioDeStatus("links", {...link, statusRegistro_id});
+		await procsFM.accsEnDepsPorCambioDeStatus("links", {...link, statusRegistro_id});
 
 		// Fin
 		return res.json("");

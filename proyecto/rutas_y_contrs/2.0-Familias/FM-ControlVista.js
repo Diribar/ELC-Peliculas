@@ -178,7 +178,7 @@ module.exports = {
 			if (entidad == "capitulos") comp.actualizaCalidadesDeLinkEnCole(original.coleccion_id);
 
 			// 4. Actualiza los RCLV, en el campo 'prodsAprob'
-			procesos.accionesPorCambioDeStatus(entidad, original);
+			procesos.accsEnDepsPorCambioDeStatus(entidad, original);
 		}
 
 		// Fin

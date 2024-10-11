@@ -42,7 +42,7 @@ module.exports = {
 		// Acciones si se terminó de revisar la edición
 		if (!edicion) {
 			let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: originalGuardado, id: entId}); // elimina las demás ediciones
-			statusAprob = procsProd.statusAprob({entidad, registro: originalGuardado});
+			statusAprob = procsProd.accionesPorCambioDeStatus({entidad, registro: originalGuardado});
 			[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
 
 			// Específico de links

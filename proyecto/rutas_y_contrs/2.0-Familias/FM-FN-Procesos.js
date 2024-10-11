@@ -1,5 +1,5 @@
 "use strict";
-const validacsFM = require("./FM-FN-Validar");
+const validacs = require("./FM-FN-Validar");
 
 module.exports = {
 	// Header
@@ -292,9 +292,9 @@ module.exports = {
 					edicion[nombre] = edicColec[nombre];
 			}
 
-			// // Reemplaza los campos 'include' vacíos de la edición
-			// if (includesEdic)
-			// 	for (let campo of includesEdic) if (!edicion[campo] && edicColec[campo]) edicion[campo] = edicColec[campo];
+			// Reemplaza los campos 'include' vacíos de la edición
+			if (includesEdic)
+				for (let campo of includesEdic) if (!edicion[campo] && edicColec[campo]) edicion[campo] = edicColec[campo];
 		}
 
 		// Fin
@@ -616,7 +616,7 @@ module.exports = {
 		// Fin
 		return prodsDelRCLV;
 	},
-	accionesPorCambioDeStatus: async (entidad, registro) => {
+	accsEnDepsPorCambioDeStatus: async (entidad, registro) => {
 		// Variables
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
 
@@ -951,7 +951,7 @@ module.exports = {
 					espera.push(baseDeDatos.actualizaPorCondicion(entidad, {[campo_id]: rclvID}, {[campo_id]: 1}));
 
 				//Revisa si se le debe cambiar el status a algún producto - la rutina no necesita este resultado
-				validacsFM.siHayErroresBajaElStatus(prodsPorEnts);
+				validacs.siHayErroresBajaElStatus(prodsPorEnts);
 			}
 
 			// Espera a que concluyan las rutinas

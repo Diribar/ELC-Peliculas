@@ -1,5 +1,6 @@
 "use strict";
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
+const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 
 module.exports = {
 	bloqueIzq: (producto) => {
@@ -173,7 +174,7 @@ module.exports = {
 		// Fin
 		return true;
 	},
-	statusAprob: async function ({entidad, registro}) {
+	accionesPorCambioDeStatus: async ({entidad, registro}) => {
 		// Variables
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
 
@@ -182,7 +183,7 @@ module.exports = {
 		if (statusAprob) return true;
 
 		// Si hay errores, devuelve falso e interrumpe la función
-		const errores = await this.validacs.consolidado({datos: {...registro, entidad}});
+		const errores = await validacsFM.validacs.consolidado({datos: {...registro, entidad}});
 		if (errores.impideAprobado) return false;
 
 		// 1. Cambia el status del registro
@@ -204,10 +205,10 @@ module.exports = {
 		baseDeDatos.actualizaPorCondicion("links", condicion, {prodAprob: true});
 
 		// 3. Si es una colección, revisa si corresponde aprobar capítulos
-		if (entidad == "colecciones") await this.capsAprobs(registro.id);
+		if (entidad == "colecciones") await validacsFM.capsAprobs(registro.id);
 
 		// 4. Actualiza 'prodsEnRCLV' en sus RCLVs
-		procsFM.accionesPorCambioDeStatus(entidad, {...registro, ...datos});
+		procsFM.accsEnDepsPorCambioDeStatus(entidad, {...registro, ...datos});
 
 		// Fin
 		return true;
