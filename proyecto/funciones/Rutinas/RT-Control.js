@@ -349,13 +349,11 @@ module.exports = {
 				const logins = navegantes.filter((n) => n.usuario_id).length;
 				const usSinLogin = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("U")).length;
 				const visitas = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
-				const fidelidades = procesos.fidelidades(navegantes);
 
 				// Agrega la cantidad de navegantes
 				await baseDeDatos.agregaRegistro("navegsAcums", {
 					...{fecha: proximaFecha, diaSem, anoMes},
 					...{logins, usSinLogin, visitas},
-					...fidelidades,
 				});
 
 				// Obtiene la fecha siguiente
@@ -370,7 +368,6 @@ module.exports = {
 		},
 		fidelidadClientes: async () => {
 			// Variables
-			const diaSem = diasSemana[new Date(hoy).getUTCDay()];
 			const anoMes = hoy.slice(0, 7);
 
 			// Si ya se obtuvo la foto del día, interrumpe la función
