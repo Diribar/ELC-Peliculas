@@ -1,5 +1,5 @@
 // Variable 'global'
-const constantes = require("./funciones/Variables1.js");
+const constantes = require("./funciones/VarsCte.js");
 for (let metodo in constantes) global[metodo] = constantes[metodo];
 
 // Require 'path'
@@ -78,14 +78,14 @@ app.set("views", [
 (async () => {
 	// Variables que dependen de las lecturas de BD
 	global.baseDeDatos = require("./funciones/BaseDatos");
-	const variables3 = require("./funciones/Variables3.js");
-	const lecturasDeBd = await variables3.lecturasDeBd();
+	const varsBD = require("./funciones/VarsBD.js");
+	const lecturasDeBd = await varsBD.lecturasDeBd();
 	for (let campo in lecturasDeBd) global[campo] = lecturasDeBd[campo];
-	const datosPartics = await variables3.datosPartics();
+	const datosPartics = await varsBD.datosPartics();
 	for (let campo in datosPartics) global[campo] = datosPartics[campo];
 
 	// Variables que requieren 'require'
-	global.variables = require("./funciones/Variables2.js");
+	global.variables = require("./funciones/VarsDep.js");
 	global.comp = require("./funciones/Compartidas"); // tiene que ir antes que las BD
 	const procesos = require("./funciones/Rutinas/RT-Procesos");
 	global.rutinasJson = procesos.lecturaRutinasJSON();
