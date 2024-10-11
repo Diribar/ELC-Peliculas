@@ -21,7 +21,7 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		// await this.rutinas.navegsAcums();
+		// await this.rutinas.navegsHistorial();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -316,7 +316,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		navegsAcums: async () => {
+		navegsHistorial: async () => {
 			// Navegantes diarios, quitando los duplicados
 			const navegsDelDia = await baseDeDatos
 				.obtieneTodosPorCondicion("navegsDelDia", {fecha: {[Op.lt]: hoy}})
@@ -325,7 +325,7 @@ module.exports = {
 
 			// Si hay una inconsistencia, termina
 			const primFechaNavegsDelDia = navegsDelDia[0].fecha;
-			const ultNavegAcums = await baseDeDatos.obtienePorCondicionElUltimo("navegsAcums");
+			const ultNavegAcums = await baseDeDatos.obtienePorCondicionElUltimo("navegsHistorial");
 			const utlFechaClientesAcums = ultNavegAcums && ultNavegAcums.fecha;
 			if (utlFechaClientesAcums && primFechaNavegsDelDia <= utlFechaClientesAcums) {
 				const mensaje = primFechaNavegsDelDia == utlFechaClientesAcums ? "IGUAL" : "MENOR";
@@ -351,7 +351,7 @@ module.exports = {
 				const visitas = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
 
 				// Agrega la cantidad de navegantes
-				await baseDeDatos.agregaRegistro("navegsAcums", {
+				await baseDeDatos.agregaRegistro("navegsHistorial", {
 					...{fecha: proximaFecha, diaSem, anoMes},
 					...{logins, usSinLogin, visitas},
 				});
@@ -739,21 +739,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		eliminaNavegsAcumsRep: async () => {
-			// Variables
-			const navegsAcums = await baseDeDatos.obtieneTodos("navegsAcums");
-
-			// Elimina los navegsAcums repetidos
-			let registroAnterior;
-			for (let registro of navegsAcums) {
-				if (registroAnterior && registro.fecha == registroAnterior.fecha)
-					baseDeDatos.eliminaPorId("navegsAcums", registro.id);
-				registroAnterior = registro;
-			}
-
-			// Fin
-			return;
-		},
 		eliminaRegsDelHistStatus: async () => {
 			const condicion = {statusOriginal_id: creadoAprob_id, statusFinal_id: aprobado_id};
 			await baseDeDatos.eliminaPorCondicion("statusHistorial", condicion);
@@ -764,7 +749,7 @@ module.exports = {
 			const tablas = [
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
-				...["navegsAcums", "navegsDelDia"],
+				...["navegsHistorial", "navegsDelDia"],
 				...["prodsComplem", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],
