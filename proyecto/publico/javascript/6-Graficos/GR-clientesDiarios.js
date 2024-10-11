@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Obtiene datos del BE
-	const navegsAcums = await fetch(ruta).then((n) => n.json());
+	const navegsHistorial = await fetch(ruta).then((n) => n.json());
 
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
@@ -20,7 +20,7 @@ window.addEventListener("load", async () => {
 	// Genera la información
 	const resultado = [["Fecha", ...grupos.map((grupo) => [grupo, {role: "style"}]).flat()]];
 	const cantidades = {logins: 0, usSinLogin: 0, visitas: 0};
-	for (let navegsPorDia of navegsAcums) {
+	for (let navegsPorDia of navegsHistorial) {
 		// Alimenta los datos del gráfico
 		const {fecha, logins, usSinLogin, visitas} = navegsPorDia;
 		resultado.push([
@@ -38,7 +38,7 @@ window.addEventListener("load", async () => {
 
 	// Obtiene los promedios
 	for (let metodo of Object.keys(cantidades))
-		promedio[metodo] = Math.round((cantidades[metodo] / navegsAcums.length) * 10) / 10;
+		promedio[metodo] = Math.round((cantidades[metodo] / navegsHistorial.length) * 10) / 10;
 	promedio.total = Object.values(promedio).reduce((acum, n) => acum + n);
 	resultado[0].push("Promedio");
 	for (let i = 1; i < resultado.length; i++) resultado[i].push(promedio.total);

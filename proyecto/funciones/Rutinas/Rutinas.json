@@ -18,7 +18,7 @@
 	"MotivoDiarias3": "Estadísticas que se necesita que se actualicen en forma diaria",
 	"RutinasDiarias": {
 		"imagenDerecha": "SI",
-		"navegsAcums": "SI",
+		"navegsHistorial": "SI",
 		"rutinasDiariasEnUsuario": "SI",
 		"eliminaLinksInactivos": "SI",
 		"ABM_noRevisores": "SI"
