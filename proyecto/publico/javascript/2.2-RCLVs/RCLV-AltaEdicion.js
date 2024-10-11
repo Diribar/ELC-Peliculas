@@ -418,7 +418,7 @@ window.addEventListener("load", async () => {
 				}
 
 				// Selecciona la opción original
-				if (indice && indice < DOM[sector].length) DOM[sector].selectedIndex = indice;
+				if (indice < DOM[sector].length) DOM[sector].selectedIndex = indice + 1; // se agrega '+1' por la opción 'default' que está al inicio
 
 				// Corrige el ancho
 				this.ancho(sector);
@@ -428,11 +428,17 @@ window.addEventListener("load", async () => {
 			},
 			ancho: (sector) => {
 				// Variables
-				const opcionElegida = document.querySelector("form .input[name=" + sector + "] option:checked");
+				const opcionElegida = document.querySelector("form .input[name=" + sector + "] option:checked")
+					? document.querySelector("form .input[name=" + sector + "] option:checked")
+					: document.querySelector("form .input[name=" + sector + "] option");
+
 				const ancho = opcionElegida.innerText.length;
 
 				// Ajusta el ancho del select
 				DOM[sector].style.width = 9 * 2 + ancho * 6 + "px";
+
+				// Fin
+				return;
 			},
 		},
 		validacs: {
