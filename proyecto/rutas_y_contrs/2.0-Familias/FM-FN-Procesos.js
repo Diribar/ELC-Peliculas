@@ -292,9 +292,9 @@ module.exports = {
 					edicion[nombre] = edicColec[nombre];
 			}
 
-			// Reemplaza los campos 'include' vacíos de la edición
-			if (includesEdic)
-				for (let campo of includesEdic) if (!edicion[campo] && edicColec[campo]) edicion[campo] = edicColec[campo];
+			// // Reemplaza los campos 'include' vacíos de la edición
+			// if (includesEdic)
+			// 	for (let campo of includesEdic) if (!edicion[campo] && edicColec[campo]) edicion[campo] = edicColec[campo];
 		}
 
 		// Fin
@@ -928,7 +928,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		vinculoProds: async ({entidadRCLV, rclvID}) => {
+		vinculoProds: async function ({entidadRCLV, rclvID}) {
 			// Variables
 			const campo_idRCLV = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
 			const entidades = variables.entidades.prods;
@@ -951,11 +951,31 @@ module.exports = {
 					espera.push(baseDeDatos.actualizaPorCondicion(entidad, {[campo_id]: rclvID}, {[campo_id]: 1}));
 
 				//Revisa si se le debe cambiar el status a algún producto - la rutina no necesita este resultado
-				validacs.siHayErroresBajaElStatus(prodsPorEnts);
+				this.siHayErroresBajaElStatus(prodsPorEnts);
 			}
 
 			// Espera a que concluyan las rutinas
 			await Promise.all(espera);
+
+			// Fin
+			return;
+		},
+		siHayErroresBajaElStatus: function (prodsPorEnts) {
+			// Variables
+			const entidades = variables.entidades.prods;
+
+			// Acciones por cada ENTIDAD
+			entidades.forEach(async (entidad, i) => {
+				// Averigua si existen registros por cada entidad
+				if (prodsPorEnts[i].length)
+					// Acciones por cada PRODUCTO
+					for (let original of prodsPorEnts[i]) {
+						// Si hay errores, le cambia el status
+						const errores = await this.validacs.consolidado({datos: {...original, entidad}});
+						if (errores.impideAprobado)
+							baseDeDatos.actualizaPorId(entidad, original.id, {statusRegistro_id: creadoAprob_id});
+					}
+			});
 
 			// Fin
 			return;

@@ -1,7 +1,6 @@
 "use strict";
 // Variables
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
-const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 const procsProd = require("../2.1-Prods-RUD/PR-FN-Procesos");
 const procsRCLV = require("../2.2-RCLVs/RCLV-FN-Procesos");
 const validaRCLV = require("../2.2-RCLVs/RCLV-FN-Validar");
@@ -417,7 +416,7 @@ module.exports = {
 			if (entidad == "colecciones") {
 				// 1. Actualiza el status de los capítulos
 				statusFinal_id == aprobado_id
-					? await validacsFM.capsAprobs(id)
+					? await procsProd.cambioDeStatusCaps(id)
 					: await baseDeDatos.actualizaPorCondicion(
 							"capitulos",
 							{coleccion_id: id},

@@ -182,64 +182,6 @@ module.exports = {
 			return existe ? existe.id : false;
 		},
 	},
-	// CRUD y Revisión
-	capsAprobs: async function (colID) {
-		// Variables
-		const ahora = comp.fechaHora.ahora();
-		let espera = [];
-		let datos;
-
-		// Prepara los datos
-		const datosFijos = {statusColeccion_id: aprobado_id, statusRegistro_id: aprobado_id};
-		const datosSugeridos = {statusSugeridoPor_id: usAutom_id, statusSugeridoEn: ahora};
-
-		// Obtiene los capitulos id
-		const capitulos = await baseDeDatos.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
-
-		// Actualiza el status de los capítulos
-		for (let capitulo of capitulos) {
-			// Variables
-			const datosTerm = !capitulo.altaTermEn
-				? {altaTermEn: ahora, leadTimeCreacion: comp.obtieneLeadTime(capitulo.creadoEn, ahora)}
-				: {};
-
-			// Revisa si cada capítulo supera el test de errores
-			datos = {entidad: "capitulos", ...capitulo};
-			const errores = await this.validacs.consolidado({datos});
-
-			// Actualiza los datos
-			datos = errores.impideAprobado
-				? {...datosFijos, statusRegistro_id: creadoAprob_id}
-				: {...datosFijos, ...datosSugeridos, ...datosTerm};
-			espera.push(baseDeDatos.actualizaPorId("capitulos", capitulo.id, datos));
-		}
-
-		// Espera hasta que se revisen todos los capítulos
-		await Promise.all(espera);
-
-		// Fin
-		return;
-	},
-	siHayErroresBajaElStatus: function (prodsPorEnts) {
-		// Variables
-		const entidades = variables.entidades.prods;
-
-		// Acciones por cada ENTIDAD
-		entidades.forEach(async (entidad, i) => {
-			// Averigua si existen registros por cada entidad
-			if (prodsPorEnts[i].length)
-				// Acciones por cada PRODUCTO
-				for (let original of prodsPorEnts[i]) {
-					// Si hay errores, le cambia el status
-					const errores = await this.validacs.consolidado({datos: {...original, entidad}});
-					if (errores.impideAprobado)
-						baseDeDatos.actualizaPorId(entidad, original.id, {statusRegistro_id: creadoAprob_id});
-				}
-		});
-
-		// Fin
-		return;
-	},
 };
 
 // Fórmulas
