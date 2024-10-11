@@ -153,7 +153,6 @@ module.exports = {
 			const cartelRechazo = tema == "revisionEnts";
 
 			// Ir a la vista
-			// return res.send({dataEntry});
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, origen, titulo},
 				...{entidad, id, prodEntidad, prodId, edicId, familia: "rclv", ent, familia},
