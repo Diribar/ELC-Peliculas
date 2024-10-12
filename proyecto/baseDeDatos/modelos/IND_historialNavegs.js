@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "navegsHistorial";
+	const alias = "historialNavegs";
 	const columns = {
 		fecha: {type: dt.STRING(10)},
 		diaSem: {type: dt.STRING(3)},
@@ -11,7 +11,7 @@ module.exports = (sequelize, dt) => {
 		visitas: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "ind_navegs_acums",
+		tableName: "ind_historial_navegs",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
