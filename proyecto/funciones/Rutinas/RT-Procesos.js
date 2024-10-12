@@ -613,13 +613,18 @@ module.exports = {
 
 		// Problema - cuatro a diez
 		inicio = fin;
-		fin = inicio.filter((n) => n.diasNaveg <= 3);
+		fin = inicio.filter((n) => n.diasNaveg < 4);
 		const cuatroDiez = inicio.length - fin.length;
 
-		// Problema - Uno a tres
-		const unoTres = fin.length;
+		// Problema - tres
+		inicio = fin;
+		fin = inicio.filter((n) => n.diasNaveg < 3);
+		const tres = inicio.length - fin.length;
 
-		return {fecha: proximaFecha, altasDelDia, unoTres, cuatroDiez, diezTreinta, masDeTreinta};
+		// Problema - Uno a tres
+		const unoDos = fin.length;
+
+		return {fecha: proximaFecha, altasDelDia, unoDos, tres, cuatroDiez, diezTreinta, masDeTreinta};
 	},
 };
 
