@@ -590,7 +590,7 @@ module.exports = {
 		return;
 	},
 	sumaUnDia: (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10),
-	fidelidades: (registros) => {
+	tiposDeCliente: (registros) => {
 		// Buena noticia - Altas del día
 		let inicio = [...registros];
 		let fin = inicio.filter((n) => n.fecha != n.visitaCreadaEn);
