@@ -32,8 +32,8 @@ module.exports = (req, res, next) => {
 	contadorDeClientes(usuario_id, cliente);
 
 	// Actualiza cookies
-	if (usuario) res.cookie("email", usuario.email, {maxAge: unDia * 30});
-	res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
+	if (usuario) res.cookie("email", usuario.email, {maxAge: unAno});
+	res.cookie("cliente_id", cliente_id, {maxAge: unAno});
 
 	// Actualiza session
 	delete req.session.recienCreado;
