@@ -366,7 +366,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		fidelidadClientes: async () => {
+		historialClientes: async () => {
 			// Variables
 			const anoMes = hoy.slice(0, 7);
 
@@ -383,7 +383,7 @@ module.exports = {
 			const fidelidades = procesos.fidelidades(clientes);
 
 			// Guarda los resultados
-			await baseDeDatos.agregaRegistro("fidelidadClientes", {fecha: hoy, diaSem, anoMes, ...fidelidades});
+			await baseDeDatos.agregaRegistro("historialClientes", {fecha: hoy, diaSem, anoMes, ...fidelidades});
 
 			// Fin
 			return;
