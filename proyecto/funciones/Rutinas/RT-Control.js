@@ -21,7 +21,7 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		// await this.rutinas.navegsHistorial();
+		// await this.rutinas.historialNavegs();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -316,16 +316,16 @@ module.exports = {
 			// Fin
 			return;
 		},
-		navegsHistorial: async () => {
+		historialNavegs: async () => {
 			// Navegantes diarios, quitando los duplicados
-			const navegsDelDia = await baseDeDatos
-				.obtieneTodosPorCondicion("navegsDelDia", {fecha: {[Op.lt]: hoy}})
+			const diarioNavegs = await baseDeDatos
+				.obtieneTodosPorCondicion("diarioNavegs", {fecha: {[Op.lt]: hoy}})
 				.then((n) => n.sort((a, b) => (a.fecha < b.fecha ? -1 : 1)));
-			if (!navegsDelDia.length) return;
+			if (!diarioNavegs.length) return;
 
 			// Si hay una inconsistencia, termina
-			const primFechaNavegsDelDia = navegsDelDia[0].fecha;
-			const ultNavegAcums = await baseDeDatos.obtienePorCondicionElUltimo("navegsHistorial");
+			const primFechaNavegsDelDia = diarioNavegs[0].fecha;
+			const ultNavegAcums = await baseDeDatos.obtienePorCondicionElUltimo("historialNavegs");
 			const utlFechaClientesAcums = ultNavegAcums && ultNavegAcums.fecha;
 			if (utlFechaClientesAcums && primFechaNavegsDelDia <= utlFechaClientesAcums) {
 				const mensaje = primFechaNavegsDelDia == utlFechaClientesAcums ? "IGUAL" : "MENOR";
@@ -343,7 +343,7 @@ module.exports = {
 				// Variables
 				const diaSem = diasSemana[new Date(proximaFecha).getUTCDay()];
 				const anoMes = proximaFecha.slice(0, 7);
-				const navegantes = navegsDelDia.filter((n) => n.fecha == proximaFecha);
+				const navegantes = diarioNavegs.filter((n) => n.fecha == proximaFecha);
 
 				// Cantidad y fidelidad de navegantes
 				const logins = navegantes.filter((n) => n.usuario_id).length;
@@ -351,7 +351,7 @@ module.exports = {
 				const visitas = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
 
 				// Agrega la cantidad de navegantes
-				await baseDeDatos.agregaRegistro("navegsHistorial", {
+				await baseDeDatos.agregaRegistro("historialNavegs", {
 					...{fecha: proximaFecha, diaSem, anoMes},
 					...{logins, usSinLogin, visitas},
 				});
@@ -360,8 +360,8 @@ module.exports = {
 				proximaFecha = procesos.sumaUnDia(proximaFecha);
 			}
 
-			// Elimina los 'navegsDelDia' anteriores
-			baseDeDatos.eliminaPorCondicion("navegsDelDia", {fecha: {[Op.lt]: hoy}});
+			// Elimina los 'diarioNavegs' anteriores
+			baseDeDatos.eliminaPorCondicion("diarioNavegs", {fecha: {[Op.lt]: hoy}});
 
 			// Fin
 			return;
@@ -371,7 +371,7 @@ module.exports = {
 			const anoMes = hoy.slice(0, 7);
 
 			// Si ya se obtuvo la foto del día, interrumpe la función
-			const existe = await baseDeDatos.obtienePorCondicion("fidelidadClientes", {fecha: hoy});
+			const existe = await baseDeDatos.obtienePorCondicion("historialClientes", {fecha: hoy});
 			if (existe) return;
 
 			// Obtiene los clientes
@@ -749,7 +749,7 @@ module.exports = {
 			const tablas = [
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
-				...["navegsHistorial", "navegsDelDia"],
+				...["historialNavegs", "diarioNavegs"],
 				...["prodsComplem", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],
