@@ -1,46 +1,28 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Obtiene datos del BE
-	const historialNavegs = await fetch(ruta).then((n) => n.json());
+	const historialClientes = await fetch(ruta).then((n) => n.json());
 
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
-	const grupos = [
-		"altasDelDia",
-		"transicion", //
-		"unoATres",
-		"unoADiez",
-		"masDeDiez",
-		"masDeTreinta",
-	];
+	const grupos = ["tres", "cuatroDiez", "diezTreinta", "masDeTreinta"];
+	const coloresBorde = {};
+	const coloresRelleno=[]
 
 	// Establece los colores
-	const color = {
-		altasDelDia: colores.azul,
-		transicion: colores.celeste,
-		unoATres: colores.naranja,
-		unoADiez: colores.azul,
-		masDeDiez: colores.celeste,
-		masDeTreinta: colores.naranja,
-	};
-	const coloresRelleno = Object.values(color).map((n) => n[1]);
-	const coloresBorde = Object.values(color).map((n) => n[3]);
+	const coloresValores = Object.values(colores);
+	grupos.forEach((grupo, i) => {
+		coloresBorde[grupo] = coloresValores[i][3];
+		coloresRelleno.push(coloresValores[i][1])
+	});
 
 	// Genera la información
 	const resultado = [["Fecha", ...grupos.map((grupo) => [grupo, {role: "style"}]).flat()]];
-	for (let navegDelDia of historialNavegs) {
-		// Alimenta los datos del gráfico
-		const {fecha, altasDelDia, transicion, unoATres, unoADiez, masDeDiez, masDeTreinta} = navegDelDia;
+	for (let navegDelDia of historialClientes) {
 		resultado.push([
-			" " + fecha + " ",
-			...[altasDelDia, "stroke-color: " + coloresBorde[0]],
-			...[transicion, "stroke-color: " + coloresBorde[1]],
-			...[unoATres, "stroke-color: " + coloresBorde[2]],
-			...[unoADiez, "stroke-color: " + coloresBorde[0]],
-			...[masDeDiez, "stroke-color: " + coloresBorde[1]],
-			...[masDeTreinta, "stroke-color: " + coloresBorde[2]],
+			navegDelDia.fecha,
+			...grupos.map((grupo) => [navegDelDia[grupo], "stroke-color: " + coloresBorde[grupo]]).flat(),
 		]);
-
 	}
 
 	const dibujarGrafico = () => {
