@@ -19,6 +19,7 @@
 	"RutinasDiarias": {
 		"imagenDerecha": "SI",
 		"historialNavegs": "NO",
+		"historialClientes": "NO",
 		"rutinasDiariasEnUsuario": "NO",
 		"eliminaLinksInactivos": "NO",
 		"ABM_noRevisores": "NO"
