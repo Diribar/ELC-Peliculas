@@ -49,13 +49,13 @@ let contadorDeClientes = async (usuario_id, cliente) => {
 
 	// Si ya existe un registro del 'cliente_id' en esta fecha, interrumpe la función
 	const condicion = {fecha: hoy, cliente_id};
-	const existe = await baseDeDatos.obtienePorCondicion("navegsDelDia", condicion);
+	const existe = await baseDeDatos.obtienePorCondicion("diarioNavegs", condicion);
 	if (existe) return;
 
-	// Agrega un registro en la tabla 'navegsDelDia'
+	// Agrega un registro en la tabla 'diarioNavegs'
 	let datos = {...condicion, diasNaveg, visitaCreadaEn};
 	if (usuario_id) datos.usuario_id = usuario_id;
-	baseDeDatos.agregaRegistro("navegsDelDia", datos);
+	baseDeDatos.agregaRegistro("diarioNavegs", datos);
 
 	// Fin
 	return;
