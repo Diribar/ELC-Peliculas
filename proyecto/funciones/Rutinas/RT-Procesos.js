@@ -596,11 +596,6 @@ module.exports = {
 		// Quita los clientes futuros
 		registros = registros.filter((n) => n.visitaCreadaEn <= proximaFecha);
 
-		// Buena noticia - Altas del día
-		inicio = registros;
-		fin = inicio.filter((n) => n.visitaCreadaEn != proximaFecha);
-		const altasDelDia = inicio.length - fin.length;
-
 		// Buena noticia - Más de 30
 		inicio = fin;
 		fin = inicio.filter((n) => n.diasNaveg <= 30);
@@ -624,7 +619,7 @@ module.exports = {
 		// Problema - Uno a tres
 		const unoDos = fin.length;
 
-		return {fecha: proximaFecha, altasDelDia, unoDos, tres, cuatroDiez, diezTreinta, masDeTreinta};
+		return {fecha: proximaFecha, tres, cuatroDiez, diezTreinta, masDeTreinta, unoDos};
 	},
 };
 
