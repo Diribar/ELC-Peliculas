@@ -371,7 +371,7 @@ module.exports = {
 		historialClientes: async () => {
 			// Obtiene la última fecha del historial
 			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("historialClientes");
-			const ultFechaHistClientes = ultRegHistClientes ? ultRegHistClientes.fecha : "2024-09-30";
+			const ultFechaHistClientes = ultRegHistClientes ? ultRegHistClientes.fecha : "2024-10-03";
 			let proximaFecha = procesos.sumaUnDia(ultFechaHistClientes); // le suma un día al último registro
 			if (proximaFecha >= hoy) return;
 
@@ -380,6 +380,7 @@ module.exports = {
 			const visitas = baseDeDatos.obtieneTodos("visitas");
 			const clientes = await Promise.all([usuarios, visitas])
 				.then((n) => n.flat())
+				.then((n) => n.filter((m) => m.diasNaveg))
 				.then((n) => n.map((m) => ({...m, visitaCreadaEn: m.visitaCreadaEn.toISOString().slice(0, 10)})));
 
 			// Loop mientras el día sea menor al actual

@@ -102,7 +102,7 @@ app.set("views", [
 
 	// Middlewares transversales
 	app.use(require("./middlewares/transversales/urlsUsadas")); // para tener los últimos url
-	// app.use(require("./middlewares/transversales/clientes-0Bienvenido")); // para filtrar los 'bots'
+	app.use(require("./middlewares/transversales/clientes-0Bienvenido")); // para filtrar los 'bots'
 	app.use(require("./middlewares/transversales/clientes-1Session")); // para obtener el cliente y usuario
 	app.use(require("./middlewares/transversales/clientes-2Contador")); // para contar la cantidad de días de navegación
 	app.use(require("./middlewares/transversales/clientes-3Carteles")); // en función de las novedades, revisa si se debe mostrar algún cartel

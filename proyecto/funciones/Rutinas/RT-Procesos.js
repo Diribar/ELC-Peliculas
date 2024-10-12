@@ -591,15 +591,12 @@ module.exports = {
 	},
 	sumaUnDia: (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10),
 	tiposDeCliente: (registros, proximaFecha) => {
-		// Variables
-		let inicio, fin;
 		// Quita los clientes futuros
 		registros = registros.filter((n) => n.visitaCreadaEn <= proximaFecha);
 
-		// Buena noticia - Altas del día
-		inicio = registros;
-		fin = inicio.filter((n) => n.visitaCreadaEn != proximaFecha);
-		const altasDelDia = inicio.length - fin.length;
+		// Variables
+		let fin = registros;
+		let inicio;
 
 		// Buena noticia - Más de 30
 		inicio = fin;
@@ -624,7 +621,7 @@ module.exports = {
 		// Problema - Uno a tres
 		const unoDos = fin.length;
 
-		return {fecha: proximaFecha, altasDelDia, unoDos, tres, cuatroDiez, diezTreinta, masDeTreinta};
+		return {fecha: proximaFecha, tres, cuatroDiez, diezTreinta, masDeTreinta, unoDos};
 	},
 };
 

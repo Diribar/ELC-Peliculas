@@ -7,7 +7,7 @@ module.exports = {
 		return res.json(historialNavegs);
 	},
 	historialClientes: async (req, res) => {
-		const datos = await baseDeDatos.obtieneTodosConOrden("historialNavegs", "fecha");
+		const datos = await baseDeDatos.obtieneTodosConOrden("historialClientes", "fecha");
 		return res.json(datos);
 	},
 
