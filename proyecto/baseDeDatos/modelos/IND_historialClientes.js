@@ -4,12 +4,12 @@ module.exports = (sequelize, dt) => {
 		fecha: {type: dt.STRING(10)},
 
 		// Fidelidad de clientes
-		altasDelDia: {type: dt.INTEGER},
-		unoDos: {type: dt.INTEGER},
+		// altasDelDia: {type: dt.INTEGER},
 		tres: {type: dt.INTEGER},
 		cuatroDiez: {type: dt.INTEGER},
 		diezTreinta: {type: dt.INTEGER},
 		masDeTreinta: {type: dt.INTEGER},
+		unoDos: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "ind_historial_clientes",
