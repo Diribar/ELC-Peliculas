@@ -591,12 +591,14 @@ module.exports = {
 	},
 	sumaUnDia: (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10),
 	tiposDeCliente: (registros, proximaFecha) => {
+		// Variables
+		let inicio, fin;
 		// Quita los clientes futuros
-		registros = registro.filter((n) => n.visitaCreadaEn.toISOString().slice(0, 10) <= proximaFecha);
+		registros = registros.filter((n) => n.visitaCreadaEn <= proximaFecha);
 
 		// Buena noticia - Altas del día
-		let inicio = registros;
-		let fin = inicio.filter((n) => n.fecha != n.visitaCreadaEn);
+		inicio = registros;
+		fin = inicio.filter((n) => n.visitaCreadaEn != proximaFecha);
 		const altasDelDia = inicio.length - fin.length;
 
 		// Buena noticia - Más de 30
@@ -607,16 +609,17 @@ module.exports = {
 		// Buena noticia - Más de 10
 		inicio = fin;
 		fin = inicio.filter((n) => n.diasNaveg <= 10);
-		const diezATreinta = inicio.length - fin.length;
+		const diezTreinta = inicio.length - fin.length;
 
 		// Problema - cuatro a diez
 		inicio = fin;
-		fin = inicio.filter((n) => n.diasNaveg < 4);
-		const cuatroADiez = inicio.length - fin.length;
+		fin = inicio.filter((n) => n.diasNaveg <= 3);
+		const cuatroDiez = inicio.length - fin.length;
 
 		// Problema - Uno a tres
-		const unoATres = fin.length;
-		return {fecha: proximaFecha, altasDelDia, unoATres, cuatroADiez, diezATreinta, masDeTreinta};
+		const unoTres = fin.length;
+
+		return {fecha: proximaFecha, altasDelDia, unoTres, cuatroDiez, diezTreinta, masDeTreinta};
 	},
 };
 
