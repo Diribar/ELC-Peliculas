@@ -385,7 +385,7 @@ module.exports = {
 			// Loop mientras el día sea menor al actual
 			while (proximaFecha < hoy) {
 				// Obtiene los tipos de cliente según el día
-				const tiposDeCliente = procesos.historialClientes(clientes, proximaFecha);
+				const tiposDeCliente = procesos.tiposDeCliente(clientes, proximaFecha);
 
 				// Guarda el resultado
 				await baseDeDatos.agregaRegistro("historialClientes", tiposDeCliente);
