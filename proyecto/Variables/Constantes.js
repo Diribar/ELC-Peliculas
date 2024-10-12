@@ -40,15 +40,15 @@ module.exports = {
 		// Usuarios
 		historialNavegs: {
 			rubro: "clientes",
-			titulo: "Clientes Diarios",
-			url: "usuarios-clientes-acums",
+			titulo: "Historial de Navegaciones",
+			url: "clientes-historial-de-navegaciones",
 			icono: iconos.columnas,
 			resaltar: true,
 		},
 		historialClientes: {
 			rubro: "clientes",
-			titulo: "Fidelidad de Clientes",
-			url: "usuarios-fidelidad-clientes",
+			titulo: "Historial de Clientes",
+			url: "clientes-historial-de-clientes",
 			icono: iconos.area,
 			resaltar: true,
 		},
