@@ -170,11 +170,11 @@ const FN_charts = {
 			chartArea: {
 				top: "15%",
 				bottom: mostrarLeyenda ? "20%" : "12%",
-				left: mostrarLeyenda ? "15%" : "30",
-				right: "20",
+				left: mostrarLeyenda ? "10%" : "30",
+				right: mostrarLeyenda ? "10%" : "30",
 			}, // reemplaza el ancho y alto
 			legend: {
-				position: mostrarLeyenda ? "right" : "none",
+				position: mostrarLeyenda || true ? "bottom" : "none",
 				textStyle: {fontSize: tamanoLetra(10, 14)},
 			},
 
@@ -189,19 +189,22 @@ const FN_charts = {
 				// format: "decimal",
 			},
 			vAxis: {
-				gridlines: {count: 6}, // cuántos gridlines
-				viewWindow: {min: 0},
-				titleTextStyle: {fontSize: muestraEjeY ? tamanoLetra(12, 18) : 1},
-				textStyle: {fontSize: tamanoLetra(10, 14)},
+				0: {
+					gridlines: {count: 6}, // cuántos gridlines
+					viewWindow: {min: 0},
+					titleTextStyle: {fontSize: muestraEjeY ? tamanoLetra(12, 18) : 1},
+					textStyle: {fontSize: tamanoLetra(10, 14)},
+				},
+				1: {
+					gridlines: {count: 6}, // cuántos gridlines
+					viewWindow: {min: 0},
+					titleTextStyle: {fontSize: muestraEjeY ? tamanoLetra(12, 18) : 1},
+					textStyle: {fontSize: tamanoLetra(10, 14)},
+				},
 			},
 
 			seriesType: "area",
-			series: {
-				[ultMiembro]: {
-					type: "line", // gráfico tipo línea
-					axis: "ejeLinea",
-				},
-			},
+			series: {[ultMiembro]: {type: "line", targetAxisIndex: 1}}, // type 'line'
 		};
 
 		// Fin
