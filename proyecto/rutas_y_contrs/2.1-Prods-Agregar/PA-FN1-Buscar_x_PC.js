@@ -502,7 +502,7 @@ let FN = {
 					};
 
 					// Guarda el registro
-					await baseDeDatos.agregaRegistro("capitulos", datosCap);
+					await baseDeDatos.agregaRegistroIdCorrel("capitulos", datosCap);
 				}
 		}
 

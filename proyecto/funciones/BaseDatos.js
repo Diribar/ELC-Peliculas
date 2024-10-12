@@ -21,18 +21,6 @@ module.exports = {
 
 	// ABM
 	agregaRegistro: (entidad, datos) => db[entidad].create(datos).then((n) => n.toJSON()),
-	agregaActualizaPorCondicion: async (entidad, condicion, datos) => {
-		// Averigua si existe un registro con esa condición
-		const existe = await db[entidad].findOne({where: condicion}).then((n) => (n ? n.toJSON() : null));
-
-		// Actualiza o crea un registro - no hace falta el await
-		existe
-			? db[entidad].update(datos, {where: condicion}) // actualiza
-			: db[entidad].create(datos).then((n) => n.toJSON()); // crea
-
-		// Fin
-		return;
-	},
 	agregaRegistroIdCorrel: async (entidad, datos) => {
 		// Variables
 		const idInicial = 11;
@@ -56,6 +44,18 @@ module.exports = {
 
 		// Fin
 		return nuevoRegistro;
+	},
+	agregaActualizaPorCondicion: async (entidad, condicion, datos) => {
+		// Averigua si existe un registro con esa condición
+		const existe = await db[entidad].findOne({where: condicion}).then((n) => (n ? n.toJSON() : null));
+
+		// Actualiza o crea un registro - no hace falta el await
+		existe
+			? db[entidad].update(datos, {where: condicion}) // actualiza
+			: db[entidad].create(datos).then((n) => n.toJSON()); // crea
+
+		// Fin
+		return;
 	},
 	actualizaTodos: (entidad, datos) => db[entidad].update(datos, {where: {}}), // es obligatorio que figure un 'where'
 	actualizaPorCondicion: (entidad, condicion, datos) => db[entidad].update(datos, {where: condicion}),
