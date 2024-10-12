@@ -24,7 +24,7 @@ router.get("/api/us-valida-login", API.valida.login);
 router.get("/api/us-valida-editables", API.valida.editables);
 router.get("/api/us-valida-perennes", API.valida.perennes);
 router.get("/api/us-alta-mail/validaciones", API.altaMail.validaMail);
-router.get("/api/us-alta-mail/envio-de-mail", API.altaMail.envioDeMailAltaUsuario);
+router.get("/api/us-alta-mail/envio-de-mail", API.altaMail.creaUsuarioEnviaMail);
 router.get("/api/us-olvido-contrasena/datos-de-session", API.olvidoContr.datosDeSession);
 router.get("/api/us-olvido-contrasena/validaciones", API.olvidoContr.validaDatosPer);
 router.get("/api/us-olvido-contrasena/envio-de-mail", API.olvidoContr.envioDeMailAltaContr);

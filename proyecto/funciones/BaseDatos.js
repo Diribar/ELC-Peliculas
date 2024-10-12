@@ -33,6 +33,29 @@ module.exports = {
 		// Fin
 		return;
 	},
+	agregaRegistroIdCorrel: async (entidad, datos) => {
+		// Variables
+		const idInicial = 11;
+		const registros = await db[entidad].findAll({where: {id: {[Op.gte]: idInicial}}}).then((n) => n.map((m) => m.toJSON()));
+
+		// Guarda el registro usando el primer 'id' disponible
+		let id = idInicial;
+		for (let registro of registros) {
+			if (
+				registro.id != id && // id sin registro
+				!(await db[entidad].findByPk(id, {include}).then((n) => !!n)) // se asegura de que no se haya creado durante la rutina
+			) {
+				db[entidad].create({id, ...datos}).then((n) => n.toJSON()); // lo crea
+				break;
+			} else id++;
+		}
+
+		// Si no se guardó, lo guarda
+		if (id > 11 + registros.length - 1) db[entidad].create(datos).then((n) => n.toJSON()); // crea
+
+		// Fin
+		return;
+	},
 	actualizaTodos: (entidad, datos) => db[entidad].update(datos, {where: {}}), // es obligatorio que figure un 'where'
 	actualizaPorCondicion: (entidad, condicion, datos) => db[entidad].update(datos, {where: condicion}),
 	actualizaPorId: (entidad, id, datos) => db[entidad].update(datos, {where: {id}}),
