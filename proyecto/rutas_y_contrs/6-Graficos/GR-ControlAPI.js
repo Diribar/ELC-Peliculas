@@ -2,9 +2,13 @@
 
 module.exports = {
 	// Usuarios
-	clientesDiarios: async (req, res) => {
-		const navegsAcums = await baseDeDatos.obtieneTodosConOrden("navegsAcums", "fecha");
-		return res.json(navegsAcums);
+	historialNavegs: async (req, res) => {
+		const historialNavegs = await baseDeDatos.obtieneTodosConOrden("historialNavegs", "fecha");
+		return res.json(historialNavegs);
+	},
+	historialClientes: async (req, res) => {
+		const datos = await baseDeDatos.obtieneTodosConOrden("historialNavegs", "fecha");
+		return res.json(datos);
 	},
 
 	// Productos
@@ -113,7 +117,9 @@ module.exports = {
 		return res.json(provs);
 	},
 };
-let obtieneEfemerides = async () => {
+
+// Funciones
+const obtieneEfemerides = async () => {
 	// Variables
 	const entsRCLV = variables.entidades.rclvs.slice(0, -1);
 	const include = ["personajes", "hechos", "temas", "eventos"];

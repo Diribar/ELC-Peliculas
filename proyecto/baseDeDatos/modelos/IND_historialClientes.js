@@ -1,19 +1,18 @@
 module.exports = (sequelize, dt) => {
-	const alias = "fidelidadClientes";
+	const alias = "historialClientes";
 	const columns = {
 		fecha: {type: dt.STRING(10)},
-		anoMes: {type: dt.STRING(3)},
 
-		// Calidad de clientes
+		// Fidelidad de clientes
 		altasDelDia: {type: dt.INTEGER},
-		transicion: {type: dt.INTEGER},
-		unoATres: {type: dt.INTEGER},
-		unoADiez: {type: dt.INTEGER},
-		masDeDiez: {type: dt.INTEGER},
+		unoDos: {type: dt.INTEGER},
+		tres: {type: dt.INTEGER},
+		cuatroDiez: {type: dt.INTEGER},
+		diezTreinta: {type: dt.INTEGER},
 		masDeTreinta: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "aux_fidelidad_clientes",
+		tableName: "ind_historial_clientes",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

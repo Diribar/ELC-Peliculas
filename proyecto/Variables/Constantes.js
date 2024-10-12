@@ -16,7 +16,7 @@ const iconos = {
 	// Ocasionales
 	...{agregar: "fa-circle-plus", calificar: "fa-chart-simple", eliminar: "fa-trash-can"},
 	...{detalle: "fa-circle-info", edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
-	...{graficos: "fa-chart-line", chart: "fa-chart-pie", columnas: "fa-chart-simple"},
+	...{graficos: "fa-chart-line", chart: "fa-chart-pie", columnas: "fa-chart-simple", area: "fa-chart-area"},
 };
 
 module.exports = {
@@ -33,6 +33,70 @@ module.exports = {
 			hr: true,
 		},
 		"derechos-de-autor": {titulo: "ELC | Derechos de Autor", codigo: "derechosAutor", icono: "fa-copyright"},
+	},
+
+	// Gráficos
+	graficos: {
+		// Usuarios
+		historialNavegs: {
+			rubro: "clientes",
+			titulo: "Historial de Navegaciones",
+			url: "clientes-historial-de-navegaciones",
+			icono: iconos.columnas,
+			resaltar: true,
+		},
+		historialClientes: {
+			rubro: "clientes",
+			titulo: "Historial de Clientes",
+			url: "clientes-historial-de-clientes",
+			icono: iconos.area,
+			resaltar: true,
+		},
+
+		// Productos
+		prodsCfcVpc: {
+			rubro: "prods",
+			titulo: "Películas - CFC / VPC",
+			url: "peliculas-cfc-vpc",
+			icono: iconos.chart,
+		},
+		prodsPorPublico: {
+			rubro: "prods",
+			titulo: "Películas - Público recomendado",
+			url: "peliculas-publico",
+			icono: iconos.chart,
+		},
+		prodsPorEpocaEstr: {
+			rubro: "prods",
+			titulo: "Películas - Época de estreno",
+			url: "peliculas-epoca-estreno",
+			icono: iconos.columnas,
+			hr: true,
+		},
+
+		// RCLVs
+		rclvsRangosSinEfems: {
+			rubro: "rclvs",
+			titulo: "RCLVs - Rangos sin Efemérides",
+			url: "rclvs-rangos-sin-efemerides",
+			icono: iconos.columnas,
+		},
+
+		// Links
+		linksVencim: {
+			rubro: "links",
+			titulo: "Links - Vencimiento Semanal",
+			url: "vencimiento-de-links",
+			icono: iconos.columnas,
+			resaltar: true,
+			hr: true,
+		},
+		linksPorProv: {
+			rubro: "links",
+			titulo: "Links - Proveedores",
+			url: "links-por-proveedor",
+			icono: iconos.chart,
+		},
 	},
 
 	// Productos

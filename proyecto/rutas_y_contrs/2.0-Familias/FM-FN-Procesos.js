@@ -282,19 +282,19 @@ module.exports = {
 				original.coleccion.nombreCastellano = edicColec.nombreCastellano;
 
 			// Reemplaza los campos simples vacíos de la edición
-			const camposEditables = [...variables.camposDD, ...variables.camposDA];
-			for (let campo of camposEditables) {
-				const {nombre} = campo;
-				if (
-					(edicColec[nombre] && !original[nombre] && (!edicion || !edicion[nombre])) || // sólo 'edicColec' tiene un valor; 'null' y 'undefined' son equivalentes con el '=='
-					(campo.rclv && edicColec[nombre] > 10 && original[nombre] == 1 && !edicion[nombre]) // es un rclv y sólo 'edicColec' tiene un valor significativo
-				)
-					edicion[nombre] = edicColec[nombre];
-			}
+			// const camposEditables = [...variables.camposDD, ...variables.camposDA];
+			// for (let campo of camposEditables) {
+			// 	const {nombre} = campo;
+			// 	if (
+			// 		(edicColec[nombre] && !original[nombre] && (!edicion || !edicion[nombre])) || // sólo 'edicColec' tiene un valor; 'null' y 'undefined' son equivalentes con el '=='
+			// 		(campo.rclv && edicColec[nombre] > 10 && original[nombre] == 1 && !edicion[nombre]) // es un rclv y sólo 'edicColec' tiene un valor significativo
+			// 	)
+			// 		edicion[nombre] = edicColec[nombre];
+			// }
 
 			// Reemplaza los campos 'include' vacíos de la edición
-			if (includesEdic)
-				for (let campo of includesEdic) if (!edicion[campo] && edicColec[campo]) edicion[campo] = edicColec[campo];
+			// if (includesEdic)
+			// 	for (let campo of includesEdic) if (!edicion[campo] && edicColec[campo]) edicion[campo] = edicColec[campo];
 		}
 
 		// Fin

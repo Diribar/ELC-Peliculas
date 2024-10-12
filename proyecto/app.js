@@ -1,5 +1,5 @@
 // Variable 'global'
-const constantes = require("./funciones/Variables1.js");
+const constantes = require("./variables/Constantes.js");
 for (let metodo in constantes) global[metodo] = constantes[metodo];
 
 // Require 'path'
@@ -78,14 +78,14 @@ app.set("views", [
 (async () => {
 	// Variables que dependen de las lecturas de BD
 	global.baseDeDatos = require("./funciones/BaseDatos");
-	const variables3 = require("./funciones/Variables3.js");
-	const lecturasDeBd = await variables3.lecturasDeBd();
-	for (let campo in lecturasDeBd) global[campo] = lecturasDeBd[campo];
-	const datosPartics = await variables3.datosPartics();
-	for (let campo in datosPartics) global[campo] = datosPartics[campo];
+	const varsBD = require("./variables/BaseDatos.js");
+	const lecturasDeBd = await varsBD.lecturasDeBd();
+	for (let campo in lecturasDeBd) global[campo] = lecturasDeBd[campo]; // asigna una variable a cada lectura
+	const datosPartics = await varsBD.datosPartics();
+	for (let campo in datosPartics) global[campo] = datosPartics[campo]; // asigna una variable a valores específicos
 
 	// Variables que requieren 'require'
-	global.variables = require("./funciones/Variables2.js");
+	global.variables = require("./variables/Depends.js");
 	global.comp = require("./funciones/Compartidas"); // tiene que ir antes que las BD
 	const procesos = require("./funciones/Rutinas/RT-Procesos");
 	global.rutinasJson = procesos.lecturaRutinasJSON();
@@ -102,7 +102,7 @@ app.set("views", [
 
 	// Middlewares transversales
 	app.use(require("./middlewares/transversales/urlsUsadas")); // para tener los últimos url
-	app.use(require("./middlewares/transversales/clientes-0Bienvenido")); // para filtrar los 'bots'
+	// app.use(require("./middlewares/transversales/clientes-0Bienvenido")); // para filtrar los 'bots'
 	app.use(require("./middlewares/transversales/clientes-1Session")); // para obtener el cliente y usuario
 	app.use(require("./middlewares/transversales/clientes-2Contador")); // para contar la cantidad de días de navegación
 	app.use(require("./middlewares/transversales/clientes-3Carteles")); // en función de las novedades, revisa si se debe mostrar algún cartel

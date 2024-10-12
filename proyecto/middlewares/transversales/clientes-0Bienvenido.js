@@ -5,6 +5,7 @@ module.exports = async (req, res, next) => {
 	if (entorno != "development") console.log(req.headers["user-agent"]);
 	if (req.session.cliente || req.session.bienvenido || (req.cookies && req.cookies.cliente_id)) return next(); // si ya hay una visita previa
 	if (requestsTriviales.some((n) => req.headers["user-agent"].startsWith(n))) return next(); // si es una de las aplicaciones triviales
+	if (!req.headers["user-agent"]) return next(); // si no se conoce el origen
 
 	// Prepara la información
 	req.session.bienvenido = true;
