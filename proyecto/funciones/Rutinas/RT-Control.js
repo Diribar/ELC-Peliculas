@@ -21,7 +21,7 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		await this.rutinas.historialClientes();
+		// await this.rutinas.historialClientes();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -371,7 +371,7 @@ module.exports = {
 		historialClientes: async () => {
 			// Obtiene la última fecha del historial
 			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("historialClientes");
-			const ultFechaHistClientes = ultRegHistClientes ? ultRegHistClientes.fecha : "2024-09-30";
+			const ultFechaHistClientes = ultRegHistClientes ? ultRegHistClientes.fecha : "2024-10-03";
 			let proximaFecha = procesos.sumaUnDia(ultFechaHistClientes); // le suma un día al último registro
 			if (proximaFecha >= hoy) return;
 
