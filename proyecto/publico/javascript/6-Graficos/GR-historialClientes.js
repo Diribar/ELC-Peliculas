@@ -5,15 +5,16 @@ window.addEventListener("load", async () => {
 
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
-	const grupos = ["tres", "cuatroDiez", "diezTreinta", "masDeTreinta"];
+	const grupos = ["tres", "cuatroDiez", "diezTreinta", "masDeTreinta", "unoDos"];
+	const ultMiembro = grupos.length - 1;
 	const coloresBorde = {};
-	const coloresRelleno=[]
+	const coloresRelleno = [];
 
 	// Establece los colores
 	const coloresValores = Object.values(colores);
 	grupos.forEach((grupo, i) => {
 		coloresBorde[grupo] = coloresValores[i][3];
-		coloresRelleno.push(coloresValores[i][1])
+		coloresRelleno.push(coloresValores[i][1]);
 	});
 
 	// Genera la información
@@ -27,7 +28,7 @@ window.addEventListener("load", async () => {
 
 	const dibujarGrafico = () => {
 		// Opciones
-		const {grafico, opciones} = FN_charts.opciones(DOM, "area");
+		const {grafico, opciones} = FN_charts.opciones(DOM, "areaLinea",ultMiembro);
 
 		// Otras opciones particulares
 		opciones.colors = coloresRelleno;
