@@ -69,7 +69,7 @@ module.exports = async (req, res, next) => {
 		else {
 			// Crea y obtiene el cliente
 			const datos = {versionElc: "1.10", fechaUltNaveg: fechaCookie};
-			cliente = await baseDeDatos.agregaRegistro("visitas", datos);
+			cliente = await baseDeDatos.agregaRegistroIdCorrel("visitas", datos);
 			cliente = await baseDeDatos.obtienePorId("visitas", cliente.id, "rolUsuario").then((n) => obtieneCamposNecesarios(n));
 
 			// Actualiza el cliente con el 'cliente_id'
@@ -101,7 +101,7 @@ module.exports = async (req, res, next) => {
 	// Cliente - 4. Primera visita: lo crea
 	if (!cliente) {
 		// Crea el cliente
-		cliente = await baseDeDatos.agregaRegistro("visitas", {versionElc});
+		cliente = await baseDeDatos.agregaRegistroIdCorrel("visitas", {versionElc});
 		cliente = await baseDeDatos.obtienePorId("visitas", cliente.id, "rolUsuario").then((n) => obtieneCamposNecesarios(n));
 
 		// Crea el cliente_id y lo actualiza en la BD
