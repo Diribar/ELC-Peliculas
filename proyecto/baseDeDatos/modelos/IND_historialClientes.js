@@ -5,7 +5,6 @@ module.exports = (sequelize, dt) => {
 
 		// Fidelidad de navegantes
 		altasDelDia: {type: dt.INTEGER},
-		transicion: {type: dt.INTEGER},
 		unoTres: {type: dt.INTEGER},
 		cuatroDiez: {type: dt.INTEGER},
 		diezTreinta: {type: dt.INTEGER},
