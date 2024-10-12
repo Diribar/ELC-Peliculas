@@ -28,11 +28,11 @@ window.addEventListener("load", async () => {
 
 	const dibujarGrafico = () => {
 		// Opciones
-		const {grafico, opciones} = FN_charts.opciones(DOM, "areaLinea",ultMiembro);
+		const {grafico, opciones} = FN_charts.opciones(DOM, "areaLinea", ultMiembro);
 
 		// Otras opciones particulares
 		opciones.colors = coloresRelleno;
-		opciones.vAxis.title = "Cantidad de personas";
+		// opciones.vAxes.title = "Cantidad de personas";
 
 		// Hace visible el gráfico
 		const data = new google.visualization.arrayToDataTable(resultado);
