@@ -41,14 +41,14 @@ module.exports = {
 		historialNavegs: {
 			rubro: "clientes",
 			titulo: "Historial de Navegaciones",
-			url: "clientes-historial-de-navegaciones",
+			url: "historial-de-navegaciones",
 			icono: iconos.columnas,
 			resaltar: true,
 		},
 		historialClientes: {
 			rubro: "clientes",
 			titulo: "Historial de Clientes",
-			url: "clientes-historial-de-clientes",
+			url: "historial-de-clientes",
 			icono: iconos.area,
 			resaltar: true,
 		},
@@ -63,13 +63,13 @@ module.exports = {
 		prodsPorPublico: {
 			rubro: "prods",
 			titulo: "Películas - Público recomendado",
-			url: "peliculas-publico",
+			url: "peliculas-por-publico",
 			icono: iconos.chart,
 		},
 		prodsPorEpocaEstr: {
 			rubro: "prods",
 			titulo: "Películas - Época de estreno",
-			url: "peliculas-epoca-estreno",
+			url: "peliculas-por-epoca-de-estreno",
 			icono: iconos.columnas,
 			hr: true,
 		},
