@@ -590,9 +590,12 @@ module.exports = {
 		return;
 	},
 	sumaUnDia: (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10),
-	tiposDeCliente: (registros) => {
+	tiposDeCliente: (registros, proximaFecha) => {
+		// Quita los clientes futuros
+		registros = registro.filter((n) => n.visitaCreadaEn.toISOString().slice(0, 10) <= proximaFecha);
+
 		// Buena noticia - Altas del día
-		let inicio = [...registros];
+		let inicio = registros;
 		let fin = inicio.filter((n) => n.fecha != n.visitaCreadaEn);
 		const altasDelDia = inicio.length - fin.length;
 
@@ -604,26 +607,16 @@ module.exports = {
 		// Buena noticia - Más de 10
 		inicio = fin;
 		fin = inicio.filter((n) => n.diasNaveg <= 10);
-		const masDeDiez = inicio.length - fin.length;
+		const diezATreinta = inicio.length - fin.length;
 
-		// Problema - Uno a diez (y días transcurridos)
+		// Problema - cuatro a diez
 		inicio = fin;
-		fin = inicio.filter(
-			(n) => (new Date(n.fecha).getTime() - new Date(n.visitaCreadaEn).getTime()) / unDia <= 90 // días desde creado
-		);
-		const unoADiez = inicio.length - fin.length;
+		fin = inicio.filter((n) => n.diasNaveg < 4);
+		const cuatroADiez = inicio.length - fin.length;
 
-		// Problema - Uno a tres (y días transcurridos)
-		inicio = fin;
-		fin = inicio.filter(
-			(n) => n.diasNaveg > 3 || (new Date(n.fecha).getTime() - new Date(n.visitaCreadaEn).getTime()) / unDia <= 30 // días desde creado
-		);
-		const unoATres = inicio.length - fin.length;
-
-		// Inocuo - Transición
-		const transicion = fin.length;
-
-		return {altasDelDia, transicion, unoATres, unoADiez, masDeDiez, masDeTreinta};
+		// Problema - Uno a tres
+		const unoATres = fin.length;
+		return {fecha: proximaFecha, altasDelDia, unoATres, cuatroADiez, diezATreinta, masDeTreinta};
 	},
 };
 

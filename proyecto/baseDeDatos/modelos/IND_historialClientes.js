@@ -6,9 +6,9 @@ module.exports = (sequelize, dt) => {
 		// Fidelidad de navegantes
 		altasDelDia: {type: dt.INTEGER},
 		transicion: {type: dt.INTEGER},
-		unoATres: {type: dt.INTEGER},
-		unoADiez: {type: dt.INTEGER},
-		masDeDiez: {type: dt.INTEGER},
+		unoTres: {type: dt.INTEGER},
+		cuatroDiez: {type: dt.INTEGER},
+		diezTreinta: {type: dt.INTEGER},
 		masDeTreinta: {type: dt.INTEGER},
 	};
 	const config = {
