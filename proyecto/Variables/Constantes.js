@@ -38,14 +38,14 @@ module.exports = {
 	// Gráficos
 	graficos: {
 		// Usuarios
-		clientesDiarios: {
+		historialNavegs: {
 			rubro: "clientes",
 			titulo: "Clientes Diarios",
 			url: "usuarios-clientes-acums",
 			icono: iconos.columnas,
 			resaltar: true,
 		},
-		fidelidadClientes: {
+		historialClientes: {
 			rubro: "clientes",
 			titulo: "Fidelidad de Clientes",
 			url: "usuarios-fidelidad-clientes",
