@@ -12,8 +12,8 @@ module.exports = (req, res, next) => {
 	const {cliente_id} = cliente;
 	let {fechaUltNaveg} = cliente;
 
-	// Si no está recién creado y la fecha es igual a hoy, interrumpe la función
-	if (!req.session.recienCreado && fechaUltNaveg == hoy) return next();
+	// Si no está recién creado y la fecha es igual a hoy, o el id de usuario es menor a 11, interrumpe la función
+	if ((!req.session.recienCreado && fechaUltNaveg == hoy) || (usuario && usuario.id < 11)) return next();
 
 	// Más variables
 	let {diasSinCartelBenefs, diasNaveg} = cliente;
