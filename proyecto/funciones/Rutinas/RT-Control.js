@@ -367,12 +367,12 @@ module.exports = {
 			return;
 		},
 		historialClientes: async () => {
-			// Variables
-			const anoMes = hoy.slice(0, 7);
-
 			// Si ya se obtuvo la foto del día, interrumpe la función
-			const existe = await baseDeDatos.obtienePorCondicion("historialClientes", {fecha: hoy});
-			if (existe) return;
+			const historialClientes = await baseDeDatos.obtieneElUltimo("historialClientes");
+			if (historialClientes && historialClientes.fecha == hoy) return;
+
+			// Obtiene el último registro del
+			// const ultFecha=
 
 			// Obtiene los clientes
 			const usuarios = baseDeDatos.obtieneTodos("usuarios");
@@ -749,7 +749,7 @@ module.exports = {
 			const tablas = [
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
-				...["historialNavegs", "diarioNavegs"],
+				...["historialNavegs", "diarioNavegs", "historialClientes"],
 				...["prodsComplem", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],
