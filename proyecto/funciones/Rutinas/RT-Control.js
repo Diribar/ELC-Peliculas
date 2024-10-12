@@ -21,7 +21,7 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		// await this.rutinas.historialClientes();
+		await this.rutinas.historialClientes();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -380,6 +380,7 @@ module.exports = {
 			const visitas = baseDeDatos.obtieneTodos("visitas");
 			const clientes = await Promise.all([usuarios, visitas])
 				.then((n) => n.flat())
+				.then((n) => n.filter((m) => m.diasNaveg))
 				.then((n) => n.map((m) => ({...m, visitaCreadaEn: m.visitaCreadaEn.toISOString().slice(0, 10)})));
 
 			// Loop mientras el día sea menor al actual
