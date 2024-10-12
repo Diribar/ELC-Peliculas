@@ -21,7 +21,7 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		// await this.rutinas.historialNavegs();
+		await this.rutinas.historialClientes();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -369,23 +369,23 @@ module.exports = {
 			return;
 		},
 		historialClientes: async () => {
-			// Si ya se obtuvo la foto del día, interrumpe la función
-			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("historialNavegs");
-			if (ultRegHistClientes && ultRegHistClientes.fecha >= hoy) return;
-
-			// Variables
+			// Obtiene la última fecha del historial
+			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("historialClientes");
 			const ultFechaHistClientes = ultRegHistClientes ? ultRegHistClientes.fecha : "2024-09-30";
 			let proximaFecha = procesos.sumaUnDia(ultFechaHistClientes); // le suma un día al último registro
+			if (proximaFecha >= hoy) return;
 
 			// Obtiene los clientes
 			const usuarios = baseDeDatos.obtieneTodos("usuarios");
 			const visitas = baseDeDatos.obtieneTodos("visitas");
-			const clientes = await Promise.all([usuarios, visitas]).then(([a, b]) => [...a, ...b]);
+			const clientes = await Promise.all([usuarios, visitas])
+				.then((n) => n.flat())
+				.then((n) => n.map((m) => ({...m, visitaCreadaEn: m.visitaCreadaEn.toISOString().slice(0, 10)})));
 
 			// Loop mientras el día sea menor al actual
 			while (proximaFecha < hoy) {
 				// Obtiene los tipos de cliente según el día
-				const tiposDeCliente = procesos.tiposDeCliente({...clientes}, proximaFecha);
+				const tiposDeCliente = procesos.tiposDeCliente(clientes, proximaFecha);
 
 				// Guarda el resultado
 				await baseDeDatos.agregaRegistro("historialClientes", tiposDeCliente);
