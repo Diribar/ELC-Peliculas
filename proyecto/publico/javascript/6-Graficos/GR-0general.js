@@ -28,7 +28,7 @@ const FN_charts = {
 		const tamanoLetra = (min, max) => Math.min(Math.max(alturaGrafico / 20, min), max);
 
 		// Obtiene las opciones
-		const opciones = this[tipo](alturaGrafico, anchoGrafico, ultMiembro);
+		const opciones = this[tipo]({alturaGrafico, anchoGrafico, ultMiembro});
 		opciones.titleTextStyle = {color: "brown", fontSize: tamanoLetra(13, 18)};
 		opciones.backgroundColor = "rgb(255,242,204)";
 		opciones.fontSize = 14;
@@ -45,7 +45,7 @@ const FN_charts = {
 		// Fin
 		return {grafico, opciones};
 	},
-	columnas: (alturaGrafico, anchoGrafico) => {
+	columnas: ({alturaGrafico, anchoGrafico}) => {
 		// Variables
 		const muestraEjeX = alturaGrafico > 200;
 		const muestraEjeY = anchoGrafico > 600;
@@ -92,22 +92,22 @@ const FN_charts = {
 		// Fin
 		return opciones;
 	},
-	pie: (alturaGrafico) => {
+	pie: ({anchoGrafico}) => {
 		// Opciones
 		const opciones = {
 			// Área y leyenda
 			chartArea: {height: "80%"},
-			legend: {position: "labeled"}, // leyendas conectadas con el gráfico
+			legend: {position: anchoGrafico > 300 ? "labeled" : "bottom"}, // leyendas conectadas con el gráfico
 
 			sliceVisibilityThreshold: 0.05, // agrupa los que son menores al 5%
-			pieSliceText: "value",
-			slices: {0: {offset: 0.05}},
+			pieSliceText: anchoGrafico > 300 ? "value" : "label",
+			slices: {0: {offset: 0.05}}, // separa la primera 'porción'
 		};
 
 		// Fin
 		return opciones;
 	},
-	area: (alturaGrafico, anchoGrafico) => {
+	area: ({alturaGrafico, anchoGrafico}) => {
 		// Variables
 		const muestraEjeX = alturaGrafico > 200;
 		const muestraEjeY = anchoGrafico > 600;
@@ -153,7 +153,7 @@ const FN_charts = {
 		// Fin
 		return opciones;
 	},
-	areaLinea: (alturaGrafico, anchoGrafico, ultMiembro) => {
+	areaLinea: ({alturaGrafico, anchoGrafico, ultMiembro}) => {
 		// Variables
 		const muestraEjeX = alturaGrafico > 200;
 		const muestraEjeY = anchoGrafico > 600;
