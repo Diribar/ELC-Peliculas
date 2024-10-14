@@ -5,6 +5,7 @@
 <% const ORIGEN = locals.origen ? ('&origen=' + origen) : '' %>
 <% const ORIGEN_DIF_DT= locals.origen && !origen.endsWith("DT") ? ORIGEN : '' %>
 <% const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad) %>
+
 <div id="estandar" class="iconos">
 	<% if (locals.origen && (!detalle || origen != "DT")) { %><!-- Cuando la vista o su origen no es 'Detalle' -->
 		<!-- Salir -->
@@ -49,6 +50,12 @@
 		<a href="<%= '/' + entidad + '/abm-links/p/?id=' + id + (ORIGEN_DIF_DT.includes("TE") ? ORIGEN_DIF_DT.replace("TE","RL") : ORIGEN_DIF_DT) %>" tabindex="-1">
 			<i class="<%= iconos.faSolid %> fa-link" title="Ir a la vista 'Links'" tabindex="-1"></i>
 		</a>
+	<% } %>
+	<% if (codigo == "abmLinks") { %>
+		<i id="ppp" class="<%= interesDelUsuario.icono %>" tabindex="-1" title="<%= interesDelUsuario.nombre %>"></i>
+	<% } %>
+	<% if (tema == "revisionEnts" && codigo == "abmLinks") { %>
+		<!-- Link para Revisión -->
 		<% if (locals.linkSigProd) { %>
 			<a href="<%= linkSigProd %>" tabindex="-1">
 				<i class="<%= iconos.faSolid %> <%= iconos.derecha %>" title="Para ver la siguiente" tabindex="-1"></i>
