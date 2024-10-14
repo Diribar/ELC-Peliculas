@@ -17,7 +17,6 @@ window.addEventListener("load", async () => {
 		const suma = ejeY.reduce((acum, n) =>  acum + n);
 		opciones.title = "Total: " + suma;
 
-
 		// Hace visible el gráfico
 		const data = new google.visualization.arrayToDataTable(resultado);
 		grafico.draw(data, opciones);
