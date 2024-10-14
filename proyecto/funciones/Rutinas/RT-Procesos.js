@@ -606,7 +606,7 @@ module.exports = {
 		// Buena noticia - Más de 10
 		inicio = fin;
 		fin = inicio.filter((n) => n.diasNaveg <= 10);
-		const diezTreinta = inicio.length - fin.length;
+		const onceTreinta = inicio.length - fin.length;
 
 		// Problema - tres a diez
 		inicio = fin;
@@ -616,7 +616,7 @@ module.exports = {
 		// Problema - Uno o dos
 		const unoDos = fin.length;
 
-		return {fecha: proximaFecha, tresDiez, diezTreinta, masDeTreinta, unoDos};
+		return {fecha: proximaFecha, tresDiez, onceTreinta, masDeTreinta, unoDos};
 	},
 };
 

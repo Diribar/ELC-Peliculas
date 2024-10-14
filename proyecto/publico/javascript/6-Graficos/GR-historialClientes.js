@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
-	const grupos = ["tresDiez", "diezTreinta", "masDeTreinta", "unoDos"];
+	const grupos = ["tresDiez", "onceTreinta", "masDeTreinta", "unoDos"];
 	const ultMiembro = grupos.length - 1;
 	const coloresBorde = {};
 	const coloresRelleno = [];
