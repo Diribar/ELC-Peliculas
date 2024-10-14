@@ -60,12 +60,10 @@ module.exports = {
 		// Lecturas de BD
 		if (entidad == "capitulos") prodComb.capitulos = procsFM.obtieneCapitulos(prodComb.coleccion_id, prodComb.temporada);
 		let links = procesos.obtieneLinksDelProducto({entidad, id, usuario_id, autTablEnts, origen});
-		let interesDelUsuario = usuario_id
-			? procesos.obtieneInteresDelUsuario({usuario_id: usuario_id, entidad, entidad_id: id})
-			: "";
+		let interesDelUsuario = usuario_id ? procesos.obtieneInteresDelUsuario({usuario_id, entidad, entidad_id: id}) : null;
 		let yaCalificada = usuario_id
 			? baseDeDatos.obtienePorCondicion("calRegistros", {usuario_id: usuario_id, entidad, entidad_id: id}).then((n) => !!n)
-			: "";
+			: null;
 		[prodComb.capitulos, links, interesDelUsuario, yaCalificada] = await Promise.all([
 			prodComb.capitulos,
 			links,
