@@ -284,13 +284,14 @@ module.exports = {
 			const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 			const imgDerPers = procsFM.obtieneAvatar(producto).orig;
 			const ayudasTitulo = ["Sé muy cuidadoso de aprobar sólo links que respeten los derechos de autor"];
+			const interesDelUsuario = await procsProd.obtieneInteresDelUsuario({usuario_id: revId, entidad, entidad_id: id});
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, ayudasTitulo, origen},
 				...{entidad, id, registro: producto, prodOrig: producto, avatar, usuario_id: revId, familia: "producto"},
 				...{links, linksProvs, linksTipos, motivos},
-				...{camposARevisar, calidadesDeLink},
+				...{camposARevisar, calidadesDeLink, interesDelUsuario},
 				...{imgDerPers, cartelGenerico: true, linkSigProd},
 			});
 		},
@@ -512,7 +513,8 @@ module.exports = {
 			});
 
 			// 3. Acciones si se terminó de revisar la edición de un producto
-			if (!edicion && entidadEdic == "prodsEdicion") await procsProd.accionesPorCambioDeStatus({entidad, registro: originalGuardado});
+			if (!edicion && entidadEdic == "prodsEdicion")
+				await procsProd.accionesPorCambioDeStatus({entidad, registro: originalGuardado});
 
 			// Fin
 			if (edicion) return res.redirect(req.originalUrl);
