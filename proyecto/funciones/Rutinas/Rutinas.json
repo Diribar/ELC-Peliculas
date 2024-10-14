@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 12/oct",
+	"FechaUTC": "Lun. 14/oct",
 	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 7/oct",
-	"HoraSemUTC": "10:29",
-	"semanaUTC": 41,
+	"FechaSemUTC": "Lun. 14/oct",
+	"HoraSemUTC": "0:00",
+	"semanaUTC": 42,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"10-oct-24": {},
-		"11-oct-24": {"leyenda": "Hoy recordamos al papa Juan XXIII, santo", "entidad": "personajes", "id": 22},
 		"12-oct-24": {"leyenda": "Hoy recordamos al beato Carlo Acutis", "entidad": "personajes", "id": 196},
 		"13-oct-24": {},
-		"14-oct-24": {}
+		"14-oct-24": {},
+		"15-oct-24": {"leyenda": "Hoy recordamos a santa Teresa de Ávila", "entidad": "personajes", "id": 99},
+		"16-oct-24": {"leyenda": "Hoy recordamos a santa Margarita María de Alacoque", "entidad": "personajes", "id": 230}
 	}
 }
