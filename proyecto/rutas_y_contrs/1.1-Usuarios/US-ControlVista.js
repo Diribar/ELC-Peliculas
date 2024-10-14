@@ -229,13 +229,20 @@ module.exports = {
 			// Prepara la info a guardar en usuarios
 			const datos = {diasSinCartelBenefs: 0};
 			if (esVisita) {
+				// Actualiza 'fechaUltNaveg'
 				datos.fechaUltNaveg = cliente.fechaUltNaveg;
-				if (usuario.fechaUltNaveg < hoy) datos.diasNaveg = usuario.diasNaveg + cliente.diasNaveg;
+
+				// Actualiza 'diasNaveg'
+				if (usuario.fechaUltNaveg < cliente.fechaUltNaveg) {
+					const diasTransc =
+						(new Date(cliente.fechaUltNaveg).getTime() - new Date(usuario.fechaUltNaveg).getTime()) / unDia;
+					datos.diasNaveg = usuario.diasNaveg + Math.min(cliente.diasNaveg, diasTransc);
+				}
 			}
 			if (!usuario.visitaCreadaEn) datos.visitaCreadaEn = cliente.visitaCreadaEn; // si existe la del usuario, se conserva
 
-			// Guarda la info
-			espera.push(baseDeDatos.actualizaPorId("usuarios", usuario.id, datos)); // no es necesario actualizar la variable 'usuario'
+			// Guarda la info en usuario
+			espera.push(baseDeDatos.actualizaPorId("usuarios", usuario.id, datos));
 			for (let dato in datos) usuario[dato] = datos[dato];
 
 			// Actualiza datos en la tabla 'diarioNavegs'
@@ -247,7 +254,7 @@ module.exports = {
 			};
 			espera.push(
 				baseDeDatos
-					.actualizaPorCondicion("diarioNavegs", {cliente_id, fecha: hoy}, diarioNavegs)// la variable 'cliente_id' puede diferir del 'usuario.cliente_id'
+					.actualizaPorCondicion("diarioNavegs", {cliente_id, fecha: hoy}, diarioNavegs) // la variable 'cliente_id' puede diferir del 'usuario.cliente_id'
 					.then(() => procesos.eliminaDuplicados(usuario.id))
 			);
 
