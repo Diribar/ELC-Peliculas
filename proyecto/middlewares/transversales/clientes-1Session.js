@@ -3,7 +3,9 @@
 
 module.exports = async (req, res, next) => {
 	// Si es una de las aplicaciones triviales, avanza
+	if (entorno != "development") console.log(req.headers["user-agent"]);
 	if (requestsTriviales.some((n) => req.headers["user-agent"].startsWith(n))) return next(); // si es una de las aplicaciones triviales
+	if (!req.headers["user-agent"]) return next(); // si no se conoce el origen
 
 	// Variables
 	let {usuario, cliente} = req.session;
@@ -37,7 +39,7 @@ module.exports = async (req, res, next) => {
 		// Si corresponde, actualiza la cookie
 		const {cliente_id} = cliente;
 		if (!req.cookies.cliente_id || req.cookies.cliente_id != cliente_id)
-			res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
+			res.cookie("cliente_id", cliente_id, {maxAge: unAno});
 	}
 
 	// Cliente - 2. Visita con cookie 'visita': lo obtiene de esa cookie, la borra y crea la cookie 'cliente'
@@ -78,7 +80,7 @@ module.exports = async (req, res, next) => {
 
 		// Acciones con cookies
 		res.clearCookie("visita");
-		res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
+		res.cookie("cliente_id", cliente_id, {maxAge: unAno});
 	}
 
 	// Cliente - 3. Visita con cookie 'cliente_id': lo obtiene de esa cookie
@@ -107,7 +109,7 @@ module.exports = async (req, res, next) => {
 		await baseDeDatos.actualizaPorId("visitas", cliente.id, {cliente_id}); // es crítico el 'await'
 
 		// Crea la cookie
-		res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
+		res.cookie("cliente_id", cliente_id, {maxAge: unAno});
 
 		// Actualiza variables
 		cliente.cliente_id = cliente_id;

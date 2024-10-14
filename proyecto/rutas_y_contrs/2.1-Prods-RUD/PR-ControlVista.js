@@ -214,7 +214,7 @@ module.exports = {
 
 					// Varias
 					let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: prodComb, id}); // Elimina otras ediciones que tengan los mismos valores
-					let statusAprob = validacsFM.statusAprob({entidad, registro: prodComb}); // Se fija si corresponde cambiar el status
+					let statusAprob = procesos.accionesPorCambioDeStatus({entidad, registro: prodComb}); // Se fija si corresponde cambiar el status
 					await Promise.all([statusAprob, edicsEliminadas]);
 					edicion = null; // Limpia el valor de la edicion, para que no se recargue el url
 				}

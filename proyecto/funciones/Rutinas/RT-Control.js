@@ -21,7 +21,7 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		// await this.rutinas.navegsAcums();
+		// await this.rutinas.historialClientes();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -316,77 +316,84 @@ module.exports = {
 			// Fin
 			return;
 		},
-		navegsAcums: async () => {
+		historialNavegs: async () => {
 			// Navegantes diarios, quitando los duplicados
-			const navegsDelDia = await baseDeDatos
-				.obtieneTodosPorCondicion("navegsDelDia", {fecha: {[Op.lt]: hoy}})
+			const diarioNavegs = await baseDeDatos
+				.obtieneTodosPorCondicion("diarioNavegs", {fecha: {[Op.lt]: hoy}})
 				.then((n) => n.sort((a, b) => (a.fecha < b.fecha ? -1 : 1)));
-			if (!navegsDelDia.length) return;
+			if (!diarioNavegs.length) return;
+
+			// Variables
+			const primFechaDiarioNavegs = diarioNavegs[0].fecha;
+			const ultRegHistNavegs = await baseDeDatos.obtienePorCondicionElUltimo("historialNavegs");
+			const ultFechaHistNavegs = ultRegHistNavegs && ultRegHistNavegs.fecha;
 
 			// Si hay una inconsistencia, termina
-			const primFechaNavegsDelDia = navegsDelDia[0].fecha;
-			const ultNavegAcums = await baseDeDatos.obtienePorCondicionElUltimo("navegsAcums");
-			const utlFechaClientesAcums = ultNavegAcums && ultNavegAcums.fecha;
-			if (utlFechaClientesAcums && primFechaNavegsDelDia <= utlFechaClientesAcums) {
-				const mensaje = primFechaNavegsDelDia == utlFechaClientesAcums ? "IGUAL" : "MENOR";
+			if (ultFechaHistNavegs && primFechaDiarioNavegs <= ultFechaHistNavegs) {
+				const mensaje = primFechaDiarioNavegs == ultFechaHistNavegs ? "IGUAL" : "MENOR";
 				console.log("Inconsistencia: Fecha Diaria", mensaje, "a Fecha Acumulada");
 				return;
 			}
 
 			// Obtiene la fecha inicial para acumulados
-			let proximaFecha = utlFechaClientesAcums // condición si hay logins acums
-				? procesos.sumaUnDia(utlFechaClientesAcums) // le suma un día al último registro
-				: primFechaNavegsDelDia; // la fecha del primer registro
+			let proximaFecha = ultFechaHistNavegs // condición si hay logins acums
+				? procesos.sumaUnDia(ultFechaHistNavegs) // le suma un día al último registro
+				: primFechaDiarioNavegs; // la fecha del primer registro
 
 			// Loop mientras el día sea menor al actual
 			while (proximaFecha < hoy) {
 				// Variables
 				const diaSem = diasSemana[new Date(proximaFecha).getUTCDay()];
 				const anoMes = proximaFecha.slice(0, 7);
-				const navegantes = navegsDelDia.filter((n) => n.fecha == proximaFecha);
+				const navegantes = diarioNavegs.filter((n) => n.fecha == proximaFecha);
 
 				// Cantidad y fidelidad de navegantes
 				const logins = navegantes.filter((n) => n.usuario_id).length;
 				const usSinLogin = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("U")).length;
 				const visitas = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
-				const fidelidades = procesos.fidelidades(navegantes);
 
-				// Agrega la cantidad de navegantes
-				await baseDeDatos.agregaRegistro("navegsAcums", {
+				// Guarda el resultado
+				await baseDeDatos.agregaRegistro("historialNavegs", {
 					...{fecha: proximaFecha, diaSem, anoMes},
 					...{logins, usSinLogin, visitas},
-					...fidelidades,
 				});
 
 				// Obtiene la fecha siguiente
 				proximaFecha = procesos.sumaUnDia(proximaFecha);
 			}
 
-			// Elimina los 'navegsDelDia' anteriores
-			baseDeDatos.eliminaPorCondicion("navegsDelDia", {fecha: {[Op.lt]: hoy}});
+			// Elimina los 'diarioNavegs' anteriores
+			baseDeDatos.eliminaPorCondicion("diarioNavegs", {fecha: {[Op.lt]: hoy}});
 
 			// Fin
 			return;
 		},
-		fidelidadClientes: async () => {
-			// Variables
-			const diaSem = diasSemana[new Date(hoy).getUTCDay()];
-			const anoMes = hoy.slice(0, 7);
-
-			// Si ya se obtuvo la foto del día, interrumpe la función
-			const existe = await baseDeDatos.obtienePorCondicion("fidelidadClientes", {fecha: hoy});
-			if (existe) return;
+		historialClientes: async () => {
+			// Obtiene la última fecha del historial
+			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("historialClientes");
+			const ultFechaHistClientes = ultRegHistClientes ? ultRegHistClientes.fecha : "2024-10-03";
+			let proximaFecha = procesos.sumaUnDia(ultFechaHistClientes); // le suma un día al último registro
+			if (proximaFecha >= hoy) return;
 
 			// Obtiene los clientes
 			const usuarios = baseDeDatos.obtieneTodos("usuarios");
 			const visitas = baseDeDatos.obtieneTodos("visitas");
-			const clientes = await Promise.all([usuarios, visitas]).then(([a, b]) => [...a, ...b]);
+			const clientes = await Promise.all([usuarios, visitas])
+				.then((n) => n.flat())
+				.then((n) => n.filter((m) => m.diasNaveg))
+				.then((n) => n.map((m) => ({...m, visitaCreadaEn: m.visitaCreadaEn.toISOString().slice(0, 10)})));
 
-			// Obtiene la fidelidad de los clientes
-			const fidelidades = procesos.fidelidades(clientes);
+			// Loop mientras el día sea menor al actual
+			while (proximaFecha < hoy) {
+				// Obtiene los tipos de cliente según el día
+				const tiposDeCliente = procesos.tiposDeCliente(clientes, proximaFecha);
 
-			// Guarda los resultados
-			await baseDeDatos.agregaRegistro("fidelidadClientes", {fecha: hoy, diaSem, anoMes, ...fidelidades});
+				// Guarda el resultado
+				await baseDeDatos.agregaRegistro("historialClientes", tiposDeCliente);
+
+				// Obtiene la fecha siguiente
+				proximaFecha = procesos.sumaUnDia(proximaFecha);
+			}
 
 			// Fin
 			return;
@@ -742,21 +749,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		eliminaNavegsAcumsRep: async () => {
-			// Variables
-			const navegsAcums = await baseDeDatos.obtieneTodos("navegsAcums");
-
-			// Elimina los navegsAcums repetidos
-			let registroAnterior;
-			for (let registro of navegsAcums) {
-				if (registroAnterior && registro.fecha == registroAnterior.fecha)
-					baseDeDatos.eliminaPorId("navegsAcums", registro.id);
-				registroAnterior = registro;
-			}
-
-			// Fin
-			return;
-		},
 		eliminaRegsDelHistStatus: async () => {
 			const condicion = {statusOriginal_id: creadoAprob_id, statusFinal_id: aprobado_id};
 			await baseDeDatos.eliminaPorCondicion("statusHistorial", condicion);
@@ -767,7 +759,7 @@ module.exports = {
 			const tablas = [
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
-				...["navegsAcums", "navegsDelDia"],
+				...["historialNavegs", "diarioNavegs", "historialClientes"],
 				...["prodsComplem", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],

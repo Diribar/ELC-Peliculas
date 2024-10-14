@@ -1,7 +1,8 @@
 "use strict";
+const procsFM = require("../2.0-Familias/FM-FN-Procesos");
+const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 
 module.exports = {
-	// Producto
 	bloqueIzq: (producto) => {
 		// Variables
 		const paisesNombre = producto.paises_id ? comp.paises_idToNombre(producto.paises_id) : null;
@@ -172,6 +173,82 @@ module.exports = {
 
 		// Fin
 		return true;
+	},
+	accionesPorCambioDeStatus: async function ({entidad, registro}) {
+		// Variables
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+
+		// Primera respuesta
+		let statusAprob = familias != "productos" || registro.statusRegistro_id != creadoAprob_id;
+		if (statusAprob) return true;
+
+		// Si hay errores, devuelve falso e interrumpe la función
+		const errores = await validacsFM.validacs.consolidado({datos: {...registro, entidad}});
+		if (errores.impideAprobado) return false;
+
+		// 1. Cambia el status del registro
+		const ahora = comp.fechaHora.ahora();
+		let datos = {statusRegistro_id: aprobado_id};
+		if (!registro.altaTermEn)
+			datos = {
+				...datos,
+				altaTermEn: ahora,
+				leadTimeCreacion: comp.obtieneLeadTime(registro.creadoEn, ahora),
+				statusSugeridoPor_id: usAutom_id,
+				statusSugeridoEn: ahora,
+			};
+		await baseDeDatos.actualizaPorId(entidad, registro.id, datos);
+
+		// 2. Actualiza el campo 'prodAprob' en los links
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const condicion = {[campo_id]: registro.id};
+		baseDeDatos.actualizaPorCondicion("links", condicion, {prodAprob: true});
+
+		// 3. Si es una colección, revisa si corresponde aprobar capítulos
+		if (entidad == "colecciones") await this.cambioDeStatusCaps(registro.id);
+
+		// 4. Actualiza 'prodsEnRCLV' en sus RCLVs
+		procsFM.accsEnDepsPorCambioDeStatus(entidad, {...registro, ...datos});
+
+		// Fin
+		return true;
+	},
+	cambioDeStatusCaps: async function (colID) {
+		// Variables
+		const ahora = comp.fechaHora.ahora();
+		let espera = [];
+		let datos;
+
+		// Prepara los datos
+		const datosFijos = {statusColeccion_id: aprobado_id, statusRegistro_id: aprobado_id};
+		const datosSugeridos = {statusSugeridoPor_id: usAutom_id, statusSugeridoEn: ahora};
+
+		// Obtiene los capitulos id
+		const capitulos = await baseDeDatos.obtieneTodosPorCondicion("capitulos", {coleccion_id: colID});
+
+		// Actualiza el status de los capítulos
+		for (let capitulo of capitulos) {
+			// Variables
+			const datosTerm = !capitulo.altaTermEn
+				? {altaTermEn: ahora, leadTimeCreacion: comp.obtieneLeadTime(capitulo.creadoEn, ahora)}
+				: {};
+
+			// Revisa si cada capítulo supera el test de errores
+			datos = {entidad: "capitulos", ...capitulo};
+			const errores = await this.validacs.consolidado({datos});
+
+			// Actualiza los datos
+			datos = errores.impideAprobado
+				? {...datosFijos, statusRegistro_id: creadoAprob_id}
+				: {...datosFijos, ...datosSugeridos, ...datosTerm};
+			espera.push(baseDeDatos.actualizaPorId("capitulos", capitulo.id, datos));
+		}
+
+		// Espera hasta que se revisen todos los capítulos
+		await Promise.all(espera);
+
+		// Fin
+		return;
 	},
 };
 let FN = {

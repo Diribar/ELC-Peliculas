@@ -1,7 +1,7 @@
 "use strict";
 // Variables
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
-const validacsFM = require("../2.0-Familias/FM-FN-Validar");
+const procsProd = require("../2.1-Prods-RUD/PR-FN-Procesos");
 const procesos = require("./RE-Procesos");
 
 module.exports = {
@@ -42,7 +42,7 @@ module.exports = {
 		// Acciones si se terminó de revisar la edición
 		if (!edicion) {
 			let edicsEliminadas = procsFM.elimina.demasEdiciones({entidad, original: originalGuardado, id: entId}); // elimina las demás ediciones
-			statusAprob = validacsFM.statusAprob({entidad, registro: originalGuardado});
+			statusAprob = procsProd.accionesPorCambioDeStatus({entidad, registro: originalGuardado});
 			[statusAprob, edicsEliminadas] = await Promise.all([statusAprob, edicsEliminadas]);
 
 			// Específico de links

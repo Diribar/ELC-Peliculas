@@ -1,7 +1,6 @@
 "use strict";
 // Variables
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
-const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 const procsProd = require("../2.1-Prods-RUD/PR-FN-Procesos");
 const procsRCLV = require("../2.2-RCLVs/RCLV-FN-Procesos");
 const validaRCLV = require("../2.2-RCLVs/RCLV-FN-Validar");
@@ -417,7 +416,7 @@ module.exports = {
 			if (entidad == "colecciones") {
 				// 1. Actualiza el status de los capítulos
 				statusFinal_id == aprobado_id
-					? await validacsFM.capsAprobs(id)
+					? await procsProd.cambioDeStatusCaps(id)
 					: await baseDeDatos.actualizaPorCondicion(
 							"capitulos",
 							{coleccion_id: id},
@@ -470,7 +469,7 @@ module.exports = {
 			if (datosHist.penalizac) comp.penalizacAcum(usuario_id, motivo, petitFamilias);
 
 			// CONSECUENCIAS - Acciones para producto (rclvs y links) --> debe estar después de que se grabó el original
-			if (producto) await validacsFM.accionesPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
+			if (producto) await procsFM.accsEnDepsPorCambioDeStatus(entidad, {...original, statusRegistro_id: statusFinal_id});
 
 			// CONSECUENCIAS - Si se aprobó un 'recuperar' que no es un capítulo, y el avatar original es un url, descarga el archivo avatar y actualiza el registro 'original'
 			if (codigo == "recuperar" && aprobado && entidad != "capitulo" && original.avatar && original.avatar.includes("/"))
@@ -513,7 +512,7 @@ module.exports = {
 			});
 
 			// 3. Acciones si se terminó de revisar la edición de un producto
-			if (!edicion && entidadEdic == "prodsEdicion") await validacsFM.statusAprob({entidad, registro: originalGuardado});
+			if (!edicion && entidadEdic == "prodsEdicion") await procsProd.accionesPorCambioDeStatus({entidad, registro: originalGuardado});
 
 			// Fin
 			if (edicion) return res.redirect(req.originalUrl);

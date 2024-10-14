@@ -1,5 +1,5 @@
 "use strict";
-const validacsFM = require("./FM-FN-Validar");
+const validacs = require("./FM-FN-Validar");
 
 module.exports = {
 	// Header
@@ -282,19 +282,19 @@ module.exports = {
 				original.coleccion.nombreCastellano = edicColec.nombreCastellano;
 
 			// Reemplaza los campos simples vacíos de la edición
-			const camposEditables = [...variables.camposDD, ...variables.camposDA];
-			for (let campo of camposEditables) {
-				const {nombre} = campo;
-				if (
-					(edicColec[nombre] && !original[nombre] && (!edicion || !edicion[nombre])) || // sólo 'edicColec' tiene un valor; 'null' y 'undefined' son equivalentes con el '=='
-					(campo.rclv && edicColec[nombre] > 10 && original[nombre] == 1 && !edicion[nombre]) // es un rclv y sólo 'edicColec' tiene un valor significativo
-				)
-					edicion[nombre] = edicColec[nombre];
-			}
+			// const camposEditables = [...variables.camposDD, ...variables.camposDA];
+			// for (let campo of camposEditables) {
+			// 	const {nombre} = campo;
+			// 	if (
+			// 		(edicColec[nombre] && !original[nombre] && (!edicion || !edicion[nombre])) || // sólo 'edicColec' tiene un valor; 'null' y 'undefined' son equivalentes con el '=='
+			// 		(campo.rclv && edicColec[nombre] > 10 && original[nombre] == 1 && !edicion[nombre]) // es un rclv y sólo 'edicColec' tiene un valor significativo
+			// 	)
+			// 		edicion[nombre] = edicColec[nombre];
+			// }
 
 			// Reemplaza los campos 'include' vacíos de la edición
-			if (includesEdic)
-				for (let campo of includesEdic) if (!edicion[campo] && edicColec[campo]) edicion[campo] = edicColec[campo];
+			// if (includesEdic)
+			// 	for (let campo of includesEdic) if (!edicion[campo] && edicColec[campo]) edicion[campo] = edicColec[campo];
 		}
 
 		// Fin
@@ -616,6 +616,53 @@ module.exports = {
 		// Fin
 		return prodsDelRCLV;
 	},
+	accsEnDepsPorCambioDeStatus: async (entidad, registro) => {
+		// Variables
+		const familias = comp.obtieneDesdeEntidad.familias(entidad);
+
+		// prodsEnRCLV
+		if (familias == "productos") {
+			// Variables
+			const prodAprob = activos_ids.includes(registro.statusRegistro_id); // antes era 'aprobados_ids'
+
+			// Actualiza prodAprob en sus links
+			if (registro.links && registro.links.length) {
+				const campo_id = entidad == "colecciones" ? "grupoCol_id" : comp.obtieneDesdeEntidad.campo_id(entidad);
+				await baseDeDatos.actualizaPorCondicion("links", {[campo_id]: registro.id}, {prodAprob});
+			}
+
+			// Rutina por entidad RCLV
+			const entidadesRCLV = variables.entidades.rclvs;
+			for (let entidadRCLV of entidadesRCLV) {
+				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
+				if (registro[campo_id] && registro[campo_id] != 1)
+					prodAprob
+						? baseDeDatos.actualizaPorId(entidadRCLV, registro[campo_id], {prodsAprob: true})
+						: comp.actualizaProdsEnRCLV({entidad: entidadRCLV, id: registro[campo_id]});
+			}
+		}
+
+		// linksEnProds
+		if (familias == "links") {
+			// Obtiene los datos identificatorios del producto
+			const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(registro);
+			const campo_id = comp.obtieneDesdeCampo_id.campo_idProd(registro);
+			const prodId = registro[campo_id];
+
+			// Actualiza el producto
+			await comp.linksEnProd({entidad: prodEntidad, id: prodId});
+			if (prodEntidad == "capitulos") {
+				const colID = await baseDeDatos.obtienePorId("capitulos", prodId).then((n) => n.coleccion_id);
+				comp.actualizaCalidadesDeLinkEnCole(colID);
+			}
+		}
+
+		// Actualiza la variable de links vencidos
+		await comp.linksVencPorSem.actualizaCantLinksPorSem();
+
+		// Fin
+		return;
+	},
 
 	grupos: {
 		pers: (camposDA) => {
@@ -881,7 +928,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		vinculoProds: async ({entidadRCLV, rclvID}) => {
+		vinculoProds: async function ({entidadRCLV, rclvID}) {
 			// Variables
 			const campo_idRCLV = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
 			const entidades = variables.entidades.prods;
@@ -904,11 +951,31 @@ module.exports = {
 					espera.push(baseDeDatos.actualizaPorCondicion(entidad, {[campo_id]: rclvID}, {[campo_id]: 1}));
 
 				//Revisa si se le debe cambiar el status a algún producto - la rutina no necesita este resultado
-				validacsFM.siHayErroresBajaElStatus(prodsPorEnts);
+				this.siHayErroresBajaElStatus(prodsPorEnts);
 			}
 
 			// Espera a que concluyan las rutinas
 			await Promise.all(espera);
+
+			// Fin
+			return;
+		},
+		siHayErroresBajaElStatus: function (prodsPorEnts) {
+			// Variables
+			const entidades = variables.entidades.prods;
+
+			// Acciones por cada ENTIDAD
+			entidades.forEach(async (entidad, i) => {
+				// Averigua si existen registros por cada entidad
+				if (prodsPorEnts[i].length)
+					// Acciones por cada PRODUCTO
+					for (let original of prodsPorEnts[i]) {
+						// Si hay errores, le cambia el status
+						const errores = await validacs.consolidado({datos: {...original, entidad}});
+						if (errores.impideAprobado)
+							baseDeDatos.actualizaPorId(entidad, original.id, {statusRegistro_id: creadoAprob_id});
+					}
+			});
 
 			// Fin
 			return;

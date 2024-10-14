@@ -5,14 +5,15 @@ module.exports = (req, res, next) => {
 	// Si corresponde, interrumpe la función
 	if (req.originalUrl.includes("/api/")) return next();
 	if (requestsTriviales.some((n) => req.headers["user-agent"].startsWith(n))) return next(); // si es una de las aplicaciones triviales
+	if (!req.headers["user-agent"]) return next(); // si no se conoce el origen
 
 	// Variables
 	const {usuario, cliente} = req.session;
 	const {cliente_id} = cliente;
 	let {fechaUltNaveg} = cliente;
 
-	// Si no está recién creado y la fecha es igual a hoy, interrumpe la función
-	if (!req.session.recienCreado && fechaUltNaveg == hoy) return next();
+	// Si no está recién creado y la fecha es igual a hoy, o el id de usuario es menor a 11, interrumpe la función
+	if ((!req.session.recienCreado && fechaUltNaveg == hoy) || (usuario && usuario.id < 11)) return next();
 
 	// Más variables
 	let {diasSinCartelBenefs, diasNaveg} = cliente;
@@ -31,8 +32,8 @@ module.exports = (req, res, next) => {
 	contadorDeClientes(usuario_id, cliente);
 
 	// Actualiza cookies
-	if (usuario) res.cookie("email", usuario.email, {maxAge: unDia * 30});
-	res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
+	if (usuario) res.cookie("email", usuario.email, {maxAge: unAno});
+	res.cookie("cliente_id", cliente_id, {maxAge: unAno});
 
 	// Actualiza session
 	delete req.session.recienCreado;
@@ -48,13 +49,13 @@ let contadorDeClientes = async (usuario_id, cliente) => {
 
 	// Si ya existe un registro del 'cliente_id' en esta fecha, interrumpe la función
 	const condicion = {fecha: hoy, cliente_id};
-	const existe = await baseDeDatos.obtienePorCondicion("navegsDelDia", condicion);
+	const existe = await baseDeDatos.obtienePorCondicion("diarioNavegs", condicion);
 	if (existe) return;
 
-	// Agrega un registro en la tabla 'navegsDelDia'
+	// Agrega un registro en la tabla 'diarioNavegs'
 	let datos = {...condicion, diasNaveg, visitaCreadaEn};
 	if (usuario_id) datos.usuario_id = usuario_id;
-	baseDeDatos.agregaRegistro("navegsDelDia", datos);
+	baseDeDatos.agregaRegistro("diarioNavegs", datos);
 
 	// Fin
 	return;

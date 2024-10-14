@@ -237,12 +237,12 @@ module.exports = {
 			if (!usuario.visitaCreadaEn) datos.visitaCreadaEn = cliente.visitaCreadaEn;
 			espera.push(baseDeDatos.actualizaPorId("usuarios", usuario.id, datos)); // no es necesario actualizar la variable 'usuario'
 
-			// Actualiza datos en la tabla 'navegsDelDia'
+			// Actualiza datos en la tabla 'diarioNavegs'
 			const visitaCreadaEnTexto = visitaCreadaEn.toISOString().slice(0, 10);
 			espera.push(
 				baseDeDatos
 					.actualizaPorCondicion(
-						"navegsDelDia",
+						"diarioNavegs",
 						{cliente_id, fecha: hoy}, // el 'cliente_id' puede diferir del 'usuario.cliente_id'
 						{cliente_id: usuario.cliente_id, usuario_id, visitaCreadaEn: visitaCreadaEnTexto, diasNaveg}
 					)
