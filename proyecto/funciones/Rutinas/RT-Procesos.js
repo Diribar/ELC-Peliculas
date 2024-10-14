@@ -608,20 +608,15 @@ module.exports = {
 		fin = inicio.filter((n) => n.diasNaveg <= 10);
 		const diezTreinta = inicio.length - fin.length;
 
-		// Problema - cuatro a diez
-		inicio = fin;
-		fin = inicio.filter((n) => n.diasNaveg < 4);
-		const cuatroDiez = inicio.length - fin.length;
-
-		// Problema - tres
+		// Problema - tres a diez
 		inicio = fin;
 		fin = inicio.filter((n) => n.diasNaveg < 3);
-		const tres = inicio.length - fin.length;
+		const cuatroDiez = inicio.length - fin.length;
 
-		// Problema - Uno a tres
+		// Problema - Uno o dos
 		const unoDos = fin.length;
 
-		return {fecha: proximaFecha, tres, cuatroDiez, diezTreinta, masDeTreinta, unoDos};
+		return {fecha: proximaFecha, tresDiez, diezTreinta, masDeTreinta, unoDos};
 	},
 };
 
