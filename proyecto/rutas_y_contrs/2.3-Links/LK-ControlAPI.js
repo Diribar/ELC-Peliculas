@@ -51,7 +51,7 @@ module.exports = {
 		if (!link) {
 			datos.creadoPor_id = usuario_id;
 			datos.statusSugeridoPor_id = usuario_id;
-			link = await baseDeDatos.agregaRegistro("links", datos);
+			link = await baseDeDatos.agregaRegistroIdCorrel("links", datos);
 			await procsFM.accsEnDepsPorCambioDeStatus("links", link);
 			mensaje = "Link creado";
 		}

@@ -47,7 +47,7 @@ module.exports = {
 			// Devuelve la info
 			return res.json(errores);
 		},
-		envioDeMailAltaUsuario: async (req, res) => {
+		creaUsuarioEnviaMail: async (req, res) => {
 			// Envía el mail con la contraseña
 			const {email} = req.query;
 			const {cliente} = req.session;
@@ -58,7 +58,7 @@ module.exports = {
 			if (!mailEnviado) return res.json(mailEnviado);
 
 			// Crea el usuario
-			const usuario = await baseDeDatos.agregaRegistro("usuarios", {
+			const usuario = await baseDeDatos.agregaRegistroIdCorrel("usuarios", {
 				...{email, contrasena},
 				...{diasNaveg, visitaCreadaEn},
 				statusRegistro_id: mailPendValidar_id,

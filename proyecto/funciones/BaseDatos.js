@@ -21,6 +21,30 @@ module.exports = {
 
 	// ABM
 	agregaRegistro: (entidad, datos) => db[entidad].create(datos).then((n) => n.toJSON()),
+	agregaRegistroIdCorrel: async (entidad, datos) => {
+		// Variables
+		const idInicial = 11;
+		const registros = await db[entidad].findAll({where: {id: {[Op.gte]: idInicial}}}).then((n) => n.map((m) => m.toJSON()));
+		let nuevoRegistro;
+
+		// Guarda el registro usando el primer 'id' disponible
+		let id = idInicial;
+		for (let registro of registros) {
+			if (
+				registro.id != id && // id sin registro
+				!(await db[entidad].findByPk(id).then((n) => !!n)) // se asegura de que no se haya creado durante la rutina
+			) {
+				nuevoRegistro = await db[entidad].create({id, ...datos}).then((n) => n.toJSON()); // lo crea
+				break;
+			} else id++;
+		}
+
+		// Si no se guardó, lo guarda
+		if (id > 11 + registros.length - 1) nuevoRegistro = await db[entidad].create(datos).then((n) => n.toJSON()); // crea
+
+		// Fin
+		return nuevoRegistro;
+	},
 	agregaActualizaPorCondicion: async (entidad, condicion, datos) => {
 		// Averigua si existe un registro con esa condición
 		const existe = await db[entidad].findOne({where: condicion}).then((n) => (n ? n.toJSON() : null));

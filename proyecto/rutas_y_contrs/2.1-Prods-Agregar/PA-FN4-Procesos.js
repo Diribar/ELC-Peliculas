@@ -163,7 +163,7 @@ module.exports = {
 			await procsComp
 				.obtieneInfoDeMovie({TMDB_id: capTMDB_id}) // Obtiene los datos del capítulo
 				.then((n) => (n = {...datosCap, ...n})) // Le agrega los datos de cabecera
-				.then(async (n) => await baseDeDatos.agregaRegistro("capitulos", n));
+				.then(async (n) => await baseDeDatos.agregaRegistroIdCorrel("capitulos", n));
 
 			// Fin
 			return;
@@ -187,7 +187,7 @@ module.exports = {
 			// Guarda los CAPITULOS
 			for (let datosCap of datosTemp.episodes) {
 				const datos = this.datosCap(datosCol, datosTemp, datosCap); // Obtiene la información del capítulo
-				await baseDeDatos.agregaRegistro("capitulos", datos); // Guarda el capítulo
+				await baseDeDatos.agregaRegistroIdCorrel("capitulos", datos); // Guarda el capítulo
 			}
 
 			// Fin

@@ -547,7 +547,7 @@ let accionesParaCapitulosIMFA = async (datos, req, res) => {
 	if (!datos.nombreCastellano) datos.nombreCastellano = "Capítulo " + datos.capitulo;
 
 	// Guarda el registro original
-	const id = await baseDeDatos.agregaRegistro("capitulos", datos).then((n) => n.id);
+	const id = await baseDeDatos.agregaRegistroIdCorrel("capitulos", datos).then((n) => n.id);
 
 	// Elimina todas las session y cookie del proceso AgregarProd
 	procesos.borraSessionCookies(req, res, "IM");
