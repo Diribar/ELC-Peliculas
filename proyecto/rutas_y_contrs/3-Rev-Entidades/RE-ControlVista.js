@@ -272,7 +272,7 @@ module.exports = {
 						: await procesos.links.obtieneSigProd({entidad, id, revId})
 					: null;
 			const linkSigProd = sigProd
-				? "/".concat(entidad, "inactivar-captura/?id=", id) +
+				? "/".concat(entidad, "/inactivar-captura/?id=", id) +
 				  "&prodEntidad=".concat(sigProd.entidad, "&prodId=", sigProd.id, "&origen=RL")
 				: null;
 
