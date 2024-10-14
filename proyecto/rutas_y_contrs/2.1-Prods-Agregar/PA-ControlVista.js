@@ -46,13 +46,15 @@ module.exports = {
 			if (errores.hay) return res.redirect(req.originalUrl);
 
 			// Si corresponde, redirecciona a 'ingreso manual'
-			if (metodo == "Ingr. Man.") return res.redirect("agregar-im");
-
-			// Guarda el Data Entry en session y cookie de desambiguar
-			req.session.desambiguar = {palabrasClave};
-			res.cookie("desambiguar", {palabrasClave}, {maxAge: unDia});
+			if (metodo == "Ingr. Man.") {
+				req.session.IM = {palabrasClave};
+				res.cookie("IM", {palabrasClave}, {maxAge: unDia});
+				return res.redirect("agregar-im");
+			}
 
 			// Redirecciona a 'desambiguar'
+			req.session.desambiguar = {palabrasClave};
+			res.cookie("desambiguar", {palabrasClave}, {maxAge: unDia});
 			return res.redirect("agregar-ds");
 		},
 	},
