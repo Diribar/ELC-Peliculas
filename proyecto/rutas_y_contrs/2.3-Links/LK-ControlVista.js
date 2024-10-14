@@ -55,7 +55,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo},
 			...{entidad, familia: "producto", id, origen},
-			...{registro: producto, links, status_id,interesDelUsuario},
+			...{registro: producto, links, status_id, interesDelUsuario},
 			...{linksProvs, linksTipos, calidadesDeLink, motivos},
 			...{usuario_id, imgDerPers, cartelGenerico: true, sigProd, grupo},
 			...{vista: req.baseUrl + req.path, anchorEncab},
