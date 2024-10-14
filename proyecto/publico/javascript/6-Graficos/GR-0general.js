@@ -190,13 +190,13 @@ const FN_charts = {
 			},
 			vAxis: {
 				0: {
-					gridlines: {count: 6}, // cuántos gridlines
+					gridlines: {count: 5}, // cuántos gridlines
 					viewWindow: {min: 0},
 					titleTextStyle: {fontSize: muestraEjeY ? tamanoLetra(12, 18) : 1},
 					textStyle: {fontSize: tamanoLetra(10, 14)},
 				},
 				1: {
-					gridlines: {count: 6}, // cuántos gridlines
+					gridlines: {count: 5}, // cuántos gridlines
 					viewWindow: {min: 0},
 					titleTextStyle: {fontSize: muestraEjeY ? tamanoLetra(12, 18) : 1},
 					textStyle: {fontSize: tamanoLetra(10, 14)},

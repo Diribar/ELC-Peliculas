@@ -1,6 +1,7 @@
 "use strict";
 // Variables
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
+const procsProd = require("../2.1-Prods-RUD/PR-FN-Procesos");
 const procesos = require("./LK-FN-Procesos");
 
 // *********** Controlador ***********
@@ -46,6 +47,7 @@ module.exports = {
 			"Al terminar, conviene que vayas a la de 'Detalle' para liberar el producto",
 			"Si hay datos en rojo, es porque están editados por otro usuario",
 		];
+		const interesDelUsuario = await procsProd.obtieneInteresDelUsuario({usuario_id, entidad, entidad_id: id});
 		const anchorEncab = true;
 
 		// Va a la vista
@@ -53,7 +55,7 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, ayudasTitulo},
 			...{entidad, familia: "producto", id, origen},
-			...{registro: producto, links, status_id},
+			...{registro: producto, links, status_id, interesDelUsuario},
 			...{linksProvs, linksTipos, calidadesDeLink, motivos},
 			...{usuario_id, imgDerPers, cartelGenerico: true, sigProd, grupo},
 			...{vista: req.baseUrl + req.path, anchorEncab},

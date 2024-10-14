@@ -47,7 +47,7 @@ module.exports = {
 		},
 		historialClientes: {
 			rubro: "clientes",
-			titulo: "Historial de Clientes",
+			titulo: "Navegaciones por cliente",
 			url: "historial-de-clientes",
 			icono: iconos.area,
 			resaltar: true,
