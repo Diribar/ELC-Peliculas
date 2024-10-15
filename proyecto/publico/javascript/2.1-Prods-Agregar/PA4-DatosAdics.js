@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let DOM = {
+	const DOM = {
 		// Variables generales
 		form: document.querySelector("#dataEntry"),
 		submit: document.querySelector("#dataEntry #submit"),
@@ -47,11 +47,6 @@ window.addEventListener("load", async () => {
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 	};
-	let rutas = {
-		validar: "/producto/api/pa-valida-da/?",
-		guardaDatosAdics: "/producto/api/pa-guarda-datos-adicionales/?",
-	};
-	const camposRCLV = ["personaje_id", "hecho_id", "tema_id"];
 
 	// Otras variables
 	let camposError = ["cfc", "bhr", "tipoActuacion_id", "RCLV"];
@@ -333,6 +328,13 @@ window.addEventListener("load", async () => {
 	// STATUS INICIAL
 	funcionesGrales.statusInicial();
 });
+
+// Variables
+const rutas = {
+	validar: "/producto/api/pa-valida-da/?",
+	guardaDatosAdics: "/producto/api/pa-guarda-datos-adicionales/?",
+};
+const camposRCLV = ["personaje_id", "hecho_id", "tema_id"];
 
 let entidadesRclv = (link) =>
 	link.className.includes("personaje") ? "personajes" : link.className.includes("hecho") ? "hechos" : "temas";

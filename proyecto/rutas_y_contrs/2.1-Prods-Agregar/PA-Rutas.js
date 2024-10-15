@@ -26,10 +26,11 @@ const dataEntryMasYaEnBD = [...dataEntry, m.prodYaEnBD];
 const dataEntryMasFA = [...dataEntry, m.usAutorizFA];
 
 // APIs - Validaciones
-router.get("/api/pa-valida-pc", API.validaPalabrasClave);
-router.get("/api/pa-valida-dd", API.validaDatosDuros);
-router.get("/api/pa-valida-da", API.validaDatosAdics);
-router.get("/api/pa-valida-fa", API.validaCopiarFA);
+router.get("/api/pa-valida-pc", API.validacs.palabrasClave);
+router.get("/api/pa-valida-ds", API.validacs.desambiguar);
+router.get("/api/pa-valida-dd", API.validacs.datosDuros);
+router.get("/api/pa-valida-da", API.validacs.datosAdics);
+router.get("/api/pa-valida-fa", API.validacs.copiarFA);
 
 // APIs - Desambiguar Form
 router.get("/api/pa-busca-info-de-session", API.desambForm.buscaInfoDeSession);
@@ -40,8 +41,7 @@ router.get("/api/pa-agrega-hallazgos-de-IM-y-FA", API.desambForm.agregaHallazgos
 router.get("/api/pa-obtiene-el-mensaje", API.desambForm.obtieneElMensaje);
 
 // APIs - Desambiguar - Guardar
-router.get("/api/pa-actualiza-datos-originales", API.desambGuardar.actualizaDatosOrig);
-router.get("/api/pa-averigua-si-la-info-tiene-errores", API.desambGuardar.averiguaSiHayErrores);
+router.get("/api/pa-actualiza-datos-originales", API.actualizaDatosOrig);
 
 // APIs - Varias
 router.get("/api/pa-obtiene-la-cantidad-de-prods", API.cantProductos); // palabras clave
