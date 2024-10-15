@@ -335,3 +335,48 @@ const obtieneSiglaFam = () =>
 		: "";
 
 const siglaFam = obtieneSiglaFam();
+
+const barraProgreso = async () => {
+	// Variables
+	const DOM = {
+		cartelProgreso: document.querySelector("#cartelProgreso"),
+		tituloCartel: document.querySelector("#cartelProgreso #titulo"),
+		progreso: document.querySelector("#cartelProgreso #progreso"),
+	};
+	let duracTotal = 0;
+	let duracAcum = 0;
+	let duracEstim = 0;
+
+	// Muestra el cartelProgreso
+	DOM.cartelProgreso.classList.remove("disminuye");
+	DOM.cartelProgreso.classList.remove("ocultar");
+	DOM.cartelProgreso.classList.add("aumenta");
+
+	// Acciones si no hay productos en 'session' - Variables
+	const pausa = 200; // milisegundos
+	for (let API of APIs) duracTotal += API.duracion;
+
+	// Ejecuta las APIs
+	for (let API of APIs) {
+		// Busca la información
+		let pendiente = true;
+		let aux = fetch(rutas.pre + API.ruta + "/").then(() => (pendiente = false));
+
+		// Evoluciona el progreso mientras espera la información
+		duracEstim += API.duracion;
+		while (pendiente) {
+			await pierdeTiempo(pausa);
+
+			// Evoluciona el progreso
+			if (duracAcum < duracEstim) {
+				duracAcum += pausa;
+				DOM.progreso.style.width = Math.round((duracAcum / duracTotal) * 100) + "%";
+			}
+		}
+		aux = await aux;
+	}
+	DOM.progreso.style.width = "100%";
+
+	// Fin
+	return;
+};
