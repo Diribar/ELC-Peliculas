@@ -7,7 +7,7 @@ main .cartelCentro {
 	/* Color de fondo */
 	&:has(#alerta):not(:has(#alerta.ocultar)) {background: var(--rojo-oscuro);}
 	&:has(#check):not(:has(#check.ocultar)) {background: var(--verde-oscuro);}
-	&:has(#trabajando):not(:has(#trabajando.ocultar)) {background: var(--azul-oscuro);}
+	&:has(#trabajando):not(:has(#trabajando.ocultar)), &:has(#progreso) {background: var(--azul-oscuro);}
 
 	&#cartelGenerico {
 		&:not(:has(#titulo:empty)) .inicio {margin-bottom: 0;}
@@ -22,7 +22,6 @@ main .cartelCentro {
 
 	&#cartelProgreso {
 		min-width: 250px;
-		.inicio {margin-bottom: 40px;}
 		#titulo {margin-bottom: 15px;}
 		#contorno {
 			border: solid 1px var(--amarillo-claro); height: 18px; width: 200px; border-radius: 10px; overflow: hidden;
