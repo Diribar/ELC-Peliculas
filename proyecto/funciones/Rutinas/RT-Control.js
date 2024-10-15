@@ -21,7 +21,7 @@ module.exports = {
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
 		// Comunica el fin de las rutinas
-		// await this.rutinas.historialClientes();
+		// await this.rutinas.habitualPorCliente();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -316,7 +316,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		historialNavegs: async () => {
+		navegacsPorDia: async () => {
 			// Navegantes diarios, quitando los duplicados
 			const diarioNavegs = await baseDeDatos
 				.obtieneTodosPorCondicion("diarioNavegs", {fecha: {[Op.lt]: hoy}})
@@ -325,7 +325,7 @@ module.exports = {
 
 			// Variables
 			const primFechaDiarioNavegs = diarioNavegs[0].fecha;
-			const ultRegHistNavegs = await baseDeDatos.obtienePorCondicionElUltimo("historialNavegs");
+			const ultRegHistNavegs = await baseDeDatos.obtienePorCondicionElUltimo("navegacsPorDia");
 			const ultFechaHistNavegs = ultRegHistNavegs && ultRegHistNavegs.fecha;
 
 			// Si hay una inconsistencia, termina
@@ -353,7 +353,7 @@ module.exports = {
 				const visitas = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
 
 				// Guarda el resultado
-				await baseDeDatos.agregaRegistro("historialNavegs", {
+				await baseDeDatos.agregaRegistro("navegacsPorDia", {
 					...{fecha: proximaFecha, diaSem, anoMes},
 					...{logins, usSinLogin, visitas},
 				});
@@ -368,9 +368,9 @@ module.exports = {
 			// Fin
 			return;
 		},
-		historialClientes: async () => {
+		habitualPorCliente: async () => {
 			// Obtiene la última fecha del historial
-			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("historialClientes");
+			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("habitualPorCliente");
 			const ultFechaHistClientes = ultRegHistClientes ? ultRegHistClientes.fecha : "2024-10-03";
 			let proximaFecha = procesos.sumaUnDia(ultFechaHistClientes); // le suma un día al último registro
 			if (proximaFecha >= hoy) return;
@@ -389,7 +389,7 @@ module.exports = {
 				const tiposDeCliente = procesos.tiposDeCliente(clientes, proximaFecha);
 
 				// Guarda el resultado
-				await baseDeDatos.agregaRegistro("historialClientes", tiposDeCliente);
+				await baseDeDatos.agregaRegistro("habitualPorCliente", tiposDeCliente);
 
 				// Obtiene la fecha siguiente
 				proximaFecha = procesos.sumaUnDia(proximaFecha);
@@ -759,7 +759,7 @@ module.exports = {
 			const tablas = [
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
-				...["historialNavegs", "diarioNavegs", "historialClientes"],
+				...["navegacsPorDia", "diarioNavegs", "habitualPorCliente"],
 				...["prodsComplem", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],
