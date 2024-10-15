@@ -23,7 +23,6 @@ module.exports = {
 	agregaRegistro: (entidad, datos) => db[entidad].create(datos).then((n) => n.toJSON()),
 	agregaRegistroIdCorrel: async (entidad, datos) => {
 		// Variables
-		const idInicial = 11;
 		const registros = await db[entidad].findAll({where: {id: {[Op.gte]: idInicial}}}).then((n) => n.map((m) => m.toJSON()));
 		let nuevoRegistro;
 
@@ -40,7 +39,7 @@ module.exports = {
 		}
 
 		// Si no se guardó, lo guarda
-		if (id > 11 + registros.length - 1) nuevoRegistro = await db[entidad].create(datos).then((n) => n.toJSON()); // crea
+		if (!nuevoRegistro) nuevoRegistro = await db[entidad].create(datos).then((n) => n.toJSON()); // crea
 
 		// Fin
 		return nuevoRegistro;
