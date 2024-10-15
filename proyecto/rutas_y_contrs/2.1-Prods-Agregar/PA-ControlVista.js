@@ -314,7 +314,7 @@ module.exports = {
 
 			// Guarda el registro original
 			const original = {...req.cookies.datosOriginales, creadoPor_id: usuario_id, statusSugeridoPor_id: usuario_id};
-			const registro = await baseDeDatos.agregaRegistro(entidad, original);
+			const registro = await baseDeDatos.agregaRegistroIdCorrel(entidad, original);
 
 			// Si es una "collection" o "tv" (TMDB), agrega los capítulos en forma automática (no hace falta esperar a que concluya). No se guardan los datos editados, eso se realiza en la revisión
 			if (confirma.fuente == "TMDB") {
