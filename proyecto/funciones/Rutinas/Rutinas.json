@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 14/oct",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Mar. 15/oct",
+	"HoraUTC": "0:45",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 14/oct",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"12-oct-24": {"leyenda": "Hoy recordamos al beato Carlo Acutis", "entidad": "personajes", "id": 196},
 		"13-oct-24": {},
 		"14-oct-24": {},
 		"15-oct-24": {"leyenda": "Hoy recordamos a santa Teresa de Ávila", "entidad": "personajes", "id": 99},
-		"16-oct-24": {"leyenda": "Hoy recordamos a santa Margarita María de Alacoque", "entidad": "personajes", "id": 230}
+		"16-oct-24": {"leyenda": "Hoy recordamos a santa Margarita María de Alacoque", "entidad": "personajes", "id": 230},
+		"17-oct-24": {}
 	}
 }
