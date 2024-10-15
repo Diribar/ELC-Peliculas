@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let DOM = {
+	const DOM = {
 		mensaje: document.querySelector("#mensaje"),
 
 		// Opciones
@@ -17,7 +17,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Obtiene los datos de session
-	const rutaBuscaInfoDeSession = ruta.session;
+	const rutaBuscaInfoDeSession = rutas.session;
 	let desambiguar = await fetch(rutaBuscaInfoDeSession).then((n) => n.json());
 	if (!desambiguar) location.href = "agregar-pc"; // si no existe, redirige al paso anterior
 
@@ -152,7 +152,7 @@ const FN = {
 		for (let API of APIs) {
 			// Busca la información
 			let pendiente = true;
-			let aux = fetch(ruta.pre + API.ruta + "/").then(() => (pendiente = false));
+			let aux = fetch(rutas.pre + API.ruta + "/").then(() => (pendiente = false));
 
 			// Evoluciona el progreso mientras espera la información
 			for (let repeticion = 0; repeticion < parseInt(API.duracion / pausa); repeticion++) {
@@ -200,11 +200,11 @@ const FN = {
 				};
 
 				// Actualiza Datos Originales
-				await fetch(ruta.actualiza + JSON.stringify(datos)); // El 'await' es necesario para esperar a que se grabe la cookie en la controladora
+				await fetch(rutas.actualiza + JSON.stringify(datos)); // El 'await' es necesario para esperar a que se grabe la cookie en la controladora
 				DOM.progreso.style.width = "100%";
 
 				// 2. Averigua si la info tiene errores
-				const errores = await fetch(ruta.valida).then((n) => n.json());
+				const errores = await fetch(rutas.valida).then((n) => n.json());
 
 				// Desaparece el cartelProgreso
 				DOM.cartelProgreso.classList.remove("aumenta");
