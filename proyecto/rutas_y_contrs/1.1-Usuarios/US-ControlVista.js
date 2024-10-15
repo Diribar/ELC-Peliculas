@@ -226,26 +226,35 @@ module.exports = {
 			if (usuario.statusRegistro_id == mailPendValidar_id)
 				espera.push(procesos.actualizaElStatusDelUsuario(usuario, "mailValidado"));
 
-			// Actualiza los datos del usuario
-			const diasNaveg = usuario.diasNaveg + (esVisita ? cliente.diasNaveg : 0); // si se llevaban registros paralelos, se suman
-			const {visitaCreadaEn} = usuario.visitaCreadaEn ? usuario : cliente; // si existe la del usuario, se conserva
-
 			// Prepara la info a guardar en usuarios
 			const datos = {diasSinCartelBenefs: 0};
-			if (esVisita) datos.fechaUltNaveg = cliente.fechaUltNaveg;
-			if (esVisita) datos.diasNaveg = diasNaveg;
-			if (!usuario.visitaCreadaEn) datos.visitaCreadaEn = cliente.visitaCreadaEn;
-			espera.push(baseDeDatos.actualizaPorId("usuarios", usuario.id, datos)); // no es necesario actualizar la variable 'usuario'
+			if (esVisita) {
+				// Actualiza 'fechaUltNaveg'
+				datos.fechaUltNaveg = cliente.fechaUltNaveg;
+
+				// Actualiza 'diasNaveg'
+				if (usuario.fechaUltNaveg < cliente.fechaUltNaveg) {
+					const diasTransc =
+						(new Date(cliente.fechaUltNaveg).getTime() - new Date(usuario.fechaUltNaveg).getTime()) / unDia;
+					datos.diasNaveg = usuario.diasNaveg + Math.min(cliente.diasNaveg, diasTransc);
+				}
+			}
+			if (!usuario.visitaCreadaEn) datos.visitaCreadaEn = cliente.visitaCreadaEn; // si existe la del usuario, se conserva
+
+			// Guarda la info en usuario
+			espera.push(baseDeDatos.actualizaPorId("usuarios", usuario.id, datos));
+			for (let dato in datos) usuario[dato] = datos[dato];
 
 			// Actualiza datos en la tabla 'diarioNavegs'
-			const visitaCreadaEnTexto = visitaCreadaEn.toISOString().slice(0, 10);
+			const diarioNavegs = {
+				cliente_id: usuario.cliente_id,
+				usuario_id,
+				visitaCreadaEn: usuario.visitaCreadaEn.toISOString().slice(0, 10),
+				diasNaveg: usuario.diasNaveg,
+			};
 			espera.push(
 				baseDeDatos
-					.actualizaPorCondicion(
-						"diarioNavegs",
-						{cliente_id, fecha: hoy}, // el 'cliente_id' puede diferir del 'usuario.cliente_id'
-						{cliente_id: usuario.cliente_id, usuario_id, visitaCreadaEn: visitaCreadaEnTexto, diasNaveg}
-					)
+					.actualizaPorCondicion("diarioNavegs", {cliente_id, fecha: hoy}, diarioNavegs) // la variable 'cliente_id' puede diferir del 'usuario.cliente_id'
 					.then(() => procesos.eliminaDuplicados(usuario.id))
 			);
 

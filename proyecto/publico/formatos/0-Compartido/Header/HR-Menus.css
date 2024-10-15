@@ -28,6 +28,7 @@ header {
 
 	/* Específico del Menú Mobile */
 	#menuMobile {
+		&:not(:has(select option#graficos:checked)) {display: none};
 		.menuOpcion {
 			height: 25px;
 			#imgConsultas {width: 28px;}
@@ -36,7 +37,6 @@ header {
 				width: 100%; background-color: transparent; border: none;
 				option {color: var(--azul-oscuro); font-size: 20px;}
 			}
-
 		}
 		.soloPortrait {display: none;}
 	}
