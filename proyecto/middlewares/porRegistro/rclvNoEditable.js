@@ -8,8 +8,8 @@ module.exports = (req, res, next) => {
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 
 	let informacion;
-	// Bloquea el acceso a los ID menores que 'idInicial'
-	if (id < idInicial && !revisorPERL)
+	// Bloquea el acceso a los ID menores que 'idsReserv'
+	if (id < idsReserv && !revisorPERL)
 		informacion = {
 			mensajes: ["Este registro está reservado para que lo editen los revisores del sitio."],
 			iconos: [vistaAnterior],
