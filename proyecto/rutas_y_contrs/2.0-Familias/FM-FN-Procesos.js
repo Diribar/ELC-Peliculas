@@ -1125,7 +1125,7 @@ let FN = {
 		const sufijo = prefijo != "edics" ? "Altas" : "Ediciones";
 		const resultados = [
 			{titulo: "Eficacia de " + sufijo, valor: calidad},
-			{titulo: "Cant. de " + sufijo, valor: cantidad},
+			{titulo: "Cant. de " + sufijo, valor: cantidad.toLocaleString("pt")},
 		];
 
 		// Fin
