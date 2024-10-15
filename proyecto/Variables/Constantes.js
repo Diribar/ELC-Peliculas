@@ -21,7 +21,7 @@ const iconos = {
 
 module.exports = {
 	// Institucional
-	idsReserv: 11,
+	idsReserv: 10,
 	vistasInstitucs: {
 		inicio: {titulo: "ELC | Películas con Valores", codigo: "inicio", icono: iconos.inicio, hr: true}, // 'hr' significa que pone una línea divisoria en el menú del header
 		"quienes-somos": {titulo: "ELC | Quiénes somos", codigo: "quienesSomos", icono: "fa-people-group"},
