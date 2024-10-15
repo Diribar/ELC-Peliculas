@@ -1,10 +1,9 @@
 module.exports = (sequelize, dt) => {
-	const alias = "historialClientes";
+	const alias = "habitualPorCliente";
 	const columns = {
 		fecha: {type: dt.STRING(10)},
 
 		// Fidelidad de clientes
-		// altasDelDia: {type: dt.INTEGER},
 		tresDiez: {type: dt.INTEGER},
 		onceTreinta: {type: dt.INTEGER},
 		masDeTreinta: {type: dt.INTEGER},
