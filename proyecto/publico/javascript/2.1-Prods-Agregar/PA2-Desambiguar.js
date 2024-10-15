@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 
 	// Si corresponde, completa los datos de sesion
 	if (!desambiguar.mensaje) {
-		await FN.completaSessionDesambiguar(DOM);
+		await barraProgreso();
 		desambiguar = await fetch(rutaBuscaInfoDeSession).then((n) => n.json());
 	}
 	const {prodsNuevos, prodsYaEnBD, mensaje} = desambiguar;
@@ -116,7 +116,7 @@ window.addEventListener("load", async () => {
 	// Miscelaneas
 	document.querySelector("#listado li button").focus(); // Hace foco en el primer producto
 	desplazamHoriz(); // Desplazamiento original
-	FN.accionesAlElegirProdNuevo(DOM); // Acciones luego de elegir un producto nuevo
+	accionesAlElegirProdNuevo(DOM); // Acciones luego de elegir un producto nuevo
 });
 
 // Variables
@@ -126,94 +126,58 @@ const rutas = {
 	valida: "/producto/api/pa-valida-ds",
 	session: "/producto/api/pa-busca-info-de-session",
 };
+const APIs = [
+	{ruta: "busca-los-productos", duracion: 2000},
+	{ruta: "reemplaza-las-peliculas-por-su-coleccion", duracion: 4000},
+	{ruta: "organiza-la-info", duracion: 1000},
+	{ruta: "agrega-hallazgos-de-IM-y-FA", duracion: 200},
+	{ruta: "obtiene-el-mensaje", duracion: 200},
+];
 
 // Funciones
-const FN = {
-	completaSessionDesambiguar: async (DOM) => {
-		// Muestra el cartelProgreso
-		DOM.cartelProgreso.classList.remove("disminuye");
-		DOM.cartelProgreso.classList.remove("ocultar");
-		DOM.cartelProgreso.classList.add("aumenta");
+const accionesAlElegirProdNuevo = (DOM) => {
+	// Variables
+	DOM.forms = document.querySelectorAll(".prodsNuevos form");
+	let yaEligio;
 
-		// Acciones si no hay productos en 'session' - Variables
-		const pausa = 200; // milisegundos
-		const APIs = [
-			{ruta: "busca-los-productos", duracion: 1200},
-			{ruta: "reemplaza-las-peliculas-por-su-coleccion", duracion: 1000},
-			{ruta: "organiza-la-info", duracion: 1000},
-			{ruta: "agrega-hallazgos-de-IM-y-FA", duracion: 100},
-			{ruta: "obtiene-el-mensaje", duracion: 100},
-		];
-		let duracionTotal = 0;
-		for (let API of APIs) duracionTotal += API.duracion;
+	for (let form of DOM.forms) {
+		form.addEventListener("submit", async (e) => {
+			// Frena el POST
+			e.preventDefault();
 
-		// Ejecuta las APIs 'form'
-		let duracionAcum = 0;
-		for (let API of APIs) {
-			// Busca la información
-			let pendiente = true;
-			let aux = fetch(rutas.pre + API.ruta + "/").then(() => (pendiente = false));
+			// Pasa/no pasa
+			if (yaEligio) return;
+			else yaEligio = true;
 
-			// Evoluciona el progreso mientras espera la información
-			for (let repeticion = 0; repeticion < parseInt(API.duracion / pausa); repeticion++) {
-				// Evoluciona el progreso
-				duracionAcum += pausa;
-				DOM.progreso.style.width = parseInt((duracionAcum / duracionTotal) * 100) + "%";
+			// Muestra el cartelProgreso
+			DOM.tituloCartel.innerHTML = "Procesando la información...";
+			DOM.progreso.style.width = "0%";
+			DOM.cartelProgreso.classList.remove("disminuye");
+			DOM.cartelProgreso.classList.remove("ocultar");
+			DOM.cartelProgreso.classList.add("aumenta");
 
-				// Si el 'await' sigue pendiente, pierde tiempo
-				if (pendiente) await pierdeTiempo(pausa);
-			}
-			aux = await aux;
-		}
-		DOM.progreso.style.width = "100%";
+			// Obtiene los datos
+			let datos = {
+				TMDB_entidad: e.target[0].value,
+				TMDB_id: e.target[1].value,
+				nombreOriginal: encodeURIComponent(e.target[2].value), // Es necesario porque sólo se consigue mediante 'search'
+				idiomaOriginal_id: e.target[3].value, // Es necesario porque sólo se consigue mediante 'search'
+			};
 
-		// Fin
-		return;
-	},
-	accionesAlElegirProdNuevo: (DOM) => {
-		// Variables
-		DOM.forms = document.querySelectorAll(".prodsNuevos form");
-		let yaEligio;
+			// Actualiza Datos Originales
+			await fetch(rutas.actualiza + JSON.stringify(datos)); // El 'await' es necesario para esperar a que se grabe la cookie en la controladora
+			DOM.progreso.style.width = "100%";
 
-		for (let form of DOM.forms) {
-			form.addEventListener("submit", async (e) => {
-				// Frena el POST
-				e.preventDefault();
+			// 2. Averigua si la info tiene errores
+			const errores = await fetch(rutas.valida).then((n) => n.json());
 
-				// Pasa/no pasa
-				if (yaEligio) return;
-				else yaEligio = true;
+			// Desaparece el cartelProgreso
+			DOM.cartelProgreso.classList.remove("aumenta");
+			DOM.cartelProgreso.classList.add("disminuye");
 
-				// Muestra el cartelProgreso
-				DOM.tituloCartel.innerHTML = "Procesando la información...";
-				DOM.progreso.style.width = "0%";
-				DOM.cartelProgreso.classList.remove("disminuye");
-				DOM.cartelProgreso.classList.remove("ocultar");
-				DOM.cartelProgreso.classList.add("aumenta");
-
-				// Obtiene los datos
-				let datos = {
-					TMDB_entidad: e.target[0].value,
-					TMDB_id: e.target[1].value,
-					nombreOriginal: encodeURIComponent(e.target[2].value), // Es necesario porque sólo se consigue mediante 'search'
-					idiomaOriginal_id: e.target[3].value, // Es necesario porque sólo se consigue mediante 'search'
-				};
-
-				// Actualiza Datos Originales
-				await fetch(rutas.actualiza + JSON.stringify(datos)); // El 'await' es necesario para esperar a que se grabe la cookie en la controladora
-				DOM.progreso.style.width = "100%";
-
-				// 2. Averigua si la info tiene errores
-				const errores = await fetch(rutas.valida).then((n) => n.json());
-
-				// Desaparece el cartelProgreso
-				DOM.cartelProgreso.classList.remove("aumenta");
-				DOM.cartelProgreso.classList.add("disminuye");
-
-				// Fin
-				if (errores.hay) location.href = "agregar-dd";
-				else location.href = "agregar-da";
-			});
-		}
-	},
+			// Fin
+			if (errores.hay) location.href = "agregar-dd";
+			else location.href = "agregar-da";
+		});
+	}
 };
