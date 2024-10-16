@@ -106,8 +106,10 @@ module.exports = {
 			// Variables
 			const {palabrasClave} = req.session.desambiguar;
 
-			// Obtiene los datos y los conserva en session
+			// Obtiene los datos
 			const resultados = await buscar_x_PC.buscaProds(palabrasClave);
+
+			// Conserva la información en session
 			req.session.desambiguar = {palabrasClave, ...resultados};
 
 			// Fin
