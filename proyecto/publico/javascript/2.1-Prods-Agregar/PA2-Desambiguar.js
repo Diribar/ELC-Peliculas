@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 
 	// Si corresponde, completa los datos de sesion
 	if (!desambiguar.mensaje) {
-		await barraProgreso();
+		await barraProgreso(rutas.pre, APIs);
 		desambiguar = await fetch(rutaBuscaInfoDeSession).then((n) => n.json());
 	}
 	const {prodsNuevos, prodsYaEnBD, mensaje} = desambiguar;
@@ -128,7 +128,7 @@ const rutas = {
 };
 const APIs = [
 	{ruta: "busca-los-productos", duracion: 2000},
-	{ruta: "reemplaza-las-peliculas-por-su-coleccion", duracion: 4000},
+	{ruta: "reemplaza-las-peliculas-por-su-coleccion", duracion: 2000},
 	{ruta: "organiza-la-info", duracion: 1000},
 	{ruta: "agrega-hallazgos-de-IM-y-FA", duracion: 200},
 	{ruta: "obtiene-el-mensaje", duracion: 200},
