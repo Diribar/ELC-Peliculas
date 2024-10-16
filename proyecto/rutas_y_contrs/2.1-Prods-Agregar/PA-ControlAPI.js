@@ -72,10 +72,10 @@ module.exports = {
 		let cantProdsNuevos;
 
 		// Obtiene los productos
-		const resultado = await buscar_x_PC.search(palabrasClave);
+		const resultado = await buscar_x_PC.buscaProds(palabrasClave);
 
 		// Revisa si debe reemplazar una película por su colección
-		const productos = await buscar_x_PC.reemplazoDePeliPorColeccion(resultado.productos);
+		const productos = await buscar_x_PC.reemplPeliPorColec(resultado.productos);
 
 		// Agrega hallazgos de IM y FA
 		const prodsIMFA = await procesos.prodsIMFA(palabrasClave);
@@ -107,7 +107,7 @@ module.exports = {
 			const {palabrasClave} = req.session.desambiguar;
 
 			// Obtiene los datos y los conserva en session
-			const resultados = await buscar_x_PC.search(palabrasClave);
+			const resultados = await buscar_x_PC.buscaProds(palabrasClave);
 			req.session.desambiguar = {palabrasClave, ...resultados};
 
 			// Fin
@@ -119,13 +119,13 @@ module.exports = {
 			let {productos} = req.session.desambiguar;
 
 			// Revisa si debe reemplazar una película por su colección
-			productos = await buscar_x_PC.reemplazoDePeliPorColeccion(productos);
+			productos = await buscar_x_PC.reemplPeliPorColec(productos);
 
 			// Conserva la información en session
 			req.session.desambiguar.productos = productos;
 
 			// Fin
-			return res.json();
+			return res.json(); // 'productos', 'cantPaginasAPI', 'cantPaginasUsadas', 'hayMas'
 		},
 		// Pule la información
 		organizaLaInfo: async (req, res) => {
