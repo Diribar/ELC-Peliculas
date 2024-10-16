@@ -85,7 +85,6 @@ window.addEventListener("load", async () => {
 	v = {...v, ...(await obtiene.variablesDelBE())};
 	v.camposConDefault = Object.keys(v.filtrosConDefault); // 'filtrosConDefault' viene del BE
 	v.camposSinDefault = v.camposFiltros.filter((n) => !v.camposConDefault.includes(n));
-	console.log(v.cliente);
 
 	// Funciones de start-up
 	await cambioDeConfig_id("start-up"); // establece el layout_id
