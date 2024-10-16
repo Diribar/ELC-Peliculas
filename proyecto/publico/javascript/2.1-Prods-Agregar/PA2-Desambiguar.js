@@ -113,19 +113,18 @@ window.addEventListener("load", async () => {
 });
 
 // Variables
-const rutas = {
-	pre: "/producto/api/pa-",
-	actualiza: "/producto/api/pa-actualiza-datos-originales/?datos=",
-	valida: "/producto/api/pa-valida-ds",
-	session: "/producto/api/pa-busca-info-de-session",
-};
+const buscaInfo = "busca-info-de-session";
+const rutas = {pre: "/producto/api/pa-"};
+rutas.actualiza = rutas.pre + "actualiza-datos-originales/?datos=";
+rutas.valida = rutas.pre + "valida-ds";
+rutas.session = rutas.pre + buscaInfo;
 const APIs = [
 	{ruta: "busca-los-productos", duracion: 2000},
 	{ruta: "reemplaza-las-peliculas-por-su-coleccion", duracion: 2000},
 	{ruta: "organiza-la-info", duracion: 1000},
 	{ruta: "agrega-hallazgos-de-IM-y-FA", duracion: 200},
 	{ruta: "obtiene-el-mensaje", duracion: 200},
-	{ruta: "busca-info-de-session", duracion: 200},
+	{ruta: buscaInfo, duracion: 200},
 ];
 
 // Funciones
