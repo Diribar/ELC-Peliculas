@@ -22,10 +22,7 @@ window.addEventListener("load", async () => {
 	if (!desambiguar) location.href = "agregar-pc"; // si no existe, redirige al paso anterior
 
 	// Si corresponde, completa los datos de sesion
-	if (!desambiguar.mensaje) {
-		await barraProgreso(rutas.pre, APIs);
-		desambiguar = await fetch(rutaBuscaInfoDeSession).then((n) => n.json());
-	}
+	if (!desambiguar.mensaje) desambiguar = await barraProgreso(rutas.pre, APIs);
 	const {prodsNuevos, prodsYaEnBD, mensaje} = desambiguar;
 
 	// Agrega el mensaje
@@ -132,6 +129,7 @@ const APIs = [
 	{ruta: "organiza-la-info", duracion: 1000},
 	{ruta: "agrega-hallazgos-de-IM-y-FA", duracion: 200},
 	{ruta: "obtiene-el-mensaje", duracion: 200},
+	{ruta: "busca-info-de-session", duracion: 200},
 ];
 
 // Funciones
