@@ -5,17 +5,19 @@
 @keyframes aparece        {0% {opacity: 0}           100% {opacity: 1}}
 @keyframes desaparece     {0% {opacity: 1}           100% {opacity: 0; display: none}}
 @keyframes aumenta        {0% {scale: 0}             100% {scale: 1}}
-@keyframes aumentaX       {0% {transform: scaleX(0)} 100% {transform: scaleX(1);}}
+@keyframes aumentaCn      {0% {transform: scaleY(0.4)} 100% {transform: scaleY(1)}}
+@keyframes aumentaX       {0% {transform: scaleX(0)} 100% {transform: scaleX(1)}}
 @keyframes flechaDer      {0% {transform: rotate(180deg)} 100% {transform: rotate(360deg);}}
 @keyframes disminuye      {0% {scale: 1}             100% {scale: 0}}
-@keyframes disminuyeX     {0% {transform: scaleX(1)} 100% {transform: scaleX(0);}}
+@keyframes disminuyeX     {0% {transform: scaleX(1)} 100% {transform: scaleX(0)}}
 @keyframes flechaIzq      {0% {transform: rotate(0deg)} 100% {transform: rotate(180deg);}}
 @keyframes agrandaAchica  {0% {scale: 1}             100% {scale: 1.1}}
 
 /* Animación - Duración */
 .aparece {animation: aparece .5s;}
 .desaparece {animation: desaparece.5s;}
-.aumenta {animation: aumenta .3s;}
+.aumenta {animation: aumenta 300ms;}
+.aumentaCn {animation: aumentaCn 400ms;}
 .aumentaX {animation: aumentaX .3s;}
 .flechaDer {animation: flechaDer .3s;}
 .disminuye {animation: disminuye .5s;}
@@ -24,7 +26,7 @@
 .agrandaAchica {animation: agrandaAchica .7s 6 alternate;}
 
 /* Animación - Estilos */
-.aparece, .desaparece, .aumenta, .aumentaX, .flechaDer, .disminuye, .disminuyeX, .flechaIzq
+.aparece, .desaparece, .aumenta, .aumentaCn, .aumentaX, .flechaDer, .disminuye, .disminuyeX, .flechaIzq
 	{animation-timing-function: ease-in; animation-fill-mode: forwards;}
 
 /* Hover - scale */
