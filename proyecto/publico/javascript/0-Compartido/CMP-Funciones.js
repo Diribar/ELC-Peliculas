@@ -375,7 +375,7 @@ const barraProgreso = async (pre, APIs) => {
 			if (duracAcum < duracEstim) {
 				duracAcum += pausa;
 				desvio = Date.now() - inicio - duracAcum;
-				DOM.progreso.style.width = Math.round(((duracAcum + Math.min(desvio, pausaBreve)) / duracTotal) * 100) + "%";
+				DOM.progreso.style.width = Math.round(((duracAcum + Math.min(desvio, pausa)) / duracTotal) * 100) + "%";
 			}
 		}
 		respuesta = await respuesta;
@@ -392,6 +392,7 @@ const barraProgreso = async (pre, APIs) => {
 	// Oculta el cartelProgreso
 	DOM.cartelProgreso.classList.remove("aumenta");
 	DOM.cartelProgreso.classList.add("disminuye");
+	DOM.progreso.style.width = "0%";
 
 	// Fin
 	return respuesta.json();
