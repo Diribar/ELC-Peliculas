@@ -31,7 +31,7 @@ const FN_resultados = {
 		const datos = v.layoutBD.codigo.startsWith("fechaDelAno")
 			? {...prefs, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
 			: prefs;
-		const APIs = [{ruta: "obtiene-los-resultados/?datos=" + JSON.stringify(datos), duracion: 200}];
+		const APIs = [{ruta: "obtiene-los-resultados/?datos=" + JSON.stringify(datos), duracion: 400}];
 		v.resultados = await barraProgreso(ruta, APIs);
 
 		// Acciones en consecuencia
