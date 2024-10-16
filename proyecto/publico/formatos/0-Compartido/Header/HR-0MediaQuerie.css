@@ -16,7 +16,7 @@
     header {
         :is(.ocultoMobile, .ocultoMobileParado) {display: none !important;}
         #menuMobile {
-            width: 208px;
+            max-width: 220px;
             div.soloPortrait {display: flex;}
             hr.soloPortrait {display: block;}
         }

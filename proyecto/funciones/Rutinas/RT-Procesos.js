@@ -611,7 +611,7 @@ module.exports = {
 		// Problema - tres a diez
 		inicio = fin;
 		fin = inicio.filter((n) => n.diasNaveg < 3);
-		const cuatroDiez = inicio.length - fin.length;
+		const tresDiez = inicio.length - fin.length;
 
 		// Problema - Uno o dos
 		const unoDos = fin.length;

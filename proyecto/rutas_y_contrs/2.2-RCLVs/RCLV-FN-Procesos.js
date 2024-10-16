@@ -202,7 +202,7 @@ module.exports = {
 				// Guarda el nuevo registro
 				DE.creadoPor_id = usuario_id;
 				DE.statusSugeridoPor_id = usuario_id;
-				original = await baseDeDatos.agregaRegistro(entidad, DE);
+				original = await baseDeDatos.agregaRegistroIdCorrel(entidad, DE);
 				id = original.id;
 
 				// Les agrega el 'rclv_id' a session y cookie de origen

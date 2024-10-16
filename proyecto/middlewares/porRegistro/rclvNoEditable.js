@@ -3,23 +3,15 @@
 module.exports = (req, res, next) => {
 	// Variables
 	const {id} = req.query;
+	if (!id) return next();
 	const revisorPERL = req.session.usuario && req.session.usuario.rolUsuario.revisorPERL;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 
 	let informacion;
-	// Bloquea el acceso a los ID menores que 10
-	if (id && id < 10)
+	// Bloquea el acceso a los ID menores que 'idsReserv'
+	if (id < idsReserv && !revisorPERL)
 		informacion = {
-			mensajes: ["El acceso para este registro está bloqueado por los administradores."],
-			iconos: [vistaAnterior],
-		};
-	// Bloquea la edición de los ID menores que 20
-	else if (req.originalUrl.includes("/edicion/") && id && id < 2 && !revisorPERL)
-		informacion = {
-			mensajes: [
-				"Este registro es de alta sensibilidad.",
-				"Su acceso para editarlo está bloqueado por los administradores.",
-			],
+			mensajes: ["Este registro está reservado para que lo editen los revisores del sitio."],
 			iconos: [vistaAnterior],
 		};
 

@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let DOM = {
+	const DOM = {
 		form: document.querySelector("form"),
 		calificaciones: document.querySelectorAll("form select"),
 		guardarCambios: document.querySelectorAll("form #guardar"),
@@ -9,28 +9,29 @@ window.addEventListener("load", async () => {
 		resultado: document.querySelector("form #consolidado #valor"),
 	};
 	const {califGuardada, atributosCalific, calCriterios} = await fetch(rutas.califGuardada).then((n) => n.json());
+	let incompleto, iguales;
 
 	// Funciones
-	let revisaErrores = () => {
+	const revisaErrores = () => {
 		// Se fija si alguna calificacion está incompleta
-		v.incompleto = Array.from(DOM.calificaciones).some((n) => !n.value);
+		incompleto = Array.from(DOM.calificaciones).some((n) => !n.value);
 
 		// Si existe una calificación guardada y no está incompleto, se fija si todas las calificaciones coinciden con la guardada
-		if (califGuardada && !v.incompleto) {
+		if (califGuardada && !incompleto) {
 			let resultados = [];
 			for (let calif of DOM.calificaciones) resultados.push(calif.value == califGuardada[calif.name]);
-			v.iguales = resultados.every((n) => !!n);
+			iguales = resultados.every((n) => !!n);
 		}
 
 		// Activa/Inactiva el botón guardar
 		for (let boton of DOM.guardarCambios)
-			!!v.incompleto || !!v.iguales ? boton.classList.add("inactivo") : boton.classList.remove("inactivo");
+			!!incompleto || !!iguales ? boton.classList.add("inactivo") : boton.classList.remove("inactivo");
 
 		// Fin
 		return;
 	};
-	let actualizaResultado = () => {
-		if (v.incompleto) return (DOM.resultado.innerHTML = "-");
+	const actualizaResultado = () => {
+		if (incompleto) return (DOM.resultado.innerHTML = "-");
 
 		// Calcula el resultado
 		let resultado = 0;

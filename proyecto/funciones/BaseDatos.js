@@ -23,12 +23,11 @@ module.exports = {
 	agregaRegistro: (entidad, datos) => db[entidad].create(datos).then((n) => n.toJSON()),
 	agregaRegistroIdCorrel: async (entidad, datos) => {
 		// Variables
-		const idInicial = 11;
-		const registros = await db[entidad].findAll({where: {id: {[Op.gte]: idInicial}}}).then((n) => n.map((m) => m.toJSON()));
+		const registros = await db[entidad].findAll({where: {id: {[Op.gte]: idsReserv}}}).then((n) => n.map((m) => m.toJSON()));
 		let nuevoRegistro;
 
 		// Guarda el registro usando el primer 'id' disponible
-		let id = idInicial;
+		let id = idsReserv;
 		for (let registro of registros) {
 			if (
 				registro.id != id && // id sin registro
@@ -40,7 +39,7 @@ module.exports = {
 		}
 
 		// Si no se guardó, lo guarda
-		if (id > 11 + registros.length - 1) nuevoRegistro = await db[entidad].create(datos).then((n) => n.toJSON()); // crea
+		if (!nuevoRegistro) nuevoRegistro = await db[entidad].create(datos).then((n) => n.toJSON()); // crea
 
 		// Fin
 		return nuevoRegistro;
