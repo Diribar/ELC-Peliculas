@@ -111,7 +111,7 @@ module.exports = {
 			req.session.desambiguar = {palabrasClave, ...resultados};
 
 			// Fin
-			return res.json(true);//debe tener algún dato para que funcione la API
+			return res.json();
 		},
 		// Reemplaza las películas por su colección
 		reemplPeliPorColec: async (req, res) => {
@@ -125,7 +125,7 @@ module.exports = {
 			req.session.desambiguar.productos = productos;
 
 			// Fin
-			return res.json(true);
+			return res.json();
 		},
 		// Pule la información
 		organizaLaInfo: async (req, res) => {
@@ -137,7 +137,7 @@ module.exports = {
 			req.session.desambiguar = {...req.session.desambiguar, ...resultados};
 
 			// Fin
-			return res.json(true);
+			return res.json();
 		},
 		// Obtiene los hallazgos de origen IM y FA
 		agregaHallazgosDeIMFA: async (req, res) => {
@@ -156,7 +156,7 @@ module.exports = {
 			req.session.desambiguar.prodsYaEnBD = prodsYaEnBD;
 
 			// Fin
-			return res.json(true);
+			return res.json();
 		},
 		obtieneElMensaje: (req, res) => {
 			// Variables
@@ -183,7 +183,7 @@ module.exports = {
 			req.session.desambiguar.mensaje = mensaje;
 
 			// Fin
-			return res.json(true);
+			return res.json();
 		},
 	},
 	// Actualiza Datos Originales

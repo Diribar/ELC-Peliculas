@@ -363,12 +363,10 @@ const barraProgreso = async (pre, APIs) => {
 	for (let API of APIs) {
 		// Busca la información
 		let pendiente = true;
-		respuesta = fetch(pre + API.ruta)
-			.then((n) => n.json())
-			.then((n) => {
-				pendiente = false;
-				return n;
-			});
+		respuesta = fetch(pre + API.ruta).then((n) => {
+			pendiente = false;
+			return n;
+		});
 
 		// Evoluciona el progreso mientras espera la información
 		duracEstim += API.duracion;
@@ -379,7 +377,7 @@ const barraProgreso = async (pre, APIs) => {
 			if (duracAcum < duracEstim) {
 				duracAcum += pausa;
 				desvio = Date.now() - inicio - duracAcum;
-				DOM.progreso.style.width = Math.round((duracAcum + Math.min(desvio, pausaBreve)) / duracTotal * 100) + "%";
+				DOM.progreso.style.width = Math.round(((duracAcum + Math.min(desvio, pausaBreve)) / duracTotal) * 100) + "%";
 			}
 		}
 		respuesta = await respuesta;
@@ -394,5 +392,5 @@ const barraProgreso = async (pre, APIs) => {
 	await pierdeTiempo(200);
 
 	// Fin
-	return respuesta;
+	return respuesta.json();
 };
