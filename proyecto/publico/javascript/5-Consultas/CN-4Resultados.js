@@ -8,7 +8,6 @@ const FN_resultados = {
 		// Oculta el contador y todos los carteles
 		DOM.contadorDeProds.classList.add("ocultar");
 		for (let cartel of DOM.carteles) cartel.classList.add("ocultar");
-		DOM.esperandoResultados.classList.remove("ocultar");
 
 		// Tapa y limpia los resultados anteriores
 		DOM.botones.innerHTML = "";
@@ -18,14 +17,12 @@ const FN_resultados = {
 		// Acciones si el usuario no está logueado y es requerido
 		if (!v.usuario_id && v.layoutBD.grupo == "loginNeces") {
 			DOM.loginNecesario.classList.remove("ocultar");
-			DOM.esperandoResultados.classList.add("ocultar");
 			return;
 		}
 
 		// Si la opción es 'misPrefs' y el usuario no tiene 'PPPs', muestra el cartel 'cartelOrdenPPP' y termina
 		if (v.usuario_id && v.layoutBD.codigo == "misPrefs" && !v.usuarioTienePPP) {
 			DOM.cartelOrdenPPP.classList.remove("ocultar");
-			DOM.esperandoResultados.classList.add("ocultar");
 			return;
 		}
 
@@ -36,13 +33,12 @@ const FN_resultados = {
 			: prefs;
 		const APIs = [{ruta: "obtiene-los-resultados/?datos=" + JSON.stringify(datos), duracion: 2000}];
 		v.resultados = await barraProgreso(ruta, APIs);
-		DOM.esperandoResultados.classList.add("ocultar");
 
 		// Acciones en consecuencia
 		if (prefs.entidad == "productos") v.productos = v.resultados;
 		if (!v.resultados || !v.resultados.length)
 			DOM.noTenemos.classList.remove("ocultar"); // si no hay resultados, muestra el cartel 'noTenemos'
-		else if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar"); // si hay resultados, muestra el cartel 'quieroVer'
+		else if (!v.mostrarResultados) DOM.quieroVer.classList.remove("ocultar"); // si hay resultados, muestra el cartel 'quieroVer'
 
 		// Contador
 		if (v.resultados && v.layoutBD.grupo != "boton") this.contador();
@@ -86,11 +82,9 @@ const FN_resultados = {
 			if (!v.resultados || !v.resultados.length) return;
 
 			// Cartel quieroVer
-			if (v.mostrarCartelQuieroVer) {
-				DOM.esperandoResultados.classList.remove("ocultar");
+			if (v.mostrarResultados) {
 				DOM.quieroVer.classList.add("ocultar");
 				DOM.telonFondo.classList.add("ocultar");
-				v.mostrarCartelQuieroVer = false;
 			}
 
 			// Limpia los resultados anteriores
