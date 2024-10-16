@@ -334,14 +334,14 @@ const obtieneSiglaFam = () =>
 const siglaFam = obtieneSiglaFam();
 
 const barraProgreso = async (pre, APIs) => {
-	//console.log(pre, APIs);
-
 	// Variables
 	const DOM = {
 		cartelProgreso: document.querySelector("#cartelProgreso"),
 		tituloCartel: document.querySelector("#cartelProgreso #titulo"),
 		progreso: document.querySelector("#cartelProgreso #progreso"),
 	};
+	const pausa = 100; // milisegundos
+	const pausaBreve = pausa / 4;
 	let duracTotal = 0;
 	let duracAcum = 0;
 	let duracEstim = 0;
@@ -354,8 +354,6 @@ const barraProgreso = async (pre, APIs) => {
 	DOM.cartelProgreso.classList.add("aumenta");
 
 	// Acciones si no hay productos en 'session' - Variables
-	const pausa = 100; // milisegundos
-	const pausaBreve = pausa / 4;
 	for (let API of APIs) duracTotal += API.duracion;
 
 	// Ejecuta las APIs
