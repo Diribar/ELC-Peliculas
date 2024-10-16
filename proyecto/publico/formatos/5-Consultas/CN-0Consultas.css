@@ -28,7 +28,6 @@
 					}
 				}
 				#carteles {
-					#esperandoResultados {transition: .3s;}
 					button.cartel {font-size: 1.5rem; font-weight: bold; font-style: italic;}
 					.cartel {
 						&#quieroVer, &.especial {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
