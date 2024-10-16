@@ -363,10 +363,12 @@ const barraProgreso = async (pre, APIs) => {
 	for (let API of APIs) {
 		// Busca la información
 		let pendiente = true;
-		respuesta = fetch(pre + API.ruta).then((n) => {
-			pendiente = false
-			return n
-		});
+		respuesta = fetch(pre + API.ruta)
+			.then((n) => n.json())
+			.then((n) => {
+				pendiente = false;
+				return n;
+			});
 
 		// Evoluciona el progreso mientras espera la información
 		duracEstim += API.duracion;
