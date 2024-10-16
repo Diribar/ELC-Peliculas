@@ -94,19 +94,18 @@ const FN_resultados = {
 			// Deriva a botones o listados
 			v.layoutBD.grupo == "boton" ? this.botones() : this.listados();
 
-			// Quita el cartel de 'esperandoResultados'
-			DOM.esperandoResultados.classList.add("ocultar");
-
-			// Carteles periódicos, con una frecuencia dada
+			// Si el usuario no vio el video, muestra el cartel 'ver video'
 			v.contadorDeMostrarResults++;
-			if (v.usuario_id && !v.videoConsVisto && v.contadorDeMostrarResults == 1)
-				DOM.cartelVerVideo.classList.remove("ocultar"); // Si el usuario no vio el video, muestra el cartel 'ver video'
+			// if (v.usuario_id && !v.videoConsVisto && v.contadorDeMostrarResults == 1)
+			// 	DOM.cartelVerVideo.classList.remove("ocultar");
+
 			if (!(v.contadorDeMostrarResults % 5)) {
 				if (v.usuario_id) {
 					// Si el usuario no vio el video, muestra un cartel
-					if (!v.videoConsVisto) DOM.cartelVerVideo.classList.remove("ocultar");
+					//if (!v.videoConsVisto) DOM.cartelVerVideo.classList.remove("ocultar");
 					// Si el usuario no tiene 'PPPs', muestra un cartel
-					else if (!v.usuarioTienePPP) DOM.cartelUsSinPPP.classList.remove("ocultar");
+					//else
+					if (!v.usuarioTienePPP) DOM.cartelUsSinPPP.classList.remove("ocultar");
 				}
 				// Si el usuario no está logueado, muestra un cartel
 				else if (!v.usuario_id) DOM.cartelLoginPend.classList.remove("ocultar");
