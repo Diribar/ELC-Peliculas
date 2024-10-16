@@ -391,6 +391,10 @@ const barraProgreso = async (pre, APIs) => {
 	}
 	await pierdeTiempo(200);
 
+	// Desaparece el cartelProgreso
+	cartelProgreso.classList.remove("aumenta");
+	cartelProgreso.classList.add("disminuye");
+
 	// Fin
 	return respuesta.json();
 };

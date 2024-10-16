@@ -106,10 +106,6 @@ window.addEventListener("load", async () => {
 	DOM.prodsNuevos.remove();
 	DOM.prodsYaEnBD.remove();
 
-	// Desaparece el cartelProgreso
-	DOM.cartelProgreso.classList.remove("aumenta");
-	DOM.cartelProgreso.classList.add("disminuye");
-
 	// Miscelaneas
 	document.querySelector("#listado li button").focus(); // Hace foco en el primer producto
 	desplazamHoriz(); // Desplazamiento original
