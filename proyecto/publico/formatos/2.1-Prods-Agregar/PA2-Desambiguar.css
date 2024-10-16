@@ -9,7 +9,6 @@
 
 /* Cuadro de resultados */
 #dataEntry #cuadroDeResultados {max-width: 86vw; position: relative;}
-#dataEntry #cuadroDeResultados {background: var(--celeste-claro); border-radius: 10px;}
 
 /* Iconos */
 #dataEntry .iconos {margin-top: 20px;}
