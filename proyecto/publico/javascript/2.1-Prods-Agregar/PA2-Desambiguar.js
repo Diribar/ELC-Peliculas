@@ -17,7 +17,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Obtiene los datos de session
-	const rutaBuscaInfoDeSession = "/producto/api/pa-busca-info-de-session";
+	const rutaBuscaInfoDeSession = ruta.session;
 	let desambiguar = await fetch(rutaBuscaInfoDeSession).then((n) => n.json());
 	if (!desambiguar) location.href = "agregar-pc"; // si no existe, redirige al paso anterior
 
@@ -118,8 +118,17 @@ window.addEventListener("load", async () => {
 	desplazamHoriz(); // Desplazamiento original
 	FN.accionesAlElegirProdNuevo(DOM); // Acciones luego de elegir un producto nuevo
 });
+
+// Variables
+const rutas = {
+	pre: "/producto/api/pa-",
+	actualiza: "/producto/api/pa-actualiza-datos-originales/?datos=",
+	valida: "/producto/api/pa-valida-ds",
+	session: "/producto/api/pa-busca-info-de-session",
+};
+
 // Funciones
-let FN = {
+const FN = {
 	completaSessionDesambiguar: async (DOM) => {
 		// Muestra el cartelProgreso
 		DOM.cartelProgreso.classList.remove("disminuye");
@@ -143,7 +152,7 @@ let FN = {
 		for (let API of APIs) {
 			// Busca la información
 			let pendiente = true;
-			let aux = fetch("/producto/api/pa-" + API.ruta + "/").then(() => (pendiente = false));
+			let aux = fetch(ruta.pre + API.ruta + "/").then(() => (pendiente = false));
 
 			// Evoluciona el progreso mientras espera la información
 			for (let repeticion = 0; repeticion < parseInt(API.duracion / pausa); repeticion++) {
@@ -191,11 +200,11 @@ let FN = {
 				};
 
 				// Actualiza Datos Originales
-				await fetch("/producto/api/pa-actualiza-datos-originales/?datos=" + JSON.stringify(datos)); // El 'await' es necesario para esperar a que se grabe la cookie en la controladora
+				await fetch(ruta.actualiza + JSON.stringify(datos)); // El 'await' es necesario para esperar a que se grabe la cookie en la controladora
 				DOM.progreso.style.width = "100%";
 
 				// 2. Averigua si la info tiene errores
-				const errores = await fetch("/producto/api/pa-averigua-si-la-info-tiene-errores").then((n) => n.json());
+				const errores = await fetch(ruta.valida).then((n) => n.json());
 
 				// Desaparece el cartelProgreso
 				DOM.cartelProgreso.classList.remove("aumenta");

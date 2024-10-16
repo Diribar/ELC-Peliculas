@@ -21,7 +21,7 @@ const iconos = {
 
 module.exports = {
 	// Institucional
-	idsReserv: 11,
+	idsReserv: 10,
 	vistasInstitucs: {
 		inicio: {titulo: "ELC | Películas con Valores", codigo: "inicio", icono: iconos.inicio, hr: true}, // 'hr' significa que pone una línea divisoria en el menú del header
 		"quienes-somos": {titulo: "ELC | Quiénes somos", codigo: "quienesSomos", icono: "fa-people-group"},
@@ -39,17 +39,17 @@ module.exports = {
 	// Gráficos
 	graficos: {
 		// Usuarios
-		historialNavegs: {
+		navegacsPorDia: {
 			rubro: "clientes",
-			titulo: "Historial de Navegaciones",
-			url: "historial-de-navegaciones",
+			titulo: "Navegaciones por día",
+			url: "navegaciones-por-dia",
 			icono: iconos.columnas,
 			resaltar: true,
 		},
-		historialClientes: {
+		habitualPorCliente: {
 			rubro: "clientes",
-			titulo: "Navegaciones por cliente",
-			url: "historial-de-clientes",
+			titulo: "Habitualidad por cliente",
+			url: "habitualidad-por-cliente",
 			icono: iconos.area,
 			resaltar: true,
 		},

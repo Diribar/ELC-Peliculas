@@ -2,12 +2,12 @@
 
 module.exports = {
 	// Usuarios
-	historialNavegs: async (req, res) => {
-		const historialNavegs = await baseDeDatos.obtieneTodosConOrden("historialNavegs", "fecha");
-		return res.json(historialNavegs);
+	navegacsPorDia: async (req, res) => {
+		const navegacsPorDia = await baseDeDatos.obtieneTodosConOrden("navegacsPorDia", "fecha");
+		return res.json(navegacsPorDia);
 	},
-	historialClientes: async (req, res) => {
-		const datos = await baseDeDatos.obtieneTodosConOrden("historialClientes", "fecha");
+	habitualPorCliente: async (req, res) => {
+		const datos = await baseDeDatos.obtieneTodosConOrden("habitualPorCliente", "fecha");
 		return res.json(datos);
 	},
 

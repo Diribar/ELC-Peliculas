@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Obtiene datos del BE
-	const historialClientes = await fetch(ruta).then((n) => n.json());
+	const habitualPorCliente = await fetch(ruta).then((n) => n.json());
 
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
@@ -19,10 +19,10 @@ window.addEventListener("load", async () => {
 
 	// Genera la información
 	const resultado = [["Fecha", ...grupos.map((grupo) => [grupo, {role: "style"}]).flat()]];
-	for (let navegDelDia of historialClientes) {
+	for (let clientesDelDia of habitualPorCliente) {
 		resultado.push([
-			navegDelDia.fecha,
-			...grupos.map((grupo) => [navegDelDia[grupo], "stroke-color: " + coloresBorde[grupo]]).flat(),
+			clientesDelDia.fecha,
+			...grupos.map((grupo) => [clientesDelDia[grupo], "stroke-color: " + coloresBorde[grupo]]).flat(),
 		]);
 	}
 

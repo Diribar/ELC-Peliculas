@@ -7,12 +7,65 @@ const valida = require("./PA-FN3-Validar");
 const procesos = require("./PA-FN4-Procesos");
 
 module.exports = {
-	// Vista (palabrasClave)
-	validaPalabrasClave: (req, res) => {
-		const palabrasClave = req.query.palabrasClave;
-		const errores = valida.palabrasClave(palabrasClave);
-		return res.json(errores);
+	validacs: {
+		palabrasClave: (req, res) => {
+			const palabrasClave = req.query.palabrasClave;
+			const errores = valida.palabrasClave(palabrasClave);
+			return res.json(errores);
+		},
+		// Averigua si la info tiene errores
+		desambiguar: async (req, res) => {
+			// Variables
+			let datosDuros = req.cookies.datosOriginales;
+
+			// Para datosDuros, da de alta el avatarUrl y de baja el avatar
+			datosDuros.avatarUrl = datosDuros.avatar;
+			delete datosDuros.avatar;
+
+			// Averigua si falta completar algún campo de Datos Duros
+			let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
+			let camposNombre = camposDD.map((n) => n.nombre);
+			let errores = await validacsFM.validacs.datosDuros(camposNombre, datosDuros);
+
+			// Genera la session y cookie para DatosDuros
+			req.session.datosDuros = datosDuros;
+			res.cookie("datosDuros", datosDuros, {maxAge: unDia});
+
+			// Genera la session y cookie para datosAdics
+			if (!errores.hay) {
+				req.session.datosAdics = datosDuros;
+				res.cookie("datosAdics", datosDuros, {maxAge: unDia});
+			}
+
+			// Fin
+			return res.json(errores);
+		},
+		// Vista (datosDuros)
+		datosDuros: async (req, res) => {
+			// Variables
+			const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
+			const datos = {imgOpcional: datosDuros.imgOpcional, ...req.query};
+			const campos = Object.keys(datos);
+
+			// Averigua los errores solamente para esos campos
+			let errores = await validacsFM.validacs.datosDuros(campos, datos);
+
+			// Devuelve el resultado
+			return res.json(errores);
+		},
+		datosAdics: async (req, res) => {
+			// Obtiene los campos
+			let campos = Object.keys(req.query);
+			let errores = await validacsFM.validacs.datosAdics(campos, req.query);
+			return res.json(errores);
+		},
+		copiarFA: (req, res) => {
+			let errores = valida.FA(req.query);
+			return res.json(errores);
+		},
 	},
+
+	// Vista (palabrasClave)
 	cantProductos: async (req, res) => {
 		// Variables
 		const {palabrasClave} = req.query;
@@ -133,72 +186,23 @@ module.exports = {
 			return res.json();
 		},
 	},
-	desambGuardar: {
-		// Actualiza Datos Originales
-		actualizaDatosOrig: async (req, res) => {
-			// Variables
-			const datos = JSON.parse(req.query.datos);
-
-			// Obtiene más información del producto
-			const TMDB_entidad = datos.TMDB_entidad;
-			const infoTMDBparaDD = await procsDesamb[TMDB_entidad].obtieneInfo(datos);
-			if (!infoTMDBparaDD.avatar) infoTMDBparaDD.imgOpcional = "NO";
-
-			// Guarda los datos originales en una cookie
-			res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
-			// Fin
-			return res.json();
-		},
-		// Averigua si la info tiene errores
-		averiguaSiHayErrores: async (req, res) => {
-			// Variables
-			let datosDuros = req.cookies.datosOriginales;
-
-			// Para datosDuros, da de alta el avatarUrl y de baja el avatar
-			datosDuros.avatarUrl = datosDuros.avatar;
-			delete datosDuros.avatar;
-
-			// Averigua si falta completar algún campo de Datos Duros
-			let camposDD = variables.camposDD.filter((n) => n[datosDuros.entidad] || n.productos);
-			let camposNombre = camposDD.map((n) => n.nombre);
-			let errores = await validacsFM.validacs.datosDuros(camposNombre, datosDuros);
-
-			// Genera la session y cookie para DatosDuros
-			req.session.datosDuros = datosDuros;
-			res.cookie("datosDuros", datosDuros, {maxAge: unDia});
-
-			// Genera la session y cookie para datosAdics
-			if (!errores.hay) {
-				req.session.datosAdics = datosDuros;
-				res.cookie("datosAdics", datosDuros, {maxAge: unDia});
-			}
-
-			// Fin
-			return res.json(errores);
-		},
-	},
-
-	// Vista (datosDuros)
-	validaDatosDuros: async (req, res) => {
+	// Actualiza Datos Originales
+	actualizaDatosOrig: async (req, res) => {
 		// Variables
-		const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
-		const datos = {imgOpcional: datosDuros.imgOpcional, ...req.query};
-		const campos = Object.keys(datos);
+		const datos = JSON.parse(req.query.datos);
 
-		// Averigua los errores solamente para esos campos
-		let errores = await validacsFM.validacs.datosDuros(campos, datos);
+		// Obtiene más información del producto
+		const TMDB_entidad = datos.TMDB_entidad;
+		const infoTMDBparaDD = await procsDesamb[TMDB_entidad].obtieneInfo(datos);
+		if (!infoTMDBparaDD.avatar) infoTMDBparaDD.imgOpcional = "NO";
 
-		// Devuelve el resultado
-		return res.json(errores);
+		// Guarda los datos originales en una cookie
+		res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
+		// Fin
+		return res.json();
 	},
 
 	// Vista (datosAdics)
-	validaDatosAdics: async (req, res) => {
-		// Obtiene los campos
-		let campos = Object.keys(req.query);
-		let errores = await validacsFM.validacs.datosAdics(campos, req.query);
-		return res.json(errores);
-	},
 	guardaDatosAdics: (req, res) => {
 		let datosAdics = {
 			...(req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics),
@@ -226,10 +230,6 @@ module.exports = {
 	},
 
 	// Vista (FA)
-	validaCopiarFA: (req, res) => {
-		let errores = valida.FA(req.query);
-		return res.json(errores);
-	},
 	obtieneFA_id: (req, res) => {
 		let FA_id = procesos.FA.obtieneFA_id(req.query.direccion);
 		return res.json(FA_id);

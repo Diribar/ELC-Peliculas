@@ -172,5 +172,4 @@ window.addEventListener("load", async () => {
 });
 
 // Variables
-const paso = pathname.slice(pathname.lastIndexOf("/") + 1).replace("agregar", "");
-const validaDatos = "/producto/api/valida" + paso + "/?";
+const validaDatos = "/producto/api/pa-valida-dd/?";
