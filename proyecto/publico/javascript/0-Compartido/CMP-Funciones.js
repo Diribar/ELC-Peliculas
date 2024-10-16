@@ -379,7 +379,7 @@ const barraProgreso = async (pre, APIs) => {
 			if (duracAcum < duracEstim) {
 				duracAcum += pausa;
 				desvio = Date.now() - inicio - duracAcum;
-				DOM.progreso.style.width = Math.round((duracAcum + Math.min(desvio, pausaBreve) / duracTotal) * 100) + "%";
+				DOM.progreso.style.width = Math.round((duracAcum + Math.min(desvio, pausaBreve)) / duracTotal * 100) + "%";
 			}
 		}
 		respuesta = await respuesta;
