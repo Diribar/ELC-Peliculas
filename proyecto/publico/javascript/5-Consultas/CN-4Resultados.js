@@ -92,6 +92,8 @@ const FN_resultados = {
 			DOM.listados.innerHTML = "";
 
 			// Deriva a botones o listados
+			DOM.zonaDisponible.classList.remove("aumentaCn")
+			DOM.zonaDisponible.classList.add("aumentaCn")
 			v.layoutBD.grupo == "boton" ? this.botones() : this.listados();
 
 			// Si el usuario no vio el video, muestra el cartel 'ver video'
