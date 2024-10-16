@@ -217,10 +217,7 @@ const desplazamHoriz = () => {
 	ocultaIconosMovim();
 };
 
-const pierdeTiempo = (ms) => {
-	return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
+const pierdeTiempo = (ms) => new Promise((n) => setTimeout(n, ms));
 const revisaAvatar = async ({DOM, v, FN, version, indice}) => {
 	// 1. Acciones si se omitió ingresar un archivo
 	if (!DOM.inputAvatar.value) {
@@ -336,7 +333,9 @@ const obtieneSiglaFam = () =>
 
 const siglaFam = obtieneSiglaFam();
 
-const barraProgreso = async () => {
+const barraProgreso = async (pre, APIs) => {
+	//console.log(pre, APIs);
+
 	// Variables
 	const DOM = {
 		cartelProgreso: document.querySelector("#cartelProgreso"),
@@ -346,6 +345,8 @@ const barraProgreso = async () => {
 	let duracTotal = 0;
 	let duracAcum = 0;
 	let duracEstim = 0;
+	let desvio = 0;
+	let respuesta;
 
 	// Muestra el cartelProgreso
 	DOM.cartelProgreso.classList.remove("disminuye");
@@ -353,30 +354,39 @@ const barraProgreso = async () => {
 	DOM.cartelProgreso.classList.add("aumenta");
 
 	// Acciones si no hay productos en 'session' - Variables
-	const pausa = 200; // milisegundos
+	const pausa = 100; // milisegundos
 	for (let API of APIs) duracTotal += API.duracion;
 
 	// Ejecuta las APIs
+	const inicio = Date.now();
 	for (let API of APIs) {
 		// Busca la información
 		let pendiente = true;
-		let aux = fetch(rutas.pre + API.ruta + "/").then(() => (pendiente = false));
+		respuesta = fetch(pre + API.ruta).then(() => (pendiente = false));
 
 		// Evoluciona el progreso mientras espera la información
 		duracEstim += API.duracion;
 		while (pendiente) {
-			await pierdeTiempo(pausa);
+			await pierdeTiempo(pausa - desvio);
 
 			// Evoluciona el progreso
 			if (duracAcum < duracEstim) {
 				duracAcum += pausa;
-				DOM.progreso.style.width = Math.round((duracAcum / duracTotal) * 100) + "%";
+				desvio = Date.now() - inicio - duracAcum;
+				DOM.progreso.style.width = Math.round((Math.min(duracAcum + desvio, duracTotal) / duracTotal) * 100) + "%";
 			}
 		}
-		aux = await aux;
+		respuesta = await respuesta;
 	}
-	DOM.progreso.style.width = "100%";
+
+	// Completa la barra de progreso
+	while (duracAcum < duracEstim) {
+		await pierdeTiempo(pausa / 4);
+		duracAcum += pausa;
+		DOM.progreso.style.width = Math.round((duracAcum / duracTotal) * 100) + "%";
+	}
+	await pierdeTiempo(200);
 
 	// Fin
-	return;
+	return respuesta;
 };
