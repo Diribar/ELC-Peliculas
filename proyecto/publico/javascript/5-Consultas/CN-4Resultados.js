@@ -1,6 +1,6 @@
 "use strict";
 
-let FN_resultados = {
+const FN_resultados = {
 	obtiene: async function () {
 		// Si no se cumplen las condiciones mínimas, termina la función
 		if (!v.layout_id) return;
@@ -34,7 +34,13 @@ let FN_resultados = {
 		const datos = v.layoutBD.codigo.startsWith("fechaDelAno")
 			? {...prefs, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
 			: prefs;
-		v.resultados = await fetch(ruta + "obtiene-los-resultados/?datos=" + JSON.stringify(datos)).then((n) => n.json());
+		const APIs = [
+			{
+				ruta: "obtiene-los-resultados/?datos=" + JSON.stringify(datos),
+				duracion: 2000,
+			},
+		];
+		v.resultados = await barraProgreso(ruta, APIs);
 		DOM.esperandoResultados.classList.add("ocultar");
 
 		// Acciones en consecuencia
@@ -204,7 +210,7 @@ let FN_resultados = {
 	},
 };
 
-let FN_auxiliares = {
+const FN_auxiliares = {
 	boton: function (registro) {
 		// Variables
 		const familia = ["peliculas", "colecciones", "capitulos"].includes(registro.entidad) ? "producto" : "rclv";
@@ -595,7 +601,7 @@ let FN_auxiliares = {
 	},
 };
 
-let FN_creaUnaCelda = {
+const FN_creaUnaCelda = {
 	rclv: (rclv) => {
 		// Variables
 		const cantProds = rclv.productos.length;

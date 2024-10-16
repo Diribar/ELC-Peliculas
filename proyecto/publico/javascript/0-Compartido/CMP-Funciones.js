@@ -217,10 +217,7 @@ const desplazamHoriz = () => {
 	ocultaIconosMovim();
 };
 
-const pierdeTiempo = (ms) => {
-	return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
+const pierdeTiempo = (ms) => new Promise((n) => setTimeout(n, ms));
 const revisaAvatar = async ({DOM, v, FN, version, indice}) => {
 	// 1. Acciones si se omitió ingresar un archivo
 	if (!DOM.inputAvatar.value) {
@@ -335,3 +332,69 @@ const obtieneSiglaFam = () =>
 		: "";
 
 const siglaFam = obtieneSiglaFam();
+
+const barraProgreso = async (pre, APIs) => {
+	//console.log(pre, APIs);
+
+	// Variables
+	const DOM = {
+		cartelProgreso: document.querySelector("#cartelProgreso"),
+		tituloCartel: document.querySelector("#cartelProgreso #titulo"),
+		progreso: document.querySelector("#cartelProgreso #progreso"),
+	};
+	let duracTotal = 0;
+	let duracAcum = 0;
+	let duracEstim = 0;
+	let desvio = 0;
+	let respuesta;
+
+	// Muestra el cartelProgreso
+	DOM.cartelProgreso.classList.remove("disminuye");
+	DOM.cartelProgreso.classList.remove("ocultar");
+	DOM.cartelProgreso.classList.add("aumenta");
+
+	// Acciones si no hay productos en 'session' - Variables
+	const pausa = 100; // milisegundos
+	const pausaBreve = pausa / 4;
+	for (let API of APIs) duracTotal += API.duracion;
+
+	// Ejecuta las APIs
+	const inicio = Date.now();
+	for (let API of APIs) {
+		// Busca la información
+		let pendiente = true;
+		respuesta = fetch(pre + API.ruta).then((n) => {
+			pendiente = false;
+			return n;
+		});
+
+		// Evoluciona el progreso mientras espera la información
+		duracEstim += API.duracion;
+		while (pendiente) {
+			await pierdeTiempo(pausa - desvio);
+
+			// Evoluciona el progreso
+			if (duracAcum < duracEstim) {
+				duracAcum += pausa;
+				desvio = Date.now() - inicio - duracAcum;
+				DOM.progreso.style.width = Math.round(((duracAcum + Math.min(desvio, pausaBreve)) / duracTotal) * 100) + "%";
+			}
+		}
+		respuesta = await respuesta;
+	}
+
+	// Completa la barra de progreso
+	while (duracAcum < duracEstim) {
+		await pierdeTiempo(pausaBreve);
+		duracAcum += pausa;
+		DOM.progreso.style.width = Math.round((duracAcum / duracTotal) * 100) + "%";
+	}
+	await pierdeTiempo(200);
+
+	// Desaparece el cartelProgreso
+	cartelProgreso.classList.remove("aumenta");
+	cartelProgreso.classList.add("disminuye");
+
+	// Fin
+	return respuesta.json();
+};

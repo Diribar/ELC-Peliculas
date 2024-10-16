@@ -5,9 +5,9 @@ main .cartelCentro {
 	padding: 20px; border-radius: 15px; border: 6px double white;
 
 	/* Color de fondo */
-	&:not(:has(#alerta.ocultar)) {background: var(--rojo-oscuro);}
-	&:not(:has(#check.ocultar)) {background: var(--verde-oscuro);}
-	&:not(:has(#trabajando.ocultar)) {background: var(--azul-oscuro);}
+	&:has(#alerta):not(:has(#alerta.ocultar)) {background: var(--rojo-oscuro);}
+	&:has(#check):not(:has(#check.ocultar)) {background: var(--verde-oscuro);}
+	&:has(#trabajando):not(:has(#trabajando.ocultar)) {background: var(--azul-oscuro);}
 
 	&#cartelGenerico {
 		&:not(:has(#titulo:empty)) .inicio {margin-bottom: 0;}
@@ -21,8 +21,8 @@ main .cartelCentro {
 	}
 
 	&#cartelProgreso {
-		min-width: 250px;
-		.inicio {margin-bottom: 40px;}
+		min-width: 250px; background: var(--azul-oscuro);
+		#titulo {margin-bottom: 15px;}
 		#contorno {
 			border: solid 1px var(--amarillo-claro); height: 18px; width: 200px; border-radius: 10px; overflow: hidden;
 			#progreso {background: var(--amarillo-claro); width: 0; height: 100%;}
