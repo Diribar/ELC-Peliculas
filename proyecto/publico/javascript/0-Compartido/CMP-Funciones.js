@@ -355,6 +355,7 @@ const barraProgreso = async (pre, APIs) => {
 
 	// Acciones si no hay productos en 'session' - Variables
 	const pausa = 100; // milisegundos
+	const pausaBreve = pausa / 4;
 	for (let API of APIs) duracTotal += API.duracion;
 
 	// Ejecuta las APIs
@@ -373,7 +374,7 @@ const barraProgreso = async (pre, APIs) => {
 			if (duracAcum < duracEstim) {
 				duracAcum += pausa;
 				desvio = Date.now() - inicio - duracAcum;
-				DOM.progreso.style.width = Math.round((Math.min(duracAcum + desvio, duracTotal) / duracTotal) * 100) + "%";
+				DOM.progreso.style.width = Math.round((duracAcum + Math.min(desvio, pausaBreve) / duracTotal) * 100) + "%";
 			}
 		}
 		respuesta = await respuesta;
@@ -381,7 +382,7 @@ const barraProgreso = async (pre, APIs) => {
 
 	// Completa la barra de progreso
 	while (duracAcum < duracEstim) {
-		await pierdeTiempo(pausa / 4);
+		await pierdeTiempo(pausaBreve);
 		duracAcum += pausa;
 		DOM.progreso.style.width = Math.round((duracAcum / duracTotal) * 100) + "%";
 	}
