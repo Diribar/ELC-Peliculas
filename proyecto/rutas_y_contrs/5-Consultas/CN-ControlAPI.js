@@ -72,6 +72,7 @@ module.exports = {
 				...{pppOpcsArray, pppOpcsSimples, pppOpcsObj},
 				...{rclvsNombre: variables.entidades.rclvsNombre},
 				...{filtrosConDefault, epocasEstreno, unDia, setTimeOutStd},
+				cliente: req.session.cliente,
 			};
 
 			// Datos del usuario
