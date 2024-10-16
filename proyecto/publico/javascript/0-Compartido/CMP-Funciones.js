@@ -349,6 +349,7 @@ const barraProgreso = async (pre, APIs) => {
 	let respuesta;
 
 	// Muestra el cartelProgreso
+	DOM.progreso.style.width = "0%";
 	DOM.cartelProgreso.classList.add("aparece");
 	DOM.cartelProgreso.classList.remove("ocultar");
 
@@ -377,6 +378,7 @@ const barraProgreso = async (pre, APIs) => {
 				DOM.progreso.style.width = Math.round(((duracAcum + Math.min(desvio, pausa)) / duracTotal) * 100) + "%";
 			}
 		}
+		// console.log(Date.now() - inicio, duracAcum, Date.now() - inicio - duracAcum);
 		respuesta = await respuesta;
 	}
 
@@ -391,7 +393,6 @@ const barraProgreso = async (pre, APIs) => {
 	// Oculta el cartelProgreso
 	DOM.cartelProgreso.classList.add("ocultar");
 	DOM.cartelProgreso.classList.remove("aparece");
-	new Promise(() => setTimeout(() => (DOM.progreso.style.width = "0%"), 1000));
 
 	// Fin
 	return respuesta.json();
