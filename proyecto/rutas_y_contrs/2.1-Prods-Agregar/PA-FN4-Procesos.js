@@ -11,14 +11,9 @@ module.exports = {
 		// Variables
 		const etapas = [
 			"borrarTodo",
-			"palabrasClave",
-			"desambiguar",
-			"IM",
-			"datosOriginales",
-			"FA",
-			"datosDuros",
-			"datosAdics",
-			"confirma",
+			...["pc_ds", "palabrasClave", "desambiguar"],
+			...["IM", "datosOriginales", "FA"],
+			...["datosDuros", "datosAdics", "confirma"],
 			"terminaste",
 		];
 		const inicio = etapas.indexOf(paso) + 1;
