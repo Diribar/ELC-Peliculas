@@ -53,8 +53,8 @@ module.exports = {
 			}
 
 			// Redirecciona a 'desambiguar'
-			req.session.desambiguar = {palabrasClave};
-			res.cookie("desambiguar", {palabrasClave}, {maxAge: unDia});
+			req.session.desambiguar = palabrasClave;
+			res.cookie("desambiguar", palabrasClave, {maxAge: unDia});
 			return res.redirect("agregar-ds");
 		},
 	},
@@ -65,16 +65,15 @@ module.exports = {
 		const titulo = "Agregar - Desambiguar";
 
 		// Si no existe el cookie, redirecciona
-		const {desambiguar} = req.session.desambiguar ? req.session : req.cookies;
+		const {desambiguar: palabrasClave} = req.session.desambiguar ? req.session : req.cookies;
 
 		// Se asegura de que exista el session
-		if (!req.session.desambiguar) req.session.desambiguar = desambiguar;
+		if (!req.session.desambiguar) req.session.desambiguar = palabrasClave;
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo},
-			palabrasClave: desambiguar.palabrasClave,
-			omitirImagenDerecha: true,
+			...{palabrasClave, omitirImagenDerecha: true},
 		});
 	},
 	datosDuros: {
@@ -116,11 +115,7 @@ module.exports = {
 
 			// Datos para la vista
 			const origen =
-				req.session.FA || req.cookies.FA
-					? "agregar-fa"
-					: req.session.IM || req.cookies.IM
-					? "agregar-im"
-					: "agregar-ds";
+				req.session.FA || req.cookies.FA ? "agregar-fa" : req.session.IM || req.cookies.IM ? "agregar-im" : "agregar-ds";
 			const camposInput1 = camposInput.filter((n) => n.campoInput == 1);
 			const camposInput2 = camposInput.filter((n) => n.campoInput == 2);
 

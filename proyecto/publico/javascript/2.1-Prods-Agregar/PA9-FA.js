@@ -110,7 +110,7 @@ window.addEventListener("load", async () => {
 
 	// Status inicial
 	if (statusInicial) {
-		let errores = await validaDataEntry();
+		errores = await validaDataEntry();
 		for (let i = 0; i < DOM.inputs.length; i++) {
 			DOM.inputs[i].value != "" ? accionesSiHayErrores(i, errores) : "";
 		}
@@ -120,7 +120,7 @@ window.addEventListener("load", async () => {
 	// Revisa un data-entry en particular (el modificado) y comunica si está OK o no
 	for (let i = 0; i < DOM.inputs.length; i++) {
 		DOM.inputs[i].addEventListener("input", async () => {
-			let errores = await validaDataEntry();
+			errores = await validaDataEntry();
 			accionesSiHayErrores(i, errores);
 		});
 	}
@@ -129,7 +129,7 @@ window.addEventListener("load", async () => {
 	DOM.form.addEventListener("submit", async (e) => {
 		if (DOM.button.className.includes("inactivo")) {
 			e.preventDefault();
-			let errores = await validaDataEntry();
+			errores = await validaDataEntry();
 			for (let i = 0; i < DOM.inputs.length; i++) {
 				accionesSiHayErrores(i, errores);
 			}

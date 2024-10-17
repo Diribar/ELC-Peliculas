@@ -84,7 +84,7 @@ window.addEventListener("load", async () => {
 			return datosUrl;
 		},
 		muestraLosErrores: async (datos, mostrarIconoError) => {
-			let errores = await fetch(rutas.validar + datos).then((n) => n.json());
+			errores = await fetch(rutas.validar + datos).then((n) => n.json());
 			// return;
 			camposError.forEach((campo, indice) => {
 				if (errores[campo] !== undefined) {

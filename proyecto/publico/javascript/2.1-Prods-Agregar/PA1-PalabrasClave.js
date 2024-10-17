@@ -16,11 +16,41 @@ window.addEventListener("load", async () => {
 		iconoOK: document.querySelector(".inputError .fa-circle-check"),
 		mensajeError: document.querySelector(".inputError .mensajeError"),
 	};
-	let resultados = {};
 
-	// FUNCIONES *******************************************
+	// Funciones
 	const FN = {
-		particsInput: async (e) => {
+		muestraElErrorMasBotonSubmit: async (mostrarIconoError) => {
+			// Variables
+			const datosUrl = "&" + DOM.inputPalsClave.name + "=" + encodeURIComponent(DOM.inputPalsClave.value);
+
+			// Valida los errores
+			errores = await fetch(rutas.validaDatos + datosUrl).then((n) => n.json());
+			const error = errores.palabrasClave;
+
+			// Acciones si el campo fue validado
+			if (Object.keys(errores).includes("palabrasClave")) {
+				DOM.mensajeError.innerHTML = error;
+				// Acciones si existe un mensaje de error
+				if (error) {
+					DOM.iconoOK.classList.add("ocultar");
+					mostrarIconoError ? DOM.iconoError.classList.remove("ocultar") : DOM.iconoError.classList.add("ocultar");
+				}
+				// Acciones si no hay errores
+				else {
+					DOM.iconoOK.classList.remove("ocultar");
+					DOM.iconoError.classList.add("ocultar");
+				}
+			}
+
+			// Actualiza el botón submit
+			DOM.iconoOK.className.includes("ocultar")
+				? DOM.botonSubmit.classList.add("inactivo")
+				: DOM.botonSubmit.classList.remove("inactivo");
+
+			// Fin
+			return;
+		},
+		particsInput: async function () {
 			// Actualiza el 'botonSubmit' a 'Verificar'
 			DOM.botonSubmit.classList.replace("verdeOscuro", "verdeClaro");
 			DOM.botonSubmit.innerHTML = "Buscar";
@@ -31,119 +61,32 @@ window.addEventListener("load", async () => {
 			DOM.resultado.classList.add("sinResultado");
 
 			// Validar errores
-			const datosUrl = e.target.name + "=" + encodeURIComponent(e.target.value);
-			await FN.muestraElError(datosUrl, true);
-
-			// Actualiza botón Submit
-			FN.actualizaBotonSubmit();
+			await this.muestraElErrorMasBotonSubmit(true);
 
 			// Fin
 			return;
 		},
-		palabrasClave: (input) => {
-			// Variables
-			let palabrasClave = input.trim();
-
-			// Procesando la información
-			DOM.resultado.innerHTML = "Procesando la información...";
-			DOM.resultado.classList.remove(...DOM.resultado.classList);
-			DOM.resultado.classList.add("resultadoEnEspera");
-
-			// Obtiene el link
-			return palabrasClave;
-		},
-		muestraResultados: async () => {
-			// Variables
-			let {cantProds, cantProdsNuevos, hayMas} = resultados;
-			// Determinar oracion y formato
-			let formatoVigente = "resultadoInvalido";
-			let oracion;
-			// Resultado exitoso
-			if (cantProds && !hayMas) {
-				let plural = cantProdsNuevos > 1 ? "s" : "";
-				oracion = cantProdsNuevos
-					? "Encontramos " + cantProdsNuevos + " coincidencia" + plural + " nueva" + plural
-					: "No encontramos ninguna coincidencia nueva";
-				if (cantProds > cantProdsNuevos) oracion += ", y " + (cantProds - cantProdsNuevos) + " ya en BD";
-				if (cantProdsNuevos) formatoVigente = "resultadoExitoso";
-			} else {
-				// Resultados inválidos
-				oracion = hayMas
-					? "Hay demasiadas coincidencias (+" + cantProds + "), intentá ser más específico"
-					: cantProds == 0
-					? "No encontramos ninguna coincidencia"
-					: oracion;
-			}
-			DOM.resultado.innerHTML = oracion;
-			DOM.resultado.classList.remove(...DOM.resultado.classList);
-			DOM.resultado.classList.add(formatoVigente);
-		},
-		avanzar: () => {
-			// Formato
-			DOM.botonSubmit.classList.replace("verdeClaro", "verdeOscuro");
-
-			// Contenido
-			let resultado = resultados.cantProds ? "Desambiguar" : "Ingr. Man.";
-			DOM.botonSubmit.innerHTML = resultado;
-			DOM.inputMetodo.value = resultado;
-
-			// Fin
-			return;
-		},
-		statusInicial: async function (mostrarIconoError) {
-			// Agrega el campo y el valor
-			const datosUrl = "&" + DOM.inputPalsClave.name + "=" + encodeURIComponent(DOM.inputPalsClave.value);
-
-			// Consecuencias de las validaciones de errores
-			await this.muestraElError(datosUrl, mostrarIconoError);
-			this.actualizaBotonSubmit();
-
-			// Fin
-			return;
-		},
-		muestraElError: async (datos, mostrarIconoError) => {
-			const errores = await fetch(rutas.validaDatos + datos).then((n) => n.json());
-			const {palabrasClave: error} = errores;
-
-			if (error !== undefined) {
-				DOM.mensajeError.innerHTML = error;
-				// Acciones en función de si hay o no mensajes de error
-				if (error) {
-					DOM.iconoError.classList.add("error");
-					DOM.iconoOK.classList.add("ocultar");
-					mostrarIconoError ? DOM.iconoError.classList.remove("ocultar") : DOM.iconoError.classList.add("ocultar");
-				} else {
-					DOM.iconoError.classList.remove("error");
-					DOM.iconoOK.classList.remove("ocultar");
-					DOM.iconoError.classList.add("ocultar");
-				}
-			}
-
-			// Fin
-			return;
-		},
-		actualizaBotonSubmit: () => {
-			const hayError = DOM.iconoError.className.includes("error");
-			hayError ? DOM.botonSubmit.classList.add("inactivo") : DOM.botonSubmit.classList.remove("inactivo");
-		},
-		submitForm: async function (e) {
+		submit: async function (e) {
 			e.preventDefault();
 
 			// Acciones si el botón está inactivo
-			if (DOM.botonSubmit.className.includes("inactivo")) return this.statusInicial(true);
+			if (DOM.botonSubmit.className.includes("inactivo")) return this.muestraElErrorMasBotonSubmit(true);
 
 			// Acciones si el botón está listo para buscar
 			if (DOM.botonSubmit.className.includes("verdeClaro")) {
-				// Obtiene los resultados
+				// Adecuaciones iniciales
 				DOM.botonSubmit.classList.add("inactivo");
 				DOM.botonSubmit.innerHTML = "Buscando";
-				const palabrasClave = FN.palabrasClave(DOM.inputPalsClave.value);
-				resultados = await fetch(rutas.cantProductos + palabrasClave).then((n) => n.json());
+				DOM.resultado.innerHTML = "<br>";
+
+				// Obtiene los resultados
+				const palabrasClave = DOM.inputPalsClave.value.trim();
+				const APIs = [...APIs_buscar];
+				APIs[0].ruta += "&palabrasClave=" + palabrasClave;
+				resultados = await barraProgreso(rutas.pre, APIs);
 
 				// Muestra los resultados
-				FN.muestraResultados();
-				FN.avanzar();
-				DOM.botonSubmit.classList.remove("inactivo");
+				this.muestraResultados();
 
 				// Fin
 				return;
@@ -152,9 +95,33 @@ window.addEventListener("load", async () => {
 			// Acciones si el botón está listo para avanzar
 			if (DOM.botonSubmit.className.includes("verdeOscuro")) return DOM.form.submit(); // post
 		},
+		muestraResultados: () => {
+			// Variables
+			const {cantProds, cantProdsNuevos, hayMas, mensaje} = resultados;
+
+			// Determinar el formato
+			const formatoVigente = cantProds && !hayMas && cantProdsNuevos ? "resultadoExitoso" : "resultadoInvalido";
+
+			// Publica el resultado
+			DOM.resultado.innerHTML = mensaje;
+			DOM.resultado.classList.remove(...DOM.resultado.classList);
+			DOM.resultado.classList.add(formatoVigente);
+
+			// Formato botón submit
+			DOM.botonSubmit.classList.replace("verdeClaro", "verdeOscuro");
+			DOM.botonSubmit.classList.remove("inactivo");
+
+			// Contenido botón submit
+			const resultado = resultados.cantProds ? "Desambiguar" : "Ingr. Man.";
+			DOM.botonSubmit.innerHTML = resultado;
+			DOM.inputMetodo.value = resultado;
+
+			// Fin
+			return;
+		},
 	};
 
-	// ADD EVENT LISTENERS *********************************
+	// ADD EVENT LISTENERS
 	DOM.form.addEventListener("keypress", (e) => keyPressed(e));
 	DOM.form.addEventListener("input", async (e) => {
 		amplio.restringeCaracteres(e, true); // Validaciones estándar
@@ -165,16 +132,16 @@ window.addEventListener("load", async () => {
 	});
 
 	// Submit
-	DOM.form.addEventListener("submit", (e) => FN.submitForm(e));
-	DOM.botonSubmit.addEventListener("click", (e) => FN.submitForm(e));
+	DOM.form.addEventListener("submit", (e) => FN.submit(e));
+	DOM.botonSubmit.addEventListener("click", (e) => FN.submit(e));
 	DOM.form.addEventListener("keydown", (e) => {
-		if (e.key == "Enter") FN.submitForm(e);
+		if (e.key == "Enter") FN.submit(e);
 	});
 
-	// STATUS INICIAL *************************************
-	FN.statusInicial();
+	// Start-up
+	FN.muestraElErrorMasBotonSubmit();
 });
-const rutas = {
-	cantProductos: "/producto/api/pa-obtiene-la-cantidad-de-prods/?palabrasClave=",
-	validaDatos: "/producto/api/pa-valida-pc/?",
-};
+
+// Variables
+rutas.validaDatos = "/producto/api/pa-valida-pc/?";
+let resultados = {};

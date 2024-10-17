@@ -17,20 +17,11 @@ window.addEventListener("load", async () => {
 	};
 
 	// Obtiene los datos de session
-	const rutaBuscaInfoDeSession = rutas.session;
-	let desambiguar = await fetch(rutaBuscaInfoDeSession).then((n) => n.json());
+	let desambiguar = await fetch(rutas.infoDeSession).then((n) => n.json());
 	if (!desambiguar) location.href = "agregar-pc"; // si no existe, redirige al paso anterior
 
 	// Si corresponde, completa los datos de sesion
-	const APIs = [
-		{ruta: "busca-los-productos", duracion: 2000},
-		{ruta: "reemplaza-las-peliculas-por-su-coleccion", duracion: 2000},
-		{ruta: "organiza-la-info", duracion: 1000},
-		{ruta: "agrega-hallazgos-de-IM-y-FA", duracion: 200},
-		{ruta: "obtiene-el-mensaje", duracion: 200},
-		{ruta: buscaInfo, duracion: 200},
-	];
-	if (!desambiguar.mensaje) desambiguar = await barraProgreso(rutas.pre, APIs);
+	if (!desambiguar.mensaje) desambiguar = await barraProgreso(rutas.pre, APIs_buscar);
 	const {prodsNuevos, prodsYaEnBD, mensaje} = desambiguar;
 
 	// Agrega el mensaje
@@ -121,13 +112,9 @@ window.addEventListener("load", async () => {
 });
 
 // Variables
-const rutas = {
-	pre: "/producto/api/pa-",
-	actualiza: "actualiza-datos-originales/?datos=",
-	valida: "valida-ds",
-};
-const buscaInfo = "busca-info-de-session";
-rutas.session = rutas.pre + buscaInfo;
+rutas.actualiza= "obtiene-mas-info-del-prod/?datos="
+rutas.valida= "valida-ds";
+rutas.infoDeSession = rutas.pre + rutas.buscaInfo;
 
 // Funciones
 const accionesAlElegirProdNuevo = (DOM) => {
@@ -160,7 +147,7 @@ const accionesAlElegirProdNuevo = (DOM) => {
 				{ruta: rutas.actualiza + JSON.stringify(datos), duracion: 900},
 				{ruta: rutas.valida, duracion: 200},
 			];
-			const errores = await barraProgreso(rutas.pre, APIs);
+			errores = await barraProgreso(rutas.pre, APIs);
 
 			// Fin
 			if (errores.hay) location.href = "agregar-dd";

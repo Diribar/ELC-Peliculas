@@ -3,38 +3,34 @@
 const procesos = require("../../rutas_y_contrs/2.1-Prods-Agregar/PA-FN4-Procesos");
 
 module.exports = (req, res, next) => {
-	// Variables - Acciones comunes entre los pasos de 'producto agregar'
-	const entidad = comp.obtieneEntidadDesdeUrl(req);
-	const codigoUrl = req.url.slice(1);
-	const pasos = [
-		{url: "agregar-pc", codigo: "palabrasClave", esProducto: true},
-		{url: "agregar-ds", codigo: "desambiguar", esProducto: true},
-		{url: "agregar-im", codigo: "IM", esProducto: true},
-		{url: "agregar-fa", codigo: "FA"},
-		{url: "agregar-dd", codigo: "datosDuros"},
-		{url: "agregar-da", codigo: "datosAdics"},
-		{url: "agregar-cn", codigo: "confirma"},
-		{url: "agregar-tr", codigo: "terminaste"},
+	// Variables - Acciones comunes entre las etapas de 'producto agregar'
+	const {tarea:codigoUrl, entidad} = comp.partesDelUrl(req);
+	const tarea = codigoUrl.slice(1);
+	const etapas = [
+		{tarea: "agregar-pc", codigo: "palabrasClave", esProducto: true},
+		{tarea: "agregar-ds", codigo: "desambiguar", esProducto: true},
+		{tarea: "agregar-im", codigo: "IM", esProducto: true},
+		{tarea: "agregar-fa", codigo: "FA"},
+		{tarea: "agregar-dd", codigo: "datosDuros"},
+		{tarea: "agregar-da", codigo: "datosAdics"},
+		{tarea: "agregar-cn", codigo: "confirma"},
+		{tarea: "agregar-tr", codigo: "terminaste"},
 	];
 	const entidades = variables.entidades.prods;
-	const paso = pasos.find((n) => codigoUrl.startsWith(n.url));
-	const {codigo, esProducto} = paso;
+	const etapa = etapas.find((n) => n.tarea == tarea);
+	const {codigo, esProducto} = etapa;
 	const datos = req.session[codigo] ? req.session[codigo] : req.cookies[codigo];
 
 	// Si no está la session/cookie actual, redirige a la url anterior
 	if (!datos && codigo != "palabrasClave") {
-		const indice = pasos.findIndex((n) => n.url == codigoUrl);
+		const indice = etapas.findIndex((n) => n.tarea == tarea);
 		// Si no es "datosDuros", redirige a la url anterior
-		if (codigo != "datosDuros") return res.redirect(pasos[indice - 1].url);
-		// Averigua cuál fue el paso anterior a "datosDuros", y redirige a la url anterior
+		if (codigo != "datosDuros") return res.redirect(etapas[indice - 1].url);
+		// Averigua cuál fue la etapa anterior a "datosDuros", y redirige a la url anterior
 		else {
 			// Obtiene el origen
 			const origen =
-				req.session.FA || req.cookies.FA
-					? "agregar-fa"
-					: req.session.IM || req.cookies.IM
-					? "agregar-im"
-					: "agregar-ds";
+				req.session.FA || req.cookies.FA ? "agregar-fa" : req.session.IM || req.cookies.IM ? "agregar-im" : "agregar-ds";
 			// Redirecciona
 			return res.redirect(origen);
 		}
@@ -44,7 +40,7 @@ module.exports = (req, res, next) => {
 		(esProducto && entidad != "producto") || // la entidad no es 'producto' y debería serlo
 		(!esProducto && !entidades.includes(entidad)) // la entidad no es válida
 	)
-		return res.redirect("/" + (esProducto ? "producto" : datos.entidad) + "/" + codigoUrl);
+		return res.redirect("/" + (esProducto ? "producto" : datos.entidad) + codigoUrl);
 
 	// Tareas si es 'GET',
 	if (req.method == "GET") {

@@ -13,7 +13,6 @@ module.exports = {
 			const errores = valida.palabrasClave(palabrasClave);
 			return res.json(errores);
 		},
-		// Averigua si la info tiene errores
 		desambiguar: async (req, res) => {
 			// Variables
 			let datosDuros = req.cookies.datosOriginales;
@@ -40,7 +39,6 @@ module.exports = {
 			// Fin
 			return res.json(errores);
 		},
-		// Vista (datosDuros)
 		datosDuros: async (req, res) => {
 			// Variables
 			const datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
@@ -65,52 +63,36 @@ module.exports = {
 		},
 	},
 
-	// Vista (palabrasClave)
-	cantProductos: async (req, res) => {
+	// Vista (palabrasClave) - Busca valores 'session'
+	buscaInfoDeSession_pc: async (req, res) => {
 		// Variables
-		const {palabrasClave} = req.query;
-		let cantProdsNuevos;
+		const {palabrasClave, pc_ds} = req.session;
 
-		// Obtiene los productos
-		const resultado = await buscar_x_PC.buscaProds(palabrasClave);
-
-		// Revisa si debe reemplazar una película por su colección
-		const productos = await buscar_x_PC.reemplPeliPorColec(resultado.productos);
-
-		// Agrega hallazgos de IM y FA
-		const prodsIMFA = await procesos.prodsIMFA(palabrasClave);
-
-		// Prepara la respuesta
-		const cantProds = productos.length + prodsIMFA.length;
-		const {hayMas} = resultado;
-
-		// Averigua la cantidad de prodsNuevos
-		if (cantProds) {
-			const TMDB_ids = productos.map((n) => n.TMDB_id);
-			let pelis = baseDeDatos.obtieneTodosPorCondicion("peliculas", {TMDB_id: TMDB_ids});
-			let coles = baseDeDatos.obtieneTodosPorCondicion("colecciones", {TMDB_id: TMDB_ids});
-			[pelis, coles] = await Promise.all([pelis, coles]);
-			cantProdsNuevos = cantProds - pelis.length - coles.length - prodsIMFA.length;
-		} else cantProdsNuevos = 0;
+		// Corrije la respuesta
+		const respuesta = !palabrasClave
+			? null
+			: !pc_ds || palabrasClave != pc_ds.palabrasClave
+			? {palabrasClave}
+			: {palabrasClave, ...pc_ds};
 
 		// Fin
-		return res.json({cantProds, cantProdsNuevos, hayMas});
+		res.json(respuesta);
 	},
-
-	// Vista (desambiguar)
-	desambForm: {
-		// Busca valores 'session'
-		buscaInfoDeSession: async (req, res) => res.json(req.session.desambiguar),
+	pc_ds: {
 		// Busca los productos
 		buscaProds: async (req, res) => {
 			// Variables
-			const {palabrasClave} = req.session.desambiguar;
+			const {session} = req.query;
+			const palabrasClave = req.query.palabrasClave ? req.query.palabrasClave : req.session[session];
+
+			// Guarda las palabrasClave en session
+			if (!req.session.palabrasClave) req.session.palabrasClave = palabrasClave;
 
 			// Obtiene los datos
 			const resultados = await buscar_x_PC.buscaProds(palabrasClave);
 
 			// Conserva la información en session
-			req.session.desambiguar = {palabrasClave, ...resultados};
+			req.session.pc_ds = {palabrasClave, ...resultados}; // 'palabrasClave', 'productos', 'cantPaginasAPI', 'cantPaginasUsadas', 'hayMas'
 
 			// Fin
 			return res.json();
@@ -118,25 +100,25 @@ module.exports = {
 		// Reemplaza las películas por su colección
 		reemplPeliPorColec: async (req, res) => {
 			// Variables
-			let {productos} = req.session.desambiguar;
+			let {productos} = req.session.pc_ds;
 
 			// Revisa si debe reemplazar una película por su colección
 			productos = await buscar_x_PC.reemplPeliPorColec(productos);
 
 			// Conserva la información en session
-			req.session.desambiguar.productos = productos;
+			req.session.pc_ds.productos = productos;
 
 			// Fin
-			return res.json(); // 'productos', 'cantPaginasAPI', 'cantPaginasUsadas', 'hayMas'
+			return res.json(); // 'palabrasClave', 'productos', 'cantPaginasAPI', 'cantPaginasUsadas', 'hayMas'
 		},
 		// Pule la información
 		organizaLaInfo: async (req, res) => {
 			// Organiza la información
-			const resultados = await buscar_x_PC.organizaLaInfo(req.session.desambiguar);
+			const resultados = await buscar_x_PC.organizaLaInfo(req.session.pc_ds);
 
 			// Conserva la información en session para no tener que procesarla de nuevo
-			delete req.session.desambiguar.productos;
-			req.session.desambiguar = {...req.session.desambiguar, ...resultados};
+			delete req.session.pc_ds.productos;
+			req.session.pc_ds = {...req.session.pc_ds, ...resultados};
 
 			// Fin
 			return res.json();
@@ -144,8 +126,9 @@ module.exports = {
 		// Obtiene los hallazgos de origen IM y FA
 		agregaHallazgosDeIMFA: async (req, res) => {
 			// Variables
-			const {palabrasClave} = req.session.desambiguar;
-			let {prodsYaEnBD} = req.session.desambiguar;
+			const {palabrasClave} = req.session.pc_ds;
+
+			let {prodsYaEnBD} = req.session.pc_ds;
 
 			// Obtiene los productos afines, ingresados por fuera de TMDB
 			const prodsIMFA = await procesos.prodsIMFA(palabrasClave);
@@ -155,14 +138,14 @@ module.exports = {
 			prodsYaEnBD.sort((a, b) => b.anoEstreno - a.anoEstreno);
 
 			// Conserva la información en session para no tener que procesarla de nuevo
-			req.session.desambiguar.prodsYaEnBD = prodsYaEnBD;
+			req.session.pc_ds.prodsYaEnBD = prodsYaEnBD;
 
 			// Fin
 			return res.json();
 		},
 		obtieneElMensaje: (req, res) => {
 			// Variables
-			const {prodsNuevos, prodsYaEnBD, hayMas} = req.session.desambiguar;
+			const {prodsNuevos, prodsYaEnBD, hayMas} = req.session.pc_ds;
 			const cantNuevos = prodsNuevos.length;
 			const coincidencias = cantNuevos + prodsYaEnBD.length;
 
@@ -182,26 +165,41 @@ module.exports = {
 				" está" +
 				(cantNuevos > 1 && cantNuevos < coincidencias ? "n" : "") +
 				" en nuestra BD.";
-			req.session.desambiguar.mensaje = mensaje;
+			req.session.pc_ds.mensaje = mensaje;
 
 			// Fin
 			return res.json();
 		},
 	},
-	// Actualiza Datos Originales
-	actualizaDatosOrig: async (req, res) => {
-		// Variables
-		const datos = JSON.parse(req.query.datos);
 
-		// Obtiene más información del producto
-		const TMDB_entidad = datos.TMDB_entidad;
-		const infoTMDBparaDD = await procsDesamb[TMDB_entidad].obtieneInfo(datos);
-		if (!infoTMDBparaDD.avatar) infoTMDBparaDD.imgOpcional = "NO";
+	// Vista (desambiguar)
+	desamb: {
+		// Busca valores 'session'
+		buscaInfoDeSession: async (req, res) => {
+			// Variables
+			const {desambiguar: palabrasClave, pc_ds} = req.session;
 
-		// Guarda los datos originales en una cookie
-		res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
-		// Fin
-		return res.json();
+			// Corrije la respuesta
+			const respuesta = !pc || palabrasClave != pc_ds.palabrasClave ? {palabrasClave} : {palabrasClave, ...pc_ds};
+
+			// Fin
+			res.json(respuesta);
+		},
+		// Actualiza Datos Originales
+		obtieneMasInfoDelProd: async (req, res) => {
+			// Variables
+			const datos = JSON.parse(req.query.datos);
+
+			// Obtiene más información del producto
+			const TMDB_entidad = datos.TMDB_entidad;
+			const infoTMDBparaDD = await procsDesamb[TMDB_entidad].obtieneInfo(datos);
+			if (!infoTMDBparaDD.avatar) infoTMDBparaDD.imgOpcional = "NO";
+
+			// Guarda los datos originales en una cookie
+			res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
+			// Fin
+			return res.json();
+		},
 	},
 
 	// Vista (datosAdics)
