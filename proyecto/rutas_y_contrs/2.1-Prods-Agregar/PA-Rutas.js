@@ -32,19 +32,21 @@ router.get("/api/pa-valida-dd", API.validacs.datosDuros);
 router.get("/api/pa-valida-da", API.validacs.datosAdics);
 router.get("/api/pa-valida-fa", API.validacs.copiarFA);
 
-// APIs - Desambiguar Form
-router.get("/api/pa-busca-info-de-session", API.desambForm.buscaInfoDeSession);
-router.get("/api/pa-busca-los-productos", API.desambForm.buscaProds);
-router.get("/api/pa-reemplaza-las-peliculas-por-su-coleccion", API.desambForm.reemplPeliPorColec);
-router.get("/api/pa-organiza-la-info", API.desambForm.organizaLaInfo);
-router.get("/api/pa-agrega-hallazgos-de-IM-y-FA", API.desambForm.agregaHallazgosDeIMFA);
-router.get("/api/pa-obtiene-el-mensaje", API.desambForm.obtieneElMensaje);
+// APIs - Palabras clave
+router.get("/api/pa-busca-info-de-session-pc", API.buscaInfoDeSession_pc);
 
-// APIs - Desambiguar - Guardar
-router.get("/api/pa-actualiza-datos-originales", API.actualizaDatosOrig);
+// APIs - Palabras clave y Desambiguar
+router.get("/api/pa-busca-los-productos", API.pc_ds.buscaProds);
+router.get("/api/pa-reemplaza-las-peliculas-por-su-coleccion", API.pc_ds.reemplPeliPorColec);
+router.get("/api/pa-organiza-la-info", API.pc_ds.organizaLaInfo);
+router.get("/api/pa-agrega-hallazgos-de-IM-y-FA", API.pc_ds.agregaHallazgosDeIMFA);
+router.get("/api/pa-obtiene-el-mensaje", API.pc_ds.obtieneElMensaje);
+
+// APIs - Desambiguar
+router.get("/api/pa-busca-info-de-session-ds", API.desamb.buscaInfoDeSession);
+router.get("/api/pa-obtiene-mas-info-del-prod", API.desamb.obtieneMasInfoDelProd);
 
 // APIs - Varias
-router.get("/api/pa-obtiene-la-cantidad-de-prods", API.cantProductos); // palabras clave
 router.get("/api/pa-obtiene-colecciones", API.averiguaColecciones); // im
 router.get("/api/pa-obtiene-cant-temps", API.averiguaCantTemps); // im
 router.get("/api/pa-obtiene-fa-id", API.obtieneFA_id); // fa
