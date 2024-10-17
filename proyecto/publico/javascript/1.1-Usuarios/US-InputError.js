@@ -48,7 +48,7 @@ window.addEventListener("load", () => {
 			}
 
 			// Averigua los errores
-			let errores =
+			errores =
 				campo != "avatar" || // no es un avatar
 				DOM.inputs[indice].value || // tiene un valor
 				!v.esImagen || // no es una imagen
@@ -85,7 +85,7 @@ window.addEventListener("load", () => {
 		},
 		actualizaVarios: async function (indice) {
 			// Detecta si hay errores
-			let errores = await this.averiguaLosErrores(indice);
+			errores = await this.averiguaLosErrores(indice);
 
 			// Comunica los aciertos y errores
 			this.muestraLosErrores(errores, indice);
@@ -96,7 +96,7 @@ window.addEventListener("load", () => {
 		startUp: async function () {
 			// Averigua y muestra los errores
 			for (let indice = 0; indice < DOM.inputs.length; indice++) {
-				let errores = await this.averiguaLosErrores(indice);
+				errores = await this.averiguaLosErrores(indice);
 				this.muestraLosErrores(errores, indice);
 			}
 			// Botón guardar

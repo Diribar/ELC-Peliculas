@@ -322,4 +322,4 @@ const rutas = {
 
 // Errores
 let OK = {};
-let errores = {};
+errores = {};

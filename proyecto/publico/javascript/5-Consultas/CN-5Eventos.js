@@ -40,7 +40,7 @@ window.addEventListener("load", async () => {
 		else if (nombre == "palabrasClave") {
 			// Valida los caracteres ingresados
 			const palabrasClave = DOM.palClaveInput.value;
-			const errores = palabrasClave.length ? basico.validaCaracteres(palabrasClave) : false;
+			errores = palabrasClave.length ? basico.validaCaracteres(palabrasClave) : false;
 
 			// Acciones
 			DOM.palClaveIcono.classList.remove("fa-circle-xmark");

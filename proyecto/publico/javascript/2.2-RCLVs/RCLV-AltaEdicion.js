@@ -946,7 +946,7 @@ const rutas = {
 const linksUrl = ["https://es.wikipedia.org/wiki/", "https://www.google.com/search?q="];
 const googleIMG = {pre: "//google.com/search?q=", post: "&tbm=isch&tbs=isz:l&hl=es-419"};
 let OK = {};
-let errores = {};
+errores = {};
 let v;
 
 // Funciones

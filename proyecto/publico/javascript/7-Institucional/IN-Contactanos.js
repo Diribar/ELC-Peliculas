@@ -49,7 +49,7 @@ window.addEventListener("load", async () => {
 		},
 		averiguaMuestraLosErrores: async () => {
 			// Obtiene los errores
-			let errores = await fetch(v.validaDatos + v.datosUrl).then((n) => n.json());
+			errores = await fetch(v.validaDatos + v.datosUrl).then((n) => n.json());
 
 			// Acciones en función de si hay errores o no
 			v.campos.forEach((campo, indice) => {
