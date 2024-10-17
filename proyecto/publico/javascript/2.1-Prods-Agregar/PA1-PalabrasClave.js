@@ -113,21 +113,24 @@ window.addEventListener("load", async () => {
 		muestraResultados: () => {
 			// Variables
 			const {prodsNuevos, hayMas, mensaje} = resultados;
-			const formato = prodsNuevos.length && !hayMas ? "resultadoExitoso" : "resultadoInvalido";
 
 			// Publica el resultado
-			DOM.resultado.innerHTML = mensaje.palabrasClave;
-			DOM.resultado.classList.remove(...DOM.resultado.classList);
+			const formato = prodsNuevos && prodsNuevos.length && !hayMas ? "resultadoExitoso" : "resultadoInvalido";
 			DOM.resultado.classList.add(formato);
+			DOM.resultado.innerHTML = mensaje ? mensaje.palabrasClave : resultados;
+			DOM.resultado.classList.remove(...DOM.resultado.classList);
+
+			// Si hubo un error en los resultados, interrumpe la función
+			if (!mensaje) return;
 
 			// Formato botón submit
 			DOM.botonSubmit.classList.replace("verdeClaro", "verdeOscuro");
 			DOM.botonSubmit.classList.remove("inactivo");
 
 			// Contenido botón submit
-			const resultado = resultados.prodsNuevos || resultados.prodsYaEnBD ? "Desambiguar" : "Ingr. Man.";
-			DOM.botonSubmit.innerHTML = resultado;
-			DOM.inputMetodo.value = resultado;
+			const proxTarea = resultados.prodsNuevos || resultados.prodsYaEnBD ? "Desambiguar" : "Ingr. Man.";
+			DOM.botonSubmit.innerHTML = proxTarea;
+			DOM.inputMetodo.value = proxTarea;
 
 			// Fin
 			return;
