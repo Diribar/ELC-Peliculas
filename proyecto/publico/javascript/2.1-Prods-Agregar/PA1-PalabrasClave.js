@@ -18,7 +18,7 @@ window.addEventListener("load", async () => {
 	};
 	let resultados = {};
 
-	// FUNCIONES *******************************************
+	// Funciones
 	const FN = {
 		particsInput: async (e) => {
 			// Actualiza el 'botonSubmit' a 'Verificar'
@@ -39,18 +39,6 @@ window.addEventListener("load", async () => {
 
 			// Fin
 			return;
-		},
-		palabrasClave: (input) => {
-			// Variables
-			let palabrasClave = input.trim();
-
-			// Procesando la información
-			DOM.resultado.innerHTML = "Procesando la información...";
-			DOM.resultado.classList.remove(...DOM.resultado.classList);
-			DOM.resultado.classList.add("resultadoEnEspera");
-
-			// Obtiene el link
-			return palabrasClave;
 		},
 		muestraResultados: async () => {
 			// Variables
@@ -134,10 +122,16 @@ window.addEventListener("load", async () => {
 
 			// Acciones si el botón está listo para buscar
 			if (DOM.botonSubmit.className.includes("verdeClaro")) {
-				// Obtiene los resultados
+				// Adecuaciones iniciales
 				DOM.botonSubmit.classList.add("inactivo");
 				DOM.botonSubmit.innerHTML = "Buscando";
-				const palabrasClave = FN.palabrasClave(DOM.inputPalsClave.value);
+				DOM.resultado.innerHTML = "";
+
+				// Obtiene los resultados
+				const palabrasClave = DOM.inputPalsClave.value.trim();
+				const APIs = [...APIs_buscar];
+				APIs[0].ruta += "&palabrasClave=" + palabrasClave;
+				await barraProgreso(pre, APIs);
 				resultados = await fetch(rutas.cantProductos + palabrasClave).then((n) => n.json());
 
 				// Muestra los resultados
@@ -154,7 +148,7 @@ window.addEventListener("load", async () => {
 		},
 	};
 
-	// ADD EVENT LISTENERS *********************************
+	// ADD EVENT LISTENERS
 	DOM.form.addEventListener("keypress", (e) => keyPressed(e));
 	DOM.form.addEventListener("input", async (e) => {
 		amplio.restringeCaracteres(e, true); // Validaciones estándar
@@ -171,10 +165,9 @@ window.addEventListener("load", async () => {
 		if (e.key == "Enter") FN.submitForm(e);
 	});
 
-	// STATUS INICIAL *************************************
+	// Start-up
 	FN.statusInicial();
 });
-const rutas = {
-	cantProductos: "/producto/api/pa-obtiene-la-cantidad-de-prods/?palabrasClave=",
-	validaDatos: "/producto/api/pa-valida-pc/?",
-};
+
+// Variables
+rutas.validaDatos = "/producto/api/pa-valida-pc/?";
