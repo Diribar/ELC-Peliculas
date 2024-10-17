@@ -97,10 +97,8 @@ window.addEventListener("load", async () => {
 		},
 		muestraResultados: () => {
 			// Variables
-			const {cantProds, cantProdsNuevos, hayMas, mensaje} = resultados;
-
-			// Determinar el formato
-			const formatoVigente = cantProds && !hayMas && cantProdsNuevos ? "resultadoExitoso" : "resultadoInvalido";
+			const {prodsNuevos, hayMas, mensaje} = resultados;
+			const formatoVigente = prodsNuevos.length && !hayMas ? "resultadoExitoso" : "resultadoInvalido";
 
 			// Publica el resultado
 			DOM.resultado.innerHTML = mensaje;
