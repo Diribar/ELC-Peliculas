@@ -65,7 +65,7 @@ module.exports = {
 
 	// Vista (palabrasClave)
 	// Busca valores 'session'
-	buscaInfoDeSession_pc: async (req, res) => res.json(req.session.desambiguar),
+	buscaInfoDeSession_pc: async (req, res) => res.json(req.session.palabrasClave),
 	pc_ds: {
 		// Busca los productos
 		buscaProds: async (req, res) => {
