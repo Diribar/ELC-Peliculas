@@ -19,7 +19,7 @@
 		}
 	}
 	#cartelProgreso {
-		border: none; padding: 0; top: 0; left: 0; translate: none;
+		border: none; padding: 0; top: 2px; left: 0; translate: none;
 		#contorno {width: 250px;}
 	}
 	#fuentesDeInfo {margin: 10px 0 0 15px; font-style: italic;}
