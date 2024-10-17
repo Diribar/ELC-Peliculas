@@ -98,12 +98,12 @@ window.addEventListener("load", async () => {
 		muestraResultados: () => {
 			// Variables
 			const {prodsNuevos, hayMas, mensaje} = resultados;
-			const formatoVigente = prodsNuevos.length && !hayMas ? "resultadoExitoso" : "resultadoInvalido";
+			const formato = prodsNuevos.length && !hayMas ? "resultadoExitoso" : "resultadoInvalido";
 
 			// Publica el resultado
 			DOM.resultado.innerHTML = mensaje.palabrasClave;
 			DOM.resultado.classList.remove(...DOM.resultado.classList);
-			DOM.resultado.classList.add(formatoVigente);
+			DOM.resultado.classList.add(formato);
 
 			// Formato botón submit
 			DOM.botonSubmit.classList.replace("verdeClaro", "verdeOscuro");
