@@ -63,8 +63,7 @@ module.exports = {
 		},
 	},
 
-	// Vista (palabrasClave)
-	// Busca valores 'session'
+	// Vista (palabrasClave) - Busca valores 'session'
 	buscaInfoDeSession_pc: async (req, res) => {
 		// Variables
 		const {palabrasClave, pc_ds} = req.session;
@@ -72,7 +71,7 @@ module.exports = {
 		// Corrije la respuesta
 		const respuesta = !palabrasClave
 			? null
-			: !pc || palabrasClave != pc_ds.palabrasClave
+			: !pc_ds || palabrasClave != pc_ds.palabrasClave
 			? {palabrasClave}
 			: {palabrasClave, ...pc_ds};
 
@@ -86,11 +85,14 @@ module.exports = {
 			const {session} = req.query;
 			const palabrasClave = req.query.palabrasClave ? req.query.palabrasClave : req.session[session];
 
+			// Guarda las palabrasClave en session
+			if (!req.session.palabrasClave) req.session.palabrasClave = palabrasClave;
+
 			// Obtiene los datos
 			const resultados = await buscar_x_PC.buscaProds(palabrasClave);
 
 			// Conserva la información en session
-			req.session.pc_ds = {palabrasClave, ...resultados};
+			req.session.pc_ds = {palabrasClave, ...resultados}; // 'palabrasClave', 'productos', 'cantPaginasAPI', 'cantPaginasUsadas', 'hayMas'
 
 			// Fin
 			return res.json();
@@ -98,25 +100,25 @@ module.exports = {
 		// Reemplaza las películas por su colección
 		reemplPeliPorColec: async (req, res) => {
 			// Variables
-			let {productos} = req.session.desambiguar;
+			let {productos} = req.session.pc_ds;
 
 			// Revisa si debe reemplazar una película por su colección
 			productos = await buscar_x_PC.reemplPeliPorColec(productos);
 
 			// Conserva la información en session
-			req.session.desambiguar.productos = productos;
+			req.session.pc_ds.productos = productos;
 
 			// Fin
-			return res.json(); // 'productos', 'cantPaginasAPI', 'cantPaginasUsadas', 'hayMas'
+			return res.json(); // 'palabrasClave', 'productos', 'cantPaginasAPI', 'cantPaginasUsadas', 'hayMas'
 		},
 		// Pule la información
 		organizaLaInfo: async (req, res) => {
 			// Organiza la información
-			const resultados = await buscar_x_PC.organizaLaInfo(req.session.desambiguar);
+			const resultados = await buscar_x_PC.organizaLaInfo(req.session.pc_ds);
 
 			// Conserva la información en session para no tener que procesarla de nuevo
-			delete req.session.desambiguar.productos;
-			req.session.desambiguar = {...req.session.desambiguar, ...resultados};
+			delete req.session.pc_ds.productos;
+			req.session.pc_ds = {...req.session.pc_ds, ...resultados};
 
 			// Fin
 			return res.json();
@@ -124,8 +126,9 @@ module.exports = {
 		// Obtiene los hallazgos de origen IM y FA
 		agregaHallazgosDeIMFA: async (req, res) => {
 			// Variables
-			const {palabrasClave} = req.session.desambiguar;
-			let {prodsYaEnBD} = req.session.desambiguar;
+			const {palabrasClave} = req.session.pc_ds;
+
+			let {prodsYaEnBD} = req.session.pc_ds;
 
 			// Obtiene los productos afines, ingresados por fuera de TMDB
 			const prodsIMFA = await procesos.prodsIMFA(palabrasClave);
@@ -135,14 +138,14 @@ module.exports = {
 			prodsYaEnBD.sort((a, b) => b.anoEstreno - a.anoEstreno);
 
 			// Conserva la información en session para no tener que procesarla de nuevo
-			req.session.desambiguar.prodsYaEnBD = prodsYaEnBD;
+			req.session.pc_ds.prodsYaEnBD = prodsYaEnBD;
 
 			// Fin
 			return res.json();
 		},
 		obtieneElMensaje: (req, res) => {
 			// Variables
-			const {prodsNuevos, prodsYaEnBD, hayMas} = req.session.desambiguar;
+			const {prodsNuevos, prodsYaEnBD, hayMas} = req.session.pc_ds;
 			const cantNuevos = prodsNuevos.length;
 			const coincidencias = cantNuevos + prodsYaEnBD.length;
 
@@ -162,7 +165,7 @@ module.exports = {
 				" está" +
 				(cantNuevos > 1 && cantNuevos < coincidencias ? "n" : "") +
 				" en nuestra BD.";
-			req.session.desambiguar.mensaje = mensaje;
+			req.session.pc_ds.mensaje = mensaje;
 
 			// Fin
 			return res.json();
