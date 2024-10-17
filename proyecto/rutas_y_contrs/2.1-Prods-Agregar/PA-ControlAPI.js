@@ -92,7 +92,7 @@ module.exports = {
 			const resultados = await buscar_x_PC.buscaProds(palabrasClave);
 
 			// Conserva la información en session
-			req.session.pc_ds = {palabrasClave, ...resultados}; // 'palabrasClave', 'productos', 'cantPaginasAPI', 'cantPaginasUsadas', 'hayMas'
+			req.session.pc_ds = {palabrasClave, session, ...resultados}; // 'palabrasClave', 'productos', 'cantPaginasAPI', 'cantPaginasUsadas', 'hayMas'
 
 			// Fin
 			return res.json();
@@ -145,29 +145,54 @@ module.exports = {
 		},
 		obtieneElMensaje: (req, res) => {
 			// Variables
-			const {prodsNuevos, prodsYaEnBD, hayMas} = req.session.pc_ds;
+			const {prodsNuevos, prodsYaEnBD, hayMas, session} = req.session.pc_ds;
 			const cantNuevos = prodsNuevos.length;
 			const coincidencias = cantNuevos + prodsYaEnBD.length;
+			let mensaje;
 
-			// Obtiene el mensaje
-			const mensaje =
-				"Encontramos " +
-				(coincidencias == 1
-					? "una sola coincidencia, que " + (cantNuevos == 1 ? "no" : "ya")
-					: (hayMas ? "muchas" : coincidencias) +
-					  " coincidencias" +
-					  (hayMas ? ". Te mostramos " + coincidencias : "") +
-					  (cantNuevos == coincidencias
-							? ", ninguna"
-							: cantNuevos
-							? ", de las cuales " + cantNuevos + " no"
-							: ", todas ya")) +
-				" está" +
-				(cantNuevos > 1 && cantNuevos < coincidencias ? "n" : "") +
-				" en nuestra BD.";
-			req.session.pc_ds.mensaje = mensaje;
+			// Obtiene el mensaje para 'palabrasClave'
+			if (session == "palabrasClave") {
+				// Variables
+				const cantProds = prodsNuevos.length + prodsYaEnBD.length;
+
+				// Se encontraron productos y no quedaron más por buscar
+				if (cantProds && !hayMas) {
+					// Más variables
+					const cantProdsNuevos = prodsNuevos.length;
+					const plural = cantProdsNuevos > 1 ? "s" : "";
+
+					// Obtiene el mensaje
+					mensaje = cantProdsNuevos
+						? "Encontramos " + cantProdsNuevos + " coincidencia" + plural + " nueva" + plural
+						: "No encontramos ninguna coincidencia nueva";
+					if (cantProds > cantProdsNuevos) mensaje += ", y " + (cantProds - cantProdsNuevos) + " ya en BD";
+				}
+				// Quedaron casos por buscar o no se hallaron productos
+				else
+					mensaje = hayMas
+						? "Hay demasiadas coincidencias (+" + cantProds + "), intentá ser más específico"
+						: "No encontramos ninguna coincidencia";
+			}
+			// Obtiene el mensaje para 'desambiguar'
+			else
+				mensaje =
+					"Encontramos " +
+					(coincidencias == 1
+						? "una sola coincidencia, que " + (cantNuevos == 1 ? "no" : "ya")
+						: (hayMas ? "muchas" : coincidencias) +
+						  " coincidencias" +
+						  (hayMas ? ". Te mostramos " + coincidencias : "") +
+						  (cantNuevos == coincidencias
+								? ", ninguna"
+								: cantNuevos
+								? ", de las cuales " + cantNuevos + " no"
+								: ", todas ya")) +
+					" está" +
+					(cantNuevos > 1 && cantNuevos < coincidencias ? "n" : "") +
+					" en nuestra BD.";
 
 			// Fin
+			req.session.pc_ds.mensaje = mensaje;
 			return res.json();
 		},
 	},
