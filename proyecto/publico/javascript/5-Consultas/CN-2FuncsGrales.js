@@ -1,6 +1,6 @@
 "use strict";
 
-let obtiene = {
+const obtiene = {
 	cabecera: () => {
 		const rutaCompleta = ruta + "obtiene-la-cabecera/?id=";
 		const id = DOM.cabecera_id.value;
@@ -24,7 +24,7 @@ let obtiene = {
 		return fetch(rutaCompleta).then((n) => n.json());
 	},
 };
-let actualiza = {
+const actualiza = {
 	valoresInicialesDeVariables: async () => {
 		// Variables autónomas
 		v.hayCambiosDeCampo = false;
@@ -167,7 +167,6 @@ let actualiza = {
 
 		// Partes a mostrar
 		DOM.quieroVer.classList.remove("ocultar");
-		v.mostrarCartelQuieroVer = true;
 
 		// Fin
 		return;
@@ -203,7 +202,7 @@ let actualiza = {
 		return;
 	},
 };
-let cambiosEnBD = {
+const cambiosEnBD = {
 	actualizaEnUsuarioConfigCons_id: () => {
 		if (!v.usuario_id || !cabecera.id) return;
 
@@ -333,7 +332,7 @@ let cambiosEnBD = {
 		return;
 	},
 };
-let sessionCookie = {
+const sessionCookie = {
 	guardaConfig: () => {
 		// Variables
 		const rutaCompleta = ruta + "guarda-la-configuracion-en-session-y-cookie/?configCons=";
@@ -352,7 +351,7 @@ let sessionCookie = {
 		return;
 	},
 };
-let cambioDeConfig_id = async (texto) => {
+const cambioDeConfig_id = async (texto) => {
 	// Funciones
 	await actualiza.valoresInicialesDeVariables(); // revisada
 	if (cabecera.id && v.usuario_id) cambiosEnBD.actualizaEnUsuarioConfigCons_id(); // revisada
@@ -363,7 +362,7 @@ let cambioDeConfig_id = async (texto) => {
 	// Fin
 	return;
 };
-let accionesEstandarPorInputs = async () => {
+const accionesEstandarPorInputs = async () => {
 	// Cambios de campo
 	v.hayCambiosDeCampo = true;
 	await accionesPorCambioDePrefs();
@@ -374,23 +373,23 @@ let accionesEstandarPorInputs = async () => {
 	// Fin
 	return;
 };
-let accionesPorCambioDePrefs = async () => {
+const accionesPorCambioDePrefs = async () => {
 	// Cambio de clases
 	DOM.configNuevaNombre.classList.remove("nuevo");
 	DOM.configNuevaNombre.classList.remove("edicion");
 
 	// Funciones
-	actualizaConfigCons.consolidado(); // obtiene las preferencias
+	obtienePrefsDelFe.consolidado(); // obtiene las preferencias
 	actualiza.botoneraActivaInactiva(); // actualiza la botonera
 	if (v.layout_id) {
 		await FN_resultados.obtiene(); // obtiene los resultados
-		if (!v.mostrarCartelQuieroVer) FN_resultados.muestra.generico(); // muestra los resultados
+		if (v.mostrarResultados) FN_resultados.muestra.generico(); // muestra los resultados
 	}
 
 	// Fin
 	return;
 };
-let guardarBotonera = async () => {
+const guardarBotonera = async () => {
 	if (v.nuevo || v.edicion) {
 		// Obtiene el nuevo nombre
 		cabecera.nombre = DOM.configNuevaNombre.value;
@@ -420,7 +419,7 @@ let guardarBotonera = async () => {
 	// Fin
 	return;
 };
-let verificaConfigCons_id = async () => {
+const verificaConfigCons_id = async () => {
 	// Variables
 	const cabecera_id = Number(DOM.cabecera_id.value);
 

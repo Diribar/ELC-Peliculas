@@ -334,14 +334,14 @@ const obtieneSiglaFam = () =>
 const siglaFam = obtieneSiglaFam();
 
 const barraProgreso = async (pre, APIs) => {
-	//console.log(pre, APIs);
-
 	// Variables
 	const DOM = {
 		cartelProgreso: document.querySelector("#cartelProgreso"),
 		tituloCartel: document.querySelector("#cartelProgreso #titulo"),
 		progreso: document.querySelector("#cartelProgreso #progreso"),
 	};
+	const pausa = 100; // milisegundos
+	const pausaBreve = pausa / 4;
 	let duracTotal = 0;
 	let duracAcum = 0;
 	let duracEstim = 0;
@@ -349,13 +349,11 @@ const barraProgreso = async (pre, APIs) => {
 	let respuesta;
 
 	// Muestra el cartelProgreso
-	DOM.cartelProgreso.classList.remove("disminuye");
+	DOM.progreso.style.width = "0%";
+	DOM.cartelProgreso.classList.add("aparece");
 	DOM.cartelProgreso.classList.remove("ocultar");
-	DOM.cartelProgreso.classList.add("aumenta");
 
 	// Acciones si no hay productos en 'session' - Variables
-	const pausa = 100; // milisegundos
-	const pausaBreve = pausa / 4;
 	for (let API of APIs) duracTotal += API.duracion;
 
 	// Ejecuta las APIs
@@ -377,9 +375,10 @@ const barraProgreso = async (pre, APIs) => {
 			if (duracAcum < duracEstim) {
 				duracAcum += pausa;
 				desvio = Date.now() - inicio - duracAcum;
-				DOM.progreso.style.width = Math.round(((duracAcum + Math.min(desvio, pausaBreve)) / duracTotal) * 100) + "%";
+				DOM.progreso.style.width = Math.round(((duracAcum + Math.min(desvio, pausa)) / duracTotal) * 100) + "%";
 			}
 		}
+		// console.log(Date.now() - inicio, duracAcum, Date.now() - inicio - duracAcum);
 		respuesta = await respuesta;
 	}
 
@@ -391,9 +390,9 @@ const barraProgreso = async (pre, APIs) => {
 	}
 	await pierdeTiempo(200);
 
-	// Desaparece el cartelProgreso
-	cartelProgreso.classList.remove("aumenta");
-	cartelProgreso.classList.add("disminuye");
+	// Oculta el cartelProgreso
+	DOM.cartelProgreso.classList.add("ocultar");
+	DOM.cartelProgreso.classList.remove("aparece");
 
 	// Fin
 	return respuesta.json();

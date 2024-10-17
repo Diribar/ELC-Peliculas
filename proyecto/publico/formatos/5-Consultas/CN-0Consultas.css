@@ -28,7 +28,6 @@
 					}
 				}
 				#carteles {
-					#esperandoResultados {transition: .3s;}
 					button.cartel {font-size: 1.5rem; font-weight: bold; font-style: italic;}
 					.cartel {
 						&#quieroVer, &.especial {background: var(--verde-claro); color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
@@ -37,7 +36,7 @@
 							scale: 1.5; overflow: hidden;
 							#cierra {
 								top: -2px; right: -2px; translate: 0 0; padding: 2px 5px; color: var(--gris-oscuro); scale: 0.8;
-								&:hover {color: snow; background: var(--rojo-oscuro); border-bottom-left-radius: 5px; transition: 0.7s;}
+								&:hover {color: snow; background: var(--rojo-oscuro); border-bottom-left-radius: 5px; transition: 700ms;}
 							}
 
 							/* Vista de Resultados - Carteles "Especiales" - Párrafo y Tabla */

@@ -57,7 +57,6 @@ window.addEventListener("load", async () => {
 		listados: DOM.zonaDisponible.querySelector("#vistaDeResults #listados"),
 
 		// Zona Disponible - Carteles e Imagen de fondo
-		esperandoResultados: DOM.zonaDisponible.querySelector("#vistaDeResults #esperandoResultados"),
 		telonFondo: DOM.zonaDisponible.querySelector("#vistaDeResults img#telonFondo"),
 		carteles: DOM.zonaDisponible.querySelectorAll("#carteles .cartel"),
 		quieroVer: DOM.zonaDisponible.querySelector("#carteles button#quieroVer"),
@@ -87,11 +86,18 @@ window.addEventListener("load", async () => {
 	v.camposConDefault = Object.keys(v.filtrosConDefault); // 'filtrosConDefault' viene del BE
 	v.camposSinDefault = v.camposFiltros.filter((n) => !v.camposConDefault.includes(n));
 
-	// Start-up
+	// Funciones de start-up
 	await cambioDeConfig_id("start-up"); // establece el layout_id
-	actualiza.cartelQuieroVerVisible();
 	await accionesPorCambioDePrefs();
-	DOM.quieroVer.focus(); // foco en el cartel 'Quiero ver'
+
+	// Cartel 'quiero ver'
+	if (v.cliente.diasNaveg == 1) {
+		actualiza.cartelQuieroVerVisible();
+		DOM.quieroVer.focus();
+	} else {
+		v.mostrarResultados = true;
+		FN_resultados.muestra.generico();
+	}
 });
 
 // Variables

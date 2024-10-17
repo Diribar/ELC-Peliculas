@@ -6,7 +6,7 @@ const procesos = require("./PA-FN4-Procesos");
 
 module.exports = {
 	// ControllerAPI (cantProductos)
-	search: async (palabrasClave) => {
+	buscaProds: async (palabrasClave) => {
 		// Variables
 		palabrasClave = comp.letras.convierteAlIngles(palabrasClave);
 		let entidadesTMDB = ["collection", "tv", "movie"];
@@ -70,9 +70,9 @@ module.exports = {
 		}
 
 		// Fin
-		return resultados;
+		return resultados; // 'productos', 'cantPaginasAPI', 'cantPaginasUsadas', 'hayMas'
 	},
-	reemplazoDePeliPorColeccion: async (productos) => {
+	reemplPeliPorColec: async (productos) => {
 		// Funciones
 		let reemplazaSiCorresponde = async () => {
 			// Variables
@@ -306,7 +306,7 @@ module.exports = {
 };
 
 // Funciones
-let FN = {
+const FN = {
 	procesaInfoDeAPI: (prodsPorEnt, TMDB_entidad, palabrasClave) => {
 		// Descarta registros con información incompleta
 		(() => {

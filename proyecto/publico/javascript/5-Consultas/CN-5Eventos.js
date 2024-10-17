@@ -241,7 +241,7 @@ window.addEventListener("load", async () => {
 		else if (nombre == "actualizar") {
 			if (v.layout_id) {
 				await FN_resultados.obtiene();
-				if (!v.mostrarCartelQuieroVer) FN_resultados.muestra.generico();
+				if (v.mostrarResultados) FN_resultados.muestra.generico();
 			}
 			return;
 		}
@@ -274,6 +274,7 @@ window.addEventListener("load", async () => {
 
 		// Mostrar resultados - Botón 'quieroVer'
 		else if (padre.id == "carteles" && nombre == "quieroVer" && v.layout_id) {
+			v.mostrarResultados = true;
 			FN_resultados.muestra.generico();
 			return;
 		}

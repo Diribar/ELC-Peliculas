@@ -22,6 +22,14 @@ window.addEventListener("load", async () => {
 	if (!desambiguar) location.href = "agregar-pc"; // si no existe, redirige al paso anterior
 
 	// Si corresponde, completa los datos de sesion
+	const APIs = [
+		{ruta: "busca-los-productos", duracion: 2000},
+		{ruta: "reemplaza-las-peliculas-por-su-coleccion", duracion: 2000},
+		{ruta: "organiza-la-info", duracion: 1000},
+		{ruta: "agrega-hallazgos-de-IM-y-FA", duracion: 200},
+		{ruta: "obtiene-el-mensaje", duracion: 200},
+		{ruta: buscaInfo, duracion: 200},
+	];
 	if (!desambiguar.mensaje) desambiguar = await barraProgreso(rutas.pre, APIs);
 	const {prodsNuevos, prodsYaEnBD, mensaje} = desambiguar;
 
@@ -113,19 +121,13 @@ window.addEventListener("load", async () => {
 });
 
 // Variables
+const rutas = {
+	pre: "/producto/api/pa-",
+	actualiza: "actualiza-datos-originales/?datos=",
+	valida: "valida-ds",
+};
 const buscaInfo = "busca-info-de-session";
-const rutas = {pre: "/producto/api/pa-"};
-rutas.actualiza = rutas.pre + "actualiza-datos-originales/?datos=";
-rutas.valida = rutas.pre + "valida-ds";
 rutas.session = rutas.pre + buscaInfo;
-const APIs = [
-	{ruta: "busca-los-productos", duracion: 2000},
-	{ruta: "reemplaza-las-peliculas-por-su-coleccion", duracion: 2000},
-	{ruta: "organiza-la-info", duracion: 1000},
-	{ruta: "agrega-hallazgos-de-IM-y-FA", duracion: 200},
-	{ruta: "obtiene-el-mensaje", duracion: 200},
-	{ruta: buscaInfo, duracion: 200},
-];
 
 // Funciones
 const accionesAlElegirProdNuevo = (DOM) => {
@@ -144,10 +146,6 @@ const accionesAlElegirProdNuevo = (DOM) => {
 
 			// Muestra el cartelProgreso
 			DOM.tituloCartel.innerHTML = "Procesando la información...";
-			DOM.progreso.style.width = "0%";
-			DOM.cartelProgreso.classList.remove("disminuye");
-			DOM.cartelProgreso.classList.remove("ocultar");
-			DOM.cartelProgreso.classList.add("aumenta");
 
 			// Obtiene los datos
 			let datos = {
@@ -157,16 +155,12 @@ const accionesAlElegirProdNuevo = (DOM) => {
 				idiomaOriginal_id: e.target[3].value, // Es necesario porque sólo se consigue mediante 'search'
 			};
 
-			// Actualiza Datos Originales
-			await fetch(rutas.actualiza + JSON.stringify(datos)); // El 'await' es necesario para esperar a que se grabe la cookie en la controladora
-			DOM.progreso.style.width = "100%";
-
-			// 2. Averigua si la info tiene errores
-			const errores = await fetch(rutas.valida).then((n) => n.json());
-
-			// Desaparece el cartelProgreso
-			DOM.cartelProgreso.classList.remove("aumenta");
-			DOM.cartelProgreso.classList.add("disminuye");
+			// Actualiza Datos Originales y averigua si la info tiene errores
+			const APIs = [
+				{ruta: rutas.actualiza + JSON.stringify(datos), duracion: 900},
+				{ruta: rutas.valida, duracion: 200},
+			];
+			const errores = await barraProgreso(rutas.pre, APIs);
 
 			// Fin
 			if (errores.hay) location.href = "agregar-dd";

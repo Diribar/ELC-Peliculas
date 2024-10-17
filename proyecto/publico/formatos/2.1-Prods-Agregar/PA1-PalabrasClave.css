@@ -18,5 +18,9 @@
 			&.verdeClaro {background: var(--verde-claro); color: var(--verde-oscuro); border: 3px solid var(--verde-oscuro);}
 		}
 	}
+	#resultado #cartelProgreso {
+		border: none; padding: 0; top: 0; left: 0; translate: none;
+		#contorno {width: 250px;}
+	}
 	#fuentesDeInfo {margin: 10px 0 0 15px; font-style: italic;}
 }

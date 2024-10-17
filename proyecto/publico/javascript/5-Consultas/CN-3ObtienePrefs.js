@@ -1,6 +1,6 @@
 "use strict";
 
-let actualizaConfigCons = {
+let obtienePrefsDelFe = {
 	// General
 	consolidado: function () {
 		// Borra la información anterior
@@ -46,17 +46,17 @@ let actualizaConfigCons = {
 		return;
 	},
 	muestraOcultaBloques: () => {
-		// Acciones si no hay errores
+		// Acciones si existe un 'layout_id'
 		if (v.layout_id) {
 			// Muestra sectores
 			DOM.nav.classList.remove("ocultar");
 			DOM.toggleFiltros.classList.remove("ocultar"); // muestra el botón "mostrar/ocultar filtros"
-			if (v.mostrarCartelQuieroVer) DOM.quieroVer.classList.remove("ocultar");
+			if (!v.mostrarResultados) DOM.quieroVer.classList.remove("ocultar");
 		}
-		// Acciones si hay algún error que se necesita resolver
+		// Acciones si no existe
 		else {
 			// Variables
-			v.mostrarCartelQuieroVer = true;
+			v.mostrarResultados = false;
 			DOM.botones.innerHTML = "";
 			DOM.listados.innerHTML = "";
 
