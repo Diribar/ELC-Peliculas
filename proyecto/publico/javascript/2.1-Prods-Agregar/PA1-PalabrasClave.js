@@ -77,7 +77,7 @@ window.addEventListener("load", async () => {
 				// Adecuaciones iniciales
 				DOM.botonSubmit.classList.add("inactivo");
 				DOM.botonSubmit.innerHTML = "Buscando";
-				DOM.resultado.innerHTML = "";
+				DOM.resultado.innerHTML = "<br>";
 
 				// Obtiene los resultados
 				const palabrasClave = DOM.inputPalsClave.value.trim();
