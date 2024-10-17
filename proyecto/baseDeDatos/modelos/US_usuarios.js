@@ -2,11 +2,14 @@ module.exports = (sequelize, dt) => {
 	const alias = "usuarios";
 	const columns = {
 		cliente_id: {type: dt.STRING(11)},
-		versionElc: {type: dt.STRING(4)},
+		visitaCreadaEn: {type: dt.DATE},
+		creadoEn: {type: dt.DATE},
 		fechaUltNaveg: {type: dt.DATE},
+		diasNaveg: {type: dt.INTEGER},
+
+		versionElc: {type: dt.STRING(4)},
 		rolUsuario_id: {type: dt.INTEGER},
 		diasSinCartelBenefs: {type: dt.INTEGER}, // default '0' (similar a 'diasSinLogin', pero vuelve a cero cuando se muestra el cartel)
-		diasNaveg: {type: dt.INTEGER},
 
 		email: {type: dt.STRING(100)},
 		contrasena: {type: dt.STRING(50)},
@@ -48,8 +51,6 @@ module.exports = (sequelize, dt) => {
 		fechaContrasena: {type: dt.DATE},
 		fechaRevisores: {type: dt.DATE},
 
-		visitaCreadaEn: {type: dt.DATE},
-		creadoEn: {type: dt.DATE},
 		completadoEn: {type: dt.DATE},
 		editadoEn: {type: dt.DATE},
 

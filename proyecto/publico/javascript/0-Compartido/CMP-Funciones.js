@@ -16,7 +16,7 @@ const entidad = entidades.find((n) => pathname.includes(n));
 const id = new URL(location.href).searchParams.get("id");
 const edicId = new URL(location.href).searchParams.get("edicId");
 const origen = new URL(location.href).searchParams.get("origen");
-let errores
+let errores;
 
 // Funciones
 const keyPressed = (e) => {
@@ -381,6 +381,11 @@ const barraProgreso = async (pre, APIs) => {
 		}
 		// console.log(Date.now() - inicio, duracAcum, Date.now() - inicio - duracAcum);
 		respuesta = await respuesta;
+		if (respuesta.statusText != "OK") {
+			DOM.cartelProgreso.classList.add("ocultar");
+			DOM.cartelProgreso.classList.remove("aparece");
+			return "Tuvimos un problema con una API";
+		}
 	}
 
 	// Completa la barra de progreso
@@ -389,7 +394,7 @@ const barraProgreso = async (pre, APIs) => {
 		duracAcum += pausa;
 		DOM.progreso.style.width = Math.round((duracAcum / duracTotal) * 100) + "%";
 	}
-	await pierdeTiempo(200);
+	await pierdeTiempo(pausa);
 
 	// Oculta el cartelProgreso
 	DOM.cartelProgreso.classList.add("ocultar");

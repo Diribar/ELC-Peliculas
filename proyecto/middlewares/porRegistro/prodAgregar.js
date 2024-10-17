@@ -4,7 +4,7 @@ const procesos = require("../../rutas_y_contrs/2.1-Prods-Agregar/PA-FN4-Procesos
 
 module.exports = (req, res, next) => {
 	// Variables - Acciones comunes entre las etapas de 'producto agregar'
-	const {tarea:codigoUrl, entidad} = comp.partesDelUrl(req);
+	const {tarea: codigoUrl, entidad} = comp.partesDelUrl(req);
 	const tarea = codigoUrl.slice(1);
 	const etapas = [
 		{tarea: "agregar-pc", codigo: "palabrasClave", esProducto: true},
@@ -21,12 +21,14 @@ module.exports = (req, res, next) => {
 	const {codigo, esProducto} = etapa;
 	const datos = req.session[codigo] ? req.session[codigo] : req.cookies[codigo];
 
-	// Si no está la session/cookie actual, redirige a la url anterior
+	// Si no está la session/cookie actual, redirige a la tarea anterior
 	if (!datos && codigo != "palabrasClave") {
+		// Variables
 		const indice = etapas.findIndex((n) => n.tarea == tarea);
-		// Si no es "datosDuros", redirige a la url anterior
-		if (codigo != "datosDuros") return res.redirect(etapas[indice - 1].url);
-		// Averigua cuál fue la etapa anterior a "datosDuros", y redirige a la url anterior
+
+		// Si no es "datosDuros", redirige a la tarea anterior
+		if (codigo != "datosDuros") return res.redirect(etapas[indice - 1].tarea);
+		// Averigua cuál fue la etapa anterior a "datosDuros", y redirige a la tarea anterior
 		else {
 			// Obtiene el origen
 			const origen =
