@@ -38,7 +38,7 @@ module.exports = async (req, res, next) => {
 			};
 
 			// Elimina los hallazgos anteriores
-			req.session.desambiguar = "";
+			delete req.session.desambiguar;
 		}
 	}
 
