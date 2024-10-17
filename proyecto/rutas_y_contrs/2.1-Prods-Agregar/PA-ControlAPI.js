@@ -65,18 +65,32 @@ module.exports = {
 
 	// Vista (palabrasClave)
 	// Busca valores 'session'
-	buscaInfoDeSession_pc: async (req, res) => res.json(req.session.palabrasClave),
+	buscaInfoDeSession_pc: async (req, res) => {
+		// Variables
+		const {palabrasClave, pc_ds} = req.session;
+
+		// Corrije la respuesta
+		const respuesta = !palabrasClave
+			? null
+			: !pc || palabrasClave != pc_ds.palabrasClave
+			? {palabrasClave}
+			: {palabrasClave, ...pc_ds};
+
+		// Fin
+		res.json(respuesta);
+	},
 	pc_ds: {
 		// Busca los productos
 		buscaProds: async (req, res) => {
 			// Variables
-			const {palabrasClave} = req.session.desambiguar;
+			const {session} = req.query;
+			const palabrasClave = req.query.palabrasClave ? req.query.palabrasClave : req.session[session];
 
 			// Obtiene los datos
 			const resultados = await buscar_x_PC.buscaProds(palabrasClave);
 
 			// Conserva la información en session
-			req.session.desambiguar = {palabrasClave, ...resultados};
+			req.session.pc_ds = {palabrasClave, ...resultados};
 
 			// Fin
 			return res.json();
@@ -158,7 +172,16 @@ module.exports = {
 	// Vista (desambiguar)
 	desamb: {
 		// Busca valores 'session'
-		buscaInfoDeSession: async (req, res) => res.json(req.session.desambiguar),
+		buscaInfoDeSession: async (req, res) => {
+			// Variables
+			const {desambiguar: palabrasClave, pc_ds} = req.session;
+
+			// Corrije la respuesta
+			const respuesta = !pc || palabrasClave != pc_ds.palabrasClave ? {palabrasClave} : {palabrasClave, ...pc_ds};
+
+			// Fin
+			res.json(respuesta);
+		},
 		// Actualiza Datos Originales
 		obtieneMasInfoDelProd: async (req, res) => {
 			// Variables
