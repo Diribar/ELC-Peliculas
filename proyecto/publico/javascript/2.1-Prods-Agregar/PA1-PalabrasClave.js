@@ -101,7 +101,7 @@ window.addEventListener("load", async () => {
 			const formatoVigente = prodsNuevos.length && !hayMas ? "resultadoExitoso" : "resultadoInvalido";
 
 			// Publica el resultado
-			DOM.resultado.innerHTML = mensaje;
+			DOM.resultado.innerHTML = mensaje.palabrasClave;
 			DOM.resultado.classList.remove(...DOM.resultado.classList);
 			DOM.resultado.classList.add(formatoVigente);
 
@@ -110,7 +110,7 @@ window.addEventListener("load", async () => {
 			DOM.botonSubmit.classList.remove("inactivo");
 
 			// Contenido botón submit
-			const resultado = resultados.cantProds ? "Desambiguar" : "Ingr. Man.";
+			const resultado = resultados.prodsNuevos || resultados.prodsYaEnBD ? "Desambiguar" : "Ingr. Man.";
 			DOM.botonSubmit.innerHTML = resultado;
 			DOM.inputMetodo.value = resultado;
 
