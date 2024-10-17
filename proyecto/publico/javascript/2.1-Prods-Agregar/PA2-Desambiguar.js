@@ -25,7 +25,10 @@ window.addEventListener("load", async () => {
 	const {prodsNuevos, prodsYaEnBD, mensaje} = desambiguar;
 
 	// Agrega el mensaje
-	DOM.mensaje.innerHTML = mensaje.desambiguar;
+	DOM.mensaje.innerHTML = mensaje ? mensaje.desambiguar : desambiguar;
+
+	// Si hubo un error en los resultados, interrumpe la función
+	if (!mensaje) return;
 
 	// Productos nuevos
 	if (prodsNuevos.length)
@@ -112,8 +115,8 @@ window.addEventListener("load", async () => {
 });
 
 // Variables
-rutas.actualiza= "obtiene-mas-info-del-prod/?datos="
-rutas.valida= "valida-ds";
+rutas.actualiza = "obtiene-mas-info-del-prod/?datos=";
+rutas.valida = "valida-ds";
 rutas.infoDeSession = rutas.pre + rutas.buscaInfo;
 
 // Funciones
