@@ -83,7 +83,7 @@ window.addEventListener("load", async () => {
 				const palabrasClave = DOM.inputPalsClave.value.trim();
 				const APIs = [...APIs_buscar];
 				APIs[0].ruta += "&palabrasClave=" + palabrasClave;
-				resultados = await barraProgreso(pre, APIs);
+				resultados = await barraProgreso(rutas.pre, APIs);
 
 				// Muestra los resultados
 				this.muestraResultados();
