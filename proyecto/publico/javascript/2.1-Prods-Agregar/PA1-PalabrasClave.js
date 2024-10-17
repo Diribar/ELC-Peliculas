@@ -90,7 +90,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		muestraElError: async (datos, mostrarIconoError) => {
-			const errores = await fetch(rutas.validaDatos + datos).then((n) => n.json());
+			errores = await fetch(rutas.validaDatos + datos).then((n) => n.json());
 			const {palabrasClave: error} = errores;
 
 			if (error !== undefined) {
@@ -131,8 +131,7 @@ window.addEventListener("load", async () => {
 				const palabrasClave = DOM.inputPalsClave.value.trim();
 				const APIs = [...APIs_buscar];
 				APIs[0].ruta += "&palabrasClave=" + palabrasClave;
-				await barraProgreso(pre, APIs);
-				resultados = await fetch(rutas.cantProductos + palabrasClave).then((n) => n.json());
+				resultados = await barraProgreso(pre, APIs);
 
 				// Muestra los resultados
 				FN.muestraResultados();
