@@ -54,13 +54,14 @@ main #cuerpo :is(#tituloPrincipal, #tituloSecundario, .inputError) {position: re
 .errores .fa-circle-xmark.inactivo:hover .mensajeError {display: none;}
 
 /* Mensajes */
-.resultadoExitoso, .resultadoInvalido, .resultadoEnEspera, .sinResultado {padding: 3px 10px; color: white; font-weight: bold; text-align: center;}
+.resultadoExitoso, .resultadoInvalido, .resultadoEnEspera, .sinResultado {padding: 3px 10px; color: white; text-align: center;}
 .link {text-align: center; font-weight: bold; line-height: 1; padding: 1px; }
 
 /* Colores */
 .resultadoExitoso {background: var(--verde-oscuro);}
 .resultadoInvalido {background: var(--rojo-oscuro);}
 .resultadoEnEspera {background: var(--gris-oscuro);}
+.resultadoEnEspera, .sinResultado {font-weight: bold;}
 .ayudaIconoForm {background: var(--colorAyuda); color: var(--backAyuda); border-color: var(--colorAyuda);}
 .ayudaMensForm {border-color: var(--bordeAyuda); background: var(--backAyuda); color: var(--colorAyuda);}
 .ayudaMensForm * {background: transparent; color: var(--colorAyuda);}
