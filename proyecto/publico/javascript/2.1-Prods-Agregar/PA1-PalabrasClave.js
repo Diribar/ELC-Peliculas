@@ -66,7 +66,7 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		submitForm: async function (e) {
+		submit: async function (e) {
 			e.preventDefault();
 
 			// Acciones si el botón está inactivo
@@ -87,8 +87,6 @@ window.addEventListener("load", async () => {
 
 				// Muestra los resultados
 				this.muestraResultados();
-				this.avanzar();
-				DOM.botonSubmit.classList.remove("inactivo");
 
 				// Fin
 				return;
@@ -97,38 +95,24 @@ window.addEventListener("load", async () => {
 			// Acciones si el botón está listo para avanzar
 			if (DOM.botonSubmit.className.includes("verdeOscuro")) return DOM.form.submit(); // post
 		},
-		muestraResultados: async () => {
+		muestraResultados: () => {
 			// Variables
-			let {cantProds, cantProdsNuevos, hayMas} = resultados;
-			// Determinar oracion y formato
-			let formatoVigente = "resultadoInvalido";
-			let oracion;
-			// Resultado exitoso
-			if (cantProds && !hayMas) {
-				let plural = cantProdsNuevos > 1 ? "s" : "";
-				oracion = cantProdsNuevos
-					? "Encontramos " + cantProdsNuevos + " coincidencia" + plural + " nueva" + plural
-					: "No encontramos ninguna coincidencia nueva";
-				if (cantProds > cantProdsNuevos) oracion += ", y " + (cantProds - cantProdsNuevos) + " ya en BD";
-				if (cantProdsNuevos) formatoVigente = "resultadoExitoso";
-			} else {
-				// Resultados inválidos
-				oracion = hayMas
-					? "Hay demasiadas coincidencias (+" + cantProds + "), intentá ser más específico"
-					: cantProds == 0
-					? "No encontramos ninguna coincidencia"
-					: oracion;
-			}
-			DOM.resultado.innerHTML = oracion;
+			const {cantProds, cantProdsNuevos, hayMas, mensaje} = resultados;
+
+			// Determinar el formato
+			const formatoVigente = cantProds && !hayMas && cantProdsNuevos ? "resultadoExitoso" : "resultadoInvalido";
+
+			// Publica el resultado
+			DOM.resultado.innerHTML = mensaje;
 			DOM.resultado.classList.remove(...DOM.resultado.classList);
 			DOM.resultado.classList.add(formatoVigente);
-		},
-		avanzar: () => {
-			// Formato
-			DOM.botonSubmit.classList.replace("verdeClaro", "verdeOscuro");
 
-			// Contenido
-			let resultado = resultados.cantProds ? "Desambiguar" : "Ingr. Man.";
+			// Formato botón submit
+			DOM.botonSubmit.classList.replace("verdeClaro", "verdeOscuro");
+			DOM.botonSubmit.classList.remove("inactivo");
+
+			// Contenido botón submit
+			const resultado = resultados.cantProds ? "Desambiguar" : "Ingr. Man.";
 			DOM.botonSubmit.innerHTML = resultado;
 			DOM.inputMetodo.value = resultado;
 
@@ -148,10 +132,10 @@ window.addEventListener("load", async () => {
 	});
 
 	// Submit
-	DOM.form.addEventListener("submit", (e) => FN.submitForm(e));
-	DOM.botonSubmit.addEventListener("click", (e) => FN.submitForm(e));
+	DOM.form.addEventListener("submit", (e) => FN.submit(e));
+	DOM.botonSubmit.addEventListener("click", (e) => FN.submit(e));
 	DOM.form.addEventListener("keydown", (e) => {
-		if (e.key == "Enter") FN.submitForm(e);
+		if (e.key == "Enter") FN.submit(e);
 	});
 
 	// Start-up
