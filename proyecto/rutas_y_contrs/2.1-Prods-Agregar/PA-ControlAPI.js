@@ -147,27 +147,46 @@ module.exports = {
 			// Variables
 			const {prodsNuevos, prodsYaEnBD, hayMas} = req.session.pc_ds;
 			const cantNuevos = prodsNuevos.length;
-			const coincidencias = cantNuevos + prodsYaEnBD.length;
+			const cantYaEnBd = prodsYaEnBD.length;
+			const cantProds = cantNuevos + cantYaEnBd;
+			const mensaje = {};
 
-			// Obtiene el mensaje
-			const mensaje =
+			// Obtiene el mensaje para 'palabrasClave'
+			if (cantProds && !hayMas) {
+				// Más variables
+				const plural = cantNuevos > 1 ? "s" : "";
+
+				// Obtiene el mensaje
+				mensaje.palabrasClave = cantNuevos
+					? "Encontramos " + cantNuevos + " coincidencia" + plural + " nueva" + plural
+					: "No encontramos ninguna coincidencia nueva";
+				if (cantProds > cantNuevos) mensaje.palabrasClave += ", y " + cantYaEnBd + " ya en BD";
+			}
+			// Quedaron casos por buscar o no se hallaron productos
+			else
+				mensaje.palabrasClave = hayMas
+					? "Hay demasiadas coincidencias (+" + cantProds + "), intentá ser más específico"
+					: "No encontramos ninguna coincidencia";
+
+			// Obtiene el mensaje para 'desambiguar'
+			mensaje.desambiguar =
 				"Encontramos " +
-				(coincidencias == 1
+				(cantProds == 1
 					? "una sola coincidencia, que " + (cantNuevos == 1 ? "no" : "ya")
-					: (hayMas ? "muchas" : coincidencias) +
+					: (hayMas ? "muchas" : cantProds) +
 					  " coincidencias" +
-					  (hayMas ? ". Te mostramos " + coincidencias : "") +
-					  (cantNuevos == coincidencias
+					  (hayMas ? ". Te mostramos " + cantProds : "") +
+					  (cantNuevos == cantProds
 							? ", ninguna"
 							: cantNuevos
 							? ", de las cuales " + cantNuevos + " no"
 							: ", todas ya")) +
 				" está" +
-				(cantNuevos > 1 && cantNuevos < coincidencias ? "n" : "") +
+				(cantNuevos > 1 && cantNuevos < cantProds ? "n" : "") +
 				" en nuestra BD.";
-			req.session.pc_ds.mensaje = mensaje;
 
 			// Fin
+			req.session.pc_ds.mensaje = mensaje;
 			return res.json();
 		},
 	},
@@ -180,7 +199,7 @@ module.exports = {
 			const {desambiguar: palabrasClave, pc_ds} = req.session;
 
 			// Corrije la respuesta
-			const respuesta = !pc || palabrasClave != pc_ds.palabrasClave ? {palabrasClave} : {palabrasClave, ...pc_ds};
+			const respuesta = !pc_ds || palabrasClave != pc_ds.palabrasClave ? {palabrasClave} : {palabrasClave, ...pc_ds};
 
 			// Fin
 			res.json(respuesta);

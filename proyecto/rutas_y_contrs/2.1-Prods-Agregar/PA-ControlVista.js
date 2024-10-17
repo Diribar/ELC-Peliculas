@@ -64,7 +64,7 @@ module.exports = {
 		const codigo = "desambiguar";
 		const titulo = "Agregar - Desambiguar";
 
-		// Si no existe el cookie, redirecciona
+		// Obtiene la palabraClave
 		const {desambiguar: palabrasClave} = req.session.desambiguar ? req.session : req.cookies;
 
 		// Se asegura de que exista el session

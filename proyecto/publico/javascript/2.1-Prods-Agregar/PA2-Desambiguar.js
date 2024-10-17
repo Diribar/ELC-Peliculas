@@ -25,7 +25,7 @@ window.addEventListener("load", async () => {
 	const {prodsNuevos, prodsYaEnBD, mensaje} = desambiguar;
 
 	// Agrega el mensaje
-	DOM.mensaje.innerHTML = mensaje;
+	DOM.mensaje.innerHTML = mensaje.desambiguar;
 
 	// Productos nuevos
 	if (prodsNuevos.length)
