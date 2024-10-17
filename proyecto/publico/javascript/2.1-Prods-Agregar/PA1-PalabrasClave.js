@@ -16,11 +16,41 @@ window.addEventListener("load", async () => {
 		iconoOK: document.querySelector(".inputError .fa-circle-check"),
 		mensajeError: document.querySelector(".inputError .mensajeError"),
 	};
-	let resultados = {};
 
 	// Funciones
 	const FN = {
-		particsInput: async (e) => {
+		muestraElErrorMasBotonSubmit: async (mostrarIconoError) => {
+			// Variables
+			const datosUrl = "&" + DOM.inputPalsClave.name + "=" + encodeURIComponent(DOM.inputPalsClave.value);
+
+			// Valida los errores
+			errores = await fetch(rutas.validaDatos + datosUrl).then((n) => n.json());
+			const error = errores.palabrasClave;
+
+			// Acciones si el campo fue validado
+			if (Object.keys(errores).includes("palabrasClave")) {
+				DOM.mensajeError.innerHTML = error;
+				// Acciones si existe un mensaje de error
+				if (error) {
+					DOM.iconoOK.classList.add("ocultar");
+					mostrarIconoError ? DOM.iconoError.classList.remove("ocultar") : DOM.iconoError.classList.add("ocultar");
+				}
+				// Acciones si no hay errores
+				else {
+					DOM.iconoOK.classList.remove("ocultar");
+					DOM.iconoError.classList.add("ocultar");
+				}
+			}
+
+			// Actualiza el botón submit
+			DOM.iconoOK.className.includes("ocultar")
+				? DOM.botonSubmit.classList.add("inactivo")
+				: DOM.botonSubmit.classList.remove("inactivo");
+
+			// Fin
+			return;
+		},
+		particsInput: async function () {
 			// Actualiza el 'botonSubmit' a 'Verificar'
 			DOM.botonSubmit.classList.replace("verdeOscuro", "verdeClaro");
 			DOM.botonSubmit.innerHTML = "Buscar";
@@ -31,14 +61,41 @@ window.addEventListener("load", async () => {
 			DOM.resultado.classList.add("sinResultado");
 
 			// Validar errores
-			const datosUrl = e.target.name + "=" + encodeURIComponent(e.target.value);
-			await FN.muestraElError(datosUrl, true);
-
-			// Actualiza botón Submit
-			FN.actualizaBotonSubmit();
+			await this.muestraElErrorMasBotonSubmit(true);
 
 			// Fin
 			return;
+		},
+		submitForm: async function (e) {
+			e.preventDefault();
+
+			// Acciones si el botón está inactivo
+			if (DOM.botonSubmit.className.includes("inactivo")) return this.muestraElErrorMasBotonSubmit(true);
+
+			// Acciones si el botón está listo para buscar
+			if (DOM.botonSubmit.className.includes("verdeClaro")) {
+				// Adecuaciones iniciales
+				DOM.botonSubmit.classList.add("inactivo");
+				DOM.botonSubmit.innerHTML = "Buscando";
+				DOM.resultado.innerHTML = "";
+
+				// Obtiene los resultados
+				const palabrasClave = DOM.inputPalsClave.value.trim();
+				const APIs = [...APIs_buscar];
+				APIs[0].ruta += "&palabrasClave=" + palabrasClave;
+				resultados = await barraProgreso(pre, APIs);
+
+				// Muestra los resultados
+				this.muestraResultados();
+				this.avanzar();
+				DOM.botonSubmit.classList.remove("inactivo");
+
+				// Fin
+				return;
+			}
+
+			// Acciones si el botón está listo para avanzar
+			if (DOM.botonSubmit.className.includes("verdeOscuro")) return DOM.form.submit(); // post
 		},
 		muestraResultados: async () => {
 			// Variables
@@ -78,73 +135,6 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		statusInicial: async function (mostrarIconoError) {
-			// Agrega el campo y el valor
-			const datosUrl = "&" + DOM.inputPalsClave.name + "=" + encodeURIComponent(DOM.inputPalsClave.value);
-
-			// Consecuencias de las validaciones de errores
-			await this.muestraElError(datosUrl, mostrarIconoError);
-			this.actualizaBotonSubmit();
-
-			// Fin
-			return;
-		},
-		muestraElError: async (datos, mostrarIconoError) => {
-			errores = await fetch(rutas.validaDatos + datos).then((n) => n.json());
-			const {palabrasClave: error} = errores;
-
-			if (error !== undefined) {
-				DOM.mensajeError.innerHTML = error;
-				// Acciones en función de si hay o no mensajes de error
-				if (error) {
-					DOM.iconoError.classList.add("error");
-					DOM.iconoOK.classList.add("ocultar");
-					mostrarIconoError ? DOM.iconoError.classList.remove("ocultar") : DOM.iconoError.classList.add("ocultar");
-				} else {
-					DOM.iconoError.classList.remove("error");
-					DOM.iconoOK.classList.remove("ocultar");
-					DOM.iconoError.classList.add("ocultar");
-				}
-			}
-
-			// Fin
-			return;
-		},
-		actualizaBotonSubmit: () => {
-			const hayError = DOM.iconoError.className.includes("error");
-			hayError ? DOM.botonSubmit.classList.add("inactivo") : DOM.botonSubmit.classList.remove("inactivo");
-		},
-		submitForm: async function (e) {
-			e.preventDefault();
-
-			// Acciones si el botón está inactivo
-			if (DOM.botonSubmit.className.includes("inactivo")) return this.statusInicial(true);
-
-			// Acciones si el botón está listo para buscar
-			if (DOM.botonSubmit.className.includes("verdeClaro")) {
-				// Adecuaciones iniciales
-				DOM.botonSubmit.classList.add("inactivo");
-				DOM.botonSubmit.innerHTML = "Buscando";
-				DOM.resultado.innerHTML = "";
-
-				// Obtiene los resultados
-				const palabrasClave = DOM.inputPalsClave.value.trim();
-				const APIs = [...APIs_buscar];
-				APIs[0].ruta += "&palabrasClave=" + palabrasClave;
-				resultados = await barraProgreso(pre, APIs);
-
-				// Muestra los resultados
-				FN.muestraResultados();
-				FN.avanzar();
-				DOM.botonSubmit.classList.remove("inactivo");
-
-				// Fin
-				return;
-			}
-
-			// Acciones si el botón está listo para avanzar
-			if (DOM.botonSubmit.className.includes("verdeOscuro")) return DOM.form.submit(); // post
-		},
 	};
 
 	// ADD EVENT LISTENERS
@@ -165,8 +155,9 @@ window.addEventListener("load", async () => {
 	});
 
 	// Start-up
-	FN.statusInicial();
+	FN.muestraElErrorMasBotonSubmit();
 });
 
 // Variables
 rutas.validaDatos = "/producto/api/pa-valida-pc/?";
+let resultados = {};
