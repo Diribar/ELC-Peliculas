@@ -92,7 +92,7 @@ module.exports = {
 			const resultados = await buscar_x_PC.buscaProds(palabrasClave);
 
 			// Conserva la información en session
-			req.session.pc_ds = {palabrasClave, session, ...resultados}; // 'palabrasClave', 'productos', 'cantPaginasAPI', 'cantPaginasUsadas', 'hayMas'
+			req.session.pc_ds = {palabrasClave, ...resultados}; // 'palabrasClave', 'productos', 'cantPaginasAPI', 'cantPaginasUsadas', 'hayMas'
 
 			// Fin
 			return res.json();
