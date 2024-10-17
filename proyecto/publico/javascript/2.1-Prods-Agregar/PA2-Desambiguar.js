@@ -147,7 +147,7 @@ const accionesAlElegirProdNuevo = (DOM) => {
 				{ruta: rutas.actualiza + JSON.stringify(datos), duracion: 900},
 				{ruta: rutas.valida, duracion: 200},
 			];
-			const errores = await barraProgreso(rutas.pre, APIs);
+			errores = await barraProgreso(rutas.pre, APIs);
 
 			// Fin
 			if (errores.hay) location.href = "agregar-dd";
