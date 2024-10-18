@@ -85,7 +85,7 @@ module.exports = {
 			const {session} = req.query;
 			const palabrasClave = req.query.palabrasClave ? req.query.palabrasClave : req.session[session];
 
-			// Actualiza en session las palabrasClave. con el valor del formulario
+			// Actualiza en session las palabrasClave, con el valor del formulario
 			if (req.session.palabrasClave != palabrasClave) req.session.palabrasClave = palabrasClave;
 
 			// Obtiene los datos
