@@ -3,14 +3,14 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		// Datos compartidos con usuario - necesarios en 'session'
 		cliente_id: {type: dt.STRING(11)}, // para la vinculación
-		versionElc: {type: dt.STRING(4)}, // para las novedades
+
+		visitaCreadaEn: {type: dt.DATE}, // para la estadística
 		fechaUltNaveg: {type: dt.DATE}, // para el contador de 'clientes x día', default 'actual'
+		diasNaveg: {type: dt.INTEGER}, // para la estadística
+
+		versionElc: {type: dt.STRING(4)}, // para las novedades
 		rolUsuario_id: {type: dt.INTEGER}, // para las novedades, default '1'
 		diasSinCartelBenefs: {type: dt.INTEGER}, // para mostrar el cartel, default 1
-
-		// Datos compartidos con usuario - innecesarios en 'session'
-		diasNaveg: {type: dt.INTEGER}, // para la estadística
-		visitaCreadaEn: {type: dt.DATE}, // para la estadística
 	};
 	const config = {
 		tableName: "us_visitas",

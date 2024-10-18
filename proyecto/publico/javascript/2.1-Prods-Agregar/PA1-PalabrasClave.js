@@ -1,4 +1,5 @@
 "use strict";
+
 window.addEventListener("load", async () => {
 	// Variables
 	const DOM = {
@@ -27,7 +28,7 @@ window.addEventListener("load", async () => {
 			errores = await fetch(rutas.validaDatos + datosUrl).then((n) => n.json());
 			const error = errores.palabrasClave;
 
-			// Acciones si el campo fue validado
+			// Muestra/oculta los íconos 'OK' y 'error', si el campo fue validado
 			if (Object.keys(errores).includes("palabrasClave")) {
 				DOM.mensajeError.innerHTML = error;
 				// Acciones si existe un mensaje de error
@@ -69,10 +70,10 @@ window.addEventListener("load", async () => {
 		submit: async function (e) {
 			e.preventDefault();
 
-			// Acciones si el botón está inactivo
+			// Botón inactivo
 			if (DOM.botonSubmit.className.includes("inactivo")) return this.muestraElErrorMasBotonSubmit(true);
 
-			// Acciones si el botón está listo para buscar
+			// Botón 'Buscar'
 			if (DOM.botonSubmit.className.includes("verdeClaro")) {
 				// Adecuaciones iniciales
 				DOM.botonSubmit.classList.add("inactivo");
@@ -85,41 +86,58 @@ window.addEventListener("load", async () => {
 				APIs[0].ruta += "&palabrasClave=" + palabrasClave;
 				resultados = await barraProgreso(rutas.pre, APIs);
 
-				// Muestra los resultados
+				// Actualiza el mensaje y adecua el botón submit
 				this.muestraResultados();
 
 				// Fin
 				return;
 			}
 
-			// Acciones si el botón está listo para avanzar
+			// Botón 'Avanzar
 			if (DOM.botonSubmit.className.includes("verdeOscuro")) return DOM.form.submit(); // post
+		},
+		statusInicial: async function () {
+			// Si el botón está inactivo, interrumpe la función
+			if (DOM.botonSubmit.className.includes("inactivo")) return;
+
+			// Averigua si existe la session 'pc_ds', y en caso que no, interrumpe la función
+			resultados = await fetch(rutas.pre + rutas.buscaInfo).then((n) => n.json());
+			if (!resultados || !resultados.mensaje) return;
+
+			// Actualiza el mensaje y adecua el botón submit
+			this.muestraResultados();
+
+			// Fin
+			return;
 		},
 		muestraResultados: () => {
 			// Variables
 			const {prodsNuevos, hayMas, mensaje} = resultados;
-			const formato = prodsNuevos.length && !hayMas ? "resultadoExitoso" : "resultadoInvalido";
 
 			// Publica el resultado
-			DOM.resultado.innerHTML = mensaje.palabrasClave;
-			DOM.resultado.classList.remove(...DOM.resultado.classList);
+			const formato = prodsNuevos && prodsNuevos.length && !hayMas ? "resultadoExitoso" : "resultadoInvalido";
 			DOM.resultado.classList.add(formato);
+			DOM.resultado.innerHTML = mensaje ? mensaje.palabrasClave : resultados;
+			DOM.resultado.classList.remove(...DOM.resultado.classList);
+
+			// Si hubo un error en los resultados, interrumpe la función
+			if (!mensaje) return;
 
 			// Formato botón submit
 			DOM.botonSubmit.classList.replace("verdeClaro", "verdeOscuro");
 			DOM.botonSubmit.classList.remove("inactivo");
 
 			// Contenido botón submit
-			const resultado = resultados.prodsNuevos || resultados.prodsYaEnBD ? "Desambiguar" : "Ingr. Man.";
-			DOM.botonSubmit.innerHTML = resultado;
-			DOM.inputMetodo.value = resultado;
+			const proxTarea = resultados.prodsNuevos || resultados.prodsYaEnBD ? "Desambiguar" : "Ingr. Man.";
+			DOM.botonSubmit.innerHTML = proxTarea;
+			DOM.inputMetodo.value = proxTarea;
 
 			// Fin
 			return;
 		},
 	};
 
-	// ADD EVENT LISTENERS
+	// Add Event listeners - Varios
 	DOM.form.addEventListener("keypress", (e) => keyPressed(e));
 	DOM.form.addEventListener("input", async (e) => {
 		amplio.restringeCaracteres(e, true); // Validaciones estándar
@@ -129,7 +147,7 @@ window.addEventListener("load", async () => {
 		return;
 	});
 
-	// Submit
+	// Add Event listeners - Submit
 	DOM.form.addEventListener("submit", (e) => FN.submit(e));
 	DOM.botonSubmit.addEventListener("click", (e) => FN.submit(e));
 	DOM.form.addEventListener("keydown", (e) => {
@@ -137,7 +155,8 @@ window.addEventListener("load", async () => {
 	});
 
 	// Start-up
-	FN.muestraElErrorMasBotonSubmit();
+	await FN.muestraElErrorMasBotonSubmit();
+	FN.statusInicial();
 });
 
 // Variables
