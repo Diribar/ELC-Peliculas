@@ -992,8 +992,8 @@ module.exports = {
 
 	// Varias
 	letras: {
-		convierteAlIngles: (resultado) => {
-			return resultado
+		convierteAlIngles: (resultado) =>
+			resultado
 				.toLowerCase()
 				.replace(/-/g, " ")
 				.replace(/á/g, "a")
@@ -1003,8 +1003,7 @@ module.exports = {
 				.replace(/úü/g, "u")
 				.replace(/ñ/g, "n")
 				.replace(/:¿![.][?]/g, "")
-				.replace(/ +/g, " ");
-		},
+				.replace(/ +/g, " "),
 		convierteAlCastell: function (objeto) {
 			// Rutina por campo
 			for (let prop in objeto)

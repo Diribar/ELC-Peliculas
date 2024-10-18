@@ -82,9 +82,9 @@ window.addEventListener("load", async () => {
 
 				// Obtiene los resultados
 				const palabrasClave = DOM.inputPalsClave.value.trim();
-				const APIs = [...APIs_buscar];
-				APIs[0].ruta += "&palabrasClave=" + palabrasClave;
-				resultados = await barraProgreso(rutas.pre, APIs);
+				APIs_buscar[0].ruta = APIs_buscar[0].ruta.split("&")[0];
+				APIs_buscar[0].ruta += "&palabrasClave=" + palabrasClave;
+				resultados = await barraProgreso(rutas.pre, APIs_buscar);
 
 				// Actualiza el mensaje y adecua el botón submit
 				this.muestraResultados();
@@ -115,10 +115,10 @@ window.addEventListener("load", async () => {
 			const {prodsNuevos, hayMas, mensaje} = resultados;
 
 			// Publica el resultado
-			const formato = prodsNuevos && prodsNuevos.length && !hayMas ? "resultadoExitoso" : "resultadoInvalido";
-			DOM.resultado.classList.add(formato);
 			DOM.resultado.innerHTML = mensaje ? mensaje.palabrasClave : resultados;
 			DOM.resultado.classList.remove(...DOM.resultado.classList);
+			const formato = prodsNuevos && prodsNuevos.length && !hayMas ? "resultadoExitoso" : "resultadoInvalido";
+			DOM.resultado.classList.add(formato);
 
 			// Si hubo un error en los resultados, interrumpe la función
 			if (!mensaje) return;

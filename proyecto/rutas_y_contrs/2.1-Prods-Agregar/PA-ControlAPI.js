@@ -70,10 +70,10 @@ module.exports = {
 
 		// Corrije la respuesta
 		const respuesta = !palabrasClave
-			? null
+			? null // si no existe req.session.palabrasClave
 			: !pc_ds || palabrasClave != pc_ds.palabrasClave
-			? {palabrasClave}
-			: {palabrasClave, ...pc_ds};
+			? {palabrasClave} // si las palabrasClave difieren
+			: pc_ds; // si las palabrasClave coinciden
 
 		// Fin
 		res.json(respuesta);
@@ -85,8 +85,8 @@ module.exports = {
 			const {session} = req.query;
 			const palabrasClave = req.query.palabrasClave ? req.query.palabrasClave : req.session[session];
 
-			// Guarda las palabrasClave en session
-			if (!req.session.palabrasClave) req.session.palabrasClave = palabrasClave;
+			// Actualiza en session las palabrasClave, con el valor del formulario
+			if (req.session.palabrasClave != palabrasClave) req.session.palabrasClave = palabrasClave;
 
 			// Obtiene los datos
 			const resultados = await buscar_x_PC.buscaProds(palabrasClave);

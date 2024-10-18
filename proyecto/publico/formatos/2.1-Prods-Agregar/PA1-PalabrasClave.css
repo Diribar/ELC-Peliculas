@@ -6,7 +6,10 @@
 	/* Partes específicas del formulario */
 	#datos {
 		.inputError {
-			input {width: 250px; padding: 5px 5px; }
+			input {
+				width: 250px; padding: 5px 5px;
+				&::selection {background-color: var(--gris-oscuro); color: snow;}
+			}
 			.ayudaMensForm {max-width: none;}
 		}
 
