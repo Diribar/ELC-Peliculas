@@ -9,11 +9,6 @@ const FN_resultados = {
 		DOM.contadorDeProds.classList.add("ocultar");
 		for (let cartel of DOM.carteles) cartel.classList.add("ocultar");
 
-		// Tapa y limpia los resultados anteriores
-		DOM.botones.innerHTML = "";
-		DOM.listados.innerHTML = "";
-		v.resultados = null;
-
 		// Acciones si el usuario no está logueado y es requerido
 		if (!v.usuario_id && v.layoutBD.grupo == "loginNeces") {
 			DOM.loginNecesario.classList.remove("ocultar");
@@ -33,6 +28,10 @@ const FN_resultados = {
 			: prefs;
 		const APIs = [{ruta: "obtiene-los-resultados/?datos=" + JSON.stringify(datos), duracion: 400}];
 		v.resultados = await barraProgreso(ruta, APIs);
+
+		// Tapa y limpia los resultados anteriores
+		DOM.botones.innerHTML = "";
+		DOM.listados.innerHTML = "";
 
 		// Acciones en consecuencia
 		if (prefs.entidad == "productos") v.productos = v.resultados;

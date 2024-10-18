@@ -115,7 +115,7 @@ window.addEventListener("load", async () => {
 		v.camposRCLIC = Array.from(DOM.inputsRCLIC).map((n) => n.name);
 
 		// Variables para personajes
-		if (personajes) v.prefijos = await fetch(prefijos).then((n) => n.json());
+		if (personajes) v.prefijos = await fetch(rutas.prefijos).then((n) => n.json());
 	}
 	if (epocasDelAno) {
 		DOM.dias_del_ano_Fila = document.querySelectorAll("form #calendario tr");
