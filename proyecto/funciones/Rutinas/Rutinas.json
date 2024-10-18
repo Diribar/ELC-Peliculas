@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 17/oct",
-	"HoraUTC": "0:20",
+	"FechaUTC": "Vie. 18/oct",
+	"HoraUTC": "0:36",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 14/oct",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"15-oct-24": {"leyenda": "Hoy recordamos a santa Teresa de Ávila", "entidad": "personajes", "id": 99},
 		"16-oct-24": {"leyenda": "Hoy recordamos a santa Margarita María de Alacoque", "entidad": "personajes", "id": 230},
 		"17-oct-24": {},
 		"18-oct-24": {"leyenda": "Hoy recordamos a Thomas Alva Edison", "entidad": "personajes", "id": 192},
-		"19-oct-24": {"leyenda": "Hoy recordamos al padre Jorge Popieluszko, beato", "entidad": "personajes", "id": 141}
+		"19-oct-24": {"leyenda": "Hoy recordamos al padre Jorge Popieluszko, beato", "entidad": "personajes", "id": 141},
+		"20-oct-24": {}
 	}
 }
