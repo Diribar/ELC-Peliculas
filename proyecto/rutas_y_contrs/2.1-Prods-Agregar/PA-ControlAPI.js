@@ -72,8 +72,8 @@ module.exports = {
 		const respuesta = !palabrasClave
 			? null // si no existe req.session.palabrasClave
 			: !pc_ds || palabrasClave != pc_ds.palabrasClave
-			? {palabrasClave} // Si las palabrasClave difieren
-			: pc_ds; // Si las palabrasClave coinciden
+			? {palabrasClave} // si las palabrasClave difieren
+			: pc_ds; // si las palabrasClave coinciden
 
 		// Fin
 		res.json(respuesta);
