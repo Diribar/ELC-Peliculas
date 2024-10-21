@@ -26,8 +26,7 @@ module.exports = {
 			// Obtiene errores 'sensible'
 			delete errores.hay;
 			for (let prop in errores)
-				if (![inputVacio, selectVacio, rclvSinElegir].includes(errores[prop]))
-					errores.sensible = true;
+				if (![inputVacio, selectVacio, rclvSinElegir].includes(errores[prop])) errores.sensible = true;
 
 			// Resumen de errores
 			errores.sensible = !!errores.sensible; // se usa para guardar una edición
@@ -108,8 +107,7 @@ module.exports = {
 					: datos.paises_id.length > 2 * 1 + 3 * 4
 					? "Se aceptan hasta 4 países."
 					: "";
-			if (campos.includes("idiomaOriginal_id"))
-				errores.idiomaOriginal_id = !datos.idiomaOriginal_id ? inputVacio : "";
+			if (campos.includes("idiomaOriginal_id")) errores.idiomaOriginal_id = !datos.idiomaOriginal_id ? inputVacio : "";
 
 			// Personas
 			if (campos.includes("avatar")) errores.avatar = comp.validacs.avatar(datos);
@@ -176,6 +174,8 @@ module.exports = {
 			if (datos.coleccion_id) condicion.coleccion_id = datos.coleccion_id;
 
 			// Averigua si existe
+			console.log(177, datos.entidad);
+
 			const existe = await baseDeDatos.obtienePorCondicion(datos.entidad, condicion);
 
 			// Fin
