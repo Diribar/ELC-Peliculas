@@ -117,6 +117,7 @@ window.addEventListener("load", async () => {
 // Variables
 rutas.actualiza = "obtiene-mas-info-del-prod/?datos=";
 rutas.valida = "valida-ds";
+rutas.im = "crea-session-im";
 rutas.infoDeSession = rutas.pre + rutas.buscaInfo;
 
 // Funciones
@@ -125,7 +126,8 @@ const accionesAlElegirProdNuevo = (DOM) => {
 	DOM.forms = document.querySelectorAll(".prodsNuevos form");
 	let yaEligio;
 
-	for (let form of DOM.forms) {
+	// Acciones al elegir un producto nuevo
+	for (let form of DOM.forms)
 		form.addEventListener("submit", async (e) => {
 			// Frena el POST
 			e.preventDefault();
@@ -156,5 +158,11 @@ const accionesAlElegirProdNuevo = (DOM) => {
 			if (errores.hay) location.href = "agregar-dd";
 			else location.href = "agregar-da";
 		});
-	}
+
+	// Deriva a IM
+	DOM.ingrManual.addEventListener("click", async (e) => {
+		await fetch(rutas.pre + rutas.im);
+		location.href = "agregar-im";
+		return;
+	});
 };

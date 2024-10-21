@@ -193,7 +193,7 @@ module.exports = {
 };
 
 // Funciones auxiliares
-let consolidaValoresColeccion = (datos, cantCapitulos) => {
+const consolidaValoresColeccion = (datos, cantCapitulos) => {
 	// Corrige defectos y convierte los valores en un array
 	datos = datos.replace(/(, )+/g, ", ");
 	datos = datos.trim();

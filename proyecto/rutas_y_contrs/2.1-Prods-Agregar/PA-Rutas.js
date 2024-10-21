@@ -45,6 +45,7 @@ router.get("/api/pa-obtiene-el-mensaje", API.pc_ds.obtieneElMensaje);
 // APIs - Desambiguar
 router.get("/api/pa-busca-info-de-session-ds", API.desamb.buscaInfoDeSession);
 router.get("/api/pa-obtiene-mas-info-del-prod", API.desamb.obtieneMasInfoDelProd);
+router.get("/api/pa-crea-session-im", API.desamb.creaSessionIm);
 
 // APIs - Varias
 router.get("/api/pa-obtiene-colecciones", API.averiguaColecciones); // im
