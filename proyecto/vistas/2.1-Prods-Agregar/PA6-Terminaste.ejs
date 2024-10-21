@@ -7,7 +7,7 @@
 		</div>
 		<img id="gracias" src="<%= imagenMG %>" alt="Muchas gracias">
 		<ul type="disc" id="datos">
-			<li class="texto">Hemos agregado la <%= entidadNombre.toLowerCase() %> <em><b><%= dataEntry.nombreCastellano %></b></em> a nuestra base de datos.</li>
+			<li class="texto">Hemos agregado la <%= dataEntry.entidadNombre.toLowerCase() %> <em><b><%= dataEntry.nombreCastellano %></b></em> a nuestra base de datos.</li>
 			<li class="texto inputError">Nuestro equipo de Revisores analizará los datos ingresados.
 				<i class="<%= iconos.faSolid %> <%= iconos.ayuda %> ayudaIconoForm ayudaClick">
 					<ul type="disc" class="mostrarClick ayudaMensForm ocultar">
@@ -22,7 +22,6 @@
 				</i>
 			</li>
 			<li class="texto">Mientras tanto, sólo <u>vos</u> y los revisores podrán ver la información agregada.</li>
-			<li class="texto">Disponés de 1 hora, si querés editarla o agregarle los links.</li>
 			<!-- Colección -->
 			<% if (entidad == "colecciones") { %>
 				<% if (dataEntry.fuente == "TMDB") { %>
