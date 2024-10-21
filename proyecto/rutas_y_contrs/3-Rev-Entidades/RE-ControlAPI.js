@@ -67,7 +67,9 @@ module.exports = {
 		if (!req.session.tableros[circuito][familias]) req.session.tableros[circuito][familias] = {};
 
 		// Guarda la session
-		req.session.tableros[circuito][familias][titulo] = desplegar;
+		desplegar
+			? (req.session.tableros[circuito][familias][titulo] = true)
+			: delete req.session.tableros[circuito][familias][titulo];
 
 		// Fin
 		return res.json();

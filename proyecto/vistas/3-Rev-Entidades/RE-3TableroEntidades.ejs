@@ -49,7 +49,7 @@
 				<%- include("RE-Registros", {familias, DE, titulo: "A completar - con Links", regs: prods.SE.filter(n => n.links), url: !revisorPERL ? dt : ed}) %>
 				<%- include("RE-Registros", {familias, DE, titulo: "A completar - sin Links", regs: prods.SE.filter(n => !n.links), url: !revisorPERL ? dt : ed}) %>
 				<%- include("RE-Registros", {familias, DE, titulo: "Altas - con Links", regs: prods.AL.filter(n => n.links), url: !revisorPERL ? dt : (rp + "alta/p")}) %>
-				<%- include("RE-Registros", {familias, DE, titulo: "Altas - sin links", regs: prods.AL.filter(n => !n.links), url: !revisorPERL ? dt : (rp + "alta/p")}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Altas - sin Links", regs: prods.AL.filter(n => !n.links), url: !revisorPERL ? dt : (rp + "alta/p")}) %>
 				<% if (revisorPERL) { %>
 				<% } %>
 			</div>
