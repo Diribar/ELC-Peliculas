@@ -360,8 +360,8 @@ module.exports = {
 
 		// Si se perdió la info, redirige a 'palabras clave'
 		const {terminaste} = req.session.terminaste ? req.session : req.cookies;
-		// delete req.session.terminaste;
-		// res.clearCookie("terminaste");
+		delete req.session.terminaste;
+		res.clearCookie("terminaste");
 
 		// Obtiene los datos del producto
 		const {entidad, id, entidadNombre} = terminaste;
