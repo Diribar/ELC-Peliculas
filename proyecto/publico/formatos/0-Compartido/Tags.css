@@ -21,7 +21,7 @@ input[type="submit"] {display: none;}
 /* Listas */
 ul[type="disc"] {list-style-position: outside;}
 :is(ul, ol):not([type="none"]) li {margin-left: 15px;}
-ul ul {padding-left: 30px;}
+ul > ul {padding-left: 30px;} /* tienen que ser hijos directos, para no afectar por ej. "Terminaste" */
 
 /* Varios */
 button, span, em, b, u, a, i {font-size: inherit;}
