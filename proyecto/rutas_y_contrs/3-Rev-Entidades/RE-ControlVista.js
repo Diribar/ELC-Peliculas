@@ -303,7 +303,7 @@ module.exports = {
 			const {entidad, id, origen, original, statusOriginal_id, statusFinal_id} = datos;
 			const {codigo, producto, rclv, motivo_id, comentario, aprobado} = datos;
 			const {cola, revId, ahora, revisorPERL, petitFamilias, usuario_id, campoDecision} = datos;
-			datos = {}; // limpia la variable 'datos'
+			datos = {entidad}; // limpia la variable 'datos'
 			let destino;
 
 			// Acciones si es un RCLV
@@ -320,7 +320,7 @@ module.exports = {
 					if (req.file) datos.tamano = req.file.size;
 
 					// Averigua si hay errores de validación y toma acciones
-					let errores = await validaRCLV.consolidado(datos);
+					const errores = await validaRCLV.consolidado(datos);
 					if (errores.hay) {
 						// Guarda session y cookie
 						req.session[entidad] = datos;
@@ -528,7 +528,7 @@ module.exports = {
 			let datos = {...req.body, entidad}; // la 'entidad' hace falta para una función posterior
 
 			// Averigua si hay errores de validación y toma acciones
-			let errores = await validaRCLV.fecha(datos);
+			const errores = await validaRCLV.fecha(datos);
 			if (errores) {
 				// Guarda session y cookie
 				req.session.epocasDelAno = datos;
