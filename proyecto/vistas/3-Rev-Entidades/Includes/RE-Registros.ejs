@@ -5,7 +5,7 @@
 			(<%= regs.length %>)
 			<% if (locals.icono) { %><i class="<%= iconos.faSolid %> <%= icono %>"></i><% } %>
 		</h3>
-		<div class="registros <%- !DE || !DE[titulo.replace(/[-\s]/g, "")] ? 'ocultar' : '' %>">
+		<div class="registros<%- !DE || !DE[titulo.replace(/[-\s]/g, "")] ? ' ocultar' : '' %>">
 			<% for (let reg of regs) { %>
 				<% const EDIC_ID = reg.edicId ? ('&edicId=' + reg.edicId) : '' %>
 				<% const ORIGEN = locals.origen ? ('&origen=' + locals.origen) : '' %>
