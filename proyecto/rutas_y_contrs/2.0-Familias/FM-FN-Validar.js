@@ -174,8 +174,6 @@ module.exports = {
 			if (datos.coleccion_id) condicion.coleccion_id = datos.coleccion_id;
 
 			// Averigua si existe
-			console.log(177, datos.entidad);
-
 			const existe = await baseDeDatos.obtienePorCondicion(datos.entidad, condicion);
 
 			// Fin
