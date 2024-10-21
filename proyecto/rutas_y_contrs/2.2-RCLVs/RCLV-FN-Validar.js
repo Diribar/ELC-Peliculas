@@ -4,9 +4,11 @@ const validacsFM = require("../2.0-Familias/FM-FN-Validar");
 
 module.exports = {
 	consolidado: async function (datos) {
+		// Variables
 		datos = {...datos}; // Es fundamental escribir 'datos' así
+
 		// Campos comunes a los 3 RCLV
-		let errores = {
+		const errores = {
 			nombre: await this.nombre(datos),
 			fecha: this.fecha(datos),
 			genero: this.genero(datos),
@@ -226,7 +228,7 @@ const cartelCriterioSobre = "Necesitamos saber el criterio sobre ";
 const cartelRegistroDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 
 // Funciones
-let nombreApodo = async ({datos, campo}) => {
+const nombreApodo = async ({datos, campo}) => {
 	// Variables
 	const {entidad, ama} = datos;
 	const dato = datos[campo];
@@ -261,7 +263,7 @@ let nombreApodo = async ({datos, campo}) => {
 	// Fin
 	return mensaje;
 };
-let prefijo = (nombre, campo) => {
+const prefijo = (nombre, campo) => {
 	// Variables
 	const campoNombre = campo == "nombre" ? campo : "nombre alternativo";
 	let respuesta = "";
