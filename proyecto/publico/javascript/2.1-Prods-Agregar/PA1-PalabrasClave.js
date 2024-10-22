@@ -128,7 +128,7 @@ window.addEventListener("load", async () => {
 			DOM.botonSubmit.classList.remove("inactivo");
 
 			// Contenido botón submit
-			const proxTarea = resultados.prodsNuevos || resultados.prodsYaEnBD ? "Desambiguar" : "Ingr. Man.";
+			const proxTarea = resultados.prodsNuevos.length || resultados.prodsYaEnBD.length ? "Desambiguar" : "Ingr. Man.";
 			DOM.botonSubmit.innerHTML = proxTarea;
 			DOM.inputMetodo.value = proxTarea;
 
