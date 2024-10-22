@@ -7,17 +7,14 @@
 			<img src="/Externa/6-LogosProvs/<%= link.prov.avatar %>" alt="<%= link.prov.nombre %>" title="<%= link.prov.nombre %>">
 		</h2>
 	<% } %>
-	<% if (locals.ayudasTitulo) { %>
-		<%- include("MN-Ayuda", {[typeof ayudasTitulo == "string" ? "mensaje" : "mensajes"]: ayudasTitulo}) %>
-	<% } %>
 	<% if (codigo == "detalle") { %>
 		<div id="iconosDelTitulo" class="flexRowAlign">
 			<% if (locals.ayudasTitulo) { %>
-				<%- include("MN-Ayuda", {[typeof ayudasTitulo == "string" ? "mensaje" : "mensajes"]: ayudasTitulo, ayudaClass: "static"}) %>
+				<%- include("MN-Ayuda", {[typeof ayudasTitulo == "string" ? "mensaje" : "mensajes"]: ayudasTitulo}) %>
 			<% } %>
 
 			<!-- Compartir la vista -->
-			<%- include("FM-Compartir", {leyCompartir: "Enlace copiado"}) %>
+			<%- include("FM-Compartir", {compartirLeyenda: "Enlace copiado"}) %>
 		</div>
 	<% } %>
 </div>
