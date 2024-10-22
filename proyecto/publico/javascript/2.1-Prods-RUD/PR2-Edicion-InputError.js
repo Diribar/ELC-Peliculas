@@ -399,7 +399,7 @@ window.addEventListener("load", async () => {
 	FN.actualizaBotones();
 });
 
-// Rutas
+// Variables
 const rutas = {
 	validar: "/" + entidad + "/api/pr-valida-edicion-prod/?",
 	versiones: "/" + entidad + "/api/pr-obtiene-original-y-edicion/?id=" + id,
@@ -410,8 +410,6 @@ const rutas = {
 	obtieneRclv: "/" + entidad + "/api/pr-obtiene-rclv/?entidad=", // la entidad es distinta a la del url
 	recargaLaVistaSinEdicion: pathname + "?id=" + id + (origen ? "&origen=" + origen : ""),
 };
-
-// Versiones de datos
 const versiones = ["edicN", "edicG", "orig"];
 let versionActual = "edicN";
 let estamosEnEdicNueva = true;
