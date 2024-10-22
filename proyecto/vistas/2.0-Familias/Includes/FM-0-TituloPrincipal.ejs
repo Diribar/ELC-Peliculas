@@ -9,12 +9,13 @@
 	<% } %>
 	<% if (codigo == "detalle") { %>
 		<div id="iconosDelTitulo" class="flexRowAlign">
+			<% const clase = "compFm" %>
 			<% if (locals.ayudasTitulo) { %>
-				<%- include("MN-Ayuda", {ayudaClass: "compFm", [typeof ayudasTitulo == "string" ? "mensaje" : "mensajes"]: ayudasTitulo}) %>
+				<%- include("MN-Ayuda", {ayudaClass: clase, [typeof ayudasTitulo == "string" ? "mensaje" : "mensajes"]: ayudasTitulo}) %>
 			<% } %>
 
 			<!-- Compartir la vista -->
-			<%- include("FM-Compartir", {compartirLeyenda: "Enlace copiado"}) %>
+			<%- include("FM-Compartir", {compartirLeyenda: "Enlace copiado", clase}) %>
 		</div>
 	<% } %>
 </div>
