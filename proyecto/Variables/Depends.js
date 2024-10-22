@@ -376,7 +376,8 @@ module.exports = {
 	},
 };
 
-let regsRCLV = async (usuario_id) => {
+// Funciones
+const regsRCLV = async (usuario_id) => {
 	const condicion = {
 		[Op.or]: {
 			statusRegistro_id: aprobado_id,

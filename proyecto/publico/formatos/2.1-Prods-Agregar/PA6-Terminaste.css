@@ -1,17 +1,21 @@
-/* General */
-#dataEntry {background: var(--verde-claro); color: var(--verde-oscuro); border: var(--verde-oscuro) 7px solid; max-width: 80%; display: flex; flex-direction: column;}
+#dataEntry {
+	/* General */
+	display: flex; flex-direction: column; max-width: 80%;
+	background: var(--verde-claro); color: var(--verde-oscuro); border: var(--verde-oscuro) 7px solid;
 
-/* Título */
-#dataEntry #gracias {margin-bottom: 20px; height: 80px; border-radius: 10px; align-self: center;}
+	/* Título */
+	#gracias {margin-bottom: 20px; height: 80px; border-radius: 10px; align-self: center;}
 
-/* Texto */
-#dataEntry #datos {padding-left: 20px;}
-#dataEntry #datos .texto {margin: 10px 0 5px; font-size: 1.2rem;}
-#dataEntry #datos .ayudaIconoForm {margin-left: 5px;}
-#dataEntry #datos .ayudaIconoForm .ayudaMensForm #subPuntos {margin-left: 20px; margin-bottom: 5px;}
-#dataEntry #datos .ayudaIconoForm .ayudaMensForm #subPuntos li {padding-top: 0;}
-#dataEntry #datos #capitulos {background: var(--verde-oscuro); width: fit-content; padding: 1px 5px; border-radius: 5px;}
-#dataEntry #datos #capitulos span {color: var(--gris-claro);}
+	/* Texto */
+	#datos {
+		padding-left: 20px;
+		.texto {margin: 10px 0 5px; font-size: 1.2rem;}
+		.ayudaIconoForm {margin-left: 5px;}
+		.ayudaIconoForm .ayudaMensForm #subPuntos li {padding-top: 0;}
+		#capitulos {background: var(--verde-oscuro); width: fit-content; padding: 1px 5px; border-radius: 5px;}
+		#capitulos span {color: var(--gris-claro);}
+	}
 
-/* Iconos */
-#dataEntry .iconos {margin-top: 30px;}
+	/* Iconos */
+	.iconos {margin-top: 30px;}
+}

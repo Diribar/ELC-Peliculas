@@ -39,11 +39,10 @@ module.exports = {
 			// Envía los datos
 			return res.json([prodOrig, prodEdic]);
 		},
-		variables: async (req, res) => {
+		variablesProd: async (req, res) => {
 			// Variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id} = req.query;
-			const {inputVacio, selectVacio, rclvSinElegir} = variables;
 
 			// Tipos de actuación
 			const datos = {
@@ -57,6 +56,7 @@ module.exports = {
 			// Fin
 			return res.json(datos);
 		},
+		variablesRclv: (req, res) => res.json(idsReserv),
 		eliminaNueva: async (req, res) => {
 			// Elimina Session y Cookies
 			if (req.session.edicProd) delete req.session.edicProd;

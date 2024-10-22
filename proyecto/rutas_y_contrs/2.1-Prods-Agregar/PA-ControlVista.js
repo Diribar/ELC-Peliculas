@@ -343,7 +343,7 @@ module.exports = {
 			procesos.borraSessionCookies(req, res, "borrarTodo");
 
 			// SESSION Y COOKIES - Crea la cookie 'Terminaste' para la vista siguiente
-			const terminaste = {entidad, id: registro.id};
+			const terminaste = {entidad, id: registro.id, entidadNombre: confirma.entidadNombre};
 			req.session.terminaste = terminaste;
 			res.cookie("terminaste", terminaste, {maxAge: unDia});
 
@@ -364,9 +364,9 @@ module.exports = {
 		res.clearCookie("terminaste");
 
 		// Obtiene los datos del producto
-		const {entidad, id} = terminaste;
+		const {entidad, id, entidadNombre} = terminaste;
 		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, usuario_id, excluirInclude: true});
-		const origEdic = {...original, ...edicion, id: original.id};
+		const origEdic = {...original, ...edicion, id: original.id, entidadNombre};
 
 		// Prepara las imágenes
 		const carpetaMG = "/publico/imagenes/Muchas-gracias/";
@@ -374,14 +374,13 @@ module.exports = {
 		const imgDerPers = procsFM.obtieneAvatar(original, edicion).orig;
 
 		// Prepara variables para la vista
-		const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 		const tituloImgDerPers = origEdic.nombreCastellano;
 		const agregaste = true;
 
 		// Render del formulario
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo, imagenMG, agregaste},
-			...{entidad, familia: "producto", id, dataEntry: origEdic, entidadNombre},
+			...{entidad, familia: "producto", id, dataEntry: origEdic},
 			...{imgDerPers, tituloImgDerPers, status_id: creado_id},
 		});
 	},

@@ -50,7 +50,7 @@ window.addEventListener("load", async () => {
 		camposNombre: [...new Set(Array.from(DOM.inputsTodos).map((n) => n.name))],
 		avatarInicial: DOM.imgAvatar.src,
 		camposTipo: {},
-		...(await fetch(rutas.variablesBE).then((n) => n.json())),
+		...(await fetch(rutas.variablesProd).then((n) => n.json())),
 	};
 	Array.from(DOM.inputsTodos).map((n) => (v.camposTipo[n.name] = n.type));
 
@@ -399,27 +399,24 @@ window.addEventListener("load", async () => {
 	FN.actualizaBotones();
 });
 
-// Variables del url
-
-// Rutas
+// Variables
 const rutas = {
 	validar: "/" + entidad + "/api/pr-valida-edicion-prod/?",
 	versiones: "/" + entidad + "/api/pr-obtiene-original-y-edicion/?id=" + id,
-	variablesBE: "/" + entidad + "/api/pr-obtiene-variables-prod/?id=" + id,
+	variablesProd: "/" + entidad + "/api/pr-obtiene-variables-prod/?id=" + id,
+	variablesRclv: "/" + entidad + "/api/pr-obtiene-variables-rclv",
 	eliminaEdicN: "/" + entidad + "/api/pr-eliminar-nueva",
 	eliminaEdicG: "/" + entidad + "/api/pr-eliminar-guardada/?id=" + id,
 	obtieneRclv: "/" + entidad + "/api/pr-obtiene-rclv/?entidad=", // la entidad es distinta a la del url
 	recargaLaVistaSinEdicion: pathname + "?id=" + id + (origen ? "&origen=" + origen : ""),
 };
-
-// Versiones de datos
 const versiones = ["edicN", "edicG", "orig"];
 let versionActual = "edicN";
 let estamosEnEdicNueva = true;
 let DOM, v, version, versionAnt;
 
 // Funciones
-let obtieneLosValoresEdicN = () => {
+const obtieneLosValoresEdicN = () => {
 	// Variables
 	const inputsSimples = Array.from(DOM.inputsSimples);
 	const inputsRadioChecked = Array.from(DOM.inputsRadio).filter((n) => n.checked); // descarta los 'radio' que no están 'checked'
@@ -444,7 +441,7 @@ let obtieneLosValoresEdicN = () => {
 	// Fin
 	return;
 };
-let obtieneLasVersiones = async () => {
+const obtieneLasVersiones = async () => {
 	// Obtiene las versiones original y de edición
 	let [orig, edicG] = await fetch(rutas.versiones).then((n) => n.json());
 
@@ -454,7 +451,7 @@ let obtieneLasVersiones = async () => {
 	if (!edicG_existe) delete edicG.id; // si la edicG no existía, le quita el id
 
 	// Averigua si el original está pendiente de ser aprobado
-	let origPendAprobar = v.creados_ids.includes(orig.statusRegistro_id);
+	const origPendAprobar = v.creados_ids.includes(orig.statusRegistro_id);
 
 	// Fin
 	return {orig, edicG, edicN: {}, edicG_existe, origPendAprobar};
