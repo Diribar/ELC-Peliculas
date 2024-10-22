@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let DOM = {
+	const DOM = {
 		// Variables generales
 		linksAlta: document.querySelectorAll(".inputError i.linkRCLV#alta"),
 		linksEdicion: document.querySelectorAll(".inputError i.linkRCLV#edicion"),
@@ -10,27 +10,16 @@ window.addEventListener("load", async () => {
 		// Otras
 		inputs: document.querySelectorAll(".inputError .input"),
 	};
-
-	// Variables para el ruteo del origen
-	const paramsOrigen = "prodEntidad=" + entidad + "&prodId=" + id + "&origen=PED";
-
-	// Variables para guardar los datos
-	const rutaSession = "/producto/api/pr-envia-a-req-session/";
+	const idsReserv = await fetch(rutas.variablesRclv).then((n) => n.json());
 
 	// FUNCIONES
-	// Mostrar u ocultar los íconos de alta/edición de RCLV
-	let mostrarOcultarIconos = (input, i) => {
-		// Oculta el link de alta para Jesús
-		if (input.value == "11" && i === 0) DOM.linksAlta[i].classList.add("ocultar");
-		else DOM.linksAlta[i].classList.remove("ocultar");
-		// Oculta el link de edición cuando el valor es 'nada', 'ninguno' o 'Jesús
-		if (!input.value || input.value == "1" || (input.value == "11" && i === 0)) DOM.linksEdicion[i].classList.add("ocultar");
+	const mostrarOcultarIconos = (input, i) => {
+		// Oculta el link de edición cuando el valor es 'nada', o es un registro reservado
+		if (!input.value || input.value <= idsReserv) DOM.linksEdicion[i].classList.add("ocultar");
 		else DOM.linksEdicion[i].classList.remove("ocultar");
 		return;
 	};
-	//
-	// Guardar los valores del formulario
-	let guardarLosValoresEnSession = () => {
+	const guardarLosValoresEnSession = () => {
 		// Variables
 		let objeto = "?entidad=" + entidad + "&id=" + id;
 
@@ -81,16 +70,19 @@ window.addEventListener("load", async () => {
 		});
 	});
 
-	// Activar links RCLV
+	// Mostrar u ocultar links RCLV
 	DOM.inputsRCLV.forEach((input, i) => {
 		mostrarOcultarIconos(input, i);
-		input.addEventListener("input", () => {
-			mostrarOcultarIconos(input, i);
-		});
+		input.addEventListener("input", () => mostrarOcultarIconos(input, i));
 	});
 });
 
-let entidadesRclv = (link) => {
+// Variables
+const rutaSession = "/producto/api/pr-envia-a-req-session/";
+const paramsOrigen = "prodEntidad=" + entidad + "&prodId=" + id + "&origen=PED";
+
+// Funciones
+const entidadesRclv = (link) => {
 	return link.className.includes("personaje_id")
 		? "personajes"
 		: link.className.includes("hecho_id")
