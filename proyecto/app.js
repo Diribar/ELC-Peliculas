@@ -49,9 +49,9 @@ const cookies = require("cookie-parser");
 app.use(cookies());
 
 // Para saber el recorrido del proyecto
-// let morgan = require('morgan');
+// const morgan = require('morgan');
 // morgan.token("custom", ":method :url => Tiempo: :total-time[0]ms / :response-time[0]ms (:status)") //Create a new named format
-// app.use(morgan("custom")) //use the new format by name
+// app.use(morgan("custom")) // use the new format by name
 
 // *********** Para conectarse con el servidor ********************
 const PORT = entorno == "development" ? "80" : process.env.PORT;
