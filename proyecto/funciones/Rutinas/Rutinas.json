@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 21/oct",
-	"HoraUTC": "0:56",
+	"FechaUTC": "Mar. 22/oct",
+	"HoraUTC": "11:28",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 21/oct",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"19-oct-24": {"leyenda": "Hoy recordamos al padre Jorge Popieluszko, beato", "entidad": "personajes", "id": 141},
 		"20-oct-24": {},
 		"21-oct-24": {"leyenda": "Hoy recordamos a santa Laura Montoya", "entidad": "personajes", "id": 203},
 		"22-oct-24": {"leyenda": "Hoy recordamos al papa Juan Pablo II, santo", "entidad": "personajes", "id": 24},
-		"23-oct-24": {}
+		"23-oct-24": {},
+		"24-oct-24": {"leyenda": "Hoy recordamos a san Antonio María Claret", "entidad": "personajes", "id": 89}
 	}
 }
