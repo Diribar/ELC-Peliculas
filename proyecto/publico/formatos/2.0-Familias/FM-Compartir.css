@@ -1,0 +1,18 @@
+#iconosDelTitulo {
+	position: absolute; bottom: -15px; translate: 0 100%;
+	:is(.ayuda.static, #compartirUrl) {margin-left: 15px;}
+	.ayuda.static {
+		i {font-size: 1.6rem;}
+		.ayudaMensForm {top: -2px; right: -5px; max-width: min(350px, 82vw);}
+	}
+	#compartirUrl {
+		display: flex; flex-direction: row; position: relative;
+		width: 25px; height: 25px; border-radius: 50%;
+		justify-content: center; align-items: center; z-index: 0;
+		border: solid 1.5px var(--gris-claro); color: var(--gris-claro); background: var(--azul-oscuro);
+	}
+}
+#consCopiada {
+	bottom: -25px; left: 0; padding: 2px 5px; text-wrap: nowrap; border-radius: 10px;
+	background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);
+}
