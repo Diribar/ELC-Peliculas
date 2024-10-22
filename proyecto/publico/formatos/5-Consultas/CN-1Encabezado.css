@@ -15,24 +15,15 @@
 		}
 		#iconosDelTitulo {
 			margin-top: 15px;
-			.ayuda {
-				.ayudaMensForm {
-					ul li span {color: var(--amarillo-claro); font-variant: small-caps;}
-				}
-			}
+			.ayuda .ayudaMensForm ul li span {color: var(--amarillo-claro); font-variant: small-caps;}
 			.iconosAzules {
 				display: flex; flex-direction: row; position: relative;
 				width: 25px; height: 25px; border-radius: 50%;
 				justify-content: center; align-items: center; z-index: 0;
 				border: solid 1.5px var(--gris-claro); color: var(--gris-claro); background: var(--azul-oscuro);
 			}
-			#compartirLeyenda {
-				bottom: -25px; left: 0; padding: 2px 5px; text-wrap: nowrap; border-radius: 10px;
-				background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);
-			} /* Compartir */
 			#toggleFiltrosGlobal {display: none;} /* Mostrar preferencias */
 		}
-		/* Ayuda y Actualizar */
 	}
 
 	#contadorDeProds {
