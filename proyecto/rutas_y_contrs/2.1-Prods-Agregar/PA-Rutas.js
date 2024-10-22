@@ -68,7 +68,7 @@ router.get("/agregar-cn", dataEntryMasYaEnBD, vista.confirma.form);
 router.post("/agregar-cn", dataEntryMasYaEnBD, vista.confirma.guardar);
 
 // Vistas - Fin de "prodYaEnBD"
-router.get("/agregar-tr", vista.terminaste);
+router.get("/agregar-tr", dataEntry, vista.terminaste);
 
 // Vistas - Ingreso Manual
 router.get("/agregar-im", dataEntry, vista.IM.form);

@@ -339,11 +339,9 @@ module.exports = {
 			req.session.urlActual = "/";
 			res.cookie("urlActual", "/", {maxAge: unDia});
 
-			// SESSION Y COOKIES - Elimina todas las session y cookie del proceso AgregarProd
-			procesos.borraSessionCookies(req, res, "borrarTodo");
-
 			// SESSION Y COOKIES - Crea la cookie 'Terminaste' para la vista siguiente
 			const terminaste = {entidad, id: registro.id, entidadNombre: confirma.entidadNombre};
+			if (confirma.avatar) terminaste.avatarEdic = true;
 			req.session.terminaste = terminaste;
 			res.cookie("terminaste", terminaste, {maxAge: unDia});
 
@@ -357,21 +355,20 @@ module.exports = {
 		const codigo = "terminaste";
 		const titulo = "Agregar - Terminaste";
 		const usuario_id = req.session.usuario.id;
-
-		// Si se perdió la info, redirige a 'palabras clave'
 		const {terminaste} = req.session.terminaste ? req.session : req.cookies;
-		delete req.session.terminaste;
-		res.clearCookie("terminaste");
+
+		// Elimina todas las sessions y cookies del proceso
+		procesos.borraSessionCookies(req, res, "borrarTodo");
 
 		// Obtiene los datos del producto
-		const {entidad, id, entidadNombre} = terminaste;
+		const {entidad, id, entidadNombre, avatarEdic} = terminaste;
 		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, usuario_id, excluirInclude: true});
 		const origEdic = {...original, ...edicion, id: original.id, entidadNombre};
 
 		// Prepara las imágenes
 		const carpetaMG = "/publico/imagenes/Muchas-gracias/";
 		const imagenMG = carpetaMG + comp.gestionArchivos.imagenAlAzar("." + carpetaMG);
-		const imgDerPers = procsFM.obtieneAvatar(original, edicion).orig;
+		const imgDerPers = procsFM.obtieneAvatar(original, edicion)[avatarEdic ? "edic" : "orig"];
 
 		// Prepara variables para la vista
 		const tituloImgDerPers = origEdic.nombreCastellano;
@@ -533,7 +530,7 @@ module.exports = {
 		},
 	},
 };
-let accionesParaCapitulosIMFA = async (datos, req, res) => {
+const accionesParaCapitulosIMFA = async (datos, req, res) => {
 	// Compara su temporada vs la cant. de temps. en la colección
 	const coleccion = await baseDeDatos.obtienePorId("colecciones", datos.coleccion_id);
 	if (!coleccion.cantTemps || coleccion.cantTemps < Number(datos.temporada))

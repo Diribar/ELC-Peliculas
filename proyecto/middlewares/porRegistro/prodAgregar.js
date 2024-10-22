@@ -45,9 +45,9 @@ module.exports = (req, res, next) => {
 		return res.redirect("/" + (esProducto ? "producto" : datos.entidad) + codigoUrl);
 
 	// Tareas si es 'GET',
-	if (req.method == "GET") {
+	if (req.method == "GET" && codigo != "terminaste") {
 		// Elimina session y cookie posteriores
-		if (codigo != "confirma") procesos.borraSessionCookies(req, res, codigo);
+		procesos.borraSessionCookies(req, res, codigo);
 
 		// Extiende la vida 'util' de Datos Originales
 		if (["datosDuros", "datosAdics", "confirma"].includes(codigo))
