@@ -219,6 +219,11 @@ module.exports = {
 			// Fin
 			return res.json();
 		},
+		creaSessionIm: (req, res) => {
+			req.session.IM = {};
+			res.cookie("IM", {}, {maxAge: unDia});
+			return res.json()
+		},
 	},
 
 	// Vista (datosAdics)

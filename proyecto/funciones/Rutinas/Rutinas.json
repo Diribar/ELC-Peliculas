@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 18/oct",
-	"HoraUTC": "0:36",
+	"FechaUTC": "Lun. 21/oct",
+	"HoraUTC": "0:56",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 14/oct",
-	"HoraSemUTC": "0:00",
-	"semanaUTC": 42,
+	"FechaSemUTC": "Lun. 21/oct",
+	"HoraSemUTC": "0:56",
+	"semanaUTC": 43,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"16-oct-24": {"leyenda": "Hoy recordamos a santa Margarita María de Alacoque", "entidad": "personajes", "id": 230},
-		"17-oct-24": {},
-		"18-oct-24": {"leyenda": "Hoy recordamos a Thomas Alva Edison", "entidad": "personajes", "id": 192},
 		"19-oct-24": {"leyenda": "Hoy recordamos al padre Jorge Popieluszko, beato", "entidad": "personajes", "id": 141},
-		"20-oct-24": {}
+		"20-oct-24": {},
+		"21-oct-24": {"leyenda": "Hoy recordamos a santa Laura Montoya", "entidad": "personajes", "id": 203},
+		"22-oct-24": {"leyenda": "Hoy recordamos al papa Juan Pablo II, santo", "entidad": "personajes", "id": 24},
+		"23-oct-24": {}
 	}
 }
