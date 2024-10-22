@@ -46,7 +46,8 @@ router.get("/api/pr-guarda-la-preferencia-del-usuario", API.prefsDeCampo.guardaL
 // API - Edición
 router.get("/api/pr-valida-edicion-prod", API.edicion.valida);
 router.get("/api/pr-obtiene-original-y-edicion", API.edicion.obtieneVersionesProd);
-router.get("/api/pr-obtiene-variables-prod", API.edicion.variables);
+router.get("/api/pr-obtiene-variables-prod", API.edicion.variablesProd);
+router.get("/api/pr-obtiene-variables-rclv", API.edicion.variablesRclv);
 router.get("/api/pr-envia-a-req-session", API.edicion.envioParaSession);
 router.get("/api/pr-eliminar-nueva", API.edicion.eliminaNueva);
 router.get("/api/pr-eliminar-guardada", API.edicion.eliminaGuardada);
