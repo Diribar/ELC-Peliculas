@@ -1,23 +1,22 @@
 #encabezado {
 	#tituloPrincipal {
 		&:has(#layoutAyuda select:not(:valid)) {visibility: hidden;}
-		select {
-			background: var(--verde-oscuro); border: 0.25px solid var(--gris-oscuro); border-bottom-right-radius: 7px;
-			color: var(--amarillo-claro); padding: 3px; max-width: 180px; cursor: pointer;
-			font-size: 1.1rem; font-weight: bold;
-			optgroup {
-				background: var(--gris-claro); color: var(--azul-oscuro); font-style: italic;
-				option {cursor: pointer; font-style: normal;}
+		#layoutCheckbox {
+			select {
+				background: var(--verde-oscuro); border: 0.25px solid var(--gris-oscuro); border-bottom-right-radius: 7px;
+				color: var(--amarillo-claro); padding: 3px; max-width: 180px; cursor: pointer;
+				font-size: 1.1rem; font-weight: bold;
+				optgroup {
+					background: var(--gris-claro); color: var(--azul-oscuro); font-style: italic;
+					option {cursor: pointer; font-style: normal;}
+				}
 			}
+			input[name="excluye"] {margin-left: 7px; scale: 1.2;}
 		}
 		#iconosDelTitulo {
 			margin-top: 15px;
-			:is(.ayuda.consulta, .iconosAzules) {margin-left: 15px;}
-			.ayuda.consulta {
-				i.ayudaIconoForm {font-size: 1.6rem;}
+			.ayuda {
 				.ayudaMensForm {
-					&::before {top: 25px;}
-					max-width: min(82vw, 500px); top: -20px;
 					ul li span {color: var(--amarillo-claro); font-variant: small-caps;}
 				}
 			}
@@ -27,9 +26,8 @@
 				justify-content: center; align-items: center; z-index: 0;
 				border: solid 1.5px var(--gris-claro); color: var(--gris-claro); background: var(--azul-oscuro);
 			}
-			#consCopiada {
-				bottom: -2px; left: 15px; padding: 2px 5px;
-				translate: 0 100%; text-wrap: nowrap; border-radius: 10px;
+			#compartirLeyenda {
+				bottom: -25px; left: 0; padding: 2px 5px; text-wrap: nowrap; border-radius: 10px;
 				background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);
 			} /* Compartir */
 			#toggleFiltrosGlobal {display: none;} /* Mostrar preferencias */
