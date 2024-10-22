@@ -202,7 +202,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Encabezado - Compartir las preferencias
-		else if (nombre == "compartirCons") {
+		else if (nombre == "compartirIcono") {
 			// Variables
 			let configCons = {id: cabecera.id, ...prefs};
 
@@ -226,8 +226,8 @@ window.addEventListener("load", async () => {
 			navigator.clipboard.writeText(url);
 
 			// Muestra la leyenda 'Consulta copiada'
-			DOM.consCopiada.classList.remove("ocultar");
-			setTimeout(() => DOM.consCopiada.classList.add("ocultar"), v.setTimeOutStd);
+			DOM.compartirLeyenda.classList.remove("ocultar");
+			setTimeout(() => DOM.compartirLeyenda.classList.add("ocultar"), v.setTimeOutStd);
 		}
 
 		// Mostrar resultados - Preferencia por producto

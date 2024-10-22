@@ -30,7 +30,7 @@ window.addEventListener("load", async () => {
 		// Encabezado
 		layout_id: DOM.tituloPrincipal.querySelector("select[name='layout_id']"),
 		iconoParaMostrarPrefs: DOM.tituloPrincipal.querySelector("#toggleFiltrosGlobal .fa-chevron-right"),
-		consCopiada: DOM.tituloPrincipal.querySelector("#iconosDelTitulo #consCopiada"),
+		compartirLeyenda: DOM.tituloPrincipal.querySelector("#iconosDelTitulo #compartirLeyenda"),
 
 		// Configuración de Cabecera - Botonera
 		configNuevaNombre: DOM.cabecera.querySelector("#configNueva input[name='nombreNuevo']"),
