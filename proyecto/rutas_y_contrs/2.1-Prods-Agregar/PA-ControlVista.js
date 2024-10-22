@@ -341,6 +341,7 @@ module.exports = {
 
 			// SESSION Y COOKIES - Crea la cookie 'Terminaste' para la vista siguiente
 			const terminaste = {entidad, id: registro.id, entidadNombre: confirma.entidadNombre};
+			if (confirma.avatar) terminaste.avatarEdic = true;
 			req.session.terminaste = terminaste;
 			res.cookie("terminaste", terminaste, {maxAge: unDia});
 
@@ -360,14 +361,14 @@ module.exports = {
 		procesos.borraSessionCookies(req, res, "borrarTodo");
 
 		// Obtiene los datos del producto
-		const {entidad, id, entidadNombre} = terminaste;
+		const {entidad, id, entidadNombre, avatarEdic} = terminaste;
 		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, usuario_id, excluirInclude: true});
 		const origEdic = {...original, ...edicion, id: original.id, entidadNombre};
 
 		// Prepara las imágenes
 		const carpetaMG = "/publico/imagenes/Muchas-gracias/";
 		const imagenMG = carpetaMG + comp.gestionArchivos.imagenAlAzar("." + carpetaMG);
-		const imgDerPers = procsFM.obtieneAvatar(original, edicion).edic;
+		const imgDerPers = procsFM.obtieneAvatar(original, edicion)[avatarEdic ? "edic" : "orig"];
 
 		// Prepara variables para la vista
 		const tituloImgDerPers = origEdic.nombreCastellano;
