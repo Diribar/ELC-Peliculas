@@ -339,9 +339,6 @@ module.exports = {
 			req.session.urlActual = "/";
 			res.cookie("urlActual", "/", {maxAge: unDia});
 
-			// SESSION Y COOKIES - Elimina todas las session y cookie del proceso AgregarProd
-			procesos.borraSessionCookies(req, res, "borrarTodo");
-
 			// SESSION Y COOKIES - Crea la cookie 'Terminaste' para la vista siguiente
 			const terminaste = {entidad, id: registro.id, entidadNombre: confirma.entidadNombre};
 			req.session.terminaste = terminaste;
@@ -357,11 +354,10 @@ module.exports = {
 		const codigo = "terminaste";
 		const titulo = "Agregar - Terminaste";
 		const usuario_id = req.session.usuario.id;
-
-		// Si se perdió la info, redirige a 'palabras clave'
 		const {terminaste} = req.session.terminaste ? req.session : req.cookies;
-		delete req.session.terminaste;
-		res.clearCookie("terminaste");
+
+		// Elimina todas las sessions y cookies del proceso
+		procesos.borraSessionCookies(req, res, "borrarTodo");
 
 		// Obtiene los datos del producto
 		const {entidad, id, entidadNombre} = terminaste;
@@ -371,7 +367,7 @@ module.exports = {
 		// Prepara las imágenes
 		const carpetaMG = "/publico/imagenes/Muchas-gracias/";
 		const imagenMG = carpetaMG + comp.gestionArchivos.imagenAlAzar("." + carpetaMG);
-		const imgDerPers = procsFM.obtieneAvatar(original, edicion).orig;
+		const imgDerPers = procsFM.obtieneAvatar(original, edicion).edic;
 
 		// Prepara variables para la vista
 		const tituloImgDerPers = origEdic.nombreCastellano;
