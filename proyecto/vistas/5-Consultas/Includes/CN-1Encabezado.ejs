@@ -1,39 +1,34 @@
 <section id="encabezado">
 	<!-- El id debe ser 'tituloPrincipal' por formato compartido -->
 	<div id="tituloPrincipal" class="flexCol">
-		<div id="layoutAyuda" class="flexRowAlign">
-			<!-- Opciones -->
-			<select name="layout_id" class="prefSimple" required>
-				<option value="" selected class="ocultar">Buscando el layout...</option>
-				<optgroup id="cuatroPelis" label="Cuatro Películas">
-					<% for (let layout of cnLayouts.filter(n => n.grupo == "boton")) { %>
-						<option value="<%= layout.id %>"><%= layout.nombre %></option>
-					<% } %>
-				</optgroup>
-				<optgroup label="Listados de películas">
-					<% for (let layout of cnLayouts.filter(n => n.grupo == "productos")) { %>
-						<option value="<%= layout.id %>"><%= layout.nombre %></option>
-					<% } %>
-				</optgroup>
-				<optgroup label="Relación con la vida">
-					<% for (let layout of cnLayouts.filter(n => n.grupo == "rclvs")) { %>
-						<option value="<%= layout.id %>"><%= layout.nombre %></option>
-					<% } %>
-				</optgroup>
-				<% if (locals.usuario) { %>
-				<optgroup label="Mis listados">
-					<% for (let layout of cnLayouts.filter(n => n.grupo == "loginNeces")) { %>
-						<option value="<%= layout.id %>"><%= layout.nombre %></option>
-					<% } %>
-				</optgroup>
+		<!-- Opciones -->
+		<select name="layout_id" class="prefSimple" required>
+			<option value="" selected class="ocultar">Buscando el layout...</option>
+			<optgroup id="cuatroPelis" label="Cuatro Películas">
+				<% for (let layout of cnLayouts.filter(n => n.grupo == "boton")) { %>
+					<option value="<%= layout.id %>"><%= layout.nombre %></option>
 				<% } %>
-			</select>
-
-			<!-- Ayuda -->
-			<%- include("CN-1EncabezadoAyuda") %>
-		</div>
+			</optgroup>
+			<optgroup label="Listados de películas">
+				<% for (let layout of cnLayouts.filter(n => n.grupo == "productos")) { %>
+					<option value="<%= layout.id %>"><%= layout.nombre %></option>
+				<% } %>
+			</optgroup>
+			<optgroup label="Relación con la vida">
+				<% for (let layout of cnLayouts.filter(n => n.grupo == "rclvs")) { %>
+					<option value="<%= layout.id %>"><%= layout.nombre %></option>
+				<% } %>
+			</optgroup>
+			<% if (locals.usuario) { %>
+			<optgroup label="Mis listados">
+				<% for (let layout of cnLayouts.filter(n => n.grupo == "loginNeces")) { %>
+					<option value="<%= layout.id %>"><%= layout.nombre %></option>
+				<% } %>
+			</optgroup>
+			<% } %>
+		</select>
 		<div id="iconosDelTitulo" class="flexRow">
-			<%- include("CN-1EncabezadoAyuda") %>
+			<%- include("MN-Ayuda", {ayudaClass: "consulta", parrafo: "Para las opciones de <b>Cuatro Películas</b>, los resultados con fondo amarillo significa que tienen relación con la <em>Iglesia Católica</em>.", mensajes: ayudas.map(ayuda => "<span>" + ayuda.nombre + "</span>: " + ayuda.comentario + ".")}) %>
 
 			<!-- Compartir la consulta -->
 			<div id="compartirCons" class="iconosAzules scale pointer">

@@ -1,21 +1,26 @@
 #encabezado {
 	#tituloPrincipal {
 		&:has(#layoutAyuda select:not(:valid)) {visibility: hidden;}
-		#layoutAyuda {
-			select {
-				background: var(--verde-oscuro); border: 0.25px solid var(--gris-oscuro); border-bottom-right-radius: 7px;
-				color: var(--amarillo-claro); padding: 3px; max-width: 180px; cursor: pointer;
-				font-size: 1.1rem; font-weight: bold;
-				optgroup {
-					background: var(--gris-claro); color: var(--azul-oscuro); font-style: italic;
-					option {cursor: pointer; font-style: normal;}
-				}
+		select {
+			background: var(--verde-oscuro); border: 0.25px solid var(--gris-oscuro); border-bottom-right-radius: 7px;
+			color: var(--amarillo-claro); padding: 3px; max-width: 180px; cursor: pointer;
+			font-size: 1.1rem; font-weight: bold;
+			optgroup {
+				background: var(--gris-claro); color: var(--azul-oscuro); font-style: italic;
+				option {cursor: pointer; font-style: normal;}
 			}
-			.ayuda.consulta {margin-left: 10px;}
 		}
 		#iconosDelTitulo {
 			margin-top: 15px;
 			:is(.ayuda.consulta, .iconosAzules) {margin-left: 15px;}
+			.ayuda.consulta {
+				i.ayudaIconoForm {font-size: 1.6rem;}
+				.ayudaMensForm {
+					&::before {top: 25px;}
+					max-width: min(82vw, 500px); top: -20px;
+					ul li span {color: var(--amarillo-claro); font-variant: small-caps;}
+				}
+			}
 			.iconosAzules {
 				display: flex; flex-direction: row; position: relative;
 				width: 25px; height: 25px; border-radius: 50%;
@@ -30,7 +35,6 @@
 			#toggleFiltrosGlobal {display: none;} /* Mostrar preferencias */
 		}
 		/* Ayuda y Actualizar */
-		:is(#layoutAyuda, #iconosDelTitulo) .ayuda.consulta ul li span {color: var(--amarillo-claro); font-variant: small-caps;}
 	}
 
 	#contadorDeProds {
