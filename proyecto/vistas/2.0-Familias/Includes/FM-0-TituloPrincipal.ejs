@@ -10,7 +10,7 @@
 	<% if (codigo == "detalle") { %>
 		<div id="iconosDelTitulo" class="flexRowAlign">
 			<% if (locals.ayudasTitulo) { %>
-				<%- include("MN-Ayuda", {[typeof ayudasTitulo == "string" ? "mensaje" : "mensajes"]: ayudasTitulo}) %>
+				<%- include("MN-Ayuda", {ayudaClass: "compFm", [typeof ayudasTitulo == "string" ? "mensaje" : "mensajes"]: ayudasTitulo}) %>
 			<% } %>
 
 			<!-- Compartir la vista -->
