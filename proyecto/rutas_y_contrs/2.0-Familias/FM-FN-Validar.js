@@ -21,12 +21,12 @@ module.exports = {
 			errores.epocaOcurrencia_id = !datos.epocaOcurrencia_id ? selectVacio : "";
 
 			// Lleva los errores a su mínima expresión
-			for (let prop in errores) if (!errores[prop]) delete errores[prop];
-
-			// Obtiene errores 'sensible'
 			delete errores.hay;
-			for (let prop in errores)
-				if (![inputVacio, selectVacio, rclvSinElegir].includes(errores[prop])) errores.sensible = true;
+			for (let campo in errores) if (!errores[campo]) delete errores[campo];
+
+			// Obtiene errores 'sensible', cuando alguno de los errores es diferente a los del array
+			for (let campo in errores)
+				if (![inputVacio, selectVacio, rclvSinElegir].includes(errores[campo])) errores.sensible = true;
 
 			// Resumen de errores
 			errores.sensible = !!errores.sensible; // se usa para guardar una edición
@@ -183,11 +183,11 @@ module.exports = {
 };
 
 // Fórmulas
-let formatoAno = (dato) => {
+const formatoAno = (dato) => {
 	let formato = /^\d{4}$/;
 	return !formato.test(dato);
 };
-let formatoNumero = (dato, minimo) => {
+const formatoNumero = (dato, minimo) => {
 	let formato = /^\d+$/;
 	return !formato.test(dato) ? "Debe ser un número" : dato < minimo ? "Debe ser un número mayor a " + minimo : "";
 };
