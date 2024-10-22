@@ -43,7 +43,6 @@ module.exports = {
 			// Variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id} = req.query;
-			const {inputVacio, selectVacio, rclvSinElegir} = variables;
 
 			// Tipos de actuación
 			const datos = {
