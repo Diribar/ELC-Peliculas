@@ -53,7 +53,16 @@ window.addEventListener("load", async () => {
 		}
 		// Acciones estándar por inputs
 		else {
-			if (e.target.tagName == "SELECT" && !e.target.value) e.target.value = ""; // reemplaza 'Quitar la opción elegida' por el placeholder
+			if (e.target.tagName == "SELECT" && !e.target.value)
+				e.target.value = ""; // reemplaza 'Quitar la opción elegida' por el placeholder
+			else if (nombre == "excluyeBC") {
+				// Actualiza el contenido de la leyenda
+				DOM.excluyeLeyenda.innerHTML = (DOM.excluyeInput.checked ? "Excluye" : "Incluye") + " baja calific.";
+
+				// Muestra la leyenda
+				DOM.excluyeLeyenda.classList.remove("ocultar");
+				setTimeout(() => DOM.excluyeLeyenda.classList.add("ocultar"), v.setTimeOutStd);
+			}
 			await accionesEstandarPorInputs();
 		}
 
@@ -108,6 +117,36 @@ window.addEventListener("load", async () => {
 
 		// Si el ícono está inactivo, interrumpe la función
 		if (elemento.tagName == "I" && elemento.className.includes("inactivo")) return;
+
+		// Encabezado - Compartir las preferencias
+		else if (nombre == "iconoCompartir") {
+			// Variables
+			let configCons = {id: cabecera.id, ...prefs};
+
+			// Si el 'ppp' es un combo, lo convierte a su 'id'
+			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
+				const combo = configCons.pppOpciones.toString();
+				const pppOpcion = v.pppOpcsArray.find((n) => n.combo == combo);
+				if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
+				else delete configCons.pppOpciones;
+			}
+			if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
+
+			// Obtiene los 'camposUrl'
+			let camposUrl = "";
+			for (let prop in configCons) camposUrl += prop + "=" + configCons[prop] + "&";
+			if (!camposUrl.length) return;
+			else camposUrl = camposUrl.slice(0, -1);
+
+			// Obtiene el 'url' y lo lleva al clipboard
+			const url = location.href + "/?" + camposUrl;
+			navigator.clipboard.writeText(url);
+
+			// Muestra la leyenda 'Consulta copiada'
+			DOM.compartirLeyenda.classList.remove("ocultar");
+			setTimeout(() => DOM.compartirLeyenda.classList.add("ocultar"), v.setTimeOutStd);
+		}
+
 		// Configuración - Botonera
 		else if (padre.id == "iconosBotonera") {
 			if (false) {
@@ -140,7 +179,7 @@ window.addEventListener("load", async () => {
 				DOM.configNuevaNombre.focus();
 			} else if (nombre == "deshacer") {
 				await actualiza.valoresInicialesDeVariables();
-				await actualiza.statusInicialCampos("deshacer");
+				await actualiza.statusInicialPrefs("deshacer");
 				await accionesPorCambioDePrefs();
 			} else if (nombre == "eliminar") {
 				// Si hay un error, interrumpe la función
@@ -199,35 +238,6 @@ window.addEventListener("load", async () => {
 
 			// Cambia la variable para que se muestren los filtros
 			muestraFiltros = true;
-		}
-
-		// Encabezado - Compartir las preferencias
-		else if (nombre == "iconoCompartir") {
-			// Variables
-			let configCons = {id: cabecera.id, ...prefs};
-
-			// Si el 'ppp' es un combo, lo convierte a su 'id'
-			if (configCons.pppOpciones && Array.isArray(configCons.pppOpciones)) {
-				const combo = configCons.pppOpciones.toString();
-				const pppOpcion = v.pppOpcsArray.find((n) => n.combo == combo);
-				if (pppOpcion) configCons.pppOpciones = pppOpcion.id;
-				else delete configCons.pppOpciones;
-			}
-			if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
-
-			// Obtiene los 'camposUrl'
-			let camposUrl = "";
-			for (let prop in configCons) camposUrl += prop + "=" + configCons[prop] + "&";
-			if (!camposUrl.length) return;
-			else camposUrl = camposUrl.slice(0, -1);
-
-			// Obtiene el 'url' y lo lleva al clipboard
-			const url = location.href + "/?" + camposUrl;
-			navigator.clipboard.writeText(url);
-
-			// Muestra la leyenda 'Consulta copiada'
-			DOM.mostrarLeyenda.classList.remove("ocultar");
-			setTimeout(() => DOM.mostrarLeyenda.classList.add("ocultar"), v.setTimeOutStd);
 		}
 
 		// Mostrar resultados - Preferencia por producto
