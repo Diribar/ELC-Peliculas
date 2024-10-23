@@ -85,7 +85,7 @@ module.exports = {
 		[IN, rclvsAprob] = await Promise.all([IN, rclvsAprob]);
 
 		// Sin Avatar
-		const SA = rclvsAprob.filter((m) => !m.avatar && m.id > 10);
+		const SA = rclvsAprob.filter((m) => !m.avatar && m.id > varios_id);
 
 		// Con solapamiento de fechas
 		const SF = rclvsAprob.filter((m) => m.solapam_fechas);
@@ -233,7 +233,7 @@ let FN_tablManten = {
 
 		// Condiciones
 		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro
-		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: idMinRclv}; // Excluye los registros RCLV cuyo ID es <= idMinRclv
+		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: varios_id};
 
 		// Resultado
 		const resultados = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion, includeBD).then((n) =>
