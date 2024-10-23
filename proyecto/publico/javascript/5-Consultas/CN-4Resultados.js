@@ -23,9 +23,8 @@ const FN_resultados = {
 
 		// Busca la información en el BE
 		v.ahora = new Date();
-		const datos = v.layoutBD.codigo.startsWith("fechaDelAno")
-			? {...prefs, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1}
-			: prefs;
+		const datos =
+			v.layoutBD.codigo == "fechaDelAnoBoton" ? {...prefs, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1} : prefs;
 		const APIs = [{ruta: "obtiene-los-resultados/?datos=" + JSON.stringify(datos), duracion: 400}];
 		v.resultados = await barraProgreso(ruta, APIs);
 
@@ -91,8 +90,8 @@ const FN_resultados = {
 			DOM.listados.innerHTML = "";
 
 			// Deriva a botones o listados
-			DOM.zonaDisponible.classList.remove("aumentaCn")
-			DOM.zonaDisponible.classList.add("aumentaCn")
+			DOM.zonaDisponible.classList.remove("aumentaCn");
+			DOM.zonaDisponible.classList.add("aumentaCn");
 			v.layoutBD.grupo == "boton" ? this.botones() : this.listados();
 
 			// Si el usuario no vio el video, muestra el cartel 'ver video'
