@@ -470,7 +470,7 @@ module.exports = {
 
 				// Fin de la rutina
 				contador++;
-				if (contador == 10) break;
+				if (contador == 10) break; // en caso que el historial sea demasiado extenso
 			}
 
 			// Fin
@@ -662,131 +662,6 @@ module.exports = {
 
 		// Fin
 		return;
-	},
-
-	grupos: {
-		pers: (camposDA) => {
-			// Variables
-			const personajes = camposDA
-				.find((n) => n.nombre == "personaje_id") // Obtiene los personajes
-				.valores // Obtiene los valores
-				.map((n) => {
-					// Deja los datos necesarios
-					return {
-						id: n.id,
-						nombre: n.nombre,
-						categoria_id: n.categoria_id,
-						epocaOcurrencia_id: n.epocaOcurrencia_id,
-						rolIglesia_id: n.rolIglesia_id,
-						apMar_id: n.apMar_id,
-					};
-				});
-			let casosPuntuales = [];
-
-			// Grupos Estándar
-			let grupos = [
-				{orden: 2, codigo: "ant", campo: "epocaOcurrencia_id", label: "Antiguo Testamento", clase: "CFC VPC"},
-				{orden: 3, codigo: "SF", campo: "rolIglesia_id", label: "Sagrada Familia", clase: "CFC"},
-				{orden: 4, codigo: "AL", campo: "rolIglesia_id", label: "Apóstoles", clase: "CFC"},
-				{orden: 5, codigo: "cnt", campo: "epocaOcurrencia_id", label: "Contemporáneos de Cristo", clase: "CFC VPC"},
-				{orden: 6, codigo: "PP", campo: "rolIglesia_id", label: "Papas", clase: "CFC"},
-				{orden: 7, codigo: "pst", campo: "epocaOcurrencia_id", label: "Post. a Cristo (Fe Católica)", clase: "CFC"},
-				{orden: 8, codigo: "pst", campo: "epocaOcurrencia_id", label: "Post. a Cristo (Con valores)", clase: "VPC"},
-			];
-			for (let grupo of grupos) grupo.valores = [];
-
-			// Valores para los grupos
-			for (let personaje of personajes) {
-				// Clase
-				personaje.clase = personaje.categoria_id ? personaje.categoria_id : "CFC VPC";
-				if (personaje.apMar_id != 10) personaje.clase += " AMA AM" + personaje.apMar_id;
-
-				// Si tiene 'rolIglesia_id'
-				if (personaje.rolIglesia_id) {
-					let OK = false;
-					// Si es alguno de los 'grupos'
-					for (let grupo of grupos)
-						if (personaje[grupo.campo].startsWith(grupo.codigo) && grupo.clase.includes(personaje.categoria_id)) {
-							grupo.valores.push(personaje);
-							OK = true;
-							break;
-						}
-				}
-				// Si no tiene 'rolIglesia_id' --> lo agrega a los casos puntuales
-				else casosPuntuales.push(personaje);
-			}
-			// Grupo 'Casos Puntuales'
-			grupos.push({codigo: "CP", orden: 1, label: "Casos Puntuales", valores: casosPuntuales, clase: "CFC VPC"});
-
-			// Ordena los grupos
-			grupos.sort((a, b) => a.orden - b.orden);
-
-			// Fin
-			return grupos;
-		},
-		hechos: (camposDA) => {
-			// Variables
-			let hechos = camposDA.find((n) => n.nombre == "hecho_id").valores;
-
-			// Deja los datos necesarios
-			hechos = hechos.map((n) => {
-				let {id, nombre, soloCfc, epocaOcurrencia_id, ama} = n;
-				return {id, nombre, soloCfc, epocaOcurrencia_id, ama};
-			});
-			let apMar = [];
-			let casosPuntuales = [];
-
-			// Grupos estándar
-			let grupos = [
-				// 1 - Casos especiales
-				{codigo: "ant", orden: 2, label: "Antiguo Testamento"},
-				{codigo: "cnt", orden: 3, label: "Nuevo Testamento"},
-				{codigo: "pst", orden: 4, label: "Posterior a los Apóstoles"},
-				// 5 - Apariciones Marianas
-			];
-			for (let grupo of grupos) {
-				grupo.valores = [];
-				grupo.clase = "CFC VPC";
-			}
-
-			// Valores para los grupos
-			for (let hecho of hechos) {
-				// Si es un caso que no se debe mostrar, lo saltea
-				if (hecho.id == 10) continue;
-				// Variables
-				let OK = false;
-				hecho.clase = "CFC ";
-				if (!hecho.soloCfc) hecho.clase += "VPC ";
-
-				// Apariciones Marianas
-				if (hecho.ama) {
-					hecho.clase += "ama";
-					apMar.push(hecho);
-					OK = true;
-				}
-
-				// Si es alguno de los 'grupos'
-				if (!OK)
-					for (let grupo of grupos)
-						if (hecho.epocaOcurrencia_id == grupo.codigo) {
-							hecho.clase += grupo.codigo;
-							grupo.valores.push(hecho);
-							OK = true;
-							break;
-						}
-				// Si no es ninguno de los 'grupos' --> lo agrega a los casos puntuales
-				if (!OK) casosPuntuales.push(hecho);
-			}
-			// Grupo 'Casos Puntuales'
-			grupos.push({codigo: "CP", orden: 1, label: "Casos Puntuales", clase: "CFC VPC", valores: casosPuntuales});
-			// Grupo Apariciones Marianas
-			grupos.push({codigo: "ama", orden: 5, label: "Apariciones Mariana", clase: "CFC", valores: apMar});
-			// Ordena los grupos
-			grupos.sort((a, b) => a.orden - b.orden);
-
-			// Fin
-			return grupos;
-		},
 	},
 	obtieneCapitulos: async (coleccion_id, temporada) => {
 		// Obtiene registros
@@ -1039,7 +914,7 @@ module.exports = {
 
 			if (registro.rolIglesia && registro.rolIglesia_id != "NN")
 				bloque.push({titulo: "Rol en la Iglesia", valor: registro.rolIglesia[registro.genero_id]});
-			if (registro.apMar && registro.apMar_id != 10)
+			if (registro.apMar && registro.apMar_id != sinApMar_id)
 				bloque.push({titulo: "Aparición Mariana", valor: registro.apMar.nombre});
 			if (registro.anoNacim) bloque.push({titulo: "Año de nacimiento", valor: registro.anoNacim});
 
