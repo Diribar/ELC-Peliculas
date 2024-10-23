@@ -144,7 +144,7 @@ module.exports = {
 	diasSemana: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
 	hoy: new Date().toISOString().slice(0, 10),
 	...{primerLunesDelAno: null, semanaUTC: null, lunesDeEstaSemana: null, fechaDelAnoHoy_id: null, anoHoy: null},
-	setTimeOutStd: 1000,
+	setTimeOutStd: 1500,
 
 	// Mensajes
 	inputVacio: "Necesitamos que completes este campo",
