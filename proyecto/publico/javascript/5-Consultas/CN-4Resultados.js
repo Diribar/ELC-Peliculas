@@ -21,11 +21,15 @@ const FN_resultados = {
 			return;
 		}
 
+		// Si corresponde, completa la información
+		if (v.layoutBD.codigo == "fechaDelAnoBoton") {
+			v.ahora = new Date();
+			prefs.dia = v.ahora.getDate();
+			prefs.mes = v.ahora.getMonth() + 1;
+		}
+
 		// Busca la información en el BE
-		v.ahora = new Date();
-		const datos =
-			v.layoutBD.codigo == "fechaDelAnoBoton" ? {...prefs, dia: v.ahora.getDate(), mes: v.ahora.getMonth() + 1} : prefs;
-		const APIs = [{ruta: "obtiene-los-resultados/?datos=" + JSON.stringify(datos), duracion: 400}];
+		const APIs = [{ruta: "obtiene-los-resultados/?datos=" + JSON.stringify(prefs), duracion: 400}];// 'duración' son los milisegs que se estima que puede durar el fetch
 		v.resultados = await barraProgreso(ruta, APIs);
 
 		// Tapa y limpia los resultados anteriores
