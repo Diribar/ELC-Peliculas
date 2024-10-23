@@ -57,7 +57,7 @@ window.addEventListener("load", async () => {
 				e.target.value = ""; // reemplaza 'Quitar la opción elegida' por el placeholder
 			else if (nombre == "excluyeBC") {
 				// Actualiza el contenido de la leyenda
-				DOM.excluyeLeyenda.innerHTML = (DOM.excluyeInput.checked ? "Excluye" : "Incluye") + " baja calific.";
+				DOM.excluyeLeyenda.innerHTML = (DOM.excluyeInput.checked ? "Excluye" : "Incluye") + " películas con baja calificación";
 
 				// Muestra la leyenda
 				DOM.excluyeLeyenda.classList.remove("ocultar");
@@ -154,6 +154,9 @@ window.addEventListener("load", async () => {
 				// Quita los filtros de los campos
 				for (let campo of v.camposConDefault) DOM[campo].value = "todos";
 				for (let campo of v.camposSinDefault) DOM[campo].value = "";
+
+				// Checkbox
+				DOM.excluyeInput.checked = false;
 
 				// Actualiza las palabras clave
 				DOM.palClaveInput.value = "";
