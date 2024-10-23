@@ -781,8 +781,8 @@ module.exports = {
 		const statusValido = {statusRegistro_id: {[Op.ne]: inactivo_id}};
 		let prodsAprob;
 
-		// Si el ID es menor o igual a 10, termina la función
-		if (id && id <= 10) return;
+		// Si el ID es trivial, termina la función
+		if (id && [ninguno_id, varios_id, sinApMar_id].includes(id)) return;
 
 		// Establece la condición perenne
 		const rclv_id = this.obtieneDesdeEntidad.campo_id(entidad);
