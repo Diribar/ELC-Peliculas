@@ -761,7 +761,7 @@ module.exports = {
 	},
 	filtrosConsTemas: async () => {
 		// Variables
-		const condicion = {statusRegistro_id: aprobados_ids, id: {[Op.gt]: 10}};
+		const condicion = {statusRegistro_id: aprobados_ids, id: {[Op.gt]: idsReserv}};
 		const includes = [...variables.entidades.prods];
 
 		// Obtiene los registros asociados con productos
@@ -848,7 +848,7 @@ module.exports = {
 				// Se fija si la 'fechaDelAno' tiene un valor trivial para 'epocaDelAno_id'
 				const indice = epocaDelAno.fechaDelAno_id - 1 + i - restar; // se resta '1' porque el id tiene esa diferencia con el índice del array
 				const fechaDelAno = fechasDelAnoSolap[indice];
-				fechaDelAno.epocaDelAno_id == 1
+				fechaDelAno.epocaDelAno_id == ninguno_id
 					? (fechasDelAnoSolap[indice] = {...fechaDelAno, epocaDelAno_id: epocaDelAno.id}) // en caso positivo le asigna el id de la epocaDelAno
 					: (solapamiento = true); // en caso negativo no lo completa, y le asigna 'true' a 'solapamiento de 'epocaDelAno'
 			}
@@ -1380,7 +1380,7 @@ let FN = {
 
 		// Condiciones
 		let condicion = {statusRegistro_id: status_id}; // Con status según parámetro
-		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: idMinRclv}; // Excluye los registros RCLV cuyo ID es <= idMinRclv
+		if (variables.entidades.rclvs.includes(entidad)) condicion.id = {[Op.gt]: varios_id};
 
 		// Resultado
 		const resultados = await baseDeDatos
