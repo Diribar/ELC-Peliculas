@@ -17,7 +17,7 @@
 	}
 	.mostrarLeyenda {
 		position: absolute;
-		bottom: -25px; left: 0; padding: 2px 5px; text-wrap: nowrap; border-radius: 10px;
+		bottom: -25px; padding: 2px 5px; text-wrap: nowrap; border-radius: 10px;
 		background: var(--amarillo-claro); border: var(--verde-oscuro) 2px solid; color: var(--verde-oscuro);
 	}
 }
