@@ -28,7 +28,10 @@
 				</optgroup>
 				<% } %>
 			</select>
-			<input type="checkbox" name="excluye">
+			<div class="relative">
+				<input type="checkbox" name="excluye">
+				<p id="compartirLeyenda" class="absolute ocultar"></p>
+			</div>
 		</div>
 		<div id="iconosDelTitulo" class="flexRow">
 			<%- include("MN-Ayuda", {ayudaClass: "compCons", parrafo: "Para las opciones de <b>Cuatro Películas</b>, los resultados con fondo amarillo significa que tienen relación con la <em>Iglesia Católica</em>.", mensajes: ayudas.map(ayuda => "<span>" + ayuda.nombre + "</span>: " + ayuda.comentario + ".")}) %>
