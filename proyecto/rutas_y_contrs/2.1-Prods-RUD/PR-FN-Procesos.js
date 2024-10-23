@@ -154,16 +154,17 @@ module.exports = {
 			await baseDeDatos.actualizaPorCondicion("capitulos", condicion, novedad);
 		}
 
-		// Campos para los que se puede preservar el valor según el caso
+		// Campos 'depende'
 		const esActoresDepende = campo == "actores" && ![dibujosAnimados, documental].includes(edicion.actores);
 		if (camposTransfCaps.soloVacios.includes(campo) || esActoresDepende) {
-			// Condición - se asegura de que reemplacen:
-			const condicion = {coleccion_id: original.id, [campo]: [null]}; // los que tengan valor null
-			if (original[campo]) condicion[campo].push(original[campo]); // los que coincidan con la colección original
+			// Condición - se asegura que reemplacen:
+			const condicion = {coleccion_id: original.id, [campo]: [null]}; // los que tengan valor 'null'
+			if (original[campo]) condicion[campo].push(original[campo]); // los que coincidan con el registro original de la colección
+			if (variables.entidades.rclvs_id.includes(campo)) condicion[campo].push(ninguno_id);// los 'rclv_id' triviales
 
 			// Campos particulares
 			const noEsPersonajeNiEpocaOcurr = !["personaje_id", "epocaOcurrencia_id"].includes(campo);
-			const esPersonajeNoVarios = campo == "personaje_id" && edicion[campo] != 2;
+			const esPersonajeNoVarios = campo == "personaje_id" && edicion[campo] != varios_id;
 			const esEpocaOcurrNoVarios = campo == "epocaOcurrencia_id" && edicion[campo] != epocaVarias.id;
 
 			// Reemplaza los valores
