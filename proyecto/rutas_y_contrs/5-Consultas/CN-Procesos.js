@@ -226,10 +226,10 @@ module.exports = {
 					productos =
 						apMar == "SI"
 							? productos.filter(
-									(n) => (n.personaje && n.personaje.apMar_id != 10) || (n.hecho && n.hecho.ama == 1)
+									(n) => (n.personaje && n.personaje.apMar_id != sinApMar_id) || (n.hecho && n.hecho.ama == 1)
 							  )
 							: productos.filter(
-									(n) => (n.personaje && n.personaje.apMar_id == 10) || (n.hecho && n.hecho.ama == 0)
+									(n) => (n.personaje && n.personaje.apMar_id == sinApMar_id) || (n.hecho && n.hecho.ama == 0)
 							  );
 				}
 
