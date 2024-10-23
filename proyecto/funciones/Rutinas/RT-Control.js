@@ -20,8 +20,7 @@ module.exports = {
 		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
-		// Comunica el fin de las rutinas
-		// await this.rutinas.habitualPorCliente();
+		// await this.rutinas.revisaCorrigeRclv_idEnCapsSiLaColeTieneUnValor();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -594,18 +593,27 @@ module.exports = {
 		revisaCorrigeRclv_idEnCapsSiLaColeTieneUnValor: async () => {
 			// Variables
 			const rclvs_id = variables.entidades.rclvs_id;
-
-			// Obtiene todas las colecciones
 			const colecciones = await baseDeDatos.obtieneTodos("colecciones");
 
-			// Rutinas
-			for (let coleccion of colecciones) // Rutina por colección
-				for (let rclv_id of rclvs_id) // Rutina por rclv_id
-					if (coleccion[rclv_id] > 10) {
-						const condicion = {coleccion_id: coleccion.id};
-						const datos = {[rclv_id]: 1};
-						baseDeDatos.actualizaPorCondicion("capitulos", condicion, datos);
+			// Rutina por rclv_id
+			for (let rclv_id of rclvs_id) {
+				// Variables
+				let espera = [];
+
+				// Rutina por colección
+				for (let coleccion of colecciones)
+					if (coleccion[rclv_id] > varios_id) {
+						// Variables
+						const condicion = {coleccion_id: coleccion.id, [rclv_id]: ninguno_id};
+						const datos = {[rclv_id]: coleccion[rclv_id]};
+
+						// Actualiza el 'rclv_id'
+						espera.push(baseDeDatos.actualizaPorCondicion("capitulos", condicion, datos));
 					}
+
+				// Es necesario para que no se superponga más de un guardado simultáneamente en un registro
+				espera = await Promise.all(espera);
+			}
 
 			// Fin
 			return;
