@@ -371,7 +371,7 @@ module.exports = {
 				// Se fija si debe reemplazar la fechaDelAno_id de un registro 'epocaDelAno' con el día actual
 				if (diaHoy) {
 					const epocaDelAno_id = diaHoy.epocaDelAno_id;
-					if (epocaDelAno_id != 1) {
+					if (epocaDelAno_id != ninguno_id) {
 						const indice = rclvs.findIndex((n) => n.id == epocaDelAno_id && n.entidad == "epocasDelAno");
 						rclvs[indice].fechaDelAno_id = diaHoy.id;
 					}

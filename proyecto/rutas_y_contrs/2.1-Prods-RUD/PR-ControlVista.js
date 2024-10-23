@@ -12,7 +12,7 @@ module.exports = {
 		// Variables
 		const tema = "prodRud";
 		const codigo = "detalle";
-		const {siglaFam, entidad} = comp.partesDelUrl(req);
+		const {entidad} = comp.partesDelUrl(req);
 		const {id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "DT";
 		const usuario = req.session.usuario ? req.session.usuario : null;
@@ -34,7 +34,7 @@ module.exports = {
 		const {infoGral, actores} = procesos.bloqueIzq(prodComb);
 		const bloqueIzq = {infoGral, actores};
 
-		// RCLV
+		// RCLV - Variables
 		const entidadesRCLV = variables.entidades.rclvs;
 		const RCLVs = entidadesRCLV.map((n) => ({
 			entidad: n,
@@ -43,8 +43,10 @@ module.exports = {
 		}));
 		const rclvs_id = variables.entidades.rclvs_id;
 		const asocs = variables.entidades.asocRclvs;
+
+		// RCLV - Le agrega datos al bloque izquierdo
 		for (let i = 0; i < asocs.length; i++)
-			if (prodComb[rclvs_id[i]] != 1) {
+			if (prodComb[rclvs_id[i]] != ninguno_id) {
 				const entidadRclv = entidadesRCLV[i];
 				const include = entidadRclv == "personajes" ? "canon" : "";
 				const rclv = include

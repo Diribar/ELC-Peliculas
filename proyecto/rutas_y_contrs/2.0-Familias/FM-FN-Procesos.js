@@ -281,20 +281,6 @@ module.exports = {
 			if (original.coleccion && edicColec.nombreCastellano)
 				original.coleccion.nombreCastellano = edicColec.nombreCastellano;
 
-			// Reemplaza los campos simples vacíos de la edición
-			// const camposEditables = [...variables.camposDD, ...variables.camposDA];
-			// for (let campo of camposEditables) {
-			// 	const {nombre} = campo;
-			// 	if (
-			// 		(edicColec[nombre] && !original[nombre] && (!edicion || !edicion[nombre])) || // sólo 'edicColec' tiene un valor; 'null' y 'undefined' son equivalentes con el '=='
-			// 		(campo.rclv && edicColec[nombre] > 10 && original[nombre] == 1 && !edicion[nombre]) // es un rclv y sólo 'edicColec' tiene un valor significativo
-			// 	)
-			// 		edicion[nombre] = edicColec[nombre];
-			// }
-
-			// Reemplaza los campos 'include' vacíos de la edición
-			// if (includesEdic)
-			// 	for (let campo of includesEdic) if (!edicion[campo] && edicColec[campo]) edicion[campo] = edicColec[campo];
 		}
 
 		// Fin
@@ -634,11 +620,11 @@ module.exports = {
 			// Rutina por entidad RCLV
 			const entidadesRCLV = variables.entidades.rclvs;
 			for (let entidadRCLV of entidadesRCLV) {
-				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
-				if (registro[campo_id] && registro[campo_id] != 1)
+				const rclv_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
+				if (registro[rclv_id] && registro[rclv_id] != ninguno_id)
 					prodAprob
-						? baseDeDatos.actualizaPorId(entidadRCLV, registro[campo_id], {prodsAprob: true})
-						: comp.actualizaProdsEnRCLV({entidad: entidadRCLV, id: registro[campo_id]});
+						? baseDeDatos.actualizaPorId(entidadRCLV, registro[rclv_id], {prodsAprob: true})
+						: comp.actualizaProdsEnRCLV({entidad: entidadRCLV, id: registro[rclv_id]});
 			}
 		}
 

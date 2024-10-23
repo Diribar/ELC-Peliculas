@@ -203,7 +203,7 @@ module.exports = {
 		},
 		quitaCamposRCLV: (datos) => {
 			const camposRCLV = variables.camposDA.filter((n) => n.rclv).map((m) => m.nombre);
-			for (let campo of camposRCLV) if (datos.sinRCLV || datos[campo] == 1) delete datos[campo];
+			for (let campo of camposRCLV) if (datos.sinRCLV || datos[campo] == ninguno_id) delete datos[campo];
 			return datos;
 		},
 		valorParaActores: (datos) => {

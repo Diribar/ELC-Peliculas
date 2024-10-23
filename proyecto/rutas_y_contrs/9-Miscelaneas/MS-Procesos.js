@@ -46,7 +46,7 @@ module.exports = {
 			SE: [...SE_pel, ...SE_col, ...SE_cap], // sin edición
 			IN: inactivos.filter((n) => !n.statusColeccion_id || n.statusColeccion_id == aprobado_id), // películas y colecciones inactivas, y capítulos con su colección aprobada
 			SC: pelisColes.filter((n) => pppSinCal.find((m) => m.entidad == n.entidad && m.entidad_id == n.id)), // prodsAprob - Sin calificar
-			ST: pelisColes.filter((n) => n.tema_id == 1), // prodsAprob - Sin tema
+			ST: pelisColes.filter((n) => n.tema_id == ninguno_id), // prodsAprob - Sin tema
 
 			// Prods - sin links
 			SL_pelis: pelisColes.filter((n) => !n.linksGral && n.entidad == "peliculas"), // películas

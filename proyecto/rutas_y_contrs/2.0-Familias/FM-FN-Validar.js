@@ -154,9 +154,7 @@ module.exports = {
 			// RCLVs
 			const rclvs_id = [...variables.entidades.rclvs_id, "sinRCLV"];
 			if (campos.some((n) => rclvs_id.includes(n)))
-				errores.RCLV = rclvs_id.every((n) => !datos[n] || datos[n] == 1) // ningún campo tiene un valor distinto de 1
-					? rclvSinElegir
-					: "";
+				errores.RCLV = rclvs_id.every((n) => !datos[n] || datos[n] == ninguno_id) ? rclvSinElegir : "";
 
 			// Consolida la información
 			errores.hay = Object.values(errores).some((n) => !!n);
