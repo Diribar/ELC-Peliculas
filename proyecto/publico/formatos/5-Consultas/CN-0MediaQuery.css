@@ -46,6 +46,7 @@
 			@media (width < 600px) {#vistaDeResults:has(#scroll #botones li) {max-width: 350px;}}
 			#encabMasPelis {
 				position: absolute; width: 100%; height: 100%;
+				#encabezado #tituloPrincipal #layoutCheckbox #checkbox p {translate: -50% 0; left: 50%; z-index: 1;}
 				#zonaDisponible {
 					&.aumentaCn {animation-fill-mode: none}
 					#vistaDeResults {
