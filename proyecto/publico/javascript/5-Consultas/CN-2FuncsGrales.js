@@ -148,7 +148,7 @@ const actualiza = {
 				: "";
 
 		// Checkbox
-		if (preferencias.excluyeBC == true) DOM.excluyeInput.checked = true;
+		DOM.excluyeInput.checked = !!preferencias.excluyeBC;
 
 		// 'palClaveIcono'
 		DOM.palClaveIcono.classList.remove("fa-circle-right"); // oculto hasta que se modifica el input 'palClave'
