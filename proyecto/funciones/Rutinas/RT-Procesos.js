@@ -790,7 +790,7 @@ let obtieneLosRCLV = async (fechaDelAno) => {
 	// Obtiene los RCLV
 	for (let entidad of variables.entidades.rclvs) {
 		// Si corresponde, saltea la rutina
-		if (entidad == "epocasDelAno" && fechaDelAno.epocaDelAno_id == 1) continue;
+		if (entidad == "epocasDelAno" && fechaDelAno.epocaDelAno_id == ninguno_id) continue;
 
 		// Condicion
 		let condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}, anoFM: {[Op.or]: [null, anoHoy]}}; // es necesario escribir anoFM de esa manera, para que funcione
