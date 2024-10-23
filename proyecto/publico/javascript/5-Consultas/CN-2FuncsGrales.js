@@ -255,7 +255,7 @@ const cambiosEnBD = {
 		if (!v.usuario_id) return;
 
 		// Guarda los cambios
-		let configCons = {cabecera, prefs};
+		const configCons = {cabecera, prefs};
 		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.prefs.entidad; // si la entidad es la estándar, elimina el campo
 		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
 		await fetch(rutaCompleta + JSON.stringify(configCons));
@@ -336,7 +336,7 @@ const sessionCookie = {
 	guardaConfig: () => {
 		// Variables
 		const rutaCompleta = ruta + "guarda-la-configuracion-en-session-y-cookie/?configCons=";
-		let configCons = {id: cabecera.id, ...prefs};
+		const configCons = {id: cabecera.id, ...prefs};
 		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
 
 		// Guarda
