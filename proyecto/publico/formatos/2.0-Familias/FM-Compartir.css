@@ -1,17 +1,19 @@
-#iconosDelTitulo {
-	:is(.ayuda, .iconosAzules, #compartirLeyenda) {margin-left: 15px;}
-	.ayuda {
-		.ayudaIconoForm {font-size: 1.6rem;}
-		.ayudaMensForm {
-			&::before {top: 25px;}
-			top: -20px; max-width: min(82vw, 500px);
+#tituloPrincipal {
+	#iconosDelTitulo {
+		:is(.ayuda, .iconosAzules, #compartirLeyenda) {margin-left: 15px;}
+		.ayuda {
+			.ayudaIconoForm {font-size: 1.6rem;}
+			.ayudaMensForm {
+				&::before {top: 25px;}
+				top: -20px; max-width: min(82vw, 500px);
+			}
 		}
-	}
-	#compartirIcono {
-		display: flex; flex-direction: row; position: relative;
-		width: 25px; height: 25px; border-radius: 50%;
-		justify-content: center; align-items: center; z-index: 0;
-		border: solid 1.5px var(--gris-claro); color: var(--gris-claro); background: var(--azul-oscuro);
+		#compartirIcono {
+			display: flex; flex-direction: row; position: relative;
+			width: 25px; height: 25px; border-radius: 50%;
+			justify-content: center; align-items: center; z-index: 0;
+			border: solid 1.5px var(--gris-claro); color: var(--gris-claro); background: var(--azul-oscuro);
+		}
 	}
 	#compartirLeyenda {
 		bottom: -25px; left: 0; padding: 2px 5px; text-wrap: nowrap; border-radius: 10px;
