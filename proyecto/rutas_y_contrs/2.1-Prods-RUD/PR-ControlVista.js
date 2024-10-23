@@ -2,6 +2,7 @@
 // Variables
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const validacsFM = require("../2.0-Familias/FM-FN-Validar");
+const procsPA = require("../2.1-Prods-Agregar/PA-FN4-Procesos");
 const procesos = require("./PR-FN-Procesos");
 const valida = require("./PR-FN-Validar");
 
@@ -120,8 +121,8 @@ module.exports = {
 
 			// Datos Adicionales
 			const camposDA = await variables.camposDA_conValores(usuario_id);
-			const gruposPers = procsFM.grupos.pers(camposDA);
-			const gruposHechos = procsFM.grupos.hechos(camposDA);
+			const gruposPers = procsPA.grupos.pers(camposDA);
+			const gruposHechos = procsPA.grupos.hechos(camposDA);
 
 			// Datos para la vista
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
