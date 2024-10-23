@@ -52,7 +52,7 @@
 						max-height: 97%; z-index: 1;
 						&:has(#scroll #botones li) {--altMargen: min(calc((var(--altoCuerpoMenosTitulo) * .97 - var(--altoBoton) * 2) / 3), 30px);}
 						&:not(:has(#scroll :is(li, table))) {background: transparent; box-shadow: none;}
-						#actualizar {display: none;} /* oculta el botón de actualizar prods */
+						#iconoActualizar {display: none;} /* oculta el botón de actualizar prods */
 						img#telonFondo {display: none;} /* oculta el telón de fondo */
 						&.toggle {display: none;} /* oculta los resultados y el cartelRCLV */
 					}
@@ -78,6 +78,6 @@
 	}
 
 	/* Ocultar */
-	#cuerpoFooterImgDer :is(#cuerpo :is(#configCons, #encabMasPelis :is(#encabezado, #vistaDeResults #actualizar)), #imgDerecha)
+	#cuerpoFooterImgDer :is(#cuerpo :is(#configCons, #encabMasPelis :is(#encabezado, #vistaDeResults #iconoActualizar)), #imgDerecha)
 		{display: none !important;}
 }
