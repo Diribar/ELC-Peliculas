@@ -30,8 +30,8 @@ window.addEventListener("load", async () => {
 		// Encabezado - Título principal
 		layout_id: DOM.tituloPrincipal.querySelector("select[name='layout_id']"),
 		excluyeInput: DOM.tituloPrincipal.querySelector("#checkbox input"),
-		excluyeLeyenda: DOM.tituloPrincipal.querySelector("#checkbox input"),
-		mostrarLeyenda: DOM.tituloPrincipal.querySelector("#iconosDelTitulo .mostrarLeyenda"),
+		excluyeLeyenda: DOM.tituloPrincipal.querySelector("#checkbox .mostrarLeyenda"),
+		compartirLeyenda: DOM.tituloPrincipal.querySelector("#iconosDelTitulo .mostrarLeyenda"),
 		iconoParaMostrarPrefs: DOM.tituloPrincipal.querySelector("#toggleFiltrosGlobal .fa-chevron-right"),
 
 		// Configuración de Cabecera - Botonera
