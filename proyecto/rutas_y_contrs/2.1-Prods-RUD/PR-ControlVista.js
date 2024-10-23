@@ -12,7 +12,7 @@ module.exports = {
 		// Variables
 		const tema = "prodRud";
 		const codigo = "detalle";
-		const {entidad} = comp.partesDelUrl(req);
+		const entidad = comp.obtieneEntidadDesdeUrl(req);
 		const {id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "DT";
 		const usuario = req.session.usuario ? req.session.usuario : null;
