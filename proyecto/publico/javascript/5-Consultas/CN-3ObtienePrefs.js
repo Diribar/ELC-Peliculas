@@ -85,6 +85,10 @@ const obtienePrefsDelFe = {
 		// Fin
 		return;
 	},
+	excluyeBC: () => {
+		if (DOM.excluyeInput.checked) prefs.excluyeBC = true;
+		return;
+	},
 
 	// Presencia eventual
 	entidad: () => {
