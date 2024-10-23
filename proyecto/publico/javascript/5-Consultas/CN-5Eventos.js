@@ -57,7 +57,8 @@ window.addEventListener("load", async () => {
 				e.target.value = ""; // reemplaza 'Quitar la opción elegida' por el placeholder
 			else if (nombre == "excluyeBC") {
 				// Actualiza el contenido de la leyenda
-				DOM.excluyeLeyenda.innerHTML = (DOM.excluyeInput.checked ? "Excluye" : "Incluye") + " películas con baja calificación";
+				DOM.excluyeLeyenda.innerHTML = excluyeBC();
+				DOM.excluyeInput.title = excluyeBC();
 
 				// Muestra la leyenda
 				DOM.excluyeLeyenda.classList.remove("ocultar");
