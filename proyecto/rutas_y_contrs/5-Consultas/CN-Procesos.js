@@ -131,9 +131,8 @@ module.exports = {
 				if (prefs.excluyeBC) {
 					condicion.calificacion =
 						layout.codigo == "calificacion"
-						? {[Op.and]: [{[Op.ne]: null}, {[Op.gte]: 70}]}
-						: {[Op.or]: [{[Op.eq]: null}, {[Op.gte]: 70}]}
-						;
+							? {[Op.and]: [{[Op.ne]: null}, {[Op.gte]: 70}]}
+							: {[Op.or]: [{[Op.eq]: null}, {[Op.gte]: 70}]};
 				} else if (layout.codigo == "calificacion") condicion.calificacion = {[Op.ne]: null}; // Para la opción 'calificación', agrega pautas en las condiciones
 				// else condicion.calificacion = {[Op.lt]: 70}
 
@@ -196,7 +195,7 @@ module.exports = {
 				// Filtros generales
 				if (rolesIgl || canons) {
 					// Quita los personajes menores que 11
-					productos = productos.filter((n) => n.personaje_id > 10);
+					productos = productos.filter((n) => n.personaje_id > varios_id);
 
 					// Filtra por rolesIgl
 					if (rolesIgl)
@@ -219,8 +218,8 @@ module.exports = {
 
 				// Filtra por apMar
 				if (apMar) {
-					// Quita los personajes y hechos menores que 11
-					productos = productos.filter((n) => n.personaje_id > 10 || n.hecho_id > 10);
+					// Quita los personajes y hechos triviales
+					productos = productos.filter((n) => n.personaje_id > varios_id || n.hecho_id > sinApMar_id);
 
 					// Ajustes más finos
 					productos =
@@ -309,7 +308,7 @@ module.exports = {
 
 				// Obtiene las condiciones
 				const filtros = ["personajes", "hechos"].includes(entidad) ? this.filtros(entidad, prefs) : null;
-				const condicion = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...filtros}; // Status aprobado e ID mayor a 10
+				const condicion = {statusRegistro_id: aprobado_id, id: {[Op.gt]: varios_id}, ...filtros};
 
 				// Fin
 				return {include, condicion};
@@ -853,7 +852,7 @@ module.exports = {
 
 						// RCLV nombre
 						if (
-							prod[campo_id] > 10 && // el id es de un registro válido
+							prod[campo_id] > varios_id &&
 							(!layout.codigo.includes("fechaDelAno_id") || prod[asociacion].fechaDelAno) // no se busca por fecha o el campo tiene fecha
 						) {
 							datosNeces[entidadNombre] = prod[asociacion].nombre;
