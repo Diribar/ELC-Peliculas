@@ -36,6 +36,7 @@ const obtienePrefsDelFe = {
 		// Muestra/Oculta los bloques de filtros
 		this.muestraOcultaBloques();
 
+		// Obtiene los demás valores
 		if (v.layout_id) {
 			// Obtiene los métodos a considerar - saltea 'consolidado', 'layout', 'muestraOcultaBloques'
 			const metodos = Object.keys(this).slice(3);
