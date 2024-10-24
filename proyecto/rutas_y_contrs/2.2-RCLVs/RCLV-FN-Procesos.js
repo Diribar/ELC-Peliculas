@@ -170,7 +170,7 @@ module.exports = {
 				DE.canon_id = CFC ? DE.canon_id : "NN";
 				DE.anoNacim = epocaPosterior ? anoNacim : null;
 				DE.rolIglesia_id = CFC ? rolIglesia_id : "NN";
-				DE.apMar_id = CFC && epocaPosterior && parseInt(anoNacim) > 1100 ? apMar_id : 10; // El '10' es el id de "no presenció ninguna"
+				DE.apMar_id = CFC && epocaPosterior && parseInt(anoNacim) > 1100 ? apMar_id : sinApMar_id;
 			}
 
 			// Variables con procesos en hechos

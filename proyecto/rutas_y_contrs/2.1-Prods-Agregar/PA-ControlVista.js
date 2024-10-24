@@ -202,8 +202,8 @@ module.exports = {
 			const camposDE = Object.keys(datosAdics);
 
 			// Grupos RCLV
-			const gruposPers = procsFM.grupos.pers(camposDA);
-			const gruposHechos = procsFM.grupos.hechos(camposDA);
+			const gruposPers = procesos.grupos.pers(camposDA);
+			const gruposHechos = procesos.grupos.hechos(camposDA);
 
 			// Datos para la vista
 			const imgDerPers = datosAdics.avatar ? "/Externa/9-Provisorio/" + datosAdics.avatar : datosAdics.avatarUrl;

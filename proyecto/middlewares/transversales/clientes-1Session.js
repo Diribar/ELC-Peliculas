@@ -127,7 +127,7 @@ module.exports = async (req, res, next) => {
 	return next();
 };
 
-let obtieneCamposNecesarios = (usuario) => {
+const obtieneCamposNecesarios = (usuario) => {
 	// Variables
 	const camposNecesarios = [
 		...["id", "cliente_id"], // identificación
@@ -138,8 +138,8 @@ let obtieneCamposNecesarios = (usuario) => {
 	];
 
 	// Obtiene los datos para la variable cliente
-	let cliente = {};
-	for (let campo of camposNecesarios) cliente[campo] = usuario[campo];
+	const cliente = {};
+	for (const campo of camposNecesarios) cliente[campo] = usuario[campo];
 
 	// Adecua el campo 'visitaCreadaEn'
 	cliente.visitaCreadaEn = cliente.visitaCreadaEn.toISOString().slice(0, 10);

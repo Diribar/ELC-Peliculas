@@ -6,7 +6,7 @@ const procsComp = require("./PA-FN5-Compartidos");
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 
 module.exports = {
-	// USO COMPARTIDO *********************
+	// Compartidos
 	borraSessionCookies: (req, res, paso) => {
 		// Variables
 		const etapas = [
@@ -68,6 +68,133 @@ module.exports = {
 		// Fin
 		return resultados;
 	},
+	grupos: {
+		pers: (camposDA) => {
+			// Variables
+			const personajes = camposDA
+				.find((n) => n.nombre == "personaje_id") // Obtiene los personajes
+				.valores // Obtiene los valores
+				.map((n) => {
+					// Deja los datos necesarios
+					return {
+						id: n.id,
+						nombre: n.nombre,
+						categoria_id: n.categoria_id,
+						epocaOcurrencia_id: n.epocaOcurrencia_id,
+						rolIglesia_id: n.rolIglesia_id,
+						apMar_id: n.apMar_id,
+					};
+				});
+			let casosPuntuales = [];
+
+			// Grupos Estándar
+			let grupos = [
+				{orden: 2, codigo: "ant", campo: "epocaOcurrencia_id", label: "Antiguo Testamento", clase: "CFC VPC"},
+				{orden: 3, codigo: "SF", campo: "rolIglesia_id", label: "Sagrada Familia", clase: "CFC"},
+				{orden: 4, codigo: "AL", campo: "rolIglesia_id", label: "Apóstoles", clase: "CFC"},
+				{orden: 5, codigo: "cnt", campo: "epocaOcurrencia_id", label: "Contemporáneos de Cristo", clase: "CFC VPC"},
+				{orden: 6, codigo: "PP", campo: "rolIglesia_id", label: "Papas", clase: "CFC"},
+				{orden: 7, codigo: "pst", campo: "epocaOcurrencia_id", label: "Post. a Cristo (Fe Católica)", clase: "CFC"},
+				{orden: 8, codigo: "pst", campo: "epocaOcurrencia_id", label: "Post. a Cristo (Con valores)", clase: "VPC"},
+			];
+			for (let grupo of grupos) grupo.valores = [];
+
+			// Valores para los grupos
+			for (let personaje of personajes) {
+				// Clase
+				personaje.clase = personaje.categoria_id ? personaje.categoria_id : "CFC VPC";
+				if (personaje.apMar_id != sinApMar_id) personaje.clase += " AMA AM" + personaje.apMar_id;
+
+				// Si tiene 'rolIglesia_id'
+				if (personaje.rolIglesia_id) {
+					let OK = false;
+					// Si es alguno de los 'grupos'
+					for (let grupo of grupos)
+						if (personaje[grupo.campo].startsWith(grupo.codigo) && grupo.clase.includes(personaje.categoria_id)) {
+							grupo.valores.push(personaje);
+							OK = true;
+							break;
+						}
+				}
+				// Si no tiene 'rolIglesia_id' --> lo agrega a los casos puntuales
+				else casosPuntuales.push(personaje);
+			}
+			// Grupo 'Casos Puntuales'
+			grupos.push({codigo: "CP", orden: 1, label: "Casos Puntuales", valores: casosPuntuales, clase: "CFC VPC"});
+
+			// Ordena los grupos
+			grupos.sort((a, b) => a.orden - b.orden);
+
+			// Fin
+			return grupos;
+		},
+		hechos: (camposDA) => {
+			// Variables
+			const hechos = camposDA
+				.find((n) => n.nombre == "hecho_id")
+				.valores.map((n) => {
+					const {id, nombre, soloCfc, epocaOcurrencia_id, ama} = n;
+					return {id, nombre, soloCfc, epocaOcurrencia_id, ama};
+				});
+			const apMar = [];
+			const casosPuntuales = [];
+
+			// Grupos estándar
+			let grupos = [
+				// 1 - Casos especiales
+				{codigo: "ant", orden: 2, label: "Antiguo Testamento"},
+				{codigo: "cnt", orden: 3, label: "Nuevo Testamento"},
+				{codigo: "pst", orden: 4, label: "Posterior a los Apóstoles"},
+				// 5 - Apariciones Marianas
+			];
+			for (let grupo of grupos) {
+				grupo.valores = [];
+				grupo.clase = "CFC VPC";
+			}
+
+			// Valores para los grupos
+			for (let hecho of hechos) {
+				// Si es un caso que no se debe mostrar, lo saltea
+				if (hecho.id == sinApMar_id) continue;
+
+				// Variables
+				let OK = false;
+				hecho.clase = "CFC ";
+				if (!hecho.soloCfc) hecho.clase += "VPC ";
+
+				// Apariciones Marianas
+				if (hecho.ama) {
+					hecho.clase += "ama";
+					apMar.push(hecho);
+					OK = true;
+				}
+
+				// Si es alguno de los 'grupos'
+				if (!OK)
+					for (let grupo of grupos)
+						if (hecho.epocaOcurrencia_id == grupo.codigo) {
+							hecho.clase += grupo.codigo;
+							grupo.valores.push(hecho);
+							OK = true;
+							break;
+						}
+				// Si no es ninguno de los 'grupos' --> lo agrega a los casos puntuales
+				if (!OK) casosPuntuales.push(hecho);
+			}
+
+			// Grupos particulares
+			grupos.push({codigo: "CP", orden: 1, label: "Casos Puntuales", clase: "CFC VPC", valores: casosPuntuales});
+			grupos.push({codigo: "ama", orden: 5, label: "Apariciones Mariana", clase: "CFC", valores: apMar});
+
+			// Ordena los grupos
+			grupos.sort((a, b) => a.orden - b.orden);
+
+			// Fin
+			return grupos;
+		},
+	},
+
+	// Particulares
 	datosAdics: {
 		valsCheckBtn: (datos) => {
 			const camposChkBtn = variables.camposDA.filter((n) => n.chkBox).map((m) => m.nombre);
@@ -76,7 +203,7 @@ module.exports = {
 		},
 		quitaCamposRCLV: (datos) => {
 			const camposRCLV = variables.camposDA.filter((n) => n.rclv).map((m) => m.nombre);
-			for (let campo of camposRCLV) if (datos.sinRCLV || datos[campo] == 1) delete datos[campo];
+			for (let campo of camposRCLV) if (datos.sinRCLV || datos[campo] == ninguno_id) delete datos[campo];
 			return datos;
 		},
 		valorParaActores: (datos) => {
@@ -335,8 +462,8 @@ module.exports = {
 };
 
 // Funciones auxiliares
-let eliminaParentesis = (dato) => {
-	let desde = dato.indexOf(" (");
-	let hasta = dato.indexOf(")");
+const eliminaParentesis = (dato) => {
+	const desde = dato.indexOf(" (");
+	const hasta = dato.indexOf(")");
 	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : dato;
 };

@@ -21,7 +21,6 @@ const iconos = {
 
 module.exports = {
 	// Institucional
-	idsReserv: 10,
 	vistasInstitucs: {
 		inicio: {titulo: "Películas con Valores afines a la Iglesia Católica", codigo: "inicio", icono: iconos.inicio, hr: true}, // 'hr' significa que pone una línea divisoria en el menú del header
 		"quienes-somos": {titulo: "Quiénes somos", codigo: "quienesSomos", icono: "fa-people-group"},
@@ -106,7 +105,7 @@ module.exports = {
 
 	// RCLV
 	prefijosSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
-	idMinRclv: 10,
+	...{ninguno_id: 1, varios_id: 2, sinApMar_id: 2, idsReserv: 10, sinFecha_id: 400},
 	prioridadesRclv: [
 		{id: 1, nombre: "Menor", codigo: "menor"},
 		{id: 2, nombre: "Estándar", codigo: "estandar"},

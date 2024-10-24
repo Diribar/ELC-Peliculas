@@ -208,7 +208,7 @@ module.exports = {
 		const {entidad, palabrasClave} = prefs;
 
 		// Obtiene los productos, rclvs y registros ppp del usuario
-		let prods = procesos.resultados.obtieneProds.comun({...prefs, layout});
+		let prods = procesos.resultados.obtieneProds.consolidado({...prefs, layout});
 		let rclvs = procesos.resultados.obtieneRclvs.consolidado({...prefs, layout});
 		let pppRegistros = usuario_id ? baseDeDatos.obtieneTodosPorCondicion("pppRegistros", {usuario_id}, "detalle") : [];
 		[prods, rclvs, pppRegistros] = await Promise.all([prods, rclvs, pppRegistros]);

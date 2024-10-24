@@ -106,7 +106,7 @@ module.exports = {
 	},
 	resultados: {
 		obtieneProds: {
-			comun: async function (prefs) {
+			consolidado: async function (prefs) {
 				// Variables
 				const {entidad, layout} = prefs;
 				const entsProd = variables.entidades.prods;
@@ -123,10 +123,20 @@ module.exports = {
 				if (["rolesIgl", "canons"].some((n) => Object.keys(prefs).includes(n))) include.push("personaje");
 				if (prefs.apMar) include.push("personaje", "hecho");
 
-				// Condiciones
+				// Condición
 				const filtros = this.filtros(prefs);
-				let condicion = {statusRegistro_id: aprobados_ids, ...filtros};
-				if (layout.codigo == "calificacion") condicion.calificacion = {[Op.ne]: null}; // Para la opción 'calificación', agrega pautas en las condiciones
+				const condicion = {statusRegistro_id: aprobados_ids, ...filtros};
+
+				// Calificación
+				if (prefs.excluyeBC) {
+					condicion.calificacion =
+						layout.codigo == "calificacion"
+							? {[Op.and]: [{[Op.ne]: null}, {[Op.gte]: 70}]}
+							: {[Op.or]: [{[Op.eq]: null}, {[Op.gte]: 70}]};
+				} else if (layout.codigo == "calificacion") condicion.calificacion = {[Op.ne]: null}; // Para la opción 'calificación', agrega pautas en las condiciones
+				// else condicion.calificacion = {[Op.lt]: 70}
+
+				// RCLV
 				const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null; // si es una entidad particular, obtiene el nombre del 'campo_id'
 				if (campo_id) condicion[campo_id] = {[Op.ne]: 1}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
 
@@ -185,7 +195,7 @@ module.exports = {
 				// Filtros generales
 				if (rolesIgl || canons) {
 					// Quita los personajes menores que 11
-					productos = productos.filter((n) => n.personaje_id > 10);
+					productos = productos.filter((n) => n.personaje_id > varios_id);
 
 					// Filtra por rolesIgl
 					if (rolesIgl)
@@ -208,17 +218,17 @@ module.exports = {
 
 				// Filtra por apMar
 				if (apMar) {
-					// Quita los personajes y hechos menores que 11
-					productos = productos.filter((n) => n.personaje_id > 10 || n.hecho_id > 10);
+					// Quita los personajes y hechos triviales
+					productos = productos.filter((n) => n.personaje_id > varios_id || n.hecho_id > sinApMar_id);
 
 					// Ajustes más finos
 					productos =
 						apMar == "SI"
 							? productos.filter(
-									(n) => (n.personaje && n.personaje.apMar_id != 10) || (n.hecho && n.hecho.ama == 1)
+									(n) => (n.personaje && n.personaje.apMar_id != sinApMar_id) || (n.hecho && n.hecho.ama == 1)
 							  )
 							: productos.filter(
-									(n) => (n.personaje && n.personaje.apMar_id == 10) || (n.hecho && n.hecho.ama == 0)
+									(n) => (n.personaje && n.personaje.apMar_id == sinApMar_id) || (n.hecho && n.hecho.ama == 0)
 							  );
 				}
 
@@ -298,7 +308,7 @@ module.exports = {
 
 				// Obtiene las condiciones
 				const filtros = ["personajes", "hechos"].includes(entidad) ? this.filtros(entidad, prefs) : null;
-				const condicion = {statusRegistro_id: aprobado_id, id: {[Op.gt]: 10}, ...filtros}; // Status aprobado e ID mayor a 10
+				const condicion = {statusRegistro_id: aprobado_id, id: {[Op.gt]: varios_id}, ...filtros};
 
 				// Fin
 				return {include, condicion};
@@ -361,7 +371,7 @@ module.exports = {
 				// Se fija si debe reemplazar la fechaDelAno_id de un registro 'epocaDelAno' con el día actual
 				if (diaHoy) {
 					const epocaDelAno_id = diaHoy.epocaDelAno_id;
-					if (epocaDelAno_id != 1) {
+					if (epocaDelAno_id != ninguno_id) {
 						const indice = rclvs.findIndex((n) => n.id == epocaDelAno_id && n.entidad == "epocasDelAno");
 						rclvs[indice].fechaDelAno_id = diaHoy.id;
 					}
@@ -842,7 +852,7 @@ module.exports = {
 
 						// RCLV nombre
 						if (
-							prod[campo_id] > 10 && // el id es de un registro válido
+							prod[campo_id] > varios_id &&
 							(!layout.codigo.includes("fechaDelAno_id") || prod[asociacion].fechaDelAno) // no se busca por fecha o el campo tiene fecha
 						) {
 							datosNeces[entidadNombre] = prod[asociacion].nombre;

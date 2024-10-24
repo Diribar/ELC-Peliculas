@@ -2,6 +2,7 @@
 // Variables
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const validacsFM = require("../2.0-Familias/FM-FN-Validar");
+const procsPA = require("../2.1-Prods-Agregar/PA-FN4-Procesos");
 const procesos = require("./PR-FN-Procesos");
 const valida = require("./PR-FN-Validar");
 
@@ -11,7 +12,7 @@ module.exports = {
 		// Variables
 		const tema = "prodRud";
 		const codigo = "detalle";
-		const {siglaFam, entidad} = comp.partesDelUrl(req);
+		const entidad = comp.obtieneEntidadDesdeUrl(req);
 		const {id} = req.query;
 		const origen = req.query.origen ? req.query.origen : "DT";
 		const usuario = req.session.usuario ? req.session.usuario : null;
@@ -33,7 +34,7 @@ module.exports = {
 		const {infoGral, actores} = procesos.bloqueIzq(prodComb);
 		const bloqueIzq = {infoGral, actores};
 
-		// RCLV
+		// RCLV - Variables
 		const entidadesRCLV = variables.entidades.rclvs;
 		const RCLVs = entidadesRCLV.map((n) => ({
 			entidad: n,
@@ -42,8 +43,10 @@ module.exports = {
 		}));
 		const rclvs_id = variables.entidades.rclvs_id;
 		const asocs = variables.entidades.asocRclvs;
+
+		// RCLV - Le agrega datos al bloque izquierdo
 		for (let i = 0; i < asocs.length; i++)
-			if (prodComb[rclvs_id[i]] != 1) {
+			if (prodComb[rclvs_id[i]] != ninguno_id) {
 				const entidadRclv = entidadesRCLV[i];
 				const include = entidadRclv == "personajes" ? "canon" : "";
 				const rclv = include
@@ -120,8 +123,8 @@ module.exports = {
 
 			// Datos Adicionales
 			const camposDA = await variables.camposDA_conValores(usuario_id);
-			const gruposPers = procsFM.grupos.pers(camposDA);
-			const gruposHechos = procsFM.grupos.hechos(camposDA);
+			const gruposPers = procsPA.grupos.pers(camposDA);
+			const gruposHechos = procsPA.grupos.hechos(camposDA);
 
 			// Datos para la vista
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);

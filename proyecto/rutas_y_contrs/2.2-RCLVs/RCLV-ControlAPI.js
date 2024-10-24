@@ -14,19 +14,23 @@ module.exports = {
 		if (datos.stringify) datos = {funcion: datos.funcion, ...JSON.parse(datos.stringify)};
 
 		// Obtiene el mensaje
-		let mensaje = await valida[datos.funcion](datos);
+		const mensaje = await valida[datos.funcion](datos);
 
 		// Fin
 		return res.json(mensaje);
 	},
 	registrosConEsaFecha: async (req, res) => {
-		let {entidad, mes_id, dia, id} = req.query;
-		let objeto = {mes_id, dia};
-		let fechaDelAno_id = dia != "0" ? fechasDelAno.find((n) => n.dia == objeto.dia && n.mes_id == objeto.mes_id).id : 400;
-		let casos = await baseDeDatos.obtieneTodosPorCondicion(entidad, {fechaDelAno_id})
-			.then((n) => n.filter((m) => m.id != id))
-			.then((n) => n.filter((m) => m.id > 10))
-			.then((n) => n.map((m) => m.nombre));
+		// Variables
+		const {entidad, mes_id, dia, id} = req.query;
+		if (dia == "0") return res.json([]);
+
+		// Más variables
+		const fechaDelAno_id = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes_id).id;
+		const condicion = {fechaDelAno_id};
+		if (id) condicion.id = {[Op.ne]: id};
+
+		// Obtiene los casos
+		const casos = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion).then((n) => n.map((m) => m.nombre));
 		return res.json(casos);
 	},
 	prefijos: (req, res) => res.json(prefijos),
