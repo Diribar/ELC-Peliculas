@@ -3,18 +3,8 @@
 	body {--altoTituloPrincipal: 68px;}
 	#vistaDeResults:has(#scroll #botones li) {--altMargen: clamp(15px, calc((var(--altoCuerpoMenosTitulo) * .95 - var(--altoBoton) * 2) / 3), 30px);}
 	#cuerpoFooterImgDer {
-		#cuerpo {
-			#layoutAyuda .ayuda.consulta i.ayudaIconoForm {font-size: 1.2rem;}
-		}
-		@media (width > 1350px) {
-			#imgDerecha {position: relative;}
-		}
-		@media (width <= 1350px) {
-			#imgDerecha {display: none;}
-		}
-		@media (width > 900px) {
-			#iconosDelTitulo .ayuda.consulta {display: none;}
-		}
+		@media (width > 1350px) {#imgDerecha {position: relative;}}
+		@media (width <= 1350px) {#imgDerecha {display: none;}}
 	}
 }
 
@@ -36,17 +26,7 @@
 			justify-content: space-between;
 
 			/* Encabezado */
-			#tituloPrincipal {
-				#toggleFiltrosGlobal {display: flex;} /* ícono para mostrar las preferencias */
-				#layoutAyuda .ayuda.consulta {display: none;} /* oculta la ayuda al lado del título */
-				#iconosDelTitulo .ayuda.consulta {
-					i.ayudaIconoForm {font-size: 1.6rem;}
-					.ayudaMensForm {
-						max-width: 82vw; top: -20px;
-						&::before {top: 25px;}
-					}
-				}
-			}
+			#tituloPrincipal #toggleFiltrosGlobal {display: flex;} /* ícono para mostrar las preferencias */
 			footer {z-index: 1; background: var(--gris-claro);}
 		}
 

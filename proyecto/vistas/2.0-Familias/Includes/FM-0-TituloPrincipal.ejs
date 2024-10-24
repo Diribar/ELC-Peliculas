@@ -7,20 +7,15 @@
 			<img src="/Externa/6-LogosProvs/<%= link.prov.avatar %>" alt="<%= link.prov.nombre %>" title="<%= link.prov.nombre %>">
 		</h2>
 	<% } %>
-	<% if (locals.ayudasTitulo) { %>
-		<%- include("MN-Ayuda", {[typeof ayudasTitulo == "string" ? "mensaje" : "mensajes"]: ayudasTitulo}) %>
-	<% } %>
 	<% if (codigo == "detalle") { %>
 		<div id="iconosDelTitulo" class="flexRowAlign">
+			<% const clase = "compFm" %>
 			<% if (locals.ayudasTitulo) { %>
-				<%- include("MN-Ayuda", {[typeof ayudasTitulo == "string" ? "mensaje" : "mensajes"]: ayudasTitulo, ayudaClass: "static"}) %>
+				<%- include("MN-Ayuda", {ayudaClass: clase, [typeof ayudasTitulo == "string" ? "mensaje" : "mensajes"]: ayudasTitulo}) %>
 			<% } %>
 
-			<!-- Compartir la consulta -->
-			<div id="compartirUrl" class="scale pointer">
-				<i class="<%= iconos.faSolid %> fa-share-nodes" title="Compartir las preferencias"></i>
-			</div>
-			<p id="consCopiada" class="ocultar">Enlace copiado</p>
+			<!-- Compartir la vista -->
+			<%- include("FM-Compartir", {compartirLeyenda: "Enlace copiado", clase}) %>
 		</div>
 	<% } %>
 </div>

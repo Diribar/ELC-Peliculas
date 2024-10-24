@@ -23,17 +23,17 @@ module.exports = {
 	// Institucional
 	idsReserv: 10,
 	vistasInstitucs: {
-		inicio: {titulo: "ELC | Películas con Valores", codigo: "inicio", icono: iconos.inicio, hr: true}, // 'hr' significa que pone una línea divisoria en el menú del header
-		"quienes-somos": {titulo: "ELC | Quiénes somos", codigo: "quienesSomos", icono: "fa-people-group"},
-		"mision-y-vision": {titulo: "ELC | Nuestra Misión y Visión", codigo: "misionVision", icono: "fa-heart", hr: true},
-		"en-que-consiste-este-sitio": {titulo: "ELC | En qué consiste este sitio", codigo: "enQueConsiste", icono: "fa-question"},
+		inicio: {titulo: "Películas con Valores afines a la Iglesia Católica", codigo: "inicio", icono: iconos.inicio, hr: true}, // 'hr' significa que pone una línea divisoria en el menú del header
+		"quienes-somos": {titulo: "Quiénes somos", codigo: "quienesSomos", icono: "fa-people-group"},
+		"mision-y-vision": {titulo: "Nuestra Misión y Visión", codigo: "misionVision", icono: "fa-heart", hr: true},
+		"en-que-consiste-este-sitio": {titulo: "En qué consiste este sitio", codigo: "enQueConsiste", icono: "fa-question"},
 		"nuestro-perfil-de-peliculas": {
-			titulo: "ELC | Nuestro Perfil de Películas",
+			titulo: "Nuestro Perfil de Películas",
 			codigo: "perfilPelis",
 			icono: "fa-trophy",
 			hr: true,
 		},
-		"derechos-de-autor": {titulo: "ELC | Derechos de Autor", codigo: "derechosAutor", icono: "fa-copyright"},
+		"derechos-de-autor": {titulo: "Derechos de Autor", codigo: "derechosAutor", icono: "fa-copyright"},
 	},
 
 	// Gráficos
