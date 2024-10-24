@@ -244,8 +244,11 @@ module.exports = {
 		},
 		obtieneRclvs: {
 			consolidado: function (prefs) {
-				if (prefs.entidad == "productos") return null;
-				return prefs.layout.codigo.startsWith("fechaDelAno") ? this.porFechaDelAno(prefs) : this.comun(prefs);
+				return prefs.entidad == "rclvs"
+					? prefs.layout.codigo.startsWith("fechaDelAno")
+						? this.porFechaDelAno(prefs)
+						: this.comun(prefs)
+					: null;
 			},
 			comun: async function (prefs) {
 				// Variables
@@ -345,7 +348,7 @@ module.exports = {
 			porFechaDelAno: async (prefs) => {
 				// Variables
 				const {entidad, dia, mes} = prefs;
-				const entidadesRCLV = entidad != "rclvs" ? [entidad] : variables.entidades.rclvs;
+				const entidadesRCLV = variables.entidades.rclvs;
 				const diaHoy =
 					prefs.layout.codigo == "fechaDelAnoBoton" ? fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes) : null;
 				const inclStd = ["fechaDelAno"];
