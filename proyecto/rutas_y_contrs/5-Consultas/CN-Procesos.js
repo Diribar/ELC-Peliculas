@@ -1,5 +1,6 @@
 "use strict";
 // Variables
+const {prods: entsProd, rclvs: entsRclv, asocsRclv} = variables.entidades;
 
 module.exports = {
 	varios: {
@@ -109,8 +110,6 @@ module.exports = {
 			consolidado: async function (prefs) {
 				// Variables
 				const {entidad, layout} = prefs;
-				const {prods: entsProd} = variables.entidades;
-				const {asocsRclv} = variables.entidades;
 				const include = [];
 				let productos = [];
 
@@ -289,17 +288,17 @@ module.exports = {
 					const entidadesRCLV =
 						layout.codigo == "anoOcurrencia"
 							? ["personajes", "hechos"] // son las únicas entidades que tienen el año histórico en que ocurrió
-							: [...variables.entidades.rclvs];
+							: [...entsRclv];
 
 					// Rutina por RCLV
-					for (let rclvEnt of entidadesRCLV) {
+					for (let entRclv of entidadesRCLV) {
 						// Obtiene los registros
-						const {condicion, include} = this.obtieneIncludeCondics(rclvEnt, prefs);
+						const {condicion, include} = this.obtieneIncludeCondics(entRclv, prefs);
 						rclvs.push(
 							baseDeDatos
-								.obtieneTodosPorCondicion(rclvEnt, condicion, include)
+								.obtieneTodosPorCondicion(entRclv, condicion, include)
 								.then((n) => n.filter((m) => m.peliculas.length || m.colecciones.length || m.capitulos.length))
-								.then((n) => n.map((m) => ({...m, entidad: rclvEnt})))
+								.then((n) => n.map((m) => ({...m, entidad: entRclv})))
 						);
 					}
 					rclvs = await Promise.all(rclvs).then((n) => n.flat());
@@ -326,7 +325,7 @@ module.exports = {
 			},
 			obtieneIncludeCondics: function (entidad, prefs) {
 				// Include
-				let include = [...variables.entidades.prods];
+				let include = [...entsProd];
 				if (["personajes", "hechos"].includes(entidad)) include.push("epocaOcurrencia");
 				if (entidad == "personajes") include.push("rolIglesia", "canon");
 
@@ -369,7 +368,6 @@ module.exports = {
 			porFechaDelAno: async (prefs) => {
 				// Variables
 				const {dia, mes} = prefs;
-				const entidadesRCLV = variables.entidades.rclvs;
 				const diaHoy =
 					prefs.layout.codigo == "fechaDelAnoBoton" ? fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes) : null;
 				const inclStd = ["fechaDelAno"];
@@ -378,16 +376,16 @@ module.exports = {
 				let rclvs = [];
 
 				// Rutina por entidad para obtener los RCLVs
-				for (let entidadRCLV of entidadesRCLV) {
+				for (let entRclv of entsRclv) {
 					// Variables
 					const condicion = {statusRegistro_id: aprobado_id, fechaDelAno_id: {[Op.ne]: 400}};
-					const includes = entidadRCLV == "hechos" ? inclHec : entidadRCLV == "personajes" ? inclPers : inclStd;
+					const includes = entRclv == "hechos" ? inclHec : entRclv == "personajes" ? inclPers : inclStd;
 
-					// Obtiene los rclvs y les agrega la entidadRCLV
+					// Obtiene los rclvs y les agrega la entRclv
 					rclvs.push(
 						baseDeDatos
-							.obtieneTodosPorCondicion(entidadRCLV, condicion, includes)
-							.then((n) => n.map((m) => ({...m, entidad: entidadRCLV})))
+							.obtieneTodosPorCondicion(entRclv, condicion, includes)
+							.then((n) => n.map((m) => ({...m, entidad: entRclv})))
 					);
 				}
 				rclvs = await Promise.all(rclvs).then((n) => n.flat());
@@ -550,14 +548,16 @@ module.exports = {
 
 					// Busca las 'palsClave' dentro de sus campos include
 					if (!prods[i].palsClave)
-						for (let entRclv of variables.entidades.asocsRclv)
-							for (let campo in entRclv)
+						for (let asocRclv of asocsRclv) {
+							const rclv = prod[asocRclv];
+							for (let campo in rclv)
 								if (
-									prod[entRclv][campo] && // que tenga un valor
-									typeof prod[entRclv][campo] == "string" &&
-									prod[entRclv][campo].toLowerCase().includes(palabrasClave)
+									rclv[campo] && // que tenga un valor
+									typeof rclv[campo] == "string" &&
+									rclv[campo].toLowerCase().includes(palabrasClave)
 								)
 									prods[i].palsClave = true;
+						}
 
 					// Si el producto no tiene las palsClave, lo elimina
 					if (!prods[i].palsClave) prods.splice(i, 1);
@@ -842,7 +842,7 @@ module.exports = {
 					datosNeces.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
 					// Obtiene los RCLV
-					for (let entRclv of variables.entidades.rclvs) {
+					for (let entRclv of entsRclv) {
 						// Variables
 						const campo_id = comp.obtieneDesdeEntidad.campo_id(entRclv);
 						const asociacion = comp.obtieneDesdeEntidad.asociacion(entRclv);
