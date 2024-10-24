@@ -109,17 +109,18 @@ module.exports = {
 			consolidado: async function (prefs) {
 				// Variables
 				const {entidad, layout} = prefs;
-				const entsProd = variables.entidades.prods;
+				const {prods: entsProd} = variables.entidades;
+				const {asocsRclv} = variables.entidades;
+				const include = [];
 				let productos = [];
-				let include = [];
 
 				// Include - simple
 				if (layout.codigo == "catalogoEstreno") include.push("epocaEstreno");
 				if (layout.codigo == "anoOcurrencia") include.push("epocaOcurrencia");
-				if (layout.codigo == "azar") include.push("prodComplem");
+				if (["nuestraProp", "azar"].includes(layout.codigo)) include.push("prodComplem");
 
 				// Include - complejo
-				if (!layout.codigo.startsWith("fechaDelAno")) include.push(...variables.entidades.asocRclvs);
+				if (!layout.codigo.startsWith("fechaDelAno")) include.push(...asocsRclv);
 				if (["rolesIgl", "canons"].some((n) => Object.keys(prefs).includes(n))) include.push("personaje");
 				if (prefs.apMar) include.push("personaje", "hecho");
 
@@ -134,19 +135,35 @@ module.exports = {
 							? {[Op.and]: [{[Op.ne]: null}, {[Op.gte]: 70}]}
 							: {[Op.or]: [{[Op.eq]: null}, {[Op.gte]: 70}]};
 				} else if (layout.codigo == "calificacion") condicion.calificacion = {[Op.ne]: null}; // Para la opción 'calificación', agrega pautas en las condiciones
-				// else condicion.calificacion = {[Op.lt]: 70}
 
 				// RCLV
 				const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null; // si es una entidad particular, obtiene el nombre del 'campo_id'
-				if (campo_id) condicion[campo_id] = {[Op.ne]: 1}; // Si son productos de RCLVs, el 'campo_id' debe ser distinto a 'uno'
+				if (campo_id) condicion[campo_id] = {[Op.ne]: ninguno_id};
+
+				// Si el código es 'nuestraProp', ordena por el RCLV del día primero
+				const fechaDelAno =
+					layout.codigo == "nuestraProp" ? fechasDelAno.find((n) => n.dia == prefs.dia && n.mes_id == prefs.mes) : null;
 
 				// Obtiene los productos
 				for (let entProd of entsProd) {
+					// Agrega una condición si son capítulos
 					if (entProd == "capitulos") condicion.capEnCons = true;
+
+					// Obtiene los productos y le agrega algunos campos
 					productos.push(
-						baseDeDatos
-							.obtieneTodosPorCondicion(entProd, condicion, include)
-							.then((n) => n.map((m) => ({...m, entidad: entProd})))
+						baseDeDatos.obtieneTodosPorCondicion(entProd, condicion, include).then((prods) =>
+							prods.map((prod) => {
+								// Variable 'hoy' - exclusivo para cuando importa el día de hoy
+								const hoy = fechaDelAno
+									? asocsRclv.some(
+											(asocRclv) => prod[asocRclv] && prod[asocRclv].fechaDelAno_id == fechaDelAno.id
+									  )
+									: null;
+
+								// Fin
+								return {...prod, entidad: entProd, hoy};
+							})
+						)
 					);
 				}
 				productos = await Promise.all(productos).then((n) => n.flat());
@@ -347,7 +364,7 @@ module.exports = {
 			},
 			porFechaDelAno: async (prefs) => {
 				// Variables
-				const {entidad, dia, mes} = prefs;
+				const {dia, mes} = prefs;
 				const entidadesRCLV = variables.entidades.rclvs;
 				const diaHoy =
 					prefs.layout.codigo == "fechaDelAnoBoton" ? fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes) : null;
@@ -529,7 +546,7 @@ module.exports = {
 
 					// Busca las 'palsClave' dentro de sus campos include
 					if (!prods[i].palsClave)
-						for (let entRclv of variables.entidades.asocRclvs)
+						for (let entRclv of variables.entidades.asocsRclv)
 							for (let campo in entRclv)
 								if (
 									prod[entRclv][campo] && // que tenga un valor
@@ -700,10 +717,11 @@ module.exports = {
 			},
 		},
 		orden: {
-			prods: ({prods, layout}) => {
-				// Si corresponde, interrumpe la función y ordena por el azar decreciente
-				if (layout.codigo == "azar")
-					return prods.sort((a, b) =>
+			prods: ({prods, layout, prefs}) => {
+				// Si el código es 'nuestraProp' o 'azar', ordena con un criterio particular
+				if (["nuestraProp", "azar"].includes(layout.codigo)) {
+					// Ordena por el azar decreciente e interrumpe la función
+					prods.sort((a, b) =>
 						b.prodComplem && a.prodComplem
 							? b.prodComplem.azar - a.prodComplem.azar
 							: b.prodComplem
@@ -713,40 +731,12 @@ module.exports = {
 							: 0
 					);
 
-				// Variables
-				const campo = false
-					? false
-					: ["nombre", "catalogoNombre"].includes(layout.codigo)
-					? "nombreCastellano"
-					: layout.codigo == "catalogoEstreno"
-					? "anoEstreno"
-					: layout.codigo == "misCalificadas"
-					? "calificacion"
-					: layout.codigo == "misConsultas"
-					? "fechaConsulta"
-					: layout.codigo.startsWith("fechaDelAno")
-					? "fechaDelAno_id"
-					: layout.codigo;
-
-				// Ordena
-				const menorPrimero = layout.ascDes == "ASC" ? -1 : 1;
-				prods.sort((a, b) =>
-					false
-						? false
-						: typeof a[campo] == "string" && b[campo] == "string"
-						? a[campo].toLowerCase() < b[campo].toLowerCase() // acciones para strings
-							? menorPrimero
-							: -menorPrimero
-						: a[campo] < b[campo] // acciones para 'no strings'
-						? menorPrimero
-						: -menorPrimero
-				);
-
-				// Orden adicional para "misPrefs"
-				if (layout.codigo == "misPrefs") {
-					prods.sort((a, b) => (a.yaLaVi && !b.yaLaVi ? -1 : 0));
-					prods.sort((a, b) => (a.laQuieroVer && !b.laQuieroVer ? -1 : 0));
+					// Si el código es 'nuestraProp', ordena primero por el RCLV del día vigente
+					if (layout.codigo == "nuestraProp")
+						prods = [...prods.filter((prod) => prod.hoy), ...prods.filter((prod) => !prod.hoy)];
 				}
+				// Resto
+				else ordenStd({prods, layout});
 
 				// Fin
 				return prods;
@@ -810,7 +800,8 @@ module.exports = {
 			const cantResults = layout.cantidad;
 
 			// Botones
-			if (layout.codigo == "azar") resultados = alAzar.consolidado({resultados, cantResults, prefs});
+			if (["nuestraProp", "azar"].includes(layout.codigo))
+				resultados = alAzar.consolidado({resultados, cantResults, prefs, layout});
 			else if (cantResults) resultados.splice(cantResults);
 
 			// Fin
@@ -917,13 +908,51 @@ module.exports = {
 };
 
 // Funciones
-let alAzar = {
-	consolidado: function ({resultados, cantResults, prefs}) {
+const ordenStd = ({prods, layout}) => {
+	// Variables
+	const campo = false
+		? false
+		: ["nombre", "catalogoNombre"].includes(layout.codigo)
+		? "nombreCastellano"
+		: layout.codigo == "catalogoEstreno"
+		? "anoEstreno"
+		: layout.codigo == "misCalificadas"
+		? "calificacion"
+		: layout.codigo == "misConsultas"
+		? "fechaConsulta"
+		: layout.codigo.startsWith("fechaDelAno")
+		? "fechaDelAno_id"
+		: layout.codigo;
+
+	// Ordena
+	const menorPrimero = layout.ascDes == "ASC" ? -1 : 1;
+	prods.sort((a, b) =>
+		typeof a[campo] == "string" && b[campo] == "string"
+			? a[campo].toLowerCase() < b[campo].toLowerCase() // acciones para strings
+				? menorPrimero
+				: -menorPrimero
+			: a[campo] < b[campo] // acciones para 'no strings'
+			? menorPrimero
+			: -menorPrimero
+	);
+
+	// Orden adicional para "misPrefs"
+	if (layout.codigo == "misPrefs") {
+		prods.sort((a, b) => (a.yaLaVi && !b.yaLaVi ? -1 : 0));
+		prods.sort((a, b) => (a.laQuieroVer && !b.laQuieroVer ? -1 : 0));
+	}
+
+	// Fin
+	return;
+};
+const alAzar = {
+	consolidado: function ({resultados, cantResults, prefs, layout}) {
 		// Variables
-		let v = {
+		const v = {
 			resultados,
 			cantResults,
 			ahora: new Date(),
+			epocasEstrenoRecientes: epocasEstreno.slice(0, -1), // descarta la época más antigua, para que salga con menor frecuencia
 			cfc: 0,
 			vpc: 0,
 			contador: 0,
@@ -937,14 +966,18 @@ let alAzar = {
 			(!prefs.canons || prefs.canons == "NN") && // 'canons' no está contestado
 			!prefs.rolesIgl; // 'rolesIgl' no está contestado
 
-		// Elije los productos
+		// Elije por motivos prioritarios
 		this.porAltaUltimosDias(v);
-		const epocasEstrenoRecientes = epocasEstreno.slice(0, -1);
-		for (let epocaEstreno of epocasEstrenoRecientes) this.porEpocaDeEstreno({epocaEstreno, v});
+		if (v.contador < cantResults && layout.codigo == "nuestraProp") this.porDiaVigente(v);
+
+		// Elige por la 'epocaEstreno'
+		if (v.contador < cantResults)
+			for (let epocaEstreno of v.epocasEstrenoRecientes)
+				if (v.contador < v.cantResults) this.porEpocaDeEstreno({epocaEstreno, v});
 
 		// Agrega registros hasta llegar a cuatro
 		let indice = 0;
-		while (v.contador < 4 && v.resultados.length && indice < v.resultados.length) {
+		while (v.contador < cantResults && v.resultados.length && indice < v.resultados.length) {
 			v.resultado = v.resultados[indice];
 			if (
 				!v.seDebeEquilibrar || // no se debe equilibrar
@@ -954,7 +987,7 @@ let alAzar = {
 				this.agregaUnBoton(v);
 			else indice++;
 		}
-		while (v.contador < 4 && v.resultados.length) {
+		while (v.contador < cantResults && v.resultados.length) {
 			v.resultado = v.resultados[0];
 			this.agregaUnBoton(v);
 		}
@@ -973,6 +1006,24 @@ let alAzar = {
 		// Outputs - Últimos días
 		if (!v.productos.length) {
 			v.resultado = v.resultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - unDia * 2);
+			this.agregaUnBoton(v);
+		}
+
+		// Fin
+		return;
+	},
+	porDiaVigente: function (v) {
+		// Agrega un botón por epoca de estreno
+		for (let epocaEstreno of v.epocasEstrenoRecientes) {
+			const epoca_id = epocaEstreno.id; // Variables
+			if (v.contador >= v.cantResults || v.productos.find((n) => n.epocaEstreno_id == epoca_id)) continue; // Si ya existe un producto para esa epoca de estreno, termina la rutina
+			v.resultado = v.resultados.find((n) => n.epocaEstreno_id == epoca_id && n.hoy); // Obtiene el primer producto de esa época de estreno
+			if (v.resultado) this.agregaUnBoton(v); // Agrega un botón
+		}
+
+		// Completa
+		while (v.contador < v.cantResults && v.resultados.length && v.resultados[0].hoy) {
+			v.resultado = v.resultados[0];
 			this.agregaUnBoton(v);
 		}
 
