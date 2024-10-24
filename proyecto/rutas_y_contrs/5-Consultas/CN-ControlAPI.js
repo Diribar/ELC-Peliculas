@@ -226,7 +226,7 @@ module.exports = {
 			prods = procesos.resultados.descartaCapitulosSiColeccionPresente.prods(prods);
 
 			// Procesa los datos a enviar
-			prods = procesos.resultados.orden.prods({prods, layout}); // Ordena los productos
+			prods = procesos.resultados.orden.prods({prods, layout, prefs}); // Ordena los productos
 			prods = procesos.resultados.botonesListado({resultados: prods, layout, prefs});
 			prods = procesos.resultados.camposNecesarios.prods({prods, layout}); // Deja sólo los campos necesarios
 			return res.json(prods);
