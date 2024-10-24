@@ -199,7 +199,7 @@ module.exports = {
 	altaBaja: async (req, res) => {
 		// Variables
 		const {url} = req.query;
-		const link = await baseDeDatos.obtienePorCondicion("links", {url}, variables.entidades.asocProds);
+		const link = await baseDeDatos.obtienePorCondicion("links", {url}, variables.entidades.asocsProd);
 
 		// Más variables
 		const datos = procesos.variables({link, req});

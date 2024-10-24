@@ -139,7 +139,7 @@ module.exports = {
 
 		// edicsPERL
 		entsProdsRclvs = ["prodsEdicion", "rclvsEdicion"];
-		include = {prodsEdicion: variables.entidades.asocProds, rclvsEdicion: variables.entidades.asocRclvs};
+		include = {prodsEdicion: variables.entidades.asocsProd, rclvsEdicion: variables.entidades.asocsRclv};
 		let edicsPERL = [];
 		for (let entPERL of entsProdsRclvs) {
 			const registros = baseDeDatos
@@ -160,7 +160,7 @@ module.exports = {
 
 		// regsLinks
 		condicion = {...condicion, prodAprob: true};
-		include = ["statusSugeridoPor", ...variables.entidades.asocProds];
+		include = ["statusSugeridoPor", ...variables.entidades.asocsProd];
 		const regsLinks = await baseDeDatos
 			.obtieneTodosPorCondicion("links", condicion, include)
 			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
@@ -174,7 +174,7 @@ module.exports = {
 			.then((prods) => comp.eliminaRepetidos(prods));
 
 		// edicsLinks
-		include = ["editadoPor", ...variables.entidades.asocProds];
+		include = ["editadoPor", ...variables.entidades.asocsProd];
 		const edicsLinks = await baseDeDatos
 			.obtieneTodos("linksEdicion", include)
 			.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
@@ -767,7 +767,7 @@ let nombres = async (reg) => {
 			(">" + nombre + "</a>");
 	} else {
 		// Obtiene el registro
-		const asocs = variables.entidades.asocProds;
+		const asocs = variables.entidades.asocsProd;
 		const link = await baseDeDatos.obtienePorId("links", reg.entidad_id, [...asocs, "prov"]);
 		if (!link.id) return {};
 

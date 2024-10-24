@@ -4,18 +4,18 @@ module.exports = async (req, res, next) => {
 	// Variables
 	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const {id: entId, origen} = req.query;
-	const asocRclvs = variables.entidades.asocRclvs;
+	const {asocsRclv} = variables.entidades;
 	const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 	const condicion = {[campo_id]: entId};
 	const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
 	const ea = comp.obtieneDesdeEntidad.ea(entidad);
 
 	// Obtiene la prodEdicion con sus RCLV
-	const edicion = await baseDeDatos.obtienePorCondicion("prodsEdicion", condicion, asocRclvs);
+	const edicion = await baseDeDatos.obtienePorCondicion("prodsEdicion", condicion, asocsRclv);
 
 	// Si alguno de sus RCLV está en status creado, genera la información
 	if (edicion)
-		for (let asocRclv of asocRclvs)
+		for (let asocRclv of asocsRclv)
 			if (edicion[asocRclv] && edicion[asocRclv].statusRegistro_id == creado_id) {
 				// Variables
 				const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);

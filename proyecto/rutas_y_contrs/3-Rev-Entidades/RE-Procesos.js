@@ -20,7 +20,7 @@ module.exports = {
 		},
 		obtieneProds1: async (revId) => {
 			// Variables
-			let include = [...variables.entidades.asocProds, ...variables.entidades.asocRclvs];
+			let include = [...variables.entidades.asocsProd, ...variables.entidades.asocsRclv];
 			let productos = [];
 
 			// Obtiene todas las ediciones
@@ -29,7 +29,7 @@ module.exports = {
 			// Elimina las ediciones con RCLV no aprobado
 			ediciones = ediciones.filter(
 				(edicion) =>
-					!variables.entidades.asocRclvs.some((rclv) => edicion[rclv] && edicion[rclv].statusRegistro_id != aprobado_id)
+					!variables.entidades.asocsRclv.some((rclv) => edicion[rclv] && edicion[rclv].statusRegistro_id != aprobado_id)
 			);
 
 			// Obtiene los productos
@@ -208,7 +208,7 @@ module.exports = {
 		},
 		obtieneRCLVs2: async (revId) => {
 			// Variables
-			let include = variables.entidades.asocRclvs;
+			let include = variables.entidades.asocsRclv;
 			let rclvs = [];
 
 			// Obtiene todas las ediciones ajenas
@@ -814,13 +814,13 @@ let FN_links = {
 	},
 	obtieneLinks: {
 		ediciones: async () => {
-			const include = variables.entidades.asocProds;
+			const include = variables.entidades.asocsProd;
 			const ediciones = await baseDeDatos.obtieneTodos("linksEdicion", include);
 			return ediciones;
 		},
 		links: async () => {
 			// Variables
-			const include = variables.entidades.asocProds;
+			const include = variables.entidades.asocsProd;
 
 			// Obtiene los links en status 'a revisar'
 			const condicion = {statusRegistro_id: [...creados_ids, ...inacRecup_ids], prodAprob: true};

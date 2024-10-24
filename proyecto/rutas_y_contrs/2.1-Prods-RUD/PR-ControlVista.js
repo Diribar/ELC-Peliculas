@@ -42,7 +42,7 @@ module.exports = {
 			asociacion: comp.obtieneDesdeEntidad.asociacion(n),
 		}));
 		const rclvs_id = variables.entidades.rclvs_id;
-		const asocs = variables.entidades.asocRclvs;
+		const asocs = variables.entidades.asocsRclv;
 
 		// RCLV - Le agrega datos al bloque izquierdo
 		for (let i = 0; i < asocs.length; i++)
