@@ -165,7 +165,7 @@ module.exports = {
 								if (hoy) respuesta.hoy = hoy;
 
 								// Fin
-								return {...prod, entidad: entProd, hoy};
+								return respuesta;
 							})
 						)
 					);
