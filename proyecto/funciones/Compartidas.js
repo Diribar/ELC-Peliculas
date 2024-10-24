@@ -262,7 +262,7 @@ module.exports = {
 			return entidad;
 		},
 		entidadNombre: (asoc) => {
-			const indice = [...variables.entidades.asocProds, ...variables.entidades.asocRclvs].indexOf(asoc);
+			const indice = [...variables.entidades.asocsProd, ...variables.entidades.asocsRclv].indexOf(asoc);
 			const entNombre =
 				indice > -1 ? [...variables.entidades.prodsNombre, ...variables.entidades.rclvsNombre][indice] : null;
 			return entNombre;
@@ -899,7 +899,7 @@ module.exports = {
 			// Si no se especificaron links, obtiene todos los aprobados que no tengan 'fechaVencim'
 			if (!links) {
 				const condicion = {statusRegistro_id: aprobado_id, fechaVencim: null};
-				const include = variables.entidades.asocProds;
+				const include = variables.entidades.asocsProd;
 				links = await baseDeDatos.obtieneTodosPorCondicion("links", condicion, include);
 			}
 
