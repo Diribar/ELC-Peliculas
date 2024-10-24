@@ -252,7 +252,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Mostrar resultados - Actualizar resultados
-		else if (nombre == "actualizar") {
+		else if (nombre == "iconoActualizar") {
 			if (v.layout_id) {
 				await FN_resultados.obtiene();
 				if (v.mostrarResultados) FN_resultados.muestra.generico();
