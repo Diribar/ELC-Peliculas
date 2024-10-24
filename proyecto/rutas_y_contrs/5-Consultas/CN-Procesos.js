@@ -160,6 +160,10 @@ module.exports = {
 									  )
 									: null;
 
+								// Arma la respuesta
+								const respuesta = {...prod, entidad: entProd};
+								if (hoy) respuesta.hoy = hoy;
+
 								// Fin
 								return {...prod, entidad: entProd, hoy};
 							})
