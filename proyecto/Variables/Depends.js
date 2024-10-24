@@ -37,19 +37,19 @@ const rclvs = ["personajes", "hechos", "temas", "eventos", "epocasDelAno"];
 const rclvs_id = ["personaje_id", "hecho_id", "tema_id", "evento_id", "epocaDelAno_id"];
 const prodsNombre = ["Película", "Colección", "Capítulo"];
 const rclvsNombre = ["Personaje", "Hecho", "Tema", "Evento en el Año", "Época del Año"];
-const asocProds = ["pelicula", "coleccion", "capitulo"];
-const asocRclvs = ["personaje", "hecho", "tema", "evento", "epocaDelAno"];
+const asocsProd = ["pelicula", "coleccion", "capitulo"];
+const asocsRclv = ["personaje", "hecho", "tema", "evento", "epocaDelAno"];
 
 module.exports = {
 	// Todos
 	entidades: {
 		// Productos y RCLVs
-		...{prods, prodsNombre, asocProds},
-		...{rclvs, rclvsNombre, asocRclvs, rclvs_id},
+		...{prods, prodsNombre, asocsProd},
+		...{rclvs, rclvsNombre, asocsRclv, rclvs_id},
 
 		// Otros
 		prodsRclvs: [...prods, ...rclvs],
-		asocProdsRclvs: [...asocProds, ...asocRclvs],
+		asocProdsRclvs: [...asocsProd, ...asocsRclv],
 		todos: [...prods, ...rclvs, "links"],
 		todosNombre: [...prodsNombre, ...rclvsNombre, "Link"],
 		usuarios: ["usuarios"], // Hace falta para la eliminación de avatars
