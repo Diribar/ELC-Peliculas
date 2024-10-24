@@ -29,7 +29,7 @@ const FN_resultados = {
 		}
 
 		// Busca la información en el BE
-		const APIs = [{ruta: "obtiene-los-resultados/?datos=" + JSON.stringify(prefs), duracion: 400}];// 'duración' son los milisegs que se estima que puede durar el fetch
+		const APIs = [{ruta: "obtiene-los-resultados/?datos=" + JSON.stringify(prefs), duracion: 400}]; // 'duración' son los milisegs que se estima que puede durar el fetch
 		v.resultados = await barraProgreso(ruta, APIs);
 
 		// Tapa y limpia los resultados anteriores
@@ -493,9 +493,7 @@ const FN_auxiliares = {
 		}
 
 		// Una sola tabla
-		if (layout == "calificacion" && !indice) titulo = "Mejor calificadas";
-		if (layout == "misConsultas" && !indice) titulo = "Mis consultas";
-		if (layout == "altaRevisadaEn" && !indice) titulo = "Últimas ingresadas";
+		if (!indice && ["calificacion", "misConsultas", "altaRevisadaEn"].includes(layout)) titulo = v.layoutBD.nombre;
 
 		// Fin
 		return titulo;

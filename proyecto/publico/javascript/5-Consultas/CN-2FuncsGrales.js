@@ -148,7 +148,8 @@ const actualiza = {
 				: "";
 
 		// Checkbox
-		if (preferencias.excluyeBC == true) DOM.excluyeInput.checked = true;
+		DOM.excluyeInput.checked = !!preferencias.excluyeBC;
+		DOM.excluyeInput.title = excluyeBC();
 
 		// 'palClaveIcono'
 		DOM.palClaveIcono.classList.remove("fa-circle-right"); // oculto hasta que se modifica el input 'palClave'
@@ -441,4 +442,7 @@ const verificaConfigCons_id = async () => {
 
 	// Fin
 	return existe;
+};
+const excluyeBC = () => {
+	return (DOM.excluyeInput.checked ? "Excluye" : "Incluye") + " películas con baja calificación";
 };
