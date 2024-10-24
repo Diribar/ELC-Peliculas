@@ -22,7 +22,7 @@ const FN_resultados = {
 		}
 
 		// Si corresponde, completa la información
-		if (v.layoutBD.codigo == "fechaDelAnoBoton") {
+		if (["fechaDelAnoBoton", "nuestraProp"].includes(v.layoutBD.codigo)) {
 			v.ahora = new Date();
 			prefs.dia = v.ahora.getDate();
 			prefs.mes = v.ahora.getMonth() + 1;
