@@ -1,6 +1,6 @@
 "use strict";
 
-let obtienePrefsDelFe = {
+const obtienePrefsDelFe = {
 	// General
 	consolidado: function () {
 		// Borra la información anterior
@@ -36,9 +36,12 @@ let obtienePrefsDelFe = {
 		// Muestra/Oculta los bloques de filtros
 		this.muestraOcultaBloques();
 
-		// Redirige a la siguiente instancia
+		// Obtiene los demás valores
 		if (v.layout_id) {
-			const metodos = Object.keys(this).slice(3); // saltea 'consolidado', 'layout', 'muestraOcultaBloques'
+			// Obtiene los métodos a considerar - saltea 'consolidado', 'layout', 'muestraOcultaBloques'
+			const metodos = Object.keys(this).slice(3);
+
+			// Redirige a las siguientes instancias
 			for (let metodo of metodos) this[metodo]();
 		}
 
@@ -81,6 +84,10 @@ let obtienePrefsDelFe = {
 			prefs.palabrasClave = DOM.palClaveInput.value;
 
 		// Fin
+		return;
+	},
+	excluyeBC: () => {
+		if (DOM.excluyeInput.checked) prefs.excluyeBC = true;
 		return;
 	},
 
@@ -212,7 +219,7 @@ let obtienePrefsDelFe = {
 	},
 };
 
-let muestraOcultaActualizaPref = (seMuestra, elemento) => {
+const muestraOcultaActualizaPref = (seMuestra, elemento) => {
 	// Muestra
 	seMuestra
 		? v.muestraFiltros

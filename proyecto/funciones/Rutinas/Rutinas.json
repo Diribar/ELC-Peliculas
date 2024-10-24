@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 22/oct",
-	"HoraUTC": "11:28",
+	"FechaUTC": "Mié. 23/oct",
+	"HoraUTC": "11:32",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 21/oct",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"20-oct-24": {},
 		"21-oct-24": {"leyenda": "Hoy recordamos a santa Laura Montoya", "entidad": "personajes", "id": 203},
 		"22-oct-24": {"leyenda": "Hoy recordamos al papa Juan Pablo II, santo", "entidad": "personajes", "id": 24},
 		"23-oct-24": {},
-		"24-oct-24": {"leyenda": "Hoy recordamos a san Antonio María Claret", "entidad": "personajes", "id": 89}
+		"24-oct-24": {"leyenda": "Hoy recordamos a san Antonio María Claret", "entidad": "personajes", "id": 89},
+		"25-oct-24": {}
 	}
 }

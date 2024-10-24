@@ -11,7 +11,10 @@
 					option {cursor: pointer; font-style: normal;}
 				}
 			}
-			input[name="excluye"] {margin-left: 7px; scale: 1.2;}
+			#checkbox {
+				margin-left: 7px; line-height: 0;
+				input {width: 20px; height: 20px;}
+			}
 		}
 		#iconosDelTitulo {
 			margin-top: 15px;

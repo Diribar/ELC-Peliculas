@@ -27,10 +27,12 @@ window.addEventListener("load", async () => {
 	DOM = {
 		...DOM,
 
-		// Encabezado
+		// Encabezado - Título principal
 		layout_id: DOM.tituloPrincipal.querySelector("select[name='layout_id']"),
+		excluyeInput: DOM.tituloPrincipal.querySelector("#checkbox input"),
+		excluyeLeyenda: DOM.tituloPrincipal.querySelector("#checkbox .mostrarLeyenda"),
+		compartirLeyenda: DOM.tituloPrincipal.querySelector("#iconosDelTitulo .mostrarLeyenda"),
 		iconoParaMostrarPrefs: DOM.tituloPrincipal.querySelector("#toggleFiltrosGlobal .fa-chevron-right"),
-		compartirLeyenda: DOM.tituloPrincipal.querySelector("#iconosDelTitulo #compartirLeyenda"),
 
 		// Configuración de Cabecera - Botonera
 		configNuevaNombre: DOM.cabecera.querySelector("#configNueva input[name='nombreNuevo']"),

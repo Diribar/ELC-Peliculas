@@ -336,13 +336,14 @@ module.exports = {
 				// Variables
 				const {entidad, dia, mes} = prefs;
 				const entidadesRCLV = entidad != "rclvs" ? [entidad] : variables.entidades.rclvs;
-				const diaHoy = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes);
+				const diaHoy =
+					prefs.layout.codigo == "fechaDelAnoBoton" ? fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes) : null;
 				const inclStd = ["fechaDelAno"];
 				const inclHec = [...inclStd, "epocaOcurrencia"];
 				const inclPers = [...inclHec, "rolIglesia", "canon"];
 				let rclvs = [];
 
-				// Rutina para obtener los RCLVs
+				// Rutina por entidad para obtener los RCLVs
 				for (let entidadRCLV of entidadesRCLV) {
 					// Variables
 					const condicion = {statusRegistro_id: aprobado_id, fechaDelAno_id: {[Op.ne]: 400}};
@@ -358,10 +359,12 @@ module.exports = {
 				rclvs = await Promise.all(rclvs).then((n) => n.flat());
 
 				// Se fija si debe reemplazar la fechaDelAno_id de un registro 'epocaDelAno' con el día actual
-				const epocaDelAno_id = diaHoy.epocaDelAno_id;
-				if (epocaDelAno_id != 1) {
-					const indice = rclvs.findIndex((n) => n.id == epocaDelAno_id && n.entidad == "epocasDelAno");
-					rclvs[indice].fechaDelAno_id = diaHoy.id;
+				if (diaHoy) {
+					const epocaDelAno_id = diaHoy.epocaDelAno_id;
+					if (epocaDelAno_id != 1) {
+						const indice = rclvs.findIndex((n) => n.id == epocaDelAno_id && n.entidad == "epocasDelAno");
+						rclvs[indice].fechaDelAno_id = diaHoy.id;
+					}
 				}
 
 				// Acciones si hay resultados
@@ -380,7 +383,7 @@ module.exports = {
 						);
 
 					// Para los botones, mueve los pasados al futuro
-					if (prefs.layout.codigo == "fechaDelAnoBoton") {
+					if (diaHoy) {
 						const indice = rclvs.findIndex((n) => n.fechaDelAno_id >= diaHoy.id);
 						if (indice > 0) {
 							const pasados = rclvs.slice(0, indice);

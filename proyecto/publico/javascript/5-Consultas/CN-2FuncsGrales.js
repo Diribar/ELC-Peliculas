@@ -135,7 +135,7 @@ const actualiza = {
 		// Fin
 		return;
 	},
-	statusInicialCampos: async (texto) => {
+	statusInicialPrefs: async (texto) => {
 		// Variables
 		const preferencias = await obtiene.preferencias(texto);
 
@@ -147,8 +147,11 @@ const actualiza = {
 				? v.filtrosConDefault[prefSimple.name]
 				: "";
 
+		// Checkbox
+		if (preferencias.excluyeBC == true) DOM.excluyeInput.checked = true;
+
 		// 'palClaveIcono'
-		DOM.palClaveIcono.classList.remove("fa-circle-right"); // siempre oculto
+		DOM.palClaveIcono.classList.remove("fa-circle-right"); // oculto hasta que se modifica el input 'palClave'
 		DOM.palClaveInput.value
 			? DOM.palClaveIcono.classList.add("fa-circle-xmark") // si 'palClaveInput' tiene valor
 			: DOM.palClaveIcono.classList.remove("fa-circle-xmark");
@@ -255,7 +258,7 @@ const cambiosEnBD = {
 		if (!v.usuario_id) return;
 
 		// Guarda los cambios
-		let configCons = {cabecera, prefs};
+		const configCons = {cabecera, prefs};
 		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.prefs.entidad; // si la entidad es la estándar, elimina el campo
 		const rutaCompleta = ruta + "guarda-una-configuracion/?configCons=";
 		await fetch(rutaCompleta + JSON.stringify(configCons));
@@ -336,7 +339,7 @@ const sessionCookie = {
 	guardaConfig: () => {
 		// Variables
 		const rutaCompleta = ruta + "guarda-la-configuracion-en-session-y-cookie/?configCons=";
-		let configCons = {id: cabecera.id, ...prefs};
+		const configCons = {id: cabecera.id, ...prefs};
 		if (v.entidadBD.id == v.layoutBD.entDefault_id) delete configCons.entidad; // si la entidad es la estándar, elimina el campo
 
 		// Guarda
@@ -351,24 +354,15 @@ const sessionCookie = {
 		return;
 	},
 };
+
+// Start-up
 const cambioDeConfig_id = async (texto) => {
 	// Funciones
 	await actualiza.valoresInicialesDeVariables(); // revisada
 	if (cabecera.id && v.usuario_id) cambiosEnBD.actualizaEnUsuarioConfigCons_id(); // revisada
 	if (texto != "start-up") await sessionCookie.eliminaConfig(); // revisada
-	await actualiza.statusInicialCampos(); // revisada
+	await actualiza.statusInicialPrefs(); // revisada
 	actualiza.toggleBotonFiltros();
-
-	// Fin
-	return;
-};
-const accionesEstandarPorInputs = async () => {
-	// Cambios de campo
-	v.hayCambiosDeCampo = true;
-	await accionesPorCambioDePrefs();
-
-	// Guarda la configuración en session y cookie
-	sessionCookie.guardaConfig();
 
 	// Fin
 	return;
@@ -385,6 +379,19 @@ const accionesPorCambioDePrefs = async () => {
 		await FN_resultados.obtiene(); // obtiene los resultados
 		if (v.mostrarResultados) FN_resultados.muestra.generico(); // muestra los resultados
 	}
+
+	// Fin
+	return;
+};
+
+// Varios
+const accionesEstandarPorInputs = async () => {
+	// Cambios de campo
+	v.hayCambiosDeCampo = true;
+	await accionesPorCambioDePrefs();
+
+	// Guarda la configuración en session y cookie
+	sessionCookie.guardaConfig();
 
 	// Fin
 	return;

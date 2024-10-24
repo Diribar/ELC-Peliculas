@@ -28,13 +28,16 @@
 				</optgroup>
 				<% } %>
 			</select>
-			<input type="checkbox" name="excluye">
+			<div id="checkbox" class="relative">
+				<input type="checkbox" name="excluyeBC">
+				<p class="mostrarLeyenda ocultar"></p>
+			</div>
 		</div>
 		<div id="iconosDelTitulo" class="flexRow">
 			<%- include("MN-Ayuda", {ayudaClass: "compCons", parrafo: "Para las opciones de <b>Cuatro Películas</b>, los resultados con fondo amarillo significa que tienen relación con la <em>Iglesia Católica</em>.", mensajes: ayudas.map(ayuda => "<span>" + ayuda.nombre + "</span>: " + ayuda.comentario + ".")}) %>
 
 			<!-- Compartir las preferencias -->
-			 <%- include("FM-Compartir", {compartirLeyenda: "Preferencias copiadas"}) %>
+			 <%- include("FM-Compartir", {mostrarLeyenda: "Preferencias copiadas"}) %>
 
 			<!-- Mostrar filtros -->
 			<div id="toggleFiltrosGlobal" class="iconosAzules scale pointer">
