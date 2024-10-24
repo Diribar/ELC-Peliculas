@@ -2,7 +2,7 @@
 	<li class="prodsNuevos">
 		<a href="<%= '/' + prod.entidad + '/detalle/p/?id=' + prod.id %>">
 			<!-- Info a mostrar -->
-			<button id= "prod" type="text" class="flexRow <% if (prod.statusRegistro_id == inactivo_id) { %>rojo<% } %>" autofocus>
+			<button id= "prod" type="text" class="flexRow<% if (prod.statusRegistro_id == inactivo_id) { %> rojo<% } %>" autofocus>
 				<img class="imagenChica" src="<%= prod.avatar %>" alt="<%= prod.nombreOriginal %>" title="<%= prod.nombreOriginal %>">
 				<div id="infoPeli" class="flexCol">
 					<p id="nombreCastellano" class="interlineadoChico"><%= prod.nombreCastellano ? prod.nombreCastellano : prod.nombreOriginal %></p>
